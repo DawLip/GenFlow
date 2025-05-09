@@ -1,0 +1,44 @@
+import { join } from 'path';
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from '@nestjs/core'; 
+import { MongooseModule } from '@nestjs/mongoose';
+
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+
+import { EventsGateway } from './socket/events.gateway';
+
+import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
+
+import { UsersModule } from './users/users.module';
+import { UsersResolver } from './users/user.resolver';
+
+import { AppController } from './app.controller';
+
+import config from '../config';
+
+@Module({
+  imports: [
+  AuthModule, 
+    UsersModule, 
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+      playground: false,
+      context: ({ req, res }) => ({ req, res })
+    }), 
+    MongooseModule.forRoot(config.mongo),
+  ],
+  controllers: [AppController],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    EventsGateway,
+
+    UsersResolver,
+  ],
+})
+export class AppModule {}

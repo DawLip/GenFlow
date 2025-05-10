@@ -22,9 +22,12 @@
       "@/*": ["./*"],
       "@p/*": ["./src/pages/*"],
       "@c/*": ["./src/components/*"],
+      "@u/*": ["./src/utils/*"],
       "@app/*": ["./src/app/*"],
+      "@store/*": ["./src/store/*"],
+      "@hooks/*": ["./src/hooks/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/store/index.js"],
   "exclude": ["node_modules"]
 }

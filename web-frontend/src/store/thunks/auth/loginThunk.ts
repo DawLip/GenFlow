@@ -2,10 +2,9 @@ import { login, setLoading, setError } from '@store/slices/authSlice';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import { client } from '@u/apollo-client';
 
-export const loginThunk = ({ email, password, rPassword }:{ 
+export const loginThunk = ({ email, password }:{ 
   email:string, 
   password: string,
-  rPassword: string  
 }) => async (dispatch:any) => {
   console.log('=== User attempts to login ===')
 

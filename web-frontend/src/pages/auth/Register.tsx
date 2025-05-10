@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerThunk } from '@store/thunks/auth/registerThunk';
 import { AppDispatch } from '@store/index';
 
+import TextInput from '@c/inputs/TextInput';
+
 export default function Page() {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>();
@@ -34,26 +36,6 @@ export default function Page() {
         <TextInput label='Confirm Password' placeholder='Confirm Password' value={confirmPassword} setValue={setConfirmPassword} password/>
       </div>
       <button className='w-100 bg-gray-300' type="button" onClick={handleRegister}>Register</button>
-    </div>
-  )
-}
-
-const TextInput = ({label, placeholder, value, setValue, password}: {
-  label: string, 
-  placeholder: string, 
-  value: string, 
-  setValue: (value: string) => void, 
-  password?:boolean
-}) => {
-  return (
-    <div className='flex flex-col'>
-      <label>{label}</label>
-      <input 
-        type={password?'password':'text'} 
-        placeholder={placeholder} 
-        value={value} 
-        onChange={(e) => setValue(e.target.value)} 
-      />
     </div>
   )
 }

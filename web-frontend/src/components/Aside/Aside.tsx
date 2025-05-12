@@ -3,12 +3,14 @@
 import { ReactNode, useState } from 'react';
 import { Icon } from '../Icon';
 import { Hierarchy } from './Hierarchy';
+import { Inspector } from './Inspector';
+import { EmptyContent } from './EmptyContent';
 
 export function Aside({ tabs=["Hierarchy","Nodes", "Files"]}: any) { 
   const [ selectedTab , setSelectedTab ] = useState(0);
   return (
-    <aside className=" flex-col justify-start items-start border-r-2 border-br bg-bg">
-      <header className=" justify-start items-end self-stretch gap-1 h-8 border-b-2 border-br">
+    <aside className="w-64 flex flex-col justify-start items-start  border-r-2 border-br bg-bg">
+      <header className="justify-start items-end self-stretch gap-1 h-8 border-b-2 border-br">
         {tabs.map((tab: string, index: number) => (
           <Tab 
             key={index} 
@@ -29,9 +31,15 @@ const Content = ({ tabName }: { tabName: string }) => {
     case 'Hierarchy':
       return <Hierarchy />;
     case 'Nodes':
-      return <div>Nodes</div>;
+      return <EmptyContent>Nodes</EmptyContent>;
     case 'Files':
-      return <div>Files</div>;
+      return <EmptyContent>Files</EmptyContent>;
+    case 'Inspector':
+      return <Inspector />;
+    case 'Runs':
+      return <EmptyContent>Nodes</EmptyContent>;
+    case 'Viewer':
+      return <EmptyContent>Files</EmptyContent>;
     default:
       return null;
   }

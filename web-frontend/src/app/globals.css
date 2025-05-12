@@ -10,3 +10,6 @@ div, main, footer, header, section, article, aside, nav {
 }
 
 
+*{
+  box-sizing: border-box;
+}

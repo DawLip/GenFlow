@@ -16,12 +16,14 @@ const initialState: FlowState = {
         type: 'textUpdater',
         data: { name: 'Hello', label: 'hello' },
         position: { x: 0, y: 0 },
+        style: { width: 64*4, height: 64 },
       },
       {
         id: 'node-2',
         type: 'textUpdater',
         data: { name: 'World', label: 'world' },
         position: { x: 64, y: 64 },
+        style: { width: 64*4, height: 64 },
       },
     ],
     edges: [
@@ -38,7 +40,7 @@ const flowsSlice = createSlice({
       state[flowID] = data;
     },
     onNodesChange: (state, {payload:{flowID, nodes, changes}}) => {
-      if(state[flowID]) state[flowID].nodes = applyNodeChanges(changes, nodes);
+      if(state[flowID]) state[flowID].nodes = applyNodeChanges(changes, structuredClone(nodes));
     },
     onEdgesChange: (state, {payload:{flowID, edges, changes}}) => {
       if(state[flowID]) state[flowID].edges = applyEdgeChanges(changes, edges);

@@ -1,7 +1,12 @@
 @import "tailwindcss";
+@config "../../tailwind.config.ts";
 
 :root {
-  --spacing: 1px;
+  /* --spacing: 1px; */
+}
+
+div, main, footer, header, section, article, aside, nav {
+  display: flex;;
 }
 
 

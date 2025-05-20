@@ -4,8 +4,15 @@ import { Handle, NodeResizer, Position } from "@xyflow/react";
 import React, { useMemo } from "react";
 import { useCallback } from "react";
 import { Icon } from "../Icon";
+import { AppDispatch } from "@/src/store";
+import { useDispatch, useSelector } from "react-redux";
+import { executeFlowThunk } from "@/src/store/thunks/auth/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const token = useSelector((state: any) => state.auth.token);
+
   const onChange = useCallback((evt: any) => {
     console.log(evt.target.value);
   }, []);
@@ -13,7 +20,11 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const ports = node.data.ports.filter((p: any) => p.id >= 2).map((p: any) => node.data.io.filter((io: any) => io?.ports?.includes(p.id)))
   const onExecute = async () => {
     console.log(`=== Executing node ${node.data.id} ===`)
-    
+    dispatch(executeFlowThunk(
+      [{ id: "1", type: "start", data: {}, position: {}, style: { } }],
+      [{ id: "e1", source: "1", target: "2", data: {} }],
+      token
+    ))
   }
 
   return (
@@ -115,7 +126,6 @@ const NodeSectionDivider = () => {
     </div>
   );
 }
-
 
 // export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
 //   const onChange = useCallback((evt: any) => {

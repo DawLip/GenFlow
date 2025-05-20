@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLJSON } from 'graphql-type-json';
 
 import { EventsGateway } from './socket/events.gateway';
 
@@ -16,6 +17,7 @@ import { UsersResolver } from './users/user.resolver';
 
 import { AppController } from './app.controller';
 import { FlowModule } from './flow/flow.module';
+import { QueueModule } from './queue/queue.module';
 
 import config from '../config';
 
@@ -29,7 +31,7 @@ import config from '../config';
       playground: false,
       context: ({ req, res }) => ({ req, res })
     }), 
-    MongooseModule.forRoot(config.mongo), FlowModule,
+    MongooseModule.forRoot(config.mongo), FlowModule, QueueModule,
   ],
   controllers: [AppController],
   providers: [
@@ -40,6 +42,10 @@ import config from '../config';
     EventsGateway,
 
     UsersResolver,
+    {
+      provide: 'JSON',
+      useValue: GraphQLJSON,
+    },
   ],
 })
 export class AppModule {}

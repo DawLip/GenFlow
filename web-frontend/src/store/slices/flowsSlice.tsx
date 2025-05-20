@@ -3,6 +3,7 @@ import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from '@xyflow/react
 import {
   FlowState
 } from '@store/flow.type';
+import { defaultNode } from './defaults/defaultNode';
 
 const initialState: FlowState = {
   '1': {
@@ -11,24 +12,10 @@ const initialState: FlowState = {
     selectedNodes: [],
     selectedEdges: [],
     nodes: [
-      {
-        id: 'node-1',
-        type: 'textUpdater',
-        data: { name: 'Hello', label: 'hello' },
-        position: { x: 0, y: 0 },
-        style: { width: 64*4, height: 64 },
-      },
-      {
-        id: 'node-2',
-        type: 'textUpdater',
-        data: { name: 'World', label: 'world' },
-        position: { x: 64, y: 64 },
-        style: { width: 64*4, height: 64 },
-      },
+      defaultNode({id: 'node-1', position:{x:0, y:0}}),
+      defaultNode({id: 'node-2', position:{x:128*4, y:128}}),
     ],
-    edges: [
-      { id: 'node-1-node-2', source: 'node-1', sourceHandle: 'b', target: 'node-2'},
-    ],
+    edges: [],
   },
 };
 

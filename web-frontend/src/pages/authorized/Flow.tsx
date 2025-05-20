@@ -16,44 +16,12 @@ import { AppDispatch } from '@/src/store';
 import { onNodesChange, onEdgesChange, onConnect, setSelection } from '@/src/store/slices/flowsSlice';
 
 import '@xyflow/react/dist/style.css';
+import { DefaultNode } from '@/src/components/node/DefaultNode';
 
-const TextUpdaterNode = React.memo(function TextUpdaterNode(node: any) {
-  const onChange = useCallback((evt: any) => {
-    console.log(evt.target.value);
-  }, []);
 
-  return (
-    <div
-      style={{ width: node.style?.width, height: node.style?.height }}
-      className={`grow flex-col overflow-hidden p-2 border rounded ${
-        node.selected ? 'border-primary/40' : ''
-      }`}
-    >
-      <NodeResizer
-        color="#ff0071"
-        isVisible={node.selected}
-        minWidth={64}
-        minHeight={64}
-      />
-      <Handle type="target" position={Position.Top} />
-      <div className="flex-1 w-full">
-        <label htmlFor={`${node.id}-text`}>Text:</label>
-        <input
-          id={`${node.id}-text`}
-          name="text"
-          defaultValue={node.data.label}
-          onChange={onChange}
-          className="nodrag w-full"
-        />
-      </div>
-      <Handle type="source" position={Position.Bottom} id="a" />
-      <Handle type="source" position={Position.Bottom} id="b" style={{ left: 10 }} />
-    </div>
-  );
-});
 
 const nodeTypes = {
-  textUpdater: TextUpdaterNode,
+  dafault: DefaultNode,
 };
 
 function Page() {
@@ -93,7 +61,7 @@ function Page() {
   );
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-[#0F0B14]">
       <ReactFlow
         nodeTypes={nodeTypes}
         nodes={nodes}
@@ -107,14 +75,18 @@ function Page() {
         snapToGrid
         snapGrid={[64, 64]}
 
-        fitView
+        // fitView
         minZoom={0.01}
+
+        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
       >
         <Background
           id="1"
+          offset={[64, 64]}
           gap={64}
-          color="#f1f1f1"
-          variant={BackgroundVariant.Lines}
+          size={1}
+          color="#F1E7FE"
+          variant={BackgroundVariant.Dots}
         />
         <Controls />
       </ReactFlow>

@@ -15,6 +15,7 @@ import { UsersModule } from './users/users.module';
 import { UsersResolver } from './users/user.resolver';
 
 import { AppController } from './app.controller';
+import { FlowModule } from './flow/flow.module';
 
 import config from '../config';
 
@@ -28,7 +29,7 @@ import config from '../config';
       playground: false,
       context: ({ req, res }) => ({ req, res })
     }), 
-    MongooseModule.forRoot(config.mongo),
+    MongooseModule.forRoot(config.mongo), FlowModule,
   ],
   controllers: [AppController],
   providers: [

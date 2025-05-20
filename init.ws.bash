@@ -10,4 +10,5 @@ npm run dev
 #> window other
 #> pane 0
 cd /home/david/workspace/GenFlow/
-sudo service redis-server start
+sudo docker start rabbitmq
+lipax123

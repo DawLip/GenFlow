@@ -1,6 +1,9 @@
+'use client'
+
 import { Handle, NodeResizer, Position } from "@xyflow/react";
 import React, { useMemo } from "react";
 import { useCallback } from "react";
+import { Icon } from "../Icon";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const onChange = useCallback((evt: any) => {
@@ -8,6 +11,10 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   }, []);
 
   const ports = node.data.ports.filter((p: any) => p.id >= 2).map((p: any) => node.data.io.filter((io: any) => io?.ports?.includes(p.id)))
+  const onExecute = async () => {
+    console.log(`=== Executing node ${node.data.id} ===`)
+    
+  }
 
   return (
     <div
@@ -22,7 +29,7 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
           minHeight={64}
         />
         <div className="flex-1 grow h-full flex-col pb-1 rounded-[8px] bg-[#0F0B14] border border-[#24202A]">
-          <NodeHeader node={node} />
+          <NodeHeader node={node} onExecute={onExecute} />
           <NodeExternalIO node={node} />
           <NodeSectionDivider />
           {/* <NodeInternalIO node={node} /> */}
@@ -33,11 +40,11 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
             <div className="absolute" style={{ [port.align]: 48, [port.position]: 8, width: 16 }} key={port.id}>
               {p.map((io: any, indexIO: number) => (
                 <Handle
-                  key={'handle'+io.id}
+                  key={'handle' + io.id}
                   type={io.io}
                   position={port.position}
                   id={io.id}
-                  style={{ top: 16 * indexIO+1, width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
+                  style={{ top: 16 * indexIO + 1, width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
                 />
               ))}
             </div>
@@ -48,11 +55,16 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   );
 });
 
-const NodeHeader = ({ node }: any) => {
+const NodeHeader = ({ node, onExecute }: any) => {
   return (
-    <div className="w-full h-8 p-2 bg-zinc-800 justify-start items-center gap-1 rounded-tl-[8px] rounded-tr-[8px]">
-      <div data-state="done" className="w-2 h-2 relative bg-green-600 rounded-lg" />
-      <div className="justify-start text-on_node_header text-xs font-bold font-['Inter'] leading-none">{node.data.name}</div>
+    <div className="justify-between w-full h-8 bg-zinc-800 rounded-tl-[8px] rounded-tr-[8px]">
+      <div className="justify-start items-center gap-1 p-2">
+        <div data-state="done" className="w-2 h-2 relative bg-green-600 rounded-lg" />
+        <div className="justify-start text-on_node_header text-xs font-bold font-['Inter'] leading-none">{node.data.name}</div>
+      </div>
+      <div className="justify-center items-center w-8 h-8 cursor-pointer" draggable={false} onClick={onExecute}>
+        <Icon name={"play"} className="w-3 h-3" />
+      </div>
     </div>
   );
 }
@@ -70,10 +82,10 @@ const NodeExternalIO = ({ node }: any) => {
   return (
     <div className="justify-start items-start">
       <div className="grow px-2 flex-col justify-start items-start">
-        {externalInputs.map((i: any) => <NodeIOLabel key={'ioLabel-'+i.id} label={i.name} />)}
+        {externalInputs.map((i: any) => <NodeIOLabel key={'ioLabel-' + i.id} label={i.name} />)}
       </div>
       <div className="grow px-2 flex-col justify-start items-end">
-        {externalOutputs.map((o: any) => <NodeIOLabel key={'ioLabel-'+o.id} label={o.name} />)}
+        {externalOutputs.map((o: any) => <NodeIOLabel key={'ioLabel-' + o.id} label={o.name} />)}
       </div>
     </div>
   );

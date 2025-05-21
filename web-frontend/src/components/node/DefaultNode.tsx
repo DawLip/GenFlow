@@ -43,6 +43,7 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
           <NodeHeader node={node} onExecute={onExecute} />
           <NodeExternalIO node={node} />
           <NodeSectionDivider />
+          <img src={'http://localhost:3005/files/output.png'} alt="Downloaded" style={{ maxWidth: '100%', height: 'auto' }} />
           {/* <NodeInternalIO node={node} /> */}
         </div>
         {ports.map((p: any, indexPort: number) => {

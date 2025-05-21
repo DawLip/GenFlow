@@ -1,30 +1,46 @@
-import express from 'express'
-import fs from 'fs/promises'
-import cors from 'cors'
-import path from 'path'
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 
-const app = express()
-const port = 3100
-app.use(cors())
+// __dirname analog w ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-app.get('/load-node', async (req, res) => {
-  const filePath = req.query.filePath
+const app = express();
+const PORT = 3005;
 
-  if (!filePath || typeof filePath !== 'string') {
-    return res.status(400).json({ error: 'Missing filePath query param' })
+// Konfiguracja przechowywania plików
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadDir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir);
+    }
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname); // Można dodać Date.now() dla unikalności
   }
+});
 
-  const normalizedPath = path.normalize('/home/david/workspace/GenFlow/file-server/files'+filePath)
+const upload = multer({ storage });
 
-  console.log(normalizedPath)
-  try {
-    const code = await fs.readFile(normalizedPath, 'utf-8')
-    res.json({ code })
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to read file', details: err.message })
-  }
-})
+// Endpoint do wysyłania plików
+app.post('/upload', upload.single('file'), (req, res) => {
+  if (!req.file) return res.status(400).send('No file uploaded.');
+  res.send('File uploaded successfully.');
+});
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`)
-})
+// Endpoint do pobierania plików
+app.get('/files/:filename', (req, res) => {
+  const filepath = path.join(__dirname, 'uploads', req.params.filename);
+  if (!fs.existsSync(filepath)) return res.status(404).send('File not found.');
+  res.download(filepath);
+});
+
+// Start serwera
+app.listen(PORT, () => {
+  console.log(`File server running on http://localhost:${PORT}`);
+});

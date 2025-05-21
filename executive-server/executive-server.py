@@ -1,14 +1,22 @@
-import time
-from redis import Redis
-from rq import Worker, Queue
+from asyncio import sleep
+import pika
 
-redis_conn = Redis()
+from generateImage import generate
 
-def generate_image(prompt):
-    print(f"Generating image for prompt: {prompt}")
-    time.sleep(5)
-    return f"Image generated for prompt: {prompt}"
+def callback(ch, method, properties, body):
+    generate()
 
-if __name__ == '__main__':
-    worker = Worker(queues=['default'], connection=redis_conn)
-    worker.work()
+connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+channel = connection.channel()
+
+channel.queue_declare(queue='task_queue', durable=True)
+
+print(" [*] Waiting for messages. To exit press CTRL+C")
+
+channel.basic_consume(
+    queue='task_queue',
+    on_message_callback=callback,
+    auto_ack=True
+)
+
+channel.start_consuming()

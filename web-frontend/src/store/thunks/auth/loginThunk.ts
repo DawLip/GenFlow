@@ -1,6 +1,7 @@
 import { login, setLoading, setError } from '@store/slices/authSlice';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import { client } from '@u/apollo-client';
+import Cookies from 'js-cookie';
 
 export const loginThunk = ({ email, password }:{ 
   email:string, 
@@ -19,7 +20,11 @@ export const loginThunk = ({ email, password }:{
 
     if(data.login.status=="SUCCESS") {
       console.log("Login successful");
+      
       dispatch(login({token: data.login.access_token, userId: data.login.user._id}));
+
+      Cookies.set('token', data.login.access_token, { expires: 36500 });
+      Cookies.set('userId', data.login.user._id, { expires: 36500 });
     }
     else {
       console.error("Login failed:", data.login.status);

@@ -16,16 +16,18 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayDisconnect, 
   }
 
   async handleConnection(@ConnectedSocket() client: Socket) {
+    console.log(`Client attempt to connect: ${client.id}`);
+
     const token = client.handshake.auth?.token?.replace(/^Bearer /, "") || "";
     const payload = await this.authService.verify(token);
-    console.log(`Client attempt to connect: ${client.id}`);
     if (!payload) {
       console.log(`Client failed to connect: ${client.id}`);
       client.disconnect();
       return;
     }
-    console.log(`Client connected: ${client.id}`);
     client.data.user = payload;
+    
+    console.log(`Client connected: ${client.id}`);
   }
 
   handleDisconnect(@ConnectedSocket() client: Socket) {

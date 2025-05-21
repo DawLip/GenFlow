@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ReactFlow,
@@ -17,8 +17,8 @@ import { onNodesChange, onEdgesChange, onConnect, setSelection } from '@/src/sto
 
 import '@xyflow/react/dist/style.css';
 import { DefaultNode } from '@/src/components/node/DefaultNode';
-
-
+import { Aside } from '@/src/components/Aside/Aside';
+import { useSocket } from '@/src/socket/socket';
 
 const nodeTypes = {
   dafault: DefaultNode,
@@ -26,10 +26,22 @@ const nodeTypes = {
 
 function Page() {
   const flowID = '1';
+  const socket = useSocket();
   const dispatch = useDispatch<AppDispatch>();
 
   const nodes = useSelector((state: any) => state.flows[flowID].nodes);
   const edges = useSelector((state: any) => state.flows[flowID].edges);
+
+  useEffect(()=>{
+    if (!socket) return;
+
+    socket?.on('connect', ()=>{
+      console.log('[SOCKET] Socket connected')
+    })
+    socket?.on('connected', ()=>{
+      console.log('[SOCKET] Socket connected')
+    })
+  },[socket])
 
   const onNodesChangeW = useMemo(
     () => throttle((changes: any) => {
@@ -61,36 +73,40 @@ function Page() {
   );
 
   return (
-    <div className="w-full h-full bg-[#0F0B14]">
-      <ReactFlow
-        nodeTypes={nodeTypes}
-        nodes={nodes}
-        edges={edges}
+    <>
+      <Aside tabs={["Hierarchy", "Nodes", "Files"]} />
+      <div className="w-full h-full bg-[#0F0B14]">
+        <ReactFlow
+          nodeTypes={nodeTypes}
+          nodes={nodes}
+          edges={edges}
 
-        onNodesChange={onNodesChangeW}
-        onEdgesChange={onEdgesChangeW}
-        onConnect={onConnectW}
-        onSelectionChange={handleSelectionChange}
+          onNodesChange={onNodesChangeW}
+          onEdgesChange={onEdgesChangeW}
+          onConnect={onConnectW}
+          onSelectionChange={handleSelectionChange}
 
-        snapToGrid
-        snapGrid={[64, 64]}
+          snapToGrid
+          snapGrid={[64, 64]}
 
-        // fitView
-        minZoom={0.01}
+          // fitView
+          minZoom={0.01}
 
-        defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-      >
-        <Background
-          id="1"
-          offset={[64, 64]}
-          gap={64}
-          size={1}
-          color="#F1E7FE"
-          variant={BackgroundVariant.Dots}
-        />
-        <Controls />
-      </ReactFlow>
-    </div>
+          defaultViewport={{ x: 0, y: 0, zoom: 1 }}
+        >
+          <Background
+            id="1"
+            offset={[64, 64]}
+            gap={64}
+            size={1}
+            color="#F1E7FE"
+            variant={BackgroundVariant.Dots}
+          />
+          <Controls />
+        </ReactFlow>
+      </div>
+      <Aside tabs={["Inspector", "Runs", "Viewer"]} />
+    </>
   );
 }
 

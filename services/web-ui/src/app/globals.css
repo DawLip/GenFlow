@@ -1,0 +1,19 @@
+/* @import "tailwindcss"; */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@config "../../tailwind.config.js";
+
+:root {
+  /* --spacing: 1px; */
+}
+
+div, main, footer, header, section, article, aside, nav {
+  display: flex;;
+}
+
+
+*{
+  box-sizing: border-box;
+}

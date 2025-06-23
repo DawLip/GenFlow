@@ -42,7 +42,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     ".next/types/**/*.ts",
-    "../../libs/shared/**/*"
+    "../../libs/shared/**/*",
   ],
   "exclude": [
     "out-tsc",

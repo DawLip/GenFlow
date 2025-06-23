@@ -1,8 +1,5 @@
-import {shared} from "@genflow/shared";
-export default function Index() {
-  return (
-    <div>
-     test4 {shared()}
-    </div>
-  );
+import TargetPage from '@web-ui/pages/unauthorized/Welcome'
+
+export default function Page() {
+  return <TargetPage />
 }

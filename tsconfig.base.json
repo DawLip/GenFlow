@@ -19,7 +19,8 @@
     "customConditions": ["development"],
     "baseUrl": ".",                      
     "paths": {
-      "@genflow/*": ["libs/*"]
+      "@libs/*": ["libs/*"],
+      "@web-ui/*": ["services/web-ui/src/*"],
     },
     "rootDir": "./"
   }

@@ -2,8 +2,8 @@ const config = {
   urls: {
     protocol: 'http://',
     serverIp: 'localhost',
-    serverPort: '3010',
-    socketPort: '3011',
+    serverPort: '3000',
+    socketPort: '3010',
 
     server: '',
     socket: '',

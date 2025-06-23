@@ -17,10 +17,11 @@
     "strict": true,
     "target": "es2022",
     "customConditions": ["development"],
-    "baseUrl": ".",                      
+    "baseUrl": ".",
     "paths": {
       "@libs/*": ["libs/*"],
       "@web-ui/*": ["services/web-ui/src/*"],
+      "@api/*": ["services/api/src/*"]
     },
     "rootDir": "./"
   }

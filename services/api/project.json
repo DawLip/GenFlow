@@ -1,0 +1,10 @@
+{
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon --watch ./services/api/src --ext ts --exec \"ts-node -r tsconfig-paths/register ./services/api/src/main.ts\""
+      }
+    }
+  }
+}

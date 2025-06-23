@@ -1,4 +1,4 @@
-import config from '@u/config';
+import config from '@web-ui/utils/config';
 import { createContext, useContext } from 'react';
 import { io, Socket } from 'socket.io-client';
 

@@ -1,0 +1,14 @@
+services:
+  web-ui:
+    build:
+      context: .
+      dockerfile: services/web-ui/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx dev web-ui

@@ -2,12 +2,44 @@
   "name": "@gen-flow/api",
   "version": "0.0.1",
   "private": true,
-  "dependencies": {
-    "nest": "^0.1.6"
-  },
-  "devDependencies": {
-    "@types/node": "^18.16.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+  "nx": {
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "webpack-cli build",
+          "args": [
+            "node-env=production"
+          ]
+        },
+        "configurations": {
+          "development": {
+            "args": [
+              "node-env=development"
+            ]
+          }
+        }
+      },
+      "serve": {
+        "continuous": true,
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build"
+        ],
+        "options": {
+          "buildTarget": "@gen-flow/gateway:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "@gen-flow/gateway:build:development"
+          },
+          "production": {
+            "buildTarget": "@gen-flow/gateway:build:production"
+          }
+        }
+      }
+    }
   }
 }

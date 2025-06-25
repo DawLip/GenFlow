@@ -1,25 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-
-import { altairExpress } from 'altair-express-middleware';
-
-import { AppModule } from './app.module';
-
-import config from '../config';
+import { AppModule } from '@api/app/app.module';
+import * as express from 'express';
 
 async function bootstrap() {
+  const port = process.env.PORT||3000;
+
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({
-    origin: '*', 
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  });
+  app.enableCors();
 
-  app.use('/altair', altairExpress({
-    endpointURL: '/graphql',
-  }));
-
-  await app.listen(process.env.PORT ?? config.serverPort);
+  await app.listen(port);
+  console.log(`Api running on http://localhost:${port}`);
 }
 bootstrap();

@@ -1,0 +1,10 @@
+{
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nodemon --watch ./services/graphql/src --ext ts --exec \"ts-node -r tsconfig-paths/register ./services/graphql/src/main.ts\""
+      }
+    }
+  }
+}

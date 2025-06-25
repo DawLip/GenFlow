@@ -1,4 +1,5 @@
 {
+  "exclude": ["path/to/folder"],
   "compilerOptions": {
     "composite": true,
     "declarationMap": true,
@@ -19,9 +20,13 @@
     "customConditions": ["development"],
     "baseUrl": ".",
     "paths": {
+      "@api/*": ["services/api/src/*"],
       "@libs/*": ["libs/*"],
       "@web-ui/*": ["services/web-ui/src/*"],
-      "@api/*": ["services/api/src/*"]
+      "@gateway/*": ["services/gateway/src/*"],
+      "@graphql/*": ["services/graphql/src/*"],
+      "@socket.io/*": ["services/socket.io/src/*"],
+      "@auth/*": ["services/auth/src/*"]
     },
     "rootDir": "./"
   }

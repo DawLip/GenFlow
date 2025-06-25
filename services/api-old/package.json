@@ -1,0 +1,13 @@
+{
+  "name": "@gen-flow/api-old",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "nest": "^0.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}

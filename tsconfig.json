@@ -11,6 +11,19 @@
     },
     {
       "path": "./services/api"
+    },
+    {
+      "path": "./services/gateway"
     }
-  ]
+  ],
+   "compilerOptions": {
+    "paths": {
+      "@gateway/*": ["services/gateway/src/*"],
+      "@api/*": ["services/api/src/*"],
+      "@graphql/*": ["services/graphql/src/*"],
+      "@socket.io/*": ["services/socket.io/src/*"],
+      "@auth/*": ["services/auth/src/*"]
+    }
+  },
+  "exclude": ["path/to/folder"]
 }

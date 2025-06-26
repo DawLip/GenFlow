@@ -1,10 +1,30 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
+import {
+  RegisterRequest,
+  LoginRequest,
+  ValidateRequest,
+  AuthResponse,
+  UserPayload,
+} from '@proto/lib/auth';
+import { AuthService } from '@auth/app/app.service';
 
 @Controller()
 export class AppController {
-  @GrpcMethod('HeroService', 'FindOne')
-  findOne(data: { id: number }) {
-    return { id: data.id, name: 'HeroName' + data.id };
+  constructor(private readonly authService: AuthService) {}
+
+  @GrpcMethod('AuthService', 'Register')
+  async register(data: RegisterRequest): Promise<AuthResponse> {
+    return await this.authService.register(data);
+  }
+
+  @GrpcMethod('AuthService', 'Login')
+  async login(data: LoginRequest): Promise<AuthResponse> {
+    return await this.authService.login(data);
+  }
+
+  @GrpcMethod('AuthService', 'Validate')
+  async validate(data: ValidateRequest): Promise<UserPayload> {
+    return await this.authService.validate(data);
   }
 }

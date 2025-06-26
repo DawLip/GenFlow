@@ -2,7 +2,10 @@
   "name": "@gen-flow/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "proto:gen": "protoc --plugin=protoc-gen-ts_proto=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=libs/proto/src/lib --ts_proto_opt=outputServices=generic-definitions --ts_proto_opt=esModuleInterop=true,forceLong=number,useExactTypes=false --proto_path=libs/proto/src/lib libs/proto/src/lib/*.proto",
+    "docker": "docker compose down; docker compose up"
+  },
   "private": true,
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -39,12 +42,14 @@
     "nx": "21.2.1",
     "postcss": "^8.4.38",
     "prettier": "^3.0.0",
+    "protobufjs": "^7.5.3",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
     "tailwindcss": "^3.4.17",
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
+    "ts-proto": "^2.7.5",
     "tsconfig-paths": "^4.2.0",
     "tslib": "^2.3.0",
     "typescript": "~5.8.2",

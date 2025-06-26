@@ -2,7 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class HealthController {
-  @Get()
+  @Get('h')
   getHealthRoot() {
     return { name:"graphql", status: 'ok' };
   }

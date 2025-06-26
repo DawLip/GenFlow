@@ -9,6 +9,6 @@
     "emitDecoratorMetadata": true,
     "target": "es2021"
   },
-  "include": ["**/*.ts", "../../libs/shared/src/lib/**/*.ts"],
+  "include": ["**/*.ts", "../../libs/shared/src/lib/**/*.ts", "../../libs/proto/src/lib/**/*.ts"],
   "exclude": []
 }

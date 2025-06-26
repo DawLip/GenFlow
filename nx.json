@@ -20,7 +20,7 @@
           "watchDepsName": "watch-deps"
         }
       },
-      "exclude": ["libs/shared/*"]
+      "exclude": ["libs/shared/*", "libs/*", "libs/proto/*"]
     },
     {
       "plugin": "@nx/next/plugin",
@@ -35,7 +35,7 @@
     },
     {
       "plugin": "@nx/js/typescript",
-      "include": ["libs/shared/*"],
+      "include": ["libs/shared/*", "libs/*", "libs/proto/*"],
       "options": {
         "typecheck": {
           "targetName": "typecheck"

@@ -23,7 +23,7 @@
     "noImplicitAny": false
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts", "../../libs/proto/src/lib/**/*.ts", "../../libs/shared/src/lib/**/*.ts"
   ],
   "exclude": [
     "node_modules",

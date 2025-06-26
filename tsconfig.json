@@ -22,7 +22,10 @@
       "@api/*": ["services/api/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
-      "@auth/*": ["services/auth/src/*"]
+      "@auth/*": ["services/auth/src/*"],
+      "@proto/*": ["libs/proto/src/*"],
+      "@libs/*": ["libs/*"],
+      "@shared/*": ["libs/shared/src/*"]
     }
   },
   "exclude": ["path/to/folder"]

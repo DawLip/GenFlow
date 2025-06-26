@@ -75,6 +75,7 @@ services:
       dockerfile: services/auth/Dockerfile.dev
     ports:
       - "3004:3000"
+      - "50051:50051"
     volumes:
       - ./:/app
     working_dir: /app

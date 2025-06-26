@@ -20,13 +20,14 @@
     "customConditions": ["development"],
     "baseUrl": ".",
     "paths": {
-      "@api/*": ["services/api/src/*"],
-      "@libs/*": ["libs/*"],
-      "@web-ui/*": ["services/web-ui/src/*"],
       "@gateway/*": ["services/gateway/src/*"],
+      "@api/*": ["services/api/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
-      "@auth/*": ["services/auth/src/*"]
+      "@auth/*": ["services/auth/src/*"],
+      "@proto/*": ["libs/proto/src/*"],
+      "@libs/*": ["libs/*"],
+      "@shared/*": ["libs/shared/src/*"]
     },
     "rootDir": "./"
   }

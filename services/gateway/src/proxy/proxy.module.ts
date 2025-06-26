@@ -1,6 +1,6 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { serviceRoutes } from '../config/services.config';
+import { services_config } from '@shared/lib/services_config';
 
 @Module({})
 export class ProxyModule implements NestModule {
@@ -9,7 +9,8 @@ export class ProxyModule implements NestModule {
     consumer
       .apply(
         createProxyMiddleware({
-          target: serviceRoutes.rest,
+          // target: services_config.service_url.rest,
+          target:'http://api:3000',
           changeOrigin: true,
           pathRewrite: { '^/api': '' },
         }),
@@ -20,7 +21,7 @@ export class ProxyModule implements NestModule {
     consumer
       .apply(
         createProxyMiddleware({
-          target: serviceRoutes.graphql,
+          target: services_config.service_url.graphql,
           changeOrigin: true,
         }),
       )
@@ -30,7 +31,7 @@ export class ProxyModule implements NestModule {
     consumer
       .apply(
         createProxyMiddleware({
-          target: serviceRoutes.socket,
+          target: services_config.service_url.socketio,
           ws: true,
           changeOrigin: true,
         }),

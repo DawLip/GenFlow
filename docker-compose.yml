@@ -1,124 +1,46 @@
 version: '3.8'
 services:
   web-ui:
-    build:
-      context: .
-      dockerfile: services/web-ui/Dockerfile.dev
-    ports:
-      - "8080:3000"
-    volumes:
-      - ./:/app
-      # - /app/node_modules
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-    command: npx nx dev web-ui
+    extends:
+      file: compose/web-ui.yml
+      service: web-ui
+    depends_on:
+      - gateway
 
   gateway:
-    build:
-      context: .
-      dockerfile: services/gateway/Dockerfile.dev
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - REST_SERVICE_URL=http://api:3000
-      - GRAPHQL_SERVICE_URL=http://graphql:3000
-      - SOCKET_SERVICE_URL=http://socket.io:3000   
-    command: npx nx serve gateway
-    depends_on:
-      - api
-      - graphql
-      - socket.io
+    extends:
+      file: compose/gateway.yml
+      service: gateway
 
   api:
-    build:
-      context: .
-      dockerfile: services/api/Dockerfile.dev
-    ports:
-      - "3001:3000"
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-    command: npx nx serve api
-  graphql:
-    build:
-      context: .
-      dockerfile: services/graphql/Dockerfile.dev
-    ports:
-      - "3002:3000"
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-    command: npx nx serve graphql
-  socket.io:
-    build:
-      context: .
-      dockerfile: services/socket.io/Dockerfile.dev
-    ports:
-      - "3003:3000"
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-    command: npx nx serve socket.io
-  auth:
-    build:
-      context: .
-      dockerfile: services/auth/Dockerfile.dev
-    ports:
-      - "3004:3000"
-      - "50051:50051"
-    volumes:
-      - ./:/app
-    working_dir: /app
-    environment:
-      - NODE_ENV=development
-    command: npx nx serve auth
-  # api:
-  #   build:
-  #     context: .
-  #     dockerfile: services/api/Dockerfile.dev
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./:/app
-  #     # - /app/node_modules
-  #   working_dir: /app
-  #   environment:
-  #     - NODE_ENV=development
-  #     - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672
-  #   depends_on:
-  #     - rabbitmq
-  #     - mongodb
-  #   command: npx nx serve api
+    extends:
+      file: compose/api.yml
+      service: api
 
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   environment:
-  #     RABBITMQ_DEFAULT_USER: guest
-  #     RABBITMQ_DEFAULT_PASS: guest
-  #   volumes:
-  #     - rabbitmq-data:/var/lib/rabbitmq
-  # mongodb:
-  #   image: mongo:6
-  #   container_name: mongodb
-  #   command: ["mongod", "--quiet", "--logpath", "/dev/null"]
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongodb-data:/data/db
+  graphql:
+    extends:
+      file: compose/graphql.yml
+      service: graphql
+
+  socket.io:
+    extends:
+      file: compose/socket.io.yml
+      service: socket.io
+
+  auth:
+    extends:
+      file: compose/auth.yml
+      service: auth
+
+  rabbitmq:
+    extends:
+      file: compose/infrastructure/rabbitmq.yml
+      service: rabbitmq
+
+  mongodb:
+    extends:
+      file: compose/infrastructure/mongodb.yml
+      service: mongodb
 
 volumes:
   rabbitmq-data:

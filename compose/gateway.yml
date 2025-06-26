@@ -1,0 +1,19 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ../services/gateway/Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - REST_SERVICE_URL=http://api:3000
+      - GRAPHQL_SERVICE_URL=http://graphql:3000
+      - SOCKET_SERVICE_URL=http://socket.io:3000
+    command: npx nx serve gateway
+    depends_on:
+      - api
+      - graphql
+      - socket.io

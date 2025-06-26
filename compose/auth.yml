@@ -1,0 +1,14 @@
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: ../services/auth/Dockerfile.dev
+    ports:
+      - "3004:3000"
+      - "50051:50051"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve auth

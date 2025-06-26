@@ -2,8 +2,8 @@ services:
   mongodb:
     image: mongo:6
     container_name: mongodb
+    command: ["mongod", "--quiet", "--logpath", "/dev/null"]
     ports:
       - "27017:27017"
     volumes:
       - mongodb-data:/data/db
-    command: ["mongod", "--quiet", "--logpath", "/dev/null"]

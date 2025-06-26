@@ -34,12 +34,12 @@ services:
 
   rabbitmq:
     extends:
-      file: compose/infrastructure/rabbitmq.yml
+      file: compose/rabbitmq.yml
       service: rabbitmq
 
   mongodb:
     extends:
-      file: compose/infrastructure/mongodb.yml
+      file: compose/mongodb.yml
       service: mongodb
 
 volumes:

@@ -6,7 +6,7 @@ import { AuthServiceClient } from '@proto/lib/auth.client';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
-export class AppService implements OnModuleInit {
+export class ApiService implements OnModuleInit {
   @Client({
     transport: Transport.GRPC,
     options: {
@@ -15,16 +15,20 @@ export class AppService implements OnModuleInit {
       url: services_config.service_url.auth_rpc,
     },
   })
-  private client: ClientGrpc;
+  private client:ClientGrpc;
 
-  private authService: AuthServiceClient;
+  private authService:AuthServiceClient;
 
-  onModuleInit(): void {
+  onModuleInit():void {
     this.authService = this.client.getService<AuthServiceClient>('AuthService');
   }
 
-  login(username: string, password: string) {
-    return this.authService.login({ username, password });
+  login(email:string, password:string) {
+    return this.authService.login({ email, password });
+  }
+
+  register(username:string, email:string, password:string) {
+    return this.authService.register({ username, email, password });
   }
 
   // Nowa metoda validate, która zwraca Promise<boolean>
@@ -32,7 +36,7 @@ export class AppService implements OnModuleInit {
     try {
       // gRPC zwraca UserPayload przy poprawnej walidacji tokena
       const response = await firstValueFrom(this.authService.validate({ token }));
-      return !!response?.username; // jeśli jest username, token jest OK
+      return !!response?.id; // jeśli jest username, token jest OK
     } catch {
       return false;
     }

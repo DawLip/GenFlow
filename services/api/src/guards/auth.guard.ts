@@ -1,9 +1,9 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { AppService } from '../app/app.service';
+import { ApiService } from '../api/api.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authService: AppService) {}
+  constructor(private readonly apiService: ApiService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const isValid = await this.authService.validate(token);
+      const isValid = await this.apiService.validate(token);
       if (!isValid) {
         throw new ForbiddenException('Invalid token');
       }

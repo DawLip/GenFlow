@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
+  rpc FindOneByEmail (FindOneByEmailRequest) returns (FindResponse);
+}
+
+message CreateRequest {
+  string email = 1;
+  string username = 2;
+  string password = 3;
+}
+
+message CreateResponse {
+  string id = 1;
+  string status = 2;
+  string msg = 3;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string field = 2;
+  string value = 3;
+}
+
+message UpdateResponse {
+  string status = 1;
+  string msg = 2;
+}
+
+message FindOneByIdRequest {
+  string id = 1;
+}
+
+message FindOneByEmailRequest {
+  string email = 1;
+}
+
+message FindResponse {
+  string status = 1;
+  string msg = 2;
+  optional UserResponse user = 3;
+}
+
+message UserResponse{
+  string id = 1;
+  string email = 2;
+  string username = 3;
+}
+

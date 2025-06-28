@@ -7,10 +7,10 @@ import {
   AuthResponse,
   UserPayload,
 } from '@proto/lib/auth';
-import { AuthService } from '@auth/app/app.service';
+import { AuthService } from '@auth/auth/auth.service';
 
 @Controller()
-export class AppController {
+export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @GrpcMethod('AuthService', 'Register')

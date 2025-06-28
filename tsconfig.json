@@ -14,6 +14,9 @@
     },
     {
       "path": "./services/gateway"
+    },
+    {
+      "path": "./services/user"
     }
   ],
    "compilerOptions": {
@@ -23,6 +26,8 @@
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
       "@auth/*": ["services/auth/src/*"],
+      "@user/*": ["services/user/src/*"],
+
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],
       "@shared/*": ["libs/shared/src/*"]

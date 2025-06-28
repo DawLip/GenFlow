@@ -16,6 +16,10 @@
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": false,
+    "strictPropertyInitialization": false,
     "target": "es2022",
     "customConditions": ["development"],
     "baseUrl": ".",
@@ -25,6 +29,8 @@
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
       "@auth/*": ["services/auth/src/*"],
+      "@user/*": ["services/user/src/*"],
+
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],
       "@shared/*": ["libs/shared/src/*"]

@@ -32,6 +32,11 @@ services:
       file: compose/auth.yml
       service: auth
 
+  user:
+    extends:
+      file: compose/user.yml
+      service: user
+
   rabbitmq:
     extends:
       file: compose/rabbitmq.yml

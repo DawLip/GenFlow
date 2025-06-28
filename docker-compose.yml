@@ -39,12 +39,12 @@ services:
 
   rabbitmq:
     extends:
-      file: compose/rabbitmq.yml
+      file: compose/infra/rabbitmq.yml
       service: rabbitmq
 
   mongodb:
     extends:
-      file: compose/mongodb.yml
+      file: compose/infra/mongodb.yml
       service: mongodb
 
 volumes:

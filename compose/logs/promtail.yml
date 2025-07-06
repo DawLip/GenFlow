@@ -1,0 +1,10 @@
+services:
+  promtail:
+    image: grafana/promtail:3.0.0                   # Specifies the Promtail Docker image and version.
+    container_name: promtail                        # Names the container for easier management.
+    volumes:
+      - ./promtail-config.yaml:/mnt/config/promtail-config.yaml # Mounts the Promtail configuration file.
+      - /var/log:/var/log                           # Mounts the host's log directory.       
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/mnt/config/promtail-config.yaml
+    privileged: true

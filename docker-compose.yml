@@ -1,16 +1,13 @@
-version: '3.8'
 services:
-  web-ui:
-    extends:
-      file: compose/web-ui.yml
-      service: web-ui
-    depends_on:
-      - gateway
-
+# Gateway
   gateway:
     extends:
       file: compose/gateway.yml
       service: gateway
+    depends_on:
+      - api
+      - graphql
+      - socket.io
 
   api:
     extends:
@@ -21,6 +18,13 @@ services:
     extends:
       file: compose/graphql.yml
       service: graphql
+# Services
+  web-ui:
+    extends:
+      file: compose/web-ui.yml
+      service: web-ui
+    depends_on:
+      - gateway
 
   socket.io:
     extends:
@@ -36,7 +40,7 @@ services:
     extends:
       file: compose/user.yml
       service: user
-
+# Infra
   rabbitmq:
     extends:
       file: compose/infra/rabbitmq.yml
@@ -46,7 +50,39 @@ services:
     extends:
       file: compose/infra/mongodb.yml
       service: mongodb
+# Logs
+  grafana:
+    extends:
+      file: compose/logs/grafana.yml
+      service: grafana
+    depends_on:
+      - loki
+    networks:
+      monitoring: 
+        aliases: [grafana]
+  loki:
+    extends:
+      file: compose/logs/loki.yml
+      service: loki
+    networks:
+      monitoring:
+        aliases: [loki]
+  promtail:
+    extends:
+      file: compose/logs/promtail.yml
+      service: promtail
+    networks:
+      monitoring: 
+        aliases: [promtail]
+    depends_on: [loki]
 
 volumes:
   rabbitmq-data:
   mongodb-data:
+  grafana-storage: {}
+
+networks:
+  monitoring:  
+    driver: bridge
+    name: monitoring
+    attachable: true

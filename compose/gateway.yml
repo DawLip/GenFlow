@@ -13,7 +13,3 @@ services:
       - GRAPHQL_SERVICE_URL=http://graphql:3000
       - SOCKET_SERVICE_URL=http://socket.io:3000
     command: npx nx serve gateway
-    depends_on:
-      - api
-      - graphql
-      - socket.io

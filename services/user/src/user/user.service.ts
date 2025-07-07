@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
-} from '@proto/lib/user';import * as jwt from 'jsonwebtoken';
+} from '@proto/lib/user';
+import * as jwt from 'jsonwebtoken';
+import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -13,23 +15,76 @@ import { User } from '@shared/types/User.type'
 export class UserService {
   constructor(
     @InjectModel(UserSchema.name) private userModel: Model<UserDocument>,
+    private readonly logger: PinoLogger,
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdUser:User|any = await this.userModel.create(data);
+    this.logger.info({input: data, user: createdUser, context:"create"}, "User created")
     return {
       id: createdUser._id.toString(),
-      status: "success",
+      status: "SUCCESS",
       msg: "User created",
     };
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
-    return { status: "", msg: "" };
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      data.id,
+      { ...data },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      this.logger.warn({input: data, user: updatedUser, context:"update"}, "User not found")
+      return { status: 'ERROR', msg: 'User not found' };
+    }
+
+    this.logger.info({input: data, user: updatedUser, context:"update"}, "User created")
+    return {
+      status: 'SUCCESS',
+      msg: 'User updated',
+    };
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
-    return { status: "", msg: "" };
+    const user = await this.userModel.findById(data.id).lean();
+
+    if (!user) {
+      this.logger.warn({input: data, user: user, context:"findOneById"}, "User not found")
+      return {
+        status: 'ERROR',
+        msg: 'User not found',
+      };
+    }
+
+    this.logger.info({input: data, user: user, context:"findOneById"}, "User found")
+    return {
+      status: 'SUCCESS',
+      msg: 'User found',
+      user: {
+        ...user,
+        id: user._id.toString(),
+      },
+    };
   }
   async findOneByEmail(data:FindOneByEmailRequest):Promise<FindResponse> {
-    return { status: "", msg: "" };
+    const user = await this.userModel.findOne({ email: data.email }).lean();
+
+    if (!user) {
+      this.logger.warn({input: data, user: user, context:"findOneByEmail"}, "User not found")
+      return {
+        status: 'ERROR',
+        msg: 'User not found',
+      };
+    }
+
+    this.logger.info({input: data, user: user, context:"findOneByEmail"}, "User found")
+    return {
+      status: 'SUCCESS',
+      msg: 'User found',
+      user: {
+        ...user,
+        id: user._id.toString(),
+      }
+    }
   }
 }

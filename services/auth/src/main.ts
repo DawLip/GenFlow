@@ -10,6 +10,7 @@ async function bootstrap() {
       protoPath: require.resolve('@proto/lib/auth.proto'),
       url: '0.0.0.0:50051',
     },
+    bufferLogs: true,
   });
 
   grpcApp.listen();

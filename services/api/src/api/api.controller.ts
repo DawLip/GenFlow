@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiService } from '@api/api/api.service';
 import { AuthGuard } from '@api/guards/auth.guard';
 
@@ -6,12 +6,12 @@ import { AuthGuard } from '@api/guards/auth.guard';
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Get('test')
+  @Post('test')
   test() {
     return this.apiService.login("a", "a");
   }
 
-  @Get('register')
+  @Post('register')
   register() {
     return this.apiService.register("a", "a", "a");
   }

@@ -8,16 +8,22 @@ services:
       - api
       - graphql
       - socket.io
+    networks:
+      monitoring:
 
   api:
     extends:
       file: compose/api.yml
       service: api
+    networks:
+      monitoring:
 
   graphql:
     extends:
       file: compose/graphql.yml
       service: graphql
+    networks:
+      monitoring:
 # Services
   web-ui:
     extends:
@@ -25,31 +31,45 @@ services:
       service: web-ui
     depends_on:
       - gateway
+    networks:
+      monitoring:
 
   socket.io:
     extends:
       file: compose/socket.io.yml
       service: socket.io
+    networks:
+      monitoring:
 
   auth:
     extends:
       file: compose/auth.yml
       service: auth
+    networks:
+      monitoring:
 
   user:
     extends:
       file: compose/user.yml
       service: user
+    networks:
+      monitoring: 
+    depends_on:
+      - mongodb
 # Infra
   rabbitmq:
     extends:
       file: compose/infra/rabbitmq.yml
       service: rabbitmq
+    networks:
+      monitoring:
 
   mongodb:
     extends:
       file: compose/infra/mongodb.yml
       service: mongodb
+    networks:
+      monitoring:
 # Logs
   grafana:
     extends:

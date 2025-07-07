@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { UserModule } from '@user/user/user.module';
+import { Logger } from 'nestjs-pino';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
@@ -11,7 +12,7 @@ async function bootstrap() {
       url: '0.0.0.0:50051',
     },
   });
-
+  grpcApp.useLogger(grpcApp.get(Logger));
   grpcApp.listen();
   console.log(`Auth gRPC service running on 0.0.0.0:50051`);
 

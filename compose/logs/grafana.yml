@@ -3,9 +3,9 @@ services:
     image: grafana/grafana
     container_name: grafana
     ports:
-     - '3200:3000'
+      - '3200:3000'
     volumes:
       - grafana-storage:/var/lib/grafana
       - ./datasources:/etc/grafana/provisioning/datasources
-
-  
+    environment:
+      GF_LOG_LEVEL: warn 

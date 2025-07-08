@@ -5,5 +5,5 @@ export interface UserServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;
   update(data: UpdateRequest): Observable<UpdateResponse>;
   findOneById(data: FindOneByIdRequest): Observable<FindResponse>;
-  update(data: FindOneByEmailRequest): Observable<FindResponse>;
+  findOneByEmail(data: FindOneByEmailRequest): Observable<FindResponse>;
 }

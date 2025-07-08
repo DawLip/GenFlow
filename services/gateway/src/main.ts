@@ -1,10 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@gateway/app/app.module';
-import * as express from 'express';
+import { Logger } from 'nestjs-pino';
 
 import { name } from '../package.json';
 import { service_name } from '@libs/shared/src/lib/service_name'
-import { Logger } from '@nestjs/common';
 
 const s_name = service_name(name);
 

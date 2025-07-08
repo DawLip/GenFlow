@@ -50,6 +50,7 @@ export interface UserResponse {
   id: string;
   email: string;
   username: string;
+  password: string;
 }
 
 function createBaseCreateRequest(): CreateRequest {
@@ -615,7 +616,7 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseUserResponse(): UserResponse {
-  return { id: "", email: "", username: "" };
+  return { id: "", email: "", username: "", password: "" };
 }
 
 export const UserResponse: MessageFns<UserResponse> = {
@@ -628,6 +629,9 @@ export const UserResponse: MessageFns<UserResponse> = {
     }
     if (message.username !== "") {
       writer.uint32(26).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(34).string(message.password);
     }
     return writer;
   },
@@ -663,6 +667,14 @@ export const UserResponse: MessageFns<UserResponse> = {
           message.username = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -677,6 +689,7 @@ export const UserResponse: MessageFns<UserResponse> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
+      password: isSet(object.password) ? globalThis.String(object.password) : "",
     };
   },
 
@@ -691,6 +704,9 @@ export const UserResponse: MessageFns<UserResponse> = {
     if (message.username !== "") {
       obj.username = message.username;
     }
+    if (message.password !== "") {
+      obj.password = message.password;
+    }
     return obj;
   },
 
@@ -702,6 +718,7 @@ export const UserResponse: MessageFns<UserResponse> = {
     message.id = object.id ?? "";
     message.email = object.email ?? "";
     message.username = object.username ?? "";
+    message.password = object.password ?? "";
     return message;
   },
 };

@@ -34,15 +34,41 @@ export class AuthService implements OnModuleInit {
   private readonly jwtSecret = 'secret123';
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
-    const user = await firstValueFrom(this.userService.create(data));
-    const token = this.generateToken(user.id);
-    return { accessToken: token };
+    const user = await firstValueFrom(this.userService.findOneByEmail(data));
+
+    if(!data.email || !data.password || !data.username){
+      this.logger.warn({context:"register", f_args: data}, "All fields are required")
+      return { accessToken:"", status: "ERROR", msg: "all fields are required" }
+    }
+
+    if(user.user){
+      this.logger.warn({context:"register", f_args: data}, "Email is already taken")
+      return { accessToken:"", status: "ERROR", msg: "email is already taken" }
+    }
+
+    const new_user = await firstValueFrom(this.userService.create(data));
+    const token = this.generateToken(new_user.id);
+
+    this.logger.info({context:"register"}, "Register successful");
+    return { accessToken: token, status: "SUCCESS", msg: "register successful" };
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {
-    // W prawdziwej aplikacji: walidacja użytkownika z bazy
-    const token = this.generateToken("000");
-    return { accessToken: token };
+    const user = await firstValueFrom(this.userService.findOneByEmail(data));
+
+    if(!user.user){
+      this.logger.warn({context:"login", f_args: data}, "User not found");
+      return { accessToken:"", status: "ERROR", msg: "user not found" }
+    }
+
+    if(user.user.password !== data.password){
+      this.logger.warn({context:"login", f_args: data}, "Wrong password");
+      return { accessToken:"", status: "ERROR", msg: "wrong password" }
+    }
+
+    this.logger.info({context:"login"}, "Login successful");
+    const token = this.generateToken(user.user?.id);
+    return { accessToken: token, status: "SUCCESS", msg: "login successful" };
   }
 
   async validate(data: ValidateRequest): Promise<UserPayload> {
@@ -56,6 +82,6 @@ export class AuthService implements OnModuleInit {
 
   private generateToken(id: string): string {
     const payload: UserPayload = { id };
-    return jwt.sign(payload, this.jwtSecret, { expiresIn: '1h' });
+    return jwt.sign(payload, this.jwtSecret, { expiresIn: '24h' });
   }
 }

@@ -26,6 +26,8 @@ export interface ValidateRequest {
 
 export interface AuthResponse {
   accessToken: string;
+  status: string;
+  msg: string;
 }
 
 export interface UserPayload {
@@ -259,13 +261,19 @@ export const ValidateRequest: MessageFns<ValidateRequest> = {
 };
 
 function createBaseAuthResponse(): AuthResponse {
-  return { accessToken: "" };
+  return { accessToken: "", status: "", msg: "" };
 }
 
 export const AuthResponse: MessageFns<AuthResponse> = {
   encode(message: AuthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.accessToken !== "") {
       writer.uint32(10).string(message.accessToken);
+    }
+    if (message.status !== "") {
+      writer.uint32(18).string(message.status);
+    }
+    if (message.msg !== "") {
+      writer.uint32(26).string(message.msg);
     }
     return writer;
   },
@@ -285,6 +293,22 @@ export const AuthResponse: MessageFns<AuthResponse> = {
           message.accessToken = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.msg = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -295,13 +319,23 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   },
 
   fromJSON(object: any): AuthResponse {
-    return { accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "" };
+    return {
+      accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+    };
   },
 
   toJSON(message: AuthResponse): unknown {
     const obj: any = {};
     if (message.accessToken !== "") {
       obj.accessToken = message.accessToken;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.msg !== "") {
+      obj.msg = message.msg;
     }
     return obj;
   },
@@ -312,6 +346,8 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   fromPartial(object: DeepPartial<AuthResponse>): AuthResponse {
     const message = createBaseAuthResponse();
     message.accessToken = object.accessToken ?? "";
+    message.status = object.status ?? "";
+    message.msg = object.msg ?? "";
     return message;
   },
 };

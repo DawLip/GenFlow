@@ -50,5 +50,6 @@ message UserResponse{
   string id = 1;
   string email = 2;
   string username = 3;
+  string password = 4;
 }
 

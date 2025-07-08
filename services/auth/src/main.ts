@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AuthModule } from '@auth/auth/auth.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
-import { Logger } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 
 import { name } from '../package.json';
 import { service_name } from '@libs/shared/src/lib/service_name'
@@ -10,6 +10,7 @@ import { service_name } from '@libs/shared/src/lib/service_name'
 const s_name = service_name(name);
 
 async function bootstrap() {
+  console.log(s_name)
   const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(AuthModule, {
     transport: Transport.GRPC,
     options: {

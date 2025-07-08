@@ -25,6 +25,8 @@ message ValidateRequest {
 
 message AuthResponse {
   string access_token = 1;
+  string status = 2;
+  string msg = 3;
 }
 
 message UserPayload {

@@ -19,11 +19,8 @@ export class ApiController {
   }
 
   @Post('register')
-  async register(@Body() body:any) {
-    console.log("ytred")
-    console.log(body)
-    // return this.apiService.register("a", "a", "a");
-    return {test:"true"}
+  async register(@Body() body: RegisterRequest) {
+    return this.apiService.register(body.username, body.email, body.password);
   }
 
   @UseGuards(AuthGuard)

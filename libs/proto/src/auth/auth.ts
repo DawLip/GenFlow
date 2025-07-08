@@ -2,7 +2,7 @@
 // versions:
 //   protoc-gen-ts_proto  v2.7.5
 //   protoc               v4.25.3
-// source: auth.proto
+// source: auth/auth.proto
 
 /* eslint-disable */
 import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";

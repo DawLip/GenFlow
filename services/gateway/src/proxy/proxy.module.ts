@@ -9,17 +9,38 @@ export class ProxyModule implements NestModule {
     consumer
       .apply(
         (req: Request, res: Response, next: NextFunction) => {
-          // NIE rób parsowania body - przejdź dalej bez zmian
-          next();
+          next(); 
         },
         createProxyMiddleware({
           target: services_config.service_url.rest,
           changeOrigin: true,
           pathRewrite: { '^/api': '' },
-          // bez onProxyReq - przekazujemy strumień oryginalny
-          selfHandleResponse: false, // żeby proxy sam obsłużył odpowiedź
+          selfHandleResponse: false,
         }),
       )
       .forRoutes('/api');
+
+    consumer
+      .apply(
+        (req: Request, res: Response, next: NextFunction) => {
+          next(); 
+        },
+        createProxyMiddleware({
+          target: services_config.service_url.graphql,
+          changeOrigin: true,
+          selfHandleResponse: false,
+        }),
+      )
+      .forRoutes('/graphql');
+
+    consumer
+      .apply(
+        createProxyMiddleware({
+          target: services_config.service_url.socketio,
+          ws: true,
+          changeOrigin: true,
+        }),
+      )
+      .forRoutes('/socket.io');
   }
 }

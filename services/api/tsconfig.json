@@ -20,10 +20,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "strictPropertyInitialization": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true
   },
   "include": [
-    "**/*.ts", "../../libs/proto/src/lib/**/*.ts", "../../libs/shared/src/lib/**/*.ts"
+    "**/*.ts", "**/*.json", "../../libs/proto/src/lib/**/*.ts", "../../libs/shared/src/lib/**/*.ts"
   ],
   "exclude": [
     "node_modules",

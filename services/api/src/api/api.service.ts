@@ -4,9 +4,13 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/lib/services_config';
 import { AuthServiceClient } from '@proto/lib/auth.client';
 import { firstValueFrom } from 'rxjs';
+import { PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class ApiService implements OnModuleInit {
+  constructor(
+    private readonly logger: PinoLogger,
+  ) {}
   @Client({
     transport: Transport.GRPC,
     options: {

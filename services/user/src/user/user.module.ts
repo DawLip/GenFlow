@@ -6,9 +6,13 @@ import { UserController } from '@user/user/user.controller';
 import { UserService } from '@user/user/user.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { services_config } from '@shared/lib/services_config';
 import { User, UserSchema } from '@shared/schema/user.shema'
 
+import { services_config } from '@shared/lib/services_config';
+import { name } from '../../package.json';
+import { service_name } from '@libs/shared/src/lib/service_name'
+
+const s_name = service_name(name);
 
 @Module({
   imports: [
@@ -20,7 +24,7 @@ import { User, UserSchema } from '@shared/schema/user.shema'
           target: 'pino-loki',
           options: {
             host: services_config.service_url.loki, 
-            labels: { service:"gf_user" }, 
+            labels: { service: `gf_${s_name}` }, 
             interval: 5, 
             timeout: 3000,
           },

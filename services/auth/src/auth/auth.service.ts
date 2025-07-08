@@ -7,9 +7,14 @@ import { UserServiceClient } from '@proto/lib/user.client';
 
 import * as jwt from 'jsonwebtoken';
 import { firstValueFrom } from 'rxjs';
+import { PinoLogger } from 'nestjs-pino';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
+  constructor(
+    private readonly logger: PinoLogger,
+  ) {}
+
   @Client({
     transport: Transport.GRPC,
     options: {

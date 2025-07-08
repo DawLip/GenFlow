@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 import { HealthController } from '@graphql/app/health.controller';
 
-import { services_config } from '@shared/lib/services_config';
+import { services_config } from '@shared/services_config';
 import { name } from '../../package.json';
-import { service_name } from '@libs/shared/src/lib/service_name'
+import { service_name } from '@shared/service_name'
 
 const s_name = service_name(name);
 

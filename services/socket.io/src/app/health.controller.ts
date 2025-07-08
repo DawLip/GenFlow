@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 
 import { name } from '../../package.json';
-import { service_name } from '@libs/shared/src/lib/service_name'
+import { service_name } from '@shared/service_name'
 
 const s_name = service_name(name);
 

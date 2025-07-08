@@ -1,1 +1,1 @@
-export * from './lib/services_config.js';
+export * from './services_config.js';

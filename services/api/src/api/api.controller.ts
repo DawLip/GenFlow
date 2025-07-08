@@ -7,7 +7,7 @@ import {
   ValidateRequest,
   AuthResponse,
   UserPayload,
-} from '@proto/lib/auth';
+} from '@proto/auth/auth';
 
 @Controller()
 export class ApiController {

@@ -1,9 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { services_config } from '@libs/shared/src/lib/services_config';
-import { RegisterRequest, LoginRequest, ValidateRequest, AuthResponse, UserPayload } from '@proto/lib/auth';
-import { UserServiceClient } from '@proto/lib/user.client';
+import { services_config } from '@libs/shared/src/services_config';
+import { RegisterRequest, LoginRequest, ValidateRequest, AuthResponse, UserPayload } from '@proto/auth/auth';
+import { UserServiceClient } from '@proto/user/user.client';
 
 import * as jwt from 'jsonwebtoken';
 import { firstValueFrom } from 'rxjs';
@@ -19,7 +19,7 @@ export class AuthService implements OnModuleInit {
     transport: Transport.GRPC,
     options: {
       package: 'user',
-      protoPath: require.resolve('@proto/lib/user.proto'),
+      protoPath: require.resolve('@proto/user/user.proto'),
       url: services_config.service_url.user_rpc,
     },
   })

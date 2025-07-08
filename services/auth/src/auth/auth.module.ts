@@ -6,8 +6,8 @@ import { AuthController } from '@auth/auth/auth.controller';
 import { AuthService } from '@auth/auth/auth.service';
 
 import { name } from '../../package.json';
-import { service_name } from '@libs/shared/src/lib/service_name'
-import { services_config } from '@libs/shared/src/lib/services_config';
+import { service_name } from '@libs/shared/src/service_name'
+import { services_config } from '@libs/shared/src/services_config';
 
 const s_name = service_name(name);
 

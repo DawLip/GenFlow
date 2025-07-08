@@ -6,7 +6,7 @@ import {
   ValidateRequest,
   AuthResponse,
   UserPayload,
-} from '@proto/lib/auth';
+} from '@proto/auth/auth';
 import { AuthService } from '@auth/auth/auth.service';
 
 @Controller()

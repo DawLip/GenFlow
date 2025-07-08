@@ -1,7 +1,7 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { Request, Response, NextFunction } from 'express';
-import { services_config } from '@shared/lib/services_config';
+import { services_config } from '@shared/services_config';
 
 @Module({})
 export class ProxyModule implements NestModule {

@@ -24,7 +24,7 @@
     "resolveJsonModule": true,
   },
   "include": [
-    "**/*.ts", "**/*.json", "../../libs/shared/src/lib/**/*.ts", "../../libs/proto/src/lib/**/*.ts"
+    "**/*.ts", "**/*.json", "../../libs/shared/src/**/*.ts", "../../libs/proto/**/*.ts"
   ],
   "exclude": [
     "node_modules",

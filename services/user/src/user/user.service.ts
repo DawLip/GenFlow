@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
-} from '@proto/lib/user';
+} from '@proto/user/user';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 

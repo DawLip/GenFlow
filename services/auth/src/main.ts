@@ -5,7 +5,7 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { Logger } from 'nestjs-pino';
 
 import { name } from '../package.json';
-import { service_name } from '@libs/shared/src/lib/service_name'
+import { service_name } from '@libs/shared/src/service_name'
 
 const s_name = service_name(name);
 
@@ -15,7 +15,7 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: s_name,
-      protoPath: require.resolve(`@proto/lib/${s_name}.proto`),
+      protoPath: require.resolve(`@proto/${s_name}/${s_name}.proto`),
       url: '0.0.0.0:50051',
     },
     bufferLogs: true,

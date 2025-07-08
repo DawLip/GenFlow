@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindOneByEmailRequest, FindResponse } from '@proto/lib/user';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindOneByEmailRequest, FindResponse } from '@proto/user/user';
 
 export interface UserServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;

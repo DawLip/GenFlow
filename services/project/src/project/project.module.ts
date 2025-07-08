@@ -1,23 +1,23 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 
-import { HealthController } from '@user/user/health.controller';
-import { UserController } from '@user/user/user.controller';
-import { UserService } from '@user/user/user.service';
+import { HealthController } from '@project/project/health.controller';
+import { ProjectController } from '@project/project/project.controller';
+import { ProjectService } from '@project/project/project.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from '@shared/schema/user.shema'
+import { Project, ProjectSchema } from '@shared/schema/project.shema'
 
-import { services_config } from '@shared/services_config';
+import { services_config } from '@libs/shared/src/services_config';
 import { name } from '../../package.json';
-import { service_name } from '@shared/service_name'
+import { service_name } from '@libs/shared/src/service_name'
 
 const s_name = service_name(name);
 
 @Module({
   imports: [
     MongooseModule.forRoot(`${services_config.service_url.mongodb}/GenFlow`),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: Project.name, schema: ProjectSchema }]),
     LoggerModule.forRoot({
       pinoHttp: {
         transport: {
@@ -32,7 +32,7 @@ const s_name = service_name(name);
       },
     }),
   ],
-  controllers: [HealthController, UserController],
-  providers: [UserService],
+  controllers: [HealthController, ProjectController],
+  providers: [ProjectService],
 })
-export class UserModule {}
+export class ProjectModule {}

@@ -1,8 +1,8 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { services_config } from '@libs/shared/src/lib/services_config';
-import { AuthServiceClient } from '@proto/lib/auth.client';
+import { services_config } from '@libs/shared/src/services_config';
+import { AuthServiceClient } from '@proto/auth/auth.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -15,7 +15,7 @@ export class ApiService implements OnModuleInit {
     transport: Transport.GRPC,
     options: {
       package: 'auth',
-      protoPath: require.resolve('@proto/lib/auth.proto'),
+      protoPath: require.resolve('@proto/auth/auth.proto'),
       url: services_config.service_url.auth_rpc,
     },
   })

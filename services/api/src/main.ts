@@ -4,7 +4,7 @@ import { ApiModule } from '@api/api/api.module';
 import { Logger } from 'nestjs-pino';
 
 import { name } from '../package.json';
-import { service_name } from '@libs/shared/src/lib/service_name'
+import { service_name } from '@libs/shared/src/service_name'
 
 const s_name = service_name(name);
 

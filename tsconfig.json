@@ -17,6 +17,9 @@
     },
     {
       "path": "./services/user"
+    },
+    {
+      "path": "./services/project"
     }
   ],
    "compilerOptions": {
@@ -26,7 +29,9 @@
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
       "@auth/*": ["services/auth/src/*"],
+      
       "@user/*": ["services/user/src/*"],
+      "@project/*": ["services/project/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

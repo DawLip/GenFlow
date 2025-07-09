@@ -4,24 +4,31 @@ import { AuthGuard } from '@api/guards/auth.guard';
 import {
   RegisterRequest,
   LoginRequest,
-  ValidateRequest,
-  AuthResponse,
-  UserPayload,
 } from '@proto/auth/auth';
+import {
+  CreateRequest,
+  FindOneByIdRequest,
+  UpdateRequest
+} from '@proto/project/project';
 
 @Controller()
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Post('login')
-  async login(@Body() body: LoginRequest) {
-    return this.apiService.login(body.email, body.password);
-  }
+  @Post('auth/login')
+  async login(@Body() body: LoginRequest) { return this.apiService.login(body); }
 
-  @Post('register')
-  async register(@Body() body: RegisterRequest) {
-    return this.apiService.register(body.username, body.email, body.password);
-  }
+  @Post('auth/register')
+  async register(@Body() body: RegisterRequest) { return this.apiService.register(body); }
+
+  @Post('project/create')
+  async project_create(@Body() body: CreateRequest) { return this.apiService.project_create(body); }
+
+  @Post('project/update')
+  async project_update(@Body() body: UpdateRequest) { return this.apiService.project_update(body); }
+
+  @Post('project/findOneById')
+  async project_findOneById(@Body() body: FindOneByIdRequest) { return this.apiService.project_findOneById(body); }
 
   @UseGuards(AuthGuard)
   @Get('test2')

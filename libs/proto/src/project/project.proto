@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package project;
+
+service ProjectService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc FindOneById(FindOneByIdRequest) returns (FindResponse);
+}
+
+message CreateRequest {
+  string name = 2;
+  string description = 3;
+  string ownerId = 4;
+}
+
+message CreateResponse {
+  string id = 1;
+  string status = 2;
+  string msg = 3;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string field = 2;
+  string value = 3;
+}
+
+message UpdateResponse {
+  string status = 1;
+  string msg = 2;
+}
+
+message FindOneByIdRequest {
+  string id = 1;
+}
+
+message FindResponse {
+  string status = 1;
+  string msg = 2;
+  optional ProjectResponse project = 3;
+}
+
+message ProjectResponse{
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string ownerId = 4;
+}
+

@@ -24,7 +24,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "**/*.ts", "**/*.json", "../../libs/shared/src/**/*.ts", "../../libs/proto/src/lib/**/*.ts"
+    "**/*.ts", "**/*.json", "../../libs/shared/src/**/*.ts", "../../libs/proto/src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

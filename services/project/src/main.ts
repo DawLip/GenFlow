@@ -13,9 +13,10 @@ async function bootstrap() {
     transport: Transport.GRPC,
     options: {
       package: s_name,
-      protoPath: require.resolve(`@proto/lib/${s_name}.proto`),
+      protoPath: require.resolve(`@proto/${s_name}/${s_name}.proto`),
       url: '0.0.0.0:50051',
     },
+    bufferLogs: true,
   });
   grpcApp.useLogger(grpcApp.get(Logger));
   grpcApp.listen();

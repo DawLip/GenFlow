@@ -3,7 +3,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "nodemon --watch ./services/user/src --ext ts --exec \"ts-node -r tsconfig-paths/register ./services/user/src/main.ts\""
+        "command": "nodemon --watch ./services/project/src --ext ts --exec \"ts-node -r tsconfig-paths/register ./services/project/src/main.ts\""
       }
     }
   }

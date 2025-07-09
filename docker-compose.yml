@@ -56,6 +56,15 @@ services:
       monitoring: 
     depends_on:
       - mongodb
+  project:
+    extends:
+      file: compose/project.yml
+      service: project
+    networks:
+      monitoring: 
+        aliases: [project]
+    depends_on:
+      - mongodb
 # Infra
   rabbitmq:
     extends:

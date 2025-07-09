@@ -3,8 +3,19 @@ import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { AuthServiceClient } from '@proto/auth/auth.client';
+import { ProjectServiceClient } from '@proto/project/project.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
+
+import {
+  RegisterRequest,
+  LoginRequest,
+} from '@proto/auth/auth';
+import {
+  CreateRequest,
+  FindOneByIdRequest,
+  UpdateRequest
+} from '@proto/project/project';
 
 @Injectable()
 export class ApiService implements OnModuleInit {
@@ -19,28 +30,49 @@ export class ApiService implements OnModuleInit {
       url: services_config.service_url.auth_rpc,
     },
   })
-  private client:ClientGrpc;
-
+  private authClient:ClientGrpc;
   private authService:AuthServiceClient;
 
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'project',
+      protoPath: require.resolve('@proto/project/project.proto'),
+      url: services_config.service_url.project_rpc,
+    },
+  })
+  private projectClient:ClientGrpc;
+  private projectService:ProjectServiceClient;
+
   onModuleInit():void {
-    this.authService = this.client.getService<AuthServiceClient>('AuthService');
+    this.authService = this.authClient.getService<AuthServiceClient>('AuthService');
+    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
   }
 
-  login(email:string, password:string) {
-    return this.authService.login({ email, password });
+  login(body: LoginRequest) {
+    return this.authService.login(body);
   }
 
-  register(username:string, email:string, password:string) {
-    return this.authService.register({ username, email, password });
+  register(body: RegisterRequest) {
+    return this.authService.register(body);
   }
 
-  // Nowa metoda validate, która zwraca Promise<boolean>
+  async project_create(body: CreateRequest) {
+    return await firstValueFrom(this.projectService.create(body));
+  }
+
+  async project_update(body: UpdateRequest) {
+    return await firstValueFrom(this.projectService.update(body));
+  }
+
+  async project_findOneById(body: FindOneByIdRequest) {
+    return await firstValueFrom(this.projectService.findOneById(body));
+  }
+
   async validate(token: string): Promise<boolean> {
     try {
-      // gRPC zwraca UserPayload przy poprawnej walidacji tokena
       const response = await firstValueFrom(this.authService.validate({ token }));
-      return !!response?.id; // jeśli jest username, token jest OK
+      return !!response?.id; 
     } catch {
       return false;
     }

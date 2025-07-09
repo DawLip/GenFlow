@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import type { LoginRequest, RegisterRequest, ValidateRequest, UserPayload, AuthResponse } from '../../../../libs/proto/src/lib/auth';
+import type { LoginRequest, RegisterRequest, ValidateRequest, UserPayload, AuthResponse } from '../../../../libs/proto/src/auth/auth';
 
 export interface AuthServiceClient {
 

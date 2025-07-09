@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
-} from '@proto/lib/project';
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse
+} from '@proto/project/project';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
@@ -19,54 +19,50 @@ export class ProjectService {
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
-    // const createdUser:User|any = await this.userModel.create(data);
-    // this.logger.info({input: data, user: createdUser, context:"create"}, "User created")
-    // return {
-    //   id: createdUser._id.toString(),
-    //   status: "SUCCESS",
-    //   msg: "User created",
-    // };
+    const createdProject:Project|any = await this.projectModel.create(data);
+    this.logger.info({input: data, user: createdProject, context:"create"}, "Project created")
     return {
-      id: "000",
+      id: createdProject._id.toString(),
       status: "SUCCESS",
-      msg: "Project created",
+      msg: "User created",
     };
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
-    // const updatedUser = await this.userModel.findByIdAndUpdate(
-    //   data.id,
-    //   { ...data },
-    //   { new: true },
-    // );
+    const updatedProject = await this.projectModel.findByIdAndUpdate(
+      data.id,
+      { ...data },
+      { new: true },
+    );
 
-    // if (!updatedUser) {
-    //   this.logger.warn({input: data, user: updatedUser, context:"update"}, "User not found")
-    //   return { status: 'ERROR', msg: 'User not found' };
-    // }
+    if (!updatedProject) {
+      this.logger.warn({input: data, user: updatedProject, context:"update"}, "Project not found")
+      return { status: 'ERROR', msg: 'Project not found' };
+    }
 
-    // this.logger.info({input: data, user: updatedUser, context:"update"}, "User created")
+    this.logger.info({input: data, user: updatedProject, context:"update"}, "Project created")
     return {
       status: 'SUCCESS',
       msg: 'Project updated',
     };
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
-    // const user = await this.userModel.findById(data.id).lean();
+    const foundProject = await this.projectModel.findById(data.id).lean();
 
-    // if (!user) {
-    //   this.logger.warn({input: data, user: user, context:"findOneById"}, "User not found")
-    //   return {
-    //     status: 'ERROR',
-    //     msg: 'User not found',
-    //   };
-    // }
+    if (!foundProject) {
+      this.logger.warn({input: data, foundProject: foundProject, context:"findOneById"}, "Project not found")
+      return {
+        status: 'ERROR',
+        msg: 'Project not found',
+      };
+    }
 
-    // this.logger.info({input: data, user: user, context:"findOneById"}, "User found")
+    this.logger.info({input: data, foundProject: foundProject, context:"findOneById"}, "Project found")
     return {
       status: 'SUCCESS',
       msg: 'Project found',
       project: {
-
+        ...foundProject,
+        id: foundProject._id.toString(),
       },
     };
   }

@@ -10,7 +10,7 @@ import { Project, ProjectSchema } from '@shared/schema/project.shema'
 
 import { services_config } from '@libs/shared/src/services_config';
 import { name } from '../../package.json';
-import { service_name } from '@libs/shared/src/service_name'
+import { service_name } from '@shared/service_name'
 
 const s_name = service_name(name);
 

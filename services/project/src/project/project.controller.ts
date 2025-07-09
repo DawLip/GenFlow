@@ -1,26 +1,28 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
-} from '@proto/lib/user/user';
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse
+} from '@proto/project/project';
 import { ProjectService } from '@project/project/project.service';
 
 @Controller()
-export class UserController {
+export class ProjectController {
   constructor(private readonly projectService: ProjectService) {}
 
-  @GrpcMethod('UserService', 'Create')
-  async create(data: CreateRequest) : Promise<CreateResponse> {
+  @GrpcMethod('ProjectService', 'Create')
+  async create(data: CreateRequest): Promise<CreateResponse> {
+    console.log("test")
+    console.log(data)
     return await this.projectService.create(data);
   }
 
-  @GrpcMethod('UserService', 'Update')
-  async update(data: UpdateRequest) : Promise<UpdateResponse> {
+  @GrpcMethod('ProjectService', 'Update')
+  async update(data: UpdateRequest): Promise<UpdateResponse> {
     return await this.projectService.update(data);
   }
 
-  @GrpcMethod('UserService', 'FindOneById')
-  async findOneById(data: FindOneByIdRequest) : Promise<FindResponse> {
+  @GrpcMethod('ProjectService', 'FindOneById')
+  async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.projectService.findOneById(data);
   }
 }

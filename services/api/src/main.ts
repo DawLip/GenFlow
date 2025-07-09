@@ -16,6 +16,6 @@ async function bootstrap() {
   app.enableCors();
   app.useLogger(app.get(Logger));
   await app.listen(port);
-  console.log(`${s_name} running on http://localhost:${port}`);
+  console.log(`${s_name} service running on http://localhost:${port}`);
 }
 bootstrap();

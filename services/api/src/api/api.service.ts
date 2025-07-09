@@ -6,6 +6,7 @@ import { AuthServiceClient } from '@proto/auth/auth.client';
 import { ProjectServiceClient } from '@proto/project/project.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
+import type { Request } from 'express';
 
 import {
   RegisterRequest,
@@ -16,6 +17,10 @@ import {
   FindOneByIdRequest,
   UpdateRequest
 } from '@proto/project/project';
+
+interface AuthenticatedRequest extends Request {
+  user: { id: string };
+}
 
 @Injectable()
 export class ApiService implements OnModuleInit {
@@ -57,15 +62,15 @@ export class ApiService implements OnModuleInit {
     return this.authService.register(body);
   }
 
-  async project_create(body: CreateRequest) {
-    return await firstValueFrom(this.projectService.create(body));
+  async project_create(body: CreateRequest, req: AuthenticatedRequest) {
+    return await firstValueFrom(this.projectService.create({...body, ownerId: req.user.id}));
   }
 
-  async project_update(body: UpdateRequest) {
+  async project_update(body: UpdateRequest, req: AuthenticatedRequest) {
     return await firstValueFrom(this.projectService.update(body));
   }
 
-  async project_findOneById(body: FindOneByIdRequest) {
+  async project_findOneById(body: FindOneByIdRequest, req: AuthenticatedRequest) {
     return await firstValueFrom(this.projectService.findOneById(body));
   }
 
@@ -76,5 +81,9 @@ export class ApiService implements OnModuleInit {
     } catch {
       return false;
     }
+  }
+
+  async getUserFromToken(token: string) {
+    return await firstValueFrom(this.authService.validate({ token }));
   }
 }

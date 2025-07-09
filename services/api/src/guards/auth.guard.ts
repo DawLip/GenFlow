@@ -1,13 +1,28 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  ForbiddenException,
+} from '@nestjs/common';
+import { Reflector } from '@nestjs/core';
 import { ApiService } from '../api/api.service';
+import { IS_PUBLIC_KEY } from './auth.public';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const isPublic = this.reflector.getAllAndOverride<boolean>(
+      IS_PUBLIC_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+    if (isPublic) return true;
 
+    const request = context.switchToHttp().getRequest();
     const authHeader = request.headers['authorization'] || request.headers['Authorization'];
     if (!authHeader) {
       throw new ForbiddenException('Authorization header missing');
@@ -24,13 +39,14 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const isValid = await this.apiService.validate(token);
-      if (!isValid) {
+      const user = await this.apiService.getUserFromToken(token);
+      if (!user?.id) {
         throw new ForbiddenException('Invalid token');
       }
+
+      request.user = user; 
       return true;
     } catch (err) {
-      // Możesz logować błąd, jeśli chcesz
       throw new ForbiddenException('Token validation failed');
     }
   }

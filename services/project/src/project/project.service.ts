@@ -24,7 +24,7 @@ export class ProjectService {
     return {
       id: createdProject._id.toString(),
       status: "SUCCESS",
-      msg: "User created",
+      msg: "Project created",
     };
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {

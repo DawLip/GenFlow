@@ -31,21 +31,21 @@ export class ApiProjectService implements OnModuleInit {
   }
 
   async create(body: CreateRequest, req: AuthenticatedRequest) {
-    if(!body.description) return this.apiService.handleValidationError({id:"", status:"ERROR", msg:"gRPC: Field 'description' is required"}, {context:"project/create"});
-    if(!body.name) return this.apiService.handleValidationError({id:"", status:"ERROR", msg:"gRPC: Field 'name' is required"}, {context:"project/create"});
+    if(!body.description) return this.apiService.handleValidationError({id:"", msg:"gRPC: Field 'description' is required"}, {context:"project/create"});
+    if(!body.name) return this.apiService.handleValidationError({id:"", msg:"gRPC: Field 'name' is required"}, {context:"project/create"});
     
     return await firstValueFrom(this.grpcService.create({ ...body, ownerId: req.user.id }));
   }
 
   async update(body: UpdateRequest) {
-    if(!body.field) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'field' is required"}, {context:"project/update"});
-    if(!body.value) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'value' is required"}, {context:"project/update"});
+    if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"project/update"});
+    if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"project/update"});
 
     return await firstValueFrom(this.grpcService.update(body));
   }
 
   async findOneById(body: FindOneByIdRequest) {
-    if(!body.id) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'id' is required"}, {context:"project/findOneById"});
+    if(!body.id) return this.apiService.handleValidationError({msg:"gRPC: Field 'id' is required"}, {context:"project/findOneById"});
 
     return await firstValueFrom(this.grpcService.findOneById(body));
   }

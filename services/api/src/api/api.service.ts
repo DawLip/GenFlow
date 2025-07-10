@@ -68,7 +68,7 @@ export class ApiService implements OnModuleInit {
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {
-    this.logger.error({response, ...logData }, logMsg || response.msg);
-    return response;
+    this.logger.error({response:{status:"ERROR", response}, ...logData }, logMsg || response.msg);
+    return {status:"ERROR", ...response};
   }
 }

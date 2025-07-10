@@ -4,7 +4,6 @@
     "module": "NodeNext",
     "declaration": true,
     "removeComments": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2021",
@@ -21,7 +20,9 @@
     "noUnusedParameters": false,
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "emitDecoratorMetadata": true,
   },
   "include": [
     "**/*.ts", "**/*.json", "../../libs/proto/src/**/*.ts", "../../libs/shared/src/**/*.ts"

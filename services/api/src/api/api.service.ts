@@ -54,26 +54,6 @@ export class ApiService implements OnModuleInit {
     this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
   }
 
-  login(body: LoginRequest) {
-    return this.authService.login(body);
-  }
-
-  register(body: RegisterRequest) {
-    return this.authService.register(body);
-  }
-
-  async project_create(body: CreateRequest, req: AuthenticatedRequest) {
-    return await firstValueFrom(this.projectService.create({...body, ownerId: req.user.id}));
-  }
-
-  async project_update(body: UpdateRequest, req: AuthenticatedRequest) {
-    return await firstValueFrom(this.projectService.update(body));
-  }
-
-  async project_findOneById(body: FindOneByIdRequest, req: AuthenticatedRequest) {
-    return await firstValueFrom(this.projectService.findOneById(body));
-  }
-
   async validate(token: string): Promise<boolean> {
     try {
       const response = await firstValueFrom(this.authService.validate({ token }));

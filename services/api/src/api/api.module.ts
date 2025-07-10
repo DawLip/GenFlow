@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core'; 
 import { LoggerModule } from 'nestjs-pino';
 
+import { AuthModule } from '@api/auth/auth.module';
+import { ProjectModule } from '@api/project/project.module';
+
+import { AuthGuard } from '@api/guards/auth.guard';
 import { HealthController } from '@api/api/health.controller';
-import { ApiController } from '@api/api/api.controller';
 import { ApiService } from '@api/api/api.service';
 
-import { services_config } from '@libs/shared/src/services_config';
+import { services_config } from '@shared/services_config';
+import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
-import { service_name } from '@libs/shared/src/service_name'
-import { AuthGuard } from '@api/guards/auth.guard';
 
 const s_name = service_name(name);
 
@@ -28,8 +30,10 @@ const s_name = service_name(name);
         },
       },
     }),
+    AuthModule,
+    ProjectModule
   ],
-  controllers: [HealthController, ApiController],
+  controllers: [HealthController],
   providers: [
     ApiService,
     {

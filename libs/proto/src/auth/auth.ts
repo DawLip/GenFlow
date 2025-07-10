@@ -9,6 +9,12 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "auth";
 
+export interface BaseResponse {
+  status: string;
+  msg: string;
+  ok: boolean;
+}
+
 export interface RegisterRequest {
   username: string;
   email: string;
@@ -25,14 +31,105 @@ export interface ValidateRequest {
 }
 
 export interface AuthResponse {
+  res: BaseResponse | undefined;
   accessToken: string;
-  status: string;
-  msg: string;
 }
 
 export interface UserPayload {
   id: string;
 }
+
+function createBaseBaseResponse(): BaseResponse {
+  return { status: "", msg: "", ok: false };
+}
+
+export const BaseResponse: MessageFns<BaseResponse> = {
+  encode(message: BaseResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    if (message.msg !== "") {
+      writer.uint32(18).string(message.msg);
+    }
+    if (message.ok !== false) {
+      writer.uint32(24).bool(message.ok);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BaseResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBaseResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.msg = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.ok = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BaseResponse {
+    return {
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      ok: isSet(object.ok) ? globalThis.Boolean(object.ok) : false,
+    };
+  },
+
+  toJSON(message: BaseResponse): unknown {
+    const obj: any = {};
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.msg !== "") {
+      obj.msg = message.msg;
+    }
+    if (message.ok !== false) {
+      obj.ok = message.ok;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BaseResponse>): BaseResponse {
+    return BaseResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BaseResponse>): BaseResponse {
+    const message = createBaseBaseResponse();
+    message.status = object.status ?? "";
+    message.msg = object.msg ?? "";
+    message.ok = object.ok ?? false;
+    return message;
+  },
+};
 
 function createBaseRegisterRequest(): RegisterRequest {
   return { username: "", email: "", password: "" };
@@ -261,19 +358,16 @@ export const ValidateRequest: MessageFns<ValidateRequest> = {
 };
 
 function createBaseAuthResponse(): AuthResponse {
-  return { accessToken: "", status: "", msg: "" };
+  return { res: undefined, accessToken: "" };
 }
 
 export const AuthResponse: MessageFns<AuthResponse> = {
   encode(message: AuthResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
     if (message.accessToken !== "") {
-      writer.uint32(10).string(message.accessToken);
-    }
-    if (message.status !== "") {
-      writer.uint32(18).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(26).string(message.msg);
+      writer.uint32(18).string(message.accessToken);
     }
     return writer;
   },
@@ -290,7 +384,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
             break;
           }
 
-          message.accessToken = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
@@ -298,15 +392,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
             break;
           }
 
-          message.status = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.msg = reader.string();
+          message.accessToken = reader.string();
           continue;
         }
       }
@@ -320,22 +406,18 @@ export const AuthResponse: MessageFns<AuthResponse> = {
 
   fromJSON(object: any): AuthResponse {
     return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
       accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "",
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
     };
   },
 
   toJSON(message: AuthResponse): unknown {
     const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
     if (message.accessToken !== "") {
       obj.accessToken = message.accessToken;
-    }
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
     }
     return obj;
   },
@@ -345,9 +427,8 @@ export const AuthResponse: MessageFns<AuthResponse> = {
   },
   fromPartial(object: DeepPartial<AuthResponse>): AuthResponse {
     const message = createBaseAuthResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.accessToken = object.accessToken ?? "";
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
     return message;
   },
 };

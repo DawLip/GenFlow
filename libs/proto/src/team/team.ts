@@ -9,6 +9,12 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "team";
 
+export interface BaseResponse {
+  status: string;
+  msg: string;
+  ok: boolean;
+}
+
 export interface CreateRequest {
   name: string;
   ownerId: string;
@@ -16,9 +22,8 @@ export interface CreateRequest {
 }
 
 export interface CreateResponse {
-  id: string;
-  status: string;
-  msg: string;
+  res: BaseResponse | undefined;
+  id?: string | undefined;
 }
 
 export interface UpdateRequest {
@@ -28,8 +33,7 @@ export interface UpdateRequest {
 }
 
 export interface UpdateResponse {
-  status: string;
-  msg: string;
+  res: BaseResponse | undefined;
 }
 
 export interface FindOneByIdRequest {
@@ -37,9 +41,24 @@ export interface FindOneByIdRequest {
 }
 
 export interface FindResponse {
-  status: string;
-  msg: string;
+  res: BaseResponse | undefined;
   team?: TeamResponse | undefined;
+}
+
+export interface JoinRequest {
+  id: string;
+}
+
+export interface JoinResponse {
+  res: BaseResponse | undefined;
+}
+
+export interface LeaveRequest {
+  id: string;
+}
+
+export interface LeaveResponse {
+  res: BaseResponse | undefined;
 }
 
 export interface TeamResponse {
@@ -48,6 +67,98 @@ export interface TeamResponse {
   ownerId: string;
   members: string[];
 }
+
+function createBaseBaseResponse(): BaseResponse {
+  return { status: "", msg: "", ok: false };
+}
+
+export const BaseResponse: MessageFns<BaseResponse> = {
+  encode(message: BaseResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    if (message.msg !== "") {
+      writer.uint32(18).string(message.msg);
+    }
+    if (message.ok !== false) {
+      writer.uint32(24).bool(message.ok);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BaseResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBaseResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.msg = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.ok = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BaseResponse {
+    return {
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      ok: isSet(object.ok) ? globalThis.Boolean(object.ok) : false,
+    };
+  },
+
+  toJSON(message: BaseResponse): unknown {
+    const obj: any = {};
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.msg !== "") {
+      obj.msg = message.msg;
+    }
+    if (message.ok !== false) {
+      obj.ok = message.ok;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BaseResponse>): BaseResponse {
+    return BaseResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BaseResponse>): BaseResponse {
+    const message = createBaseBaseResponse();
+    message.status = object.status ?? "";
+    message.msg = object.msg ?? "";
+    message.ok = object.ok ?? false;
+    return message;
+  },
+};
 
 function createBaseCreateRequest(): CreateRequest {
   return { name: "", ownerId: "", members: [] };
@@ -142,19 +253,16 @@ export const CreateRequest: MessageFns<CreateRequest> = {
 };
 
 function createBaseCreateResponse(): CreateResponse {
-  return { id: "", status: "", msg: "" };
+  return { res: undefined, id: undefined };
 }
 
 export const CreateResponse: MessageFns<CreateResponse> = {
   encode(message: CreateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
-    if (message.status !== "") {
-      writer.uint32(18).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(26).string(message.msg);
+    if (message.id !== undefined) {
+      writer.uint32(26).string(message.id);
     }
     return writer;
   },
@@ -171,15 +279,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
             break;
           }
 
-          message.id = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.status = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
         case 3: {
@@ -187,7 +287,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
             break;
           }
 
-          message.msg = reader.string();
+          message.id = reader.string();
           continue;
         }
       }
@@ -201,22 +301,18 @@ export const CreateResponse: MessageFns<CreateResponse> = {
 
   fromJSON(object: any): CreateResponse {
     return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
     };
   },
 
   toJSON(message: CreateResponse): unknown {
     const obj: any = {};
-    if (message.id !== "") {
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.id !== undefined) {
       obj.id = message.id;
-    }
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
     }
     return obj;
   },
@@ -226,9 +322,8 @@ export const CreateResponse: MessageFns<CreateResponse> = {
   },
   fromPartial(object: DeepPartial<CreateResponse>): CreateResponse {
     const message = createBaseCreateResponse();
-    message.id = object.id ?? "";
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.id = object.id ?? undefined;
     return message;
   },
 };
@@ -326,16 +421,13 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
 };
 
 function createBaseUpdateResponse(): UpdateResponse {
-  return { status: "", msg: "" };
+  return { res: undefined };
 }
 
 export const UpdateResponse: MessageFns<UpdateResponse> = {
   encode(message: UpdateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== "") {
-      writer.uint32(10).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(18).string(message.msg);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -352,15 +444,7 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
             break;
           }
 
-          message.status = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.msg = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -373,19 +457,13 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
 
   fromJSON(object: any): UpdateResponse {
-    return {
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
-    };
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
   },
 
   toJSON(message: UpdateResponse): unknown {
     const obj: any = {};
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
     }
     return obj;
   },
@@ -395,8 +473,7 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
   fromPartial(object: DeepPartial<UpdateResponse>): UpdateResponse {
     const message = createBaseUpdateResponse();
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     return message;
   },
 };
@@ -460,16 +537,13 @@ export const FindOneByIdRequest: MessageFns<FindOneByIdRequest> = {
 };
 
 function createBaseFindResponse(): FindResponse {
-  return { status: "", msg: "", team: undefined };
+  return { res: undefined, team: undefined };
 }
 
 export const FindResponse: MessageFns<FindResponse> = {
   encode(message: FindResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== "") {
-      writer.uint32(10).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(18).string(message.msg);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.team !== undefined) {
       TeamResponse.encode(message.team, writer.uint32(26).fork()).join();
@@ -489,15 +563,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.status = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.msg = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
         case 3: {
@@ -519,19 +585,15 @@ export const FindResponse: MessageFns<FindResponse> = {
 
   fromJSON(object: any): FindResponse {
     return {
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
       team: isSet(object.team) ? TeamResponse.fromJSON(object.team) : undefined,
     };
   },
 
   toJSON(message: FindResponse): unknown {
     const obj: any = {};
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
     }
     if (message.team !== undefined) {
       obj.team = TeamResponse.toJSON(message.team);
@@ -544,11 +606,242 @@ export const FindResponse: MessageFns<FindResponse> = {
   },
   fromPartial(object: DeepPartial<FindResponse>): FindResponse {
     const message = createBaseFindResponse();
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.team = (object.team !== undefined && object.team !== null)
       ? TeamResponse.fromPartial(object.team)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseJoinRequest(): JoinRequest {
+  return { id: "" };
+}
+
+export const JoinRequest: MessageFns<JoinRequest> = {
+  encode(message: JoinRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): JoinRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseJoinRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): JoinRequest {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: JoinRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<JoinRequest>): JoinRequest {
+    return JoinRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<JoinRequest>): JoinRequest {
+    const message = createBaseJoinRequest();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseJoinResponse(): JoinResponse {
+  return { res: undefined };
+}
+
+export const JoinResponse: MessageFns<JoinResponse> = {
+  encode(message: JoinResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): JoinResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseJoinResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): JoinResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: JoinResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<JoinResponse>): JoinResponse {
+    return JoinResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<JoinResponse>): JoinResponse {
+    const message = createBaseJoinResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    return message;
+  },
+};
+
+function createBaseLeaveRequest(): LeaveRequest {
+  return { id: "" };
+}
+
+export const LeaveRequest: MessageFns<LeaveRequest> = {
+  encode(message: LeaveRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LeaveRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLeaveRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LeaveRequest {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: LeaveRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<LeaveRequest>): LeaveRequest {
+    return LeaveRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<LeaveRequest>): LeaveRequest {
+    const message = createBaseLeaveRequest();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseLeaveResponse(): LeaveResponse {
+  return { res: undefined };
+}
+
+export const LeaveResponse: MessageFns<LeaveResponse> = {
+  encode(message: LeaveResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): LeaveResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLeaveResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LeaveResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: LeaveResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<LeaveResponse>): LeaveResponse {
+    return LeaveResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<LeaveResponse>): LeaveResponse {
+    const message = createBaseLeaveResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     return message;
   },
 };

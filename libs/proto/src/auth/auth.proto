@@ -8,6 +8,12 @@ service AuthService {
   rpc Validate (ValidateRequest) returns (UserPayload);
 }
 
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
 message RegisterRequest {
   string username = 1;
   string email = 2;
@@ -24,9 +30,8 @@ message ValidateRequest {
 }
 
 message AuthResponse {
-  string access_token = 1;
-  string status = 2;
-  string msg = 3;
+  BaseResponse res = 1;
+  string access_token = 2;
 }
 
 message UserPayload {

@@ -20,12 +20,7 @@ export class TeamService {
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdTeam:Team|any = await this.teamModel.create(data);
-    this.logger.info({input: data, user: createdTeam, context:"create"}, "Team created")
-    return {
-      id: createdTeam._id.toString(),
-      status: "SUCCESS",
-      msg: "Team created",
-    };
+    return this.handleSuccessResponse({res:{msg:"project created"}, id: createdTeam._id.toString(),}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedTeam = await this.teamModel.findByIdAndUpdate(
@@ -34,36 +29,30 @@ export class TeamService {
       { new: true },
     );
 
-    if (!updatedTeam) {
-      this.logger.warn({input: data, user: updatedTeam, context:"update"}, "Team not found")
-      return { status: 'ERROR', msg: 'Team not found' };
-    }
+    if (!updatedTeam) return this.handleValidationError({res:{msg:"team not found"},}, {context:"update"});
 
-    this.logger.info({input: data, user: updatedTeam, context:"update"}, "Team created")
-    return {
-      status: 'SUCCESS',
-      msg: 'Team updated',
-    };
+    return this.handleSuccessResponse({res:{msg:"team updated"}}, {context:"update"});
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const foundTeam = await this.teamModel.findById(data.id).lean();
 
-    if (!foundTeam) {
-      this.logger.warn({input: data, foundTeam: foundTeam, context:"findOneById"}, "Team not found")
-      return {
-        status: 'ERROR',
-        msg: 'Team not found',
-      };
-    }
+    if (!foundTeam) return this.handleValidationError({res:{msg:"team not found"},}, {context:"findOneById"});
 
-    this.logger.info({input: data, foundTeam: foundTeam, context:"findOneById"}, "Team found")
-    return {
-      status: 'SUCCESS',
-      msg: 'Team found',
-      team: {
-        ...foundTeam,
-        id: foundTeam._id.toString(),
-      },
-    };
+    return this.handleSuccessResponse({
+      res:{msg:"team found"},
+      team: {...foundTeam, id: foundTeam._id.toString()}
+    }, {context:"findOneById"});
+  }
+
+  handleValidationError(response:any, logData:any, logMsg?:string):any {
+    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
+    this.logger.error({response:res, ...logData }, logMsg || response.msg);
+    return res;
+  }
+
+  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
+    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
+    this.logger.info({response:res, ...logData }, logMsg || response.msg);
+    return res;
   }
 }

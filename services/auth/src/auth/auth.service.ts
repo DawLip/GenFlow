@@ -36,39 +36,27 @@ export class AuthService implements OnModuleInit {
   async register(data: RegisterRequest): Promise<AuthResponse> {
     const user = await firstValueFrom(this.userService.findOneByEmail(data));
 
-    if(!data.email || !data.password || !data.username){
-      this.logger.warn({context:"register", f_args: data}, "All fields are required")
-      return { accessToken:"", status: "ERROR", msg: "all fields are required" }
-    }
-
-    if(user.user){
-      this.logger.warn({context:"register", f_args: data}, "Email is already taken")
-      return { accessToken:"", status: "ERROR", msg: "email is already taken" }
-    }
+    if (!user.user) return this.handleValidationError({res:{msg:"user not found"},}, {context:"register"});
 
     const new_user = await firstValueFrom(this.userService.create(data));
     const token = this.generateToken(new_user.id);
 
     this.logger.info({context:"register"}, "Register successful");
-    return { accessToken: token, status: "SUCCESS", msg: "register successful" };
+    return { accessToken: token, res:{status: "SUCCESS", msg: "register successful", ok:true} }
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {
     const user = await firstValueFrom(this.userService.findOneByEmail(data));
 
-    if(!user.user){
-      this.logger.warn({context:"login", f_args: data}, "User not found");
-      return { accessToken:"", status: "ERROR", msg: "user not found" }
-    }
+    if (!user.user) return this.handleValidationError({res:{msg:"user not found"},}, {context:"login"});
+    if (user.user.password !== data.password) return this.handleValidationError({res:{msg:"wrong password"}}, {context:"login"});
+    
 
-    if(user.user.password !== data.password){
-      this.logger.warn({context:"login", f_args: data}, "Wrong password");
-      return { accessToken:"", status: "ERROR", msg: "wrong password" }
-    }
-
-    this.logger.info({context:"login"}, "Login successful");
     const token = this.generateToken(user.user?.id);
-    return { accessToken: token, status: "SUCCESS", msg: "login successful" };
+    return this.handleSuccessResponse({
+      res:{msg:"login successfull"},
+      accessToken: token
+    }, {context:"login"});
   }
 
   async validate(data: ValidateRequest): Promise<UserPayload> {
@@ -83,5 +71,17 @@ export class AuthService implements OnModuleInit {
   private generateToken(id: string): string {
     const payload: UserPayload = { id };
     return jwt.sign(payload, this.jwtSecret, { expiresIn: '24h' });
+  }
+
+  handleValidationError(response:any, logData:any, logMsg?:string):any {
+    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
+    this.logger.error({response:res, ...logData }, logMsg || response.msg);
+    return res;
+  }
+
+  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
+    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
+    this.logger.info({response:res, ...logData }, logMsg || response.msg);
+    return res;
   }
 }

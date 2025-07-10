@@ -8,6 +8,12 @@ service ProjectService {
   rpc FindOneById(FindOneByIdRequest) returns (FindResponse);
 }
 
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
 message CreateRequest {
   string name = 2;
   string description = 3;
@@ -16,9 +22,8 @@ message CreateRequest {
 }
 
 message CreateResponse {
-  string id = 1;
-  string status = 2;
-  string msg = 3;
+  BaseResponse res = 1;
+  string id = 2;
 }
 
 message UpdateRequest {
@@ -28,8 +33,7 @@ message UpdateRequest {
 }
 
 message UpdateResponse {
-  string status = 1;
-  string msg = 2;
+  BaseResponse res = 1;
 }
 
 message FindOneByIdRequest {
@@ -37,8 +41,7 @@ message FindOneByIdRequest {
 }
 
 message FindResponse {
-  string status = 1;
-  string msg = 2;
+  BaseResponse res = 1;
   optional ProjectResponse project = 3;
 }
 

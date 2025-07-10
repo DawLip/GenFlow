@@ -41,8 +41,7 @@ export class AuthService implements OnModuleInit {
     const new_user = await firstValueFrom(this.userService.create(data));
     const token = this.generateToken(new_user.id);
 
-    this.logger.info({context:"register"}, "Register successful");
-    return { accessToken: token, res:{status: "SUCCESS", msg: "register successful", ok:true} }
+    return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token}, {context:"login"});
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {

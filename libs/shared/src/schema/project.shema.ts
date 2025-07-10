@@ -13,6 +13,9 @@ export class Project {
 
   @Prop({ required: true })
   ownerId!: string;
+
+  @Prop({ required: true })
+  team!: string;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

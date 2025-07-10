@@ -11,8 +11,6 @@ export class ProjectController {
 
   @GrpcMethod('ProjectService', 'Create')
   async create(data: CreateRequest): Promise<CreateResponse> {
-    console.log("test")
-    console.log(data)
     return await this.projectService.create(data);
   }
 

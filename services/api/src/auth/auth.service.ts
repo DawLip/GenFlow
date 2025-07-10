@@ -5,9 +5,12 @@ import { firstValueFrom } from 'rxjs';
 import { services_config } from '@shared/services_config';
 import { AuthServiceClient } from '@proto/auth/auth.client';
 import { LoginRequest, RegisterRequest } from '@proto/auth/auth';
+import { ApiService } from '@api/api/api.service';
 
 @Injectable()
-export class AuthService implements OnModuleInit {
+export class ApiAuthService implements OnModuleInit {
+  constructor(private readonly apiService: ApiService) {}
+  
   @Client({
     transport: Transport.GRPC,
     options: {
@@ -25,10 +28,17 @@ export class AuthService implements OnModuleInit {
   }
 
   login(body: LoginRequest) {
+    if(!body.email) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'email' is required"}, {context:"auth/login"});
+    if(!body.password) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'password' is required"}, {context:"auth/login"});
+
     return this.grpcService.login(body);
   }
 
   register(body: RegisterRequest) {
+    if(!body.username) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'username' is required"}, {context:"auth/register"});
+    if(!body.email) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'email' is required"}, {context:"auth/register"});
+    if(!body.password) return this.apiService.handleValidationError({status:"ERROR", msg:"gRPC: Field 'password' is required"}, {context:"auth/register"});
+
     return this.grpcService.register(body);
   }
 

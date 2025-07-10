@@ -66,4 +66,9 @@ export class ApiService implements OnModuleInit {
   async getUserFromToken(token: string) {
     return await firstValueFrom(this.authService.validate({ token }));
   }
+
+  handleValidationError(response:any, logData:any, logMsg?:string):any {
+    this.logger.error({response, ...logData }, logMsg || response.msg);
+    return response;
+  }
 }

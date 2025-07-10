@@ -12,6 +12,7 @@ message CreateRequest {
   string name = 2;
   string description = 3;
   string ownerId = 4;
+  string team = 5;
 }
 
 message CreateResponse {
@@ -46,5 +47,6 @@ message ProjectResponse{
   string name = 2;
   string description = 3;
   string ownerId = 4;
+  string team = 5;
 }
 

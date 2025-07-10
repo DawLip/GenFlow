@@ -3,4 +3,5 @@ export type Team = {
   name: string;
   ownerId: string;
   members: [string];
+  team: string;
 };

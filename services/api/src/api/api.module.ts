@@ -20,6 +20,7 @@ const s_name = service_name(name);
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
+        level: 'debug',
         transport: {
           target: 'pino-loki',
           options: {

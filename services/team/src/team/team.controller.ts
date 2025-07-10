@@ -11,8 +11,6 @@ export class TeamController {
 
   @GrpcMethod('TeamService', 'Create')
   async create(data: CreateRequest): Promise<CreateResponse> {
-    console.log("test")
-    console.log(data)
     return await this.teamService.create(data);
   }
 

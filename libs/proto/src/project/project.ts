@@ -13,6 +13,7 @@ export interface CreateRequest {
   name: string;
   description: string;
   ownerId: string;
+  team: string;
 }
 
 export interface CreateResponse {
@@ -47,10 +48,11 @@ export interface ProjectResponse {
   name: string;
   description: string;
   ownerId: string;
+  team: string;
 }
 
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", description: "", ownerId: "" };
+  return { name: "", description: "", ownerId: "", team: "" };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -63,6 +65,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     if (message.ownerId !== "") {
       writer.uint32(34).string(message.ownerId);
+    }
+    if (message.team !== "") {
+      writer.uint32(42).string(message.team);
     }
     return writer;
   },
@@ -98,6 +103,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
           message.ownerId = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.team = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -112,6 +125,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      team: isSet(object.team) ? globalThis.String(object.team) : "",
     };
   },
 
@@ -126,6 +140,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.ownerId !== "") {
       obj.ownerId = message.ownerId;
     }
+    if (message.team !== "") {
+      obj.team = message.team;
+    }
     return obj;
   },
 
@@ -137,6 +154,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.ownerId = object.ownerId ?? "";
+    message.team = object.team ?? "";
     return message;
   },
 };
@@ -554,7 +572,7 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseProjectResponse(): ProjectResponse {
-  return { id: "", name: "", description: "", ownerId: "" };
+  return { id: "", name: "", description: "", ownerId: "", team: "" };
 }
 
 export const ProjectResponse: MessageFns<ProjectResponse> = {
@@ -570,6 +588,9 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     }
     if (message.ownerId !== "") {
       writer.uint32(34).string(message.ownerId);
+    }
+    if (message.team !== "") {
+      writer.uint32(42).string(message.team);
     }
     return writer;
   },
@@ -613,6 +634,14 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
           message.ownerId = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.team = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -628,6 +657,7 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      team: isSet(object.team) ? globalThis.String(object.team) : "",
     };
   },
 
@@ -645,6 +675,9 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     if (message.ownerId !== "") {
       obj.ownerId = message.ownerId;
     }
+    if (message.team !== "") {
+      obj.team = message.team;
+    }
     return obj;
   },
 
@@ -657,6 +690,7 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.ownerId = object.ownerId ?? "";
+    message.team = object.team ?? "";
     return message;
   },
 };

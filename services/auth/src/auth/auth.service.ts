@@ -36,7 +36,7 @@ export class AuthService implements OnModuleInit {
   async register(data: RegisterRequest): Promise<AuthResponse> {
     const user = await firstValueFrom(this.userService.findOneByEmail(data));
 
-    if (!user.user) return this.handleValidationError({res:{msg:"user not found"},}, {context:"register"});
+    if (user.user) return this.handleValidationError({res:{msg:"email is already taken"},}, {context:"register"});
 
     const new_user = await firstValueFrom(this.userService.create(data));
     const token = this.generateToken(new_user.id);

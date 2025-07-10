@@ -1,0 +1,13 @@
+services:
+  team:
+    build:
+      context: .
+      dockerfile: ../services/team/Dockerfile.dev
+    ports:
+      - "3008:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve team

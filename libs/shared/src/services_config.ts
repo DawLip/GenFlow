@@ -15,6 +15,9 @@ export const services_config = {
     project:'http://project:3000',
     project_rpc:'project:50051',
 
+    team:'http://team:3000',
+    team_rpc:'team:50051',
+
     mongodb: 'mongodb://mongodb:27017',
 
     loki: 'http://loki:3100'

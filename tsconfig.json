@@ -3,24 +3,16 @@
   "compileOnSave": false,
   "files": [],
   "references": [
-    {
-      "path": "./services/web-ui"
-    },
-    {
-      "path": "./libs/shared"
-    },
-    {
-      "path": "./services/api"
-    },
-    {
-      "path": "./services/gateway"
-    },
-    {
-      "path": "./services/user"
-    },
-    {
-      "path": "./services/project"
-    }
+    {"path": "./libs/shared"},
+
+    {"path": "./services/api"},
+    {"path": "./services/gateway"},
+    
+    {"path": "./services/user"},
+    {"path": "./services/project"},
+    {"path": "./services/team"},
+
+    {"path": "./services/web-ui"}
   ],
    "compilerOptions": {
     "paths": {
@@ -32,11 +24,12 @@
       
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
+      "@team/*": ["services/team/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],
       "@shared/*": ["libs/shared/src/*"]
     }
   },
-  "exclude": ["path/to/folder"]
+  "exclude": []
 }

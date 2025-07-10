@@ -32,6 +32,7 @@
       "@auth/*": ["services/auth/src/*"],
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
+      "@team/*": ["services/team/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

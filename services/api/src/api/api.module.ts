@@ -4,6 +4,7 @@ import { LoggerModule } from 'nestjs-pino';
 
 import { AuthModule } from '@api/auth/auth.module';
 import { ProjectModule } from '@api/project/project.module';
+import { TeamModule } from '@api/team/team.module';
 
 import { AuthGuard } from '@api/guards/auth.guard';
 import { HealthController } from '@api/api/health.controller';
@@ -31,6 +32,7 @@ const s_name = service_name(name);
       },
     }),
     AuthModule,
+    TeamModule,
     ProjectModule
   ],
   controllers: [HealthController],

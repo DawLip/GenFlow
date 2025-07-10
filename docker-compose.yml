@@ -24,6 +24,13 @@ services:
       service: graphql
     networks:
       monitoring:
+
+  socket.io:
+    extends:
+      file: compose/socket.io.yml
+      service: socket.io
+    networks:
+      monitoring:
 # Services
   web-ui:
     extends:
@@ -31,13 +38,6 @@ services:
       service: web-ui
     depends_on:
       - gateway
-    networks:
-      monitoring:
-
-  socket.io:
-    extends:
-      file: compose/socket.io.yml
-      service: socket.io
     networks:
       monitoring:
 
@@ -63,6 +63,15 @@ services:
     networks:
       monitoring: 
         aliases: [project]
+    depends_on:
+      - mongodb
+  team:
+    extends:
+      file: compose/team.yml
+      service: team
+    networks:
+      monitoring: 
+        aliases: [team]
     depends_on:
       - mongodb
 # Infra

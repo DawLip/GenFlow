@@ -15,14 +15,6 @@ clients:
     batchsize: 102400
     timeout: 10s
 
-# scrape_configs:
-#   - job_name: docker
-#     static_configs:
-#       - targets:
-#           - localhost
-#         labels:
-#           job: docker
-#           __path__: /var/lib/docker/containers/*/*-json.log
 scrape_configs:
   - job_name: docker
     docker_sd_configs:

@@ -85,26 +85,17 @@ export class UserService {
           id: user._id.toString(),
         }
       }, {context:"findOneByEmail"});
-    // this.logger.info({input: data, user: user, context:"findOneByEmail"}, "User found")
-    // return {
-    //   status: 'SUCCESS',
-    //   msg: 'User found',
-    //   user: {
-    //     ...user,
-    //     id: user._id.toString(),
-    //   }
-    // }
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {
     const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.msg);
+    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
     return res;
   }
 
   handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
     const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.msg);
+    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
     return res;
   }
 }

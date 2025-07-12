@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
   CreateFlowRequest,
-  CreateFlowResponse
+  CreateFlowResponse,
+  UpdateFlowRequest,
+  UpdateFlowResponse
 } from '@proto/project/project';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -59,6 +61,24 @@ export class ProjectService {
   if (!updatedProject) return this.handleValidationError({ res: { msg: 'project not found' } }, { context: 'createFlow' });
 
   return this.handleSuccessResponse({ res: { msg: 'flow created' } }, { context: 'createFlow' });
+  }
+  async updateFlow(data:UpdateFlowRequest):Promise<UpdateFlowResponse> {
+    const updatedProject = await this.projectModel.findByIdAndUpdate(
+      data.id,
+      {
+        $set: {
+          [`flows.$[elem].${data.field}`]: data.value,
+        },
+      },
+      {
+        new: true,
+        arrayFilters: [{ 'elem.name': data.flowName }],
+      },
+    );
+    console.log(data)
+    if (!updatedProject) return this.handleValidationError({res:{msg:"project not found"},}, {context:"updateFlow", data});
+
+    return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context:"updateFlow"});
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {

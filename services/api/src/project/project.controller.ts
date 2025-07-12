@@ -1,5 +1,5 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
-import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateResponse, UpdateResponse, CreateFlowResponse } from '@proto/project/project';
+import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateResponse, UpdateResponse, CreateFlowResponse, UpdateFlowRequest, UpdateFlowResponse } from '@proto/project/project';
 import { ApiProjectService } from './project.service';
 import { ApiService } from '@api/api/api.service';
 
@@ -27,5 +27,10 @@ export class ApiProjectController {
   @Post('createFlow')
   createFlow(@Body() body: CreateFlowRequest, @Req() req: AuthenticatedRequest): Promise<CreateFlowResponse> {
     return this.apiProjectService.createFlow(body, req);
+  }
+
+  @Post('updateFlow')
+  updateFlow(@Body() body: UpdateFlowRequest, @Req() req: AuthenticatedRequest): Promise<UpdateFlowResponse> {
+    return this.apiProjectService.updateFlow(body, req);
   }
 }

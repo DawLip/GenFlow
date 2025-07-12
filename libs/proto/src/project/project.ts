@@ -56,6 +56,17 @@ export interface CreateFlowResponse {
   flow?: Flow | undefined;
 }
 
+export interface UpdateFlowRequest {
+  id: string;
+  flowName: string;
+  field: string;
+  value: string;
+}
+
+export interface UpdateFlowResponse {
+  res: BaseResponse | undefined;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -782,6 +793,172 @@ export const CreateFlowResponse: MessageFns<CreateFlowResponse> = {
     const message = createBaseCreateFlowResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.flow = (object.flow !== undefined && object.flow !== null) ? Flow.fromPartial(object.flow) : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateFlowRequest(): UpdateFlowRequest {
+  return { id: "", flowName: "", field: "", value: "" };
+}
+
+export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
+  encode(message: UpdateFlowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(18).string(message.flowName);
+    }
+    if (message.field !== "") {
+      writer.uint32(26).string(message.field);
+    }
+    if (message.value !== "") {
+      writer.uint32(34).string(message.value);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateFlowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateFlowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.field = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.value = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateFlowRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      field: isSet(object.field) ? globalThis.String(object.field) : "",
+      value: isSet(object.value) ? globalThis.String(object.value) : "",
+    };
+  },
+
+  toJSON(message: UpdateFlowRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.field !== "") {
+      obj.field = message.field;
+    }
+    if (message.value !== "") {
+      obj.value = message.value;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UpdateFlowRequest>): UpdateFlowRequest {
+    return UpdateFlowRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UpdateFlowRequest>): UpdateFlowRequest {
+    const message = createBaseUpdateFlowRequest();
+    message.id = object.id ?? "";
+    message.flowName = object.flowName ?? "";
+    message.field = object.field ?? "";
+    message.value = object.value ?? "";
+    return message;
+  },
+};
+
+function createBaseUpdateFlowResponse(): UpdateFlowResponse {
+  return { res: undefined };
+}
+
+export const UpdateFlowResponse: MessageFns<UpdateFlowResponse> = {
+  encode(message: UpdateFlowResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UpdateFlowResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateFlowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateFlowResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: UpdateFlowResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UpdateFlowResponse>): UpdateFlowResponse {
+    return UpdateFlowResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UpdateFlowResponse>): UpdateFlowResponse {
+    const message = createBaseUpdateFlowResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     return message;
   },
 };

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { services_config } from '@shared/services_config';
 import { ProjectServiceClient } from '@proto/project/project.client';
-import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateFlowResponse } from '@proto/project/project';
+import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateFlowResponse, UpdateFlowRequest } from '@proto/project/project';
 
 import { ApiService } from '@api/api/api.service';
 
@@ -59,5 +59,13 @@ export class ApiProjectService implements OnModuleInit {
     if(!body.flow.type) return this.apiService.handleValidationError({res:{msg:"Field 'flow.type' is required"}}, {context:"project/createFlow"});
 
     return await firstValueFrom(this.grpcService.createFlow({...body}));
+  }
+
+  async updateFlow(body: UpdateFlowRequest, req: AuthenticatedRequest) {
+    if(!body.flowName) return this.apiService.handleValidationError({res:{msg:"Field 'flowName' is required"}}, {context:"project/updateFlow"});
+    if(!body.field) return this.apiService.handleValidationError({res:{msg:"Field 'field' is required"}}, {context:"project/updateFlow"});
+    if(!body.value) return this.apiService.handleValidationError({res:{msg:"Field 'value' is required"}}, {context:"project/updateFlow"});
+    console.log(body)
+    return await firstValueFrom(this.grpcService.updateFlow(body));
   }
 }

@@ -3,7 +3,9 @@ import { GrpcMethod } from '@nestjs/microservices';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
   CreateFlowRequest,
-  CreateFlowResponse
+  CreateFlowResponse,
+  UpdateFlowRequest,
+  UpdateFlowResponse
 } from '@proto/project/project';
 import { ProjectService } from '@project/project/project.service';
 
@@ -29,5 +31,11 @@ export class ProjectController {
   @GrpcMethod('ProjectService', 'CreateFlow')
   async createFlow(data: CreateFlowRequest): Promise<CreateFlowResponse> {
     return await this.projectService.createFlow(data);
+  }
+
+  @GrpcMethod('ProjectService', 'UpdateFlow')
+  async updateFlow(data: UpdateFlowRequest): Promise<UpdateFlowResponse> {
+    console.log(data)
+    return await this.projectService.updateFlow(data);
   }
 }

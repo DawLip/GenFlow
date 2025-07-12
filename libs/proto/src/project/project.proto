@@ -20,7 +20,6 @@ message CreateRequest {
   string ownerId = 4;
   string team = 5;
 }
-
 message CreateResponse {
   BaseResponse res = 1;
   string id = 2;
@@ -31,7 +30,6 @@ message UpdateRequest {
   string field = 2;
   string value = 3;
 }
-
 message UpdateResponse {
   BaseResponse res = 1;
 }
@@ -39,7 +37,6 @@ message UpdateResponse {
 message FindOneByIdRequest {
   string id = 1;
 }
-
 message FindResponse {
   BaseResponse res = 1;
   optional ProjectResponse project = 3;
@@ -52,4 +49,3 @@ message ProjectResponse{
   string ownerId = 4;
   string team = 5;
 }
-

@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { services_config } from '@shared/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
-import { CreateRequest, UpdateRequest, FindOneByIdRequest } from '@proto/team/team';
+import { CreateRequest, UpdateRequest, FindOneByIdRequest, JoinRequest, JoinResponse, LeaveRequest } from '@proto/team/team';
 
 import { AuthenticatedRequest } from '@api/types/authenticated-request';
 import { ApiService } from '@api/api/api.service';
@@ -44,5 +44,19 @@ export class ApiTeamService implements OnModuleInit {
 
   async findOneById(body: FindOneByIdRequest) {
     return await firstValueFrom(this.grpcService.findOneById(body));
+  }
+
+  async join(body: JoinRequest, req: AuthenticatedRequest) {
+    // if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
+    // if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"team/create"});
+
+    return await firstValueFrom(this.grpcService.join({ ...body, userId: req.user.id}));
+  }
+
+  async leave(body: LeaveRequest, req: AuthenticatedRequest) {
+    // if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
+    // if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"team/create"});
+
+    return await firstValueFrom(this.grpcService.leave({ ...body, userId: req.user.id}));
   }
 }

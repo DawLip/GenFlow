@@ -47,6 +47,7 @@ export interface FindResponse {
 
 export interface JoinRequest {
   id: string;
+  userId: string;
 }
 
 export interface JoinResponse {
@@ -55,6 +56,7 @@ export interface JoinResponse {
 
 export interface LeaveRequest {
   id: string;
+  userId: string;
 }
 
 export interface LeaveResponse {
@@ -262,7 +264,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
       BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.id !== undefined) {
-      writer.uint32(26).string(message.id);
+      writer.uint32(18).string(message.id);
     }
     return writer;
   },
@@ -282,8 +284,8 @@ export const CreateResponse: MessageFns<CreateResponse> = {
           message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
-        case 3: {
-          if (tag !== 26) {
+        case 2: {
+          if (tag !== 18) {
             break;
           }
 
@@ -615,13 +617,16 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseJoinRequest(): JoinRequest {
-  return { id: "" };
+  return { id: "", userId: "" };
 }
 
 export const JoinRequest: MessageFns<JoinRequest> = {
   encode(message: JoinRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
     }
     return writer;
   },
@@ -641,6 +646,14 @@ export const JoinRequest: MessageFns<JoinRequest> = {
           message.id = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -651,13 +664,19 @@ export const JoinRequest: MessageFns<JoinRequest> = {
   },
 
   fromJSON(object: any): JoinRequest {
-    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+    };
   },
 
   toJSON(message: JoinRequest): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
     }
     return obj;
   },
@@ -668,6 +687,7 @@ export const JoinRequest: MessageFns<JoinRequest> = {
   fromPartial(object: DeepPartial<JoinRequest>): JoinRequest {
     const message = createBaseJoinRequest();
     message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -731,13 +751,16 @@ export const JoinResponse: MessageFns<JoinResponse> = {
 };
 
 function createBaseLeaveRequest(): LeaveRequest {
-  return { id: "" };
+  return { id: "", userId: "" };
 }
 
 export const LeaveRequest: MessageFns<LeaveRequest> = {
   encode(message: LeaveRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
     }
     return writer;
   },
@@ -757,6 +780,14 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
           message.id = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -767,13 +798,19 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
   },
 
   fromJSON(object: any): LeaveRequest {
-    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+    };
   },
 
   toJSON(message: LeaveRequest): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
+    }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
     }
     return obj;
   },
@@ -784,6 +821,7 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
   fromPartial(object: DeepPartial<LeaveRequest>): LeaveRequest {
     const message = createBaseLeaveRequest();
     message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

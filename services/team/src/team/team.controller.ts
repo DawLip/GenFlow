@@ -1,7 +1,11 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
+  JoinRequest,
+  JoinResponse,
+  LeaveRequest,
+  LeaveResponse
 } from '@proto/team/team';
 import { TeamService } from '@team/team/team.service';
 
@@ -22,5 +26,14 @@ export class TeamController {
   @GrpcMethod('TeamService', 'FindOneById')
   async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.teamService.findOneById(data);
+  }
+  @GrpcMethod('TeamService', 'Join')
+  async join(data: JoinRequest): Promise<JoinResponse> {
+    return await this.teamService.join(data);
+  }
+
+  @GrpcMethod('TeamService', 'Leave')
+  async leave(data: LeaveRequest): Promise<LeaveResponse> {
+    return await this.teamService.leave(data);
   }
 }

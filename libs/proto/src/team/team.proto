@@ -23,7 +23,7 @@ message CreateRequest {
 }
 message CreateResponse {
   BaseResponse res = 1;
-  optional string id = 3;
+  optional string id = 2;
 }
 
 message UpdateRequest {
@@ -45,6 +45,7 @@ message FindResponse {
 
 message JoinRequest {
   string id = 1;
+  string userId = 2;
 }
 message JoinResponse {
   BaseResponse res = 1;
@@ -52,6 +53,7 @@ message JoinResponse {
 
 message LeaveRequest {
   string id = 1;
+  string userId = 2;
 }
 message LeaveResponse {
   BaseResponse res = 1;

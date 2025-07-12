@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { services_config } from '@shared/services_config';
 import { ProjectServiceClient } from '@proto/project/project.client';
-import { CreateRequest, UpdateRequest, FindOneByIdRequest } from '@proto/project/project';
+import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateFlowResponse } from '@proto/project/project';
 
 import { ApiService } from '@api/api/api.service';
 
@@ -31,22 +31,33 @@ export class ApiProjectService implements OnModuleInit {
   }
 
   async create(body: CreateRequest, req: AuthenticatedRequest) {
-    if(!body.description) return this.apiService.handleValidationError({id:"", msg:"gRPC: Field 'description' is required"}, {context:"project/create"});
-    if(!body.name) return this.apiService.handleValidationError({id:"", msg:"gRPC: Field 'name' is required"}, {context:"project/create"});
-    
-    return await firstValueFrom(this.grpcService.create({ ...body, ownerId: req.user.id }));
+    if(!body.name) return this.apiService.handleValidationError({res:{msg:"Field 'name' is required"}}, {context:"project/create"});
+    if(!body.description) return this.apiService.handleValidationError({msg:"Field 'description' is required"}, {context:"project/create"});
+    if(!body.team) return this.apiService.handleValidationError({res:{msg:"Field 'team' is required"}}, {context:"project/create"});
+
+    return await firstValueFrom(this.grpcService.create({ ...body, owner: req.user.id }));
   }
 
-  async update(body: UpdateRequest) {
-    if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"project/update"});
-    if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"project/update"});
+  async update(body: UpdateRequest, req: AuthenticatedRequest) {
+    if(!body.field) return this.apiService.handleValidationError({res:{msg:"Field 'field' is required"}}, {context:"project/update"});
+    if(!body.value) return this.apiService.handleValidationError({res:{msg:"Field 'value' is required"}}, {context:"project/update"});
 
     return await firstValueFrom(this.grpcService.update(body));
   }
 
-  async findOneById(body: FindOneByIdRequest) {
-    if(!body.id) return this.apiService.handleValidationError({msg:"gRPC: Field 'id' is required"}, {context:"project/findOneById"});
+  async findOneById(body: FindOneByIdRequest, req: AuthenticatedRequest) {
+    if(!body.id) return this.apiService.handleValidationError({res:{msg:"Field 'id' is required"}}, {context:"project/findOneById"});
 
     return await firstValueFrom(this.grpcService.findOneById(body));
+  }
+
+  async createFlow(body: CreateFlowRequest, req: AuthenticatedRequest) {
+    if(!body.flow) return this.apiService.handleValidationError({res:{msg:"Field 'flow' is required"}}, {context:"project/createFlow"});
+    if(!body.flow.name) return this.apiService.handleValidationError({res:{msg:"Field 'flow.name' is required"}}, {context:"project/createFlow"});
+    if(!body.flow.description) return this.apiService.handleValidationError({res:{msg:"Field 'flow.description' is required"}}, {context:"project/createFlow"});
+    if(!body.flow.flowData) return this.apiService.handleValidationError({res:{msg:"Field 'flow.flowData' is required"}}, {context:"project/createFlow"});
+    if(!body.flow.type) return this.apiService.handleValidationError({res:{msg:"Field 'flow.type' is required"}}, {context:"project/createFlow"});
+
+    return await firstValueFrom(this.grpcService.createFlow({...body}));
   }
 }

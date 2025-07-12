@@ -24,7 +24,7 @@ export class TeamService {
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdTeam:Team|any = await this.teamModel.create(data);
-    return this.handleSuccessResponse({res:{msg:"project created"}, id: createdTeam._id.toString(),}, {context:"create"});
+    return this.handleSuccessResponse({res:{msg:"team created"}, id: createdTeam._id.toString(),}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedTeam = await this.teamModel.findByIdAndUpdate(
@@ -51,7 +51,7 @@ export class TeamService {
   async join(data: JoinRequest): Promise<JoinResponse> {
   const updatedTeam = await this.teamModel.findByIdAndUpdate(
     data.id,
-    { $addToSet: { members: data.userId } },
+    { $addToSet: { members: data.user } },
     { new: true },
   );
 
@@ -63,7 +63,7 @@ export class TeamService {
 async leave(data: LeaveRequest): Promise<LeaveResponse> {
   const updatedTeam = await this.teamModel.findByIdAndUpdate(
     data.id,
-    { $pull: { members: data.userId } },
+    { $pull: { members: data.user } },
     { new: true },
   );
 

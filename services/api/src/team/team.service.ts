@@ -32,7 +32,7 @@ export class ApiTeamService implements OnModuleInit {
   async create(body: CreateRequest, req: AuthenticatedRequest) {
     if(!body.name) return this.apiService.handleValidationError({msg:"gRPC: Field 'name' is required"}, {context:"team/create"});
 
-    return await firstValueFrom(this.grpcService.create({ ...body, ownerId: req.user.id, members:[req.user.id] }));
+    return await firstValueFrom(this.grpcService.create({ ...body, owner: req.user.id, members:[req.user.id] }));
   }
 
   async update(body: UpdateRequest) {
@@ -47,16 +47,14 @@ export class ApiTeamService implements OnModuleInit {
   }
 
   async join(body: JoinRequest, req: AuthenticatedRequest) {
-    // if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
-    // if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"team/create"});
+    if(!body.id) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
 
-    return await firstValueFrom(this.grpcService.join({ ...body, userId: req.user.id}));
+    return await firstValueFrom(this.grpcService.join({ ...body, user: req.user.id}));
   }
 
   async leave(body: LeaveRequest, req: AuthenticatedRequest) {
-    // if(!body.field) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
-    // if(!body.value) return this.apiService.handleValidationError({msg:"gRPC: Field 'value' is required"}, {context:"team/create"});
+    if(!body.id) return this.apiService.handleValidationError({msg:"gRPC: Field 'field' is required"}, {context:"team/create"});
 
-    return await firstValueFrom(this.grpcService.leave({ ...body, userId: req.user.id}));
+    return await firstValueFrom(this.grpcService.leave({ ...body, user: req.user.id}));
   }
 }

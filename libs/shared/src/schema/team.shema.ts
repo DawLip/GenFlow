@@ -9,7 +9,7 @@ export class Team {
   name!: string;
 
   @Prop({ required: true })
-  ownerId!: string;
+  owner!: string;
 
   @Prop({ required: true })
   members!: [string];

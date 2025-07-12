@@ -12,10 +12,28 @@ export class Project {
   description!: string;
 
   @Prop({ required: true })
-  ownerId!: string;
+  owner!: string;
 
   @Prop({ required: true })
   team!: string;
+
+  @Prop({ required: true })
+  flows!: [Flow];
+}
+
+@Schema()
+export class Flow {
+  @Prop({ required: true })
+  name!: string;
+
+  @Prop({ required: true })
+  description!: string;
+
+  @Prop({ required: true })
+  flowData!: string;
+
+  @Prop({ required: true })
+  type!: string;
 }
 
 export const ProjectSchema = SchemaFactory.createForClass(Project);

@@ -6,6 +6,7 @@ import { Logger } from 'nestjs-pino';
 
 import { name } from '../package.json';
 import { service_name } from '@libs/shared/src/service_name'
+import { DefaultExceptionFilter } from '@libs/shared/src/default-exception.filter';
 
 const s_name = service_name(name);
 
@@ -22,6 +23,8 @@ async function bootstrap() {
   });
 
   grpcApp.useLogger(grpcApp.get(Logger));
+  grpcApp.useGlobalFilters(new DefaultExceptionFilter(grpcApp.get(Logger)));
+  
   grpcApp.listen();
   console.log(`${s_name} gRPC service running on 0.0.0.0:50051`);
 

@@ -18,7 +18,7 @@ export interface BaseResponse {
 export interface CreateRequest {
   name: string;
   description: string;
-  ownerId: string;
+  owner: string;
   team: string;
 }
 
@@ -43,15 +43,33 @@ export interface FindOneByIdRequest {
 
 export interface FindResponse {
   res: BaseResponse | undefined;
-  project?: ProjectResponse | undefined;
+  project?: Project | undefined;
 }
 
-export interface ProjectResponse {
+export interface CreateFlowRequest {
+  id: string;
+  flow: Flow | undefined;
+}
+
+export interface CreateFlowResponse {
+  res: BaseResponse | undefined;
+  flow?: Flow | undefined;
+}
+
+export interface Project {
   id: string;
   name: string;
   description: string;
-  ownerId: string;
+  owner: string;
   team: string;
+  flows: Flow[];
+}
+
+export interface Flow {
+  name: string;
+  description: string;
+  flowData: string;
+  type: string;
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -147,7 +165,7 @@ export const BaseResponse: MessageFns<BaseResponse> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", description: "", ownerId: "", team: "" };
+  return { name: "", description: "", owner: "", team: "" };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -158,8 +176,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
     }
-    if (message.ownerId !== "") {
-      writer.uint32(34).string(message.ownerId);
+    if (message.owner !== "") {
+      writer.uint32(34).string(message.owner);
     }
     if (message.team !== "") {
       writer.uint32(42).string(message.team);
@@ -195,7 +213,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
             break;
           }
 
-          message.ownerId = reader.string();
+          message.owner = reader.string();
           continue;
         }
         case 5: {
@@ -219,7 +237,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       team: isSet(object.team) ? globalThis.String(object.team) : "",
     };
   },
@@ -232,8 +250,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
-    if (message.ownerId !== "") {
-      obj.ownerId = message.ownerId;
+    if (message.owner !== "") {
+      obj.owner = message.owner;
     }
     if (message.team !== "") {
       obj.team = message.team;
@@ -248,7 +266,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     const message = createBaseCreateRequest();
     message.name = object.name ?? "";
     message.description = object.description ?? "";
-    message.ownerId = object.ownerId ?? "";
+    message.owner = object.owner ?? "";
     message.team = object.team ?? "";
     return message;
   },
@@ -548,7 +566,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.project !== undefined) {
-      ProjectResponse.encode(message.project, writer.uint32(26).fork()).join();
+      Project.encode(message.project, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -573,7 +591,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.project = ProjectResponse.decode(reader, reader.uint32());
+          message.project = Project.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -588,7 +606,7 @@ export const FindResponse: MessageFns<FindResponse> = {
   fromJSON(object: any): FindResponse {
     return {
       res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
-      project: isSet(object.project) ? ProjectResponse.fromJSON(object.project) : undefined,
+      project: isSet(object.project) ? Project.fromJSON(object.project) : undefined,
     };
   },
 
@@ -598,7 +616,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       obj.res = BaseResponse.toJSON(message.res);
     }
     if (message.project !== undefined) {
-      obj.project = ProjectResponse.toJSON(message.project);
+      obj.project = Project.toJSON(message.project);
     }
     return obj;
   },
@@ -610,18 +628,170 @@ export const FindResponse: MessageFns<FindResponse> = {
     const message = createBaseFindResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.project = (object.project !== undefined && object.project !== null)
-      ? ProjectResponse.fromPartial(object.project)
+      ? Project.fromPartial(object.project)
       : undefined;
     return message;
   },
 };
 
-function createBaseProjectResponse(): ProjectResponse {
-  return { id: "", name: "", description: "", ownerId: "", team: "" };
+function createBaseCreateFlowRequest(): CreateFlowRequest {
+  return { id: "", flow: undefined };
 }
 
-export const ProjectResponse: MessageFns<ProjectResponse> = {
-  encode(message: ProjectResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const CreateFlowRequest: MessageFns<CreateFlowRequest> = {
+  encode(message: CreateFlowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.flow !== undefined) {
+      Flow.encode(message.flow, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFlowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFlowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flow = Flow.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFlowRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      flow: isSet(object.flow) ? Flow.fromJSON(object.flow) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFlowRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.flow !== undefined) {
+      obj.flow = Flow.toJSON(message.flow);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<CreateFlowRequest>): CreateFlowRequest {
+    return CreateFlowRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<CreateFlowRequest>): CreateFlowRequest {
+    const message = createBaseCreateFlowRequest();
+    message.id = object.id ?? "";
+    message.flow = (object.flow !== undefined && object.flow !== null) ? Flow.fromPartial(object.flow) : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateFlowResponse(): CreateFlowResponse {
+  return { res: undefined, flow: undefined };
+}
+
+export const CreateFlowResponse: MessageFns<CreateFlowResponse> = {
+  encode(message: CreateFlowResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    if (message.flow !== undefined) {
+      Flow.encode(message.flow, writer.uint32(26).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): CreateFlowResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateFlowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.flow = Flow.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateFlowResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      flow: isSet(object.flow) ? Flow.fromJSON(object.flow) : undefined,
+    };
+  },
+
+  toJSON(message: CreateFlowResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.flow !== undefined) {
+      obj.flow = Flow.toJSON(message.flow);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<CreateFlowResponse>): CreateFlowResponse {
+    return CreateFlowResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<CreateFlowResponse>): CreateFlowResponse {
+    const message = createBaseCreateFlowResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.flow = (object.flow !== undefined && object.flow !== null) ? Flow.fromPartial(object.flow) : undefined;
+    return message;
+  },
+};
+
+function createBaseProject(): Project {
+  return { id: "", name: "", description: "", owner: "", team: "", flows: [] };
+}
+
+export const Project: MessageFns<Project> = {
+  encode(message: Project, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -631,19 +801,22 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
     }
-    if (message.ownerId !== "") {
-      writer.uint32(34).string(message.ownerId);
+    if (message.owner !== "") {
+      writer.uint32(34).string(message.owner);
     }
     if (message.team !== "") {
       writer.uint32(42).string(message.team);
     }
+    for (const v of message.flows) {
+      Flow.encode(v!, writer.uint32(50).fork()).join();
+    }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): ProjectResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): Project {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseProjectResponse();
+    const message = createBaseProject();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -676,7 +849,7 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
             break;
           }
 
-          message.ownerId = reader.string();
+          message.owner = reader.string();
           continue;
         }
         case 5: {
@@ -685,6 +858,14 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
           }
 
           message.team = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.flows.push(Flow.decode(reader, reader.uint32()));
           continue;
         }
       }
@@ -696,17 +877,18 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     return message;
   },
 
-  fromJSON(object: any): ProjectResponse {
+  fromJSON(object: any): Project {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
-      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       team: isSet(object.team) ? globalThis.String(object.team) : "",
+      flows: globalThis.Array.isArray(object?.flows) ? object.flows.map((e: any) => Flow.fromJSON(e)) : [],
     };
   },
 
-  toJSON(message: ProjectResponse): unknown {
+  toJSON(message: Project): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -717,25 +899,137 @@ export const ProjectResponse: MessageFns<ProjectResponse> = {
     if (message.description !== "") {
       obj.description = message.description;
     }
-    if (message.ownerId !== "") {
-      obj.ownerId = message.ownerId;
+    if (message.owner !== "") {
+      obj.owner = message.owner;
     }
     if (message.team !== "") {
       obj.team = message.team;
     }
+    if (message.flows?.length) {
+      obj.flows = message.flows.map((e) => Flow.toJSON(e));
+    }
     return obj;
   },
 
-  create(base?: DeepPartial<ProjectResponse>): ProjectResponse {
-    return ProjectResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<Project>): Project {
+    return Project.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<ProjectResponse>): ProjectResponse {
-    const message = createBaseProjectResponse();
+  fromPartial(object: DeepPartial<Project>): Project {
+    const message = createBaseProject();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
     message.description = object.description ?? "";
-    message.ownerId = object.ownerId ?? "";
+    message.owner = object.owner ?? "";
     message.team = object.team ?? "";
+    message.flows = object.flows?.map((e) => Flow.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseFlow(): Flow {
+  return { name: "", description: "", flowData: "", type: "" };
+}
+
+export const Flow: MessageFns<Flow> = {
+  encode(message: Flow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(18).string(message.description);
+    }
+    if (message.flowData !== "") {
+      writer.uint32(26).string(message.flowData);
+    }
+    if (message.type !== "") {
+      writer.uint32(34).string(message.type);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Flow {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFlow();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.description = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.flowData = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.type = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Flow {
+    return {
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      flowData: isSet(object.flowData) ? globalThis.String(object.flowData) : "",
+      type: isSet(object.type) ? globalThis.String(object.type) : "",
+    };
+  },
+
+  toJSON(message: Flow): unknown {
+    const obj: any = {};
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.description !== "") {
+      obj.description = message.description;
+    }
+    if (message.flowData !== "") {
+      obj.flowData = message.flowData;
+    }
+    if (message.type !== "") {
+      obj.type = message.type;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Flow>): Flow {
+    return Flow.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Flow>): Flow {
+    const message = createBaseFlow();
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.flowData = object.flowData ?? "";
+    message.type = object.type ?? "";
     return message;
   },
 };

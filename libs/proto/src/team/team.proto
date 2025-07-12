@@ -18,7 +18,7 @@ message BaseResponse {
 
 message CreateRequest {
   string name = 1;
-  string ownerId = 2;
+  string owner = 2;
   repeated string members = 3;
 }
 message CreateResponse {
@@ -45,7 +45,7 @@ message FindResponse {
 
 message JoinRequest {
   string id = 1;
-  string userId = 2;
+  string user = 2;
 }
 message JoinResponse {
   BaseResponse res = 1;
@@ -53,7 +53,7 @@ message JoinResponse {
 
 message LeaveRequest {
   string id = 1;
-  string userId = 2;
+  string user = 2;
 }
 message LeaveResponse {
   BaseResponse res = 1;
@@ -62,7 +62,7 @@ message LeaveResponse {
 message TeamResponse{
   string id = 1;
   string name = 2;
-  string ownerId = 3;
+  string owner = 3;
   repeated string members = 4;
 }
 

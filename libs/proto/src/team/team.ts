@@ -17,7 +17,7 @@ export interface BaseResponse {
 
 export interface CreateRequest {
   name: string;
-  ownerId: string;
+  owner: string;
   members: string[];
 }
 
@@ -47,7 +47,7 @@ export interface FindResponse {
 
 export interface JoinRequest {
   id: string;
-  userId: string;
+  user: string;
 }
 
 export interface JoinResponse {
@@ -56,7 +56,7 @@ export interface JoinResponse {
 
 export interface LeaveRequest {
   id: string;
-  userId: string;
+  user: string;
 }
 
 export interface LeaveResponse {
@@ -66,7 +66,7 @@ export interface LeaveResponse {
 export interface TeamResponse {
   id: string;
   name: string;
-  ownerId: string;
+  owner: string;
   members: string[];
 }
 
@@ -163,7 +163,7 @@ export const BaseResponse: MessageFns<BaseResponse> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", ownerId: "", members: [] };
+  return { name: "", owner: "", members: [] };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -171,8 +171,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
-    if (message.ownerId !== "") {
-      writer.uint32(18).string(message.ownerId);
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
     }
     for (const v of message.members) {
       writer.uint32(26).string(v!);
@@ -200,7 +200,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
             break;
           }
 
-          message.ownerId = reader.string();
+          message.owner = reader.string();
           continue;
         }
         case 3: {
@@ -223,7 +223,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
   fromJSON(object: any): CreateRequest {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
     };
   },
@@ -233,8 +233,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.ownerId !== "") {
-      obj.ownerId = message.ownerId;
+    if (message.owner !== "") {
+      obj.owner = message.owner;
     }
     if (message.members?.length) {
       obj.members = message.members;
@@ -248,7 +248,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
   fromPartial(object: DeepPartial<CreateRequest>): CreateRequest {
     const message = createBaseCreateRequest();
     message.name = object.name ?? "";
-    message.ownerId = object.ownerId ?? "";
+    message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
     return message;
   },
@@ -617,7 +617,7 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseJoinRequest(): JoinRequest {
-  return { id: "", userId: "" };
+  return { id: "", user: "" };
 }
 
 export const JoinRequest: MessageFns<JoinRequest> = {
@@ -625,8 +625,8 @@ export const JoinRequest: MessageFns<JoinRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.user !== "") {
+      writer.uint32(18).string(message.user);
     }
     return writer;
   },
@@ -651,7 +651,7 @@ export const JoinRequest: MessageFns<JoinRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.user = reader.string();
           continue;
         }
       }
@@ -666,7 +666,7 @@ export const JoinRequest: MessageFns<JoinRequest> = {
   fromJSON(object: any): JoinRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
     };
   },
 
@@ -675,8 +675,8 @@ export const JoinRequest: MessageFns<JoinRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.user !== "") {
+      obj.user = message.user;
     }
     return obj;
   },
@@ -687,7 +687,7 @@ export const JoinRequest: MessageFns<JoinRequest> = {
   fromPartial(object: DeepPartial<JoinRequest>): JoinRequest {
     const message = createBaseJoinRequest();
     message.id = object.id ?? "";
-    message.userId = object.userId ?? "";
+    message.user = object.user ?? "";
     return message;
   },
 };
@@ -751,7 +751,7 @@ export const JoinResponse: MessageFns<JoinResponse> = {
 };
 
 function createBaseLeaveRequest(): LeaveRequest {
-  return { id: "", userId: "" };
+  return { id: "", user: "" };
 }
 
 export const LeaveRequest: MessageFns<LeaveRequest> = {
@@ -759,8 +759,8 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.userId !== "") {
-      writer.uint32(18).string(message.userId);
+    if (message.user !== "") {
+      writer.uint32(18).string(message.user);
     }
     return writer;
   },
@@ -785,7 +785,7 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.user = reader.string();
           continue;
         }
       }
@@ -800,7 +800,7 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
   fromJSON(object: any): LeaveRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
     };
   },
 
@@ -809,8 +809,8 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.user !== "") {
+      obj.user = message.user;
     }
     return obj;
   },
@@ -821,7 +821,7 @@ export const LeaveRequest: MessageFns<LeaveRequest> = {
   fromPartial(object: DeepPartial<LeaveRequest>): LeaveRequest {
     const message = createBaseLeaveRequest();
     message.id = object.id ?? "";
-    message.userId = object.userId ?? "";
+    message.user = object.user ?? "";
     return message;
   },
 };
@@ -885,7 +885,7 @@ export const LeaveResponse: MessageFns<LeaveResponse> = {
 };
 
 function createBaseTeamResponse(): TeamResponse {
-  return { id: "", name: "", ownerId: "", members: [] };
+  return { id: "", name: "", owner: "", members: [] };
 }
 
 export const TeamResponse: MessageFns<TeamResponse> = {
@@ -896,8 +896,8 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
     }
-    if (message.ownerId !== "") {
-      writer.uint32(26).string(message.ownerId);
+    if (message.owner !== "") {
+      writer.uint32(26).string(message.owner);
     }
     for (const v of message.members) {
       writer.uint32(34).string(v!);
@@ -933,7 +933,7 @@ export const TeamResponse: MessageFns<TeamResponse> = {
             break;
           }
 
-          message.ownerId = reader.string();
+          message.owner = reader.string();
           continue;
         }
         case 4: {
@@ -957,7 +957,7 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
     };
   },
@@ -970,8 +970,8 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
-    if (message.ownerId !== "") {
-      obj.ownerId = message.ownerId;
+    if (message.owner !== "") {
+      obj.owner = message.owner;
     }
     if (message.members?.length) {
       obj.members = message.members;
@@ -986,7 +986,7 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     const message = createBaseTeamResponse();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
-    message.ownerId = object.ownerId ?? "";
+    message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
     return message;
   },

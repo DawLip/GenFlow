@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
+  CreateFlowRequest,
+  CreateFlowResponse
 } from '@proto/project/project';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -19,7 +21,10 @@ export class ProjectService {
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
-    const createdProject:Project|any = await this.projectModel.create(data);
+    const createdProject:Project|any = await this.projectModel.create({
+      flows:[],
+      ...data
+    });
     return this.handleSuccessResponse({res:{msg:"project created"}, id: createdProject._id.toString(),}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
@@ -42,6 +47,18 @@ export class ProjectService {
       res:{msg:"project found"},
       project: { ...foundProject, id: foundProject._id.toString()}
     }, {context:"findOneById"});
+  }
+
+  async createFlow(data:CreateFlowRequest):Promise<CreateFlowResponse> {
+    const updatedProject = await this.projectModel.findByIdAndUpdate(
+      data.id,
+      { $addToSet: { flows: data.flow } },
+      { new: true },
+    );
+
+  if (!updatedProject) return this.handleValidationError({ res: { msg: 'project not found' } }, { context: 'createFlow' });
+
+  return this.handleSuccessResponse({ res: { msg: 'flow created' } }, { context: 'createFlow' });
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {

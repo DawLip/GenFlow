@@ -28,6 +28,8 @@
       "@api/*": ["services/api/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
+
+      "@web-ui/*": ["services/web-ui/src/*"],
       
       "@auth/*": ["services/auth/src/*"],
       "@user/*": ["services/user/src/*"],

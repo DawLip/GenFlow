@@ -65,17 +65,9 @@ export class ProjectService {
   async updateFlow(data:UpdateFlowRequest):Promise<UpdateFlowResponse> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(
       data.id,
-      {
-        $set: {
-          [`flows.$[elem].${data.field}`]: data.value,
-        },
-      },
-      {
-        new: true,
-        arrayFilters: [{ 'elem.name': data.flowName }],
-      },
+      {$set: {[`flows.$[elem].${data.field}`]: data.value}},
+      {new: true, arrayFilters: [{ 'elem.name': data.flowName }]},
     );
-    console.log(data)
     if (!updatedProject) return this.handleValidationError({res:{msg:"project not found"},}, {context:"updateFlow", data});
 
     return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context:"updateFlow"});

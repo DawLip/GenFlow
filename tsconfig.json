@@ -20,8 +20,10 @@
       "@api/*": ["services/api/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
-      "@auth/*": ["services/auth/src/*"],
       
+      "@web-ui/*": ["services/web-ui/src/*"],
+      
+      "@auth/*": ["services/auth/src/*"],
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],

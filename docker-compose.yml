@@ -77,6 +77,15 @@ services:
         aliases: [team]
     depends_on:
       - mongodb
+  email:
+    extends:
+      file: compose/email.yml
+      service: email
+    networks:
+      monitoring: 
+        aliases: [email]
+    depends_on:
+      - rabbitmq
 # Infra
   rabbitmq:
     extends:
@@ -91,6 +100,7 @@ services:
       service: mongodb
     networks:
       monitoring:
+
 # Logs
   grafana:
     extends:

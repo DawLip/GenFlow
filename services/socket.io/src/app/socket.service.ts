@@ -44,7 +44,7 @@ export class SocketService implements OnModuleInit {
   
       client.data.user = payload;
   
-      this.logger.info({socketID:client.id, userID:client.data.user.id}, `client connected`);
+      this.logger.info({socketID:client.id, userID:client.data.user.id, context:"handleConnection"}, `client connected`);
     }
 
   async getUserFromToken(token: string) {

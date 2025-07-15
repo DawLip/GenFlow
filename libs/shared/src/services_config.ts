@@ -19,6 +19,7 @@ export const services_config = {
     team_rpc:'team:50051',
 
     mongodb: 'mongodb://mongodb:27017',
+    rabbitmq: 'amqp://rabbitmq:5672',
 
     loki: 'http://loki:3100'
   }

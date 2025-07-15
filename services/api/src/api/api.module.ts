@@ -5,6 +5,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from '@api/auth/auth.module';
 import { ProjectModule } from '@api/project/project.module';
 import { TeamModule } from '@api/team/team.module';
+import { EmailModule } from '@api/email/email.module';
 
 import { AuthGuard } from '@api/guards/auth.guard';
 import { HealthController } from '@api/api/health.controller';
@@ -14,11 +15,12 @@ import { services_config } from '@shared/services_config';
 import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
 
+
 const s_name = service_name(name);
 
 @Module({
   imports: [
-    LoggerModule.forRoot({
+  LoggerModule.forRoot({
       pinoHttp: {
         level: 'debug',
         transport: {
@@ -34,7 +36,8 @@ const s_name = service_name(name);
     }),
     AuthModule,
     TeamModule,
-    ProjectModule
+    ProjectModule,
+    EmailModule
   ],
   controllers: [HealthController],
   providers: [

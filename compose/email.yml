@@ -1,0 +1,13 @@
+services:
+  email:
+    build:
+      context: .
+      dockerfile: ../services/email/Dockerfile.dev
+    ports:
+      - "3009:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve email

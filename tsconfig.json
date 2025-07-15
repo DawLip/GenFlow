@@ -8,10 +8,13 @@
     {"path": "./services/gateway"},
     {"path": "./services/api"},
     {"path": "./services/socket.io"},
+
+    {"path": "./services/auth"},
     
     {"path": "./services/user"},
     {"path": "./services/project"},
     {"path": "./services/team"},
+    {"path": "./services/email"},
 
     {"path": "./services/web-ui"}
   ],
@@ -28,6 +31,7 @@
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
+      "@email/*": ["services/email/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

@@ -35,6 +35,7 @@
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
+      "@email/*": ["services/email/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

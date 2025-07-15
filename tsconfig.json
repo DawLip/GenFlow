@@ -5,8 +5,9 @@
   "references": [
     {"path": "./libs/shared"},
 
-    {"path": "./services/api"},
     {"path": "./services/gateway"},
+    {"path": "./services/api"},
+    {"path": "./services/socket.io"},
     
     {"path": "./services/user"},
     {"path": "./services/project"},

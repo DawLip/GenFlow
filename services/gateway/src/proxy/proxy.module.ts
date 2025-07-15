@@ -32,15 +32,5 @@ export class ProxyModule implements NestModule {
         }),
       )
       .forRoutes('/graphql');
-
-    consumer
-      .apply(
-        createProxyMiddleware({
-          target: services_config.service_url.socketio,
-          ws: true,
-          changeOrigin: true,
-        }),
-      )
-      .forRoutes('/socket.io');
   }
 }

@@ -31,6 +31,9 @@ services:
       service: socket.io
     networks:
       monitoring:
+        aliases: [socket.io]
+    depends_on:
+      - auth
 # Services
   web-ui:
     extends:

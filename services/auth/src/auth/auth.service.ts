@@ -63,7 +63,7 @@ export class AuthService implements OnModuleInit {
       const payload = jwt.verify(data.token, this.jwtSecret) as UserPayload;
       return { id: payload.id };
     } catch (err) {
-      throw new Error('Invalid token');
+      return { id: "" };
     }
   }
 

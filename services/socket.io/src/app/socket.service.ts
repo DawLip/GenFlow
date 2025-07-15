@@ -37,32 +37,22 @@ export class SocketService implements OnModuleInit {
         client.handshake.auth?.token?.replace('Bearer ', '') ||
         client.handshake.headers?.authorization?.replace('Bearer ', '') ||
         client.handshake.query?.token?.toString();
-      if(!token) { client.disconnect(); return; }
+      if(!token) return this.handleDisconetion(client, {context:"handleConnection"}, "token is required", "error");
   
       const payload = await this.getUserFromToken(token)
-      if(!payload) { client.disconnect(); return; }
+      if(!payload?.id) return this.handleDisconetion(client, {token, context:"handleConnection"}, "auth failed", "error");
   
       client.data.user = payload;
   
       this.logger.info({socketID:client.id, userID:client.data.user.id}, `client connected`);
     }
 
-  async validate(token: string): Promise<boolean> {
-    try {
-      const response = await firstValueFrom(this.authService.validate({ token }));
-      return !!response?.id; 
-    } catch {
-      return false;
-    }
-  }
-
   async getUserFromToken(token: string) {
     return await firstValueFrom(this.authService.validate({ token }));
   }
 
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
+  handleDisconetion(client: Socket, logData: any, msg: string, logType:string = "info"){
+    this.logger[logType](logData, msg);
+    client.disconnect();
   }
 }

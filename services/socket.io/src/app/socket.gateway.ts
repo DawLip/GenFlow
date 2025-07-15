@@ -27,7 +27,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.info({socketID:client.id, userID:client.data.user.id}, `client disconnected`);
+    this.logger.info({socketID:client.id, userID:client.data?.user?.id, context:"handleDisconnect"}, `client disconnected`);
   }
 
   @SubscribeMessage('ping')

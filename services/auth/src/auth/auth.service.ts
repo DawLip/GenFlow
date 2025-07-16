@@ -41,7 +41,7 @@ export class AuthService implements OnModuleInit {
     const new_user = await firstValueFrom(this.userService.create(data));
     const token = this.generateToken(new_user.id);
 
-    return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token}, {context:"login"});
+    return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token, userId: new_user.id}, {context:"login"});
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {
@@ -54,7 +54,8 @@ export class AuthService implements OnModuleInit {
     const token = this.generateToken(user.user?.id);
     return this.handleSuccessResponse({
       res:{msg:"login successfull"},
-      accessToken: token
+      accessToken: token,
+      userId: user.user?.id
     }, {context:"login"});
   }
 

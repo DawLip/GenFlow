@@ -2,6 +2,8 @@ import { login, setLoading, setError } from '@web-ui/store/slices/authSlice';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 import { client } from '@web-ui/utils/apollo-client';
 import Cookies from 'js-cookie';
+import axios from 'axios';
+
 
 export const loginThunk = ({ email, password }:{ 
   email:string, 
@@ -13,22 +15,22 @@ export const loginThunk = ({ email, password }:{
   dispatch(setError(null)); 
 
   try {
-    const { data } = await client.mutate({
-      mutation: LOGIN,
-      variables: { email, password },
+    const {data} = await axios.post('http://localhost:3000/api/auth/login', {
+      email,
+      password,
     });
 
-    if(data.login.status=="SUCCESS") {
+    if(data.res.ok) {
       console.log("Login successful");
       
-      dispatch(login({token: data.login.access_token, userId: data.login.user._id}));
+      dispatch(login({token: data.accessToken, userId: data.userId}));
 
-      Cookies.set('token', data.login.access_token, { expires: 36500 });
-      Cookies.set('userId', data.login.user._id, { expires: 36500 });
+      Cookies.set('token', data.accessToken, { expires: 36500 });
+      Cookies.set('userId', data.userId, { expires: 36500 });
     }
     else {
-      console.error("Login failed:", data.login.status);
-      dispatch(setError(data.login.status));
+      console.error("Login failed:", data.res.msg);
+      dispatch(setError(data.res.msg));
     }
     
   } catch (err:any) {
@@ -36,15 +38,3 @@ export const loginThunk = ({ email, password }:{
     dispatch(setError(err.message));
   } finally { dispatch(setLoading(false)); }; 
 };
-
-const LOGIN = gql`
-  mutation login($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
-      status
-      user {
-        _id
-      }
-      access_token
-    }
-  }
-`;

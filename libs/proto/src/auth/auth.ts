@@ -33,6 +33,7 @@ export interface ValidateRequest {
 export interface AuthResponse {
   res: BaseResponse | undefined;
   accessToken: string;
+  userId: string;
 }
 
 export interface UserPayload {
@@ -358,7 +359,7 @@ export const ValidateRequest: MessageFns<ValidateRequest> = {
 };
 
 function createBaseAuthResponse(): AuthResponse {
-  return { res: undefined, accessToken: "" };
+  return { res: undefined, accessToken: "", userId: "" };
 }
 
 export const AuthResponse: MessageFns<AuthResponse> = {
@@ -368,6 +369,9 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     }
     if (message.accessToken !== "") {
       writer.uint32(18).string(message.accessToken);
+    }
+    if (message.userId !== "") {
+      writer.uint32(26).string(message.userId);
     }
     return writer;
   },
@@ -395,6 +399,14 @@ export const AuthResponse: MessageFns<AuthResponse> = {
           message.accessToken = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -408,6 +420,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     return {
       res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
       accessToken: isSet(object.accessToken) ? globalThis.String(object.accessToken) : "",
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
     };
   },
 
@@ -419,6 +432,9 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     if (message.accessToken !== "") {
       obj.accessToken = message.accessToken;
     }
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
     return obj;
   },
 
@@ -429,6 +445,7 @@ export const AuthResponse: MessageFns<AuthResponse> = {
     const message = createBaseAuthResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.accessToken = object.accessToken ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

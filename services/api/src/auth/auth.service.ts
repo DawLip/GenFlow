@@ -28,16 +28,16 @@ export class ApiAuthService implements OnModuleInit {
   }
 
   login(body: LoginRequest) {
-    if(!body.email) return this.apiService.handleValidationError({msg:"gRPC: Field 'email' is required"}, {context:"auth/login"});
-    if(!body.password) return this.apiService.handleValidationError({msg:"gRPC: Field 'password' is required"}, {context:"auth/login"});
+    if(!body.email) return this.apiService.handleValidationError({res:{msg:"Field 'email' is required"}}, {context:"auth/login"});
+    if(!body.password) return this.apiService.handleValidationError({res:{msg:"Field 'password' is required"}}, {context:"auth/login"});
 
     return this.grpcService.login(body);
   }
 
   register(body: RegisterRequest) {
-    if(!body.username) return this.apiService.handleValidationError({msg:"gRPC: Field 'username' is required"}, {context:"auth/register"});
-    if(!body.email) return this.apiService.handleValidationError({msg:"gRPC: Field 'email' is required"}, {context:"auth/register"});
-    if(!body.password) return this.apiService.handleValidationError({msg:"gRPC: Field 'password' is required"}, {context:"auth/register"});
+    if(!body.username) return this.apiService.handleValidationError({res:{msg:"Field 'username' is required"}}, {context:"auth/register"});
+    if(!body.email) return this.apiService.handleValidationError({res:{msg:"Field 'email' is required"}}, {context:"auth/register"});
+    if(!body.password) return this.apiService.handleValidationError({res:{msg:"Field 'password' is required"}}, {context:"auth/register"});
 
     return this.grpcService.register(body);
   }

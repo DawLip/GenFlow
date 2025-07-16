@@ -32,6 +32,7 @@ message ValidateRequest {
 message AuthResponse {
   BaseResponse res = 1;
   string access_token = 2;
+  string userId = 3;
 }
 
 message UserPayload {

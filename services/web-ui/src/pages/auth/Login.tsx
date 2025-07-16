@@ -15,8 +15,6 @@ export default function Page() {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>();
 
-  const token = useSelector((state: any) => state.auth.token);
-
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 

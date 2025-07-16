@@ -7,6 +7,8 @@ import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
 import { Socket } from 'socket.io';
+import { Server } from 'socket.io';
+
 
 
 interface AuthenticatedRequest extends Request {
@@ -15,6 +17,12 @@ interface AuthenticatedRequest extends Request {
 
 @Injectable()
 export class SocketService implements OnModuleInit {
+  private io: Server;
+
+  setServer(io: Server) {
+    this.io = io;
+  }
+
   constructor(private readonly logger: PinoLogger) {}
   @Client({
     transport: Transport.GRPC,
@@ -43,12 +51,19 @@ export class SocketService implements OnModuleInit {
       if(!payload?.id) return this.handleDisconetion(client, {token, context:"handleConnection"}, "auth failed", "error");
   
       client.data.user = payload;
+
+      client.join(`user-${payload.id}`);
   
       this.logger.info({socketID:client.id, userID:client.data.user.id, context:"handleConnection"}, `client connected`);
     }
 
   async getUserFromToken(token: string) {
     return await firstValueFrom(this.authService.validate({ token }));
+  }
+
+  emitToUser(userId: string, event: string, data: any) {
+    this.logger.info({response:{ res:{ok:true, status:"SUCCESS"}}, context:"emitToUser", payload:{data, event, userId} }, "message send");
+    this.io.to(`user-${userId}`).emit(event, data);
   }
 
   handleDisconetion(client: Socket, logData: any, msg: string, logType:string = "info"){

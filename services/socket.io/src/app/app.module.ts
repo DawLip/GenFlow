@@ -7,6 +7,7 @@ import { name } from '../../package.json';
 import { service_name } from '@shared/service_name'
 import { SocketGateway } from '@socket.io/app/socket.gateway';
 import { SocketService } from './socket.service';
+import { NotificationsGateway } from './notifications.gateway';
 
 const s_name = service_name(name);
 
@@ -26,7 +27,7 @@ const s_name = service_name(name);
       },
     }),
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, NotificationsGateway],
   providers: [SocketService, SocketGateway],
 })
 export class AppModule {}

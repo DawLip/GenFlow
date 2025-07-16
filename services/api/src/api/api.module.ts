@@ -14,6 +14,7 @@ import { ApiService } from '@api/api/api.service';
 import { services_config } from '@shared/services_config';
 import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
+import { SocketioModule } from '@api/socketio/socketio.module';
 
 
 const s_name = service_name(name);
@@ -37,7 +38,8 @@ const s_name = service_name(name);
     AuthModule,
     TeamModule,
     ProjectModule,
-    EmailModule
+    EmailModule,
+    SocketioModule
   ],
   controllers: [HealthController],
   providers: [

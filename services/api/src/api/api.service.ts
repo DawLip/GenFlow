@@ -72,4 +72,10 @@ export class ApiService implements OnModuleInit {
     this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
     return res;
   }
+
+  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
+    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
+    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
+    return res;
+  }
 }

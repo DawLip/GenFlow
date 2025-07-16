@@ -22,6 +22,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private readonly logger: PinoLogger
   ) {}
 
+  afterInit(server: Server) {
+    this.socketService.setServer(server);
+  }
+
   async handleConnection(client: Socket) {
     this.socketService.handleConnection(client);
   }
@@ -32,7 +36,6 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('ping')
   handlePing(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
-    console.log(`Received ping from ${client.id}:`, data);
     client.emit('pong', { msg: 'pong from server' });
   }
 }

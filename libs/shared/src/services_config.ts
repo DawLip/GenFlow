@@ -1,5 +1,7 @@
 export const services_config = {
   service_url:{
+    gateway_web_ui: 'http://localhost:3000',
+    
     gateway:'http://gateway:3000',
 
     rest:'http://api:3000',

@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 import { client } from '@web-ui/utils/apollo-client';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { services_config } from '@shared/services_config';
 
 export const registerThunk = (
   { email, username, password, rPassword }:{ 
@@ -17,7 +18,7 @@ export const registerThunk = (
   dispatch(setError(null)); 
 
   try {
-    const {data} = await axios.post('http://localhost:3000/api/auth/register', {
+    const {data} = await axios.post(`${services_config.service_url.gateway_web_ui}/api/auth/register`, {
       username,
       email,
       password,

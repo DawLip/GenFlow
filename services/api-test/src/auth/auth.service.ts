@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { services_config } from '@shared/services_config';
 import { AuthServiceClient } from '@proto/auth/auth.client';
 import { LoginRequest, RegisterRequest } from '@proto/auth/auth';
-import { ApiService } from '@api/api/api.service';
+import { ApiService } from '@api-test/api/api.service';
 
 @Injectable()
 export class ApiAuthService implements OnModuleInit {

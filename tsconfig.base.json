@@ -25,7 +25,7 @@
     "baseUrl": ".",
     "paths": {
       "@gateway/*": ["services/gateway/src/*"],
-      "@api/*": ["services/api/src/*"],
+      "@api-test/*": ["services/api-test/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
 

@@ -2,7 +2,7 @@ import { Controller, Post, Body, Req } from '@nestjs/common';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, JoinRequest, LeaveResponse, UpdateResponse, CreateResponse, FindResponse, JoinResponse, LeaveRequest } from '@proto/team/team';
 import { ApiSocketioService } from './socketio.service';
 
-import type { AuthenticatedRequest } from '@api/types/authenticated-request';
+import type { AuthenticatedRequest } from '@api-test/types/authenticated-request';
 
 @Controller('socketio')
 export class ApiSocketioController {
@@ -10,7 +10,6 @@ export class ApiSocketioController {
 
   @Post('send')
   create(@Body() body: any, @Req() req: AuthenticatedRequest): Promise<any> {
-    console.log(body)
     return this.socketioService.send(body, req);
   }
 }

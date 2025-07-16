@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { Public } from '@api/guards/auth.public';
-import { ApiAuthService } from '@api/auth/auth.service';
+import { Public } from '@api-test/guards/auth.public';
+import { ApiAuthService } from '@api-test/auth/auth.service';
 import { LoginRequest, RegisterRequest } from '@proto/auth/auth';
 
 @Controller('auth')

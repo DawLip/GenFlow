@@ -6,9 +6,9 @@ import { services_config } from '@shared/services_config';
 import { ProjectServiceClient } from '@proto/project/project.client';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateFlowResponse, UpdateFlowRequest } from '@proto/project/project';
 
-import { ApiService } from '@api/api/api.service';
+import { ApiService } from '@api-test/api/api.service';
 
-import { AuthenticatedRequest } from '@api/types/authenticated-request';
+import { AuthenticatedRequest } from '@api-test/types/authenticated-request';
 
 @Injectable()
 export class ApiProjectService implements OnModuleInit {

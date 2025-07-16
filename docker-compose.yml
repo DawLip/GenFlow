@@ -5,16 +5,16 @@ services:
       file: compose/gateway.yml
       service: gateway
     depends_on:
-      - api
+      - api-test
       - graphql
       - socket.io
     networks:
       monitoring:
 
-  api:
+  api-test:
     extends:
-      file: compose/api.yml
-      service: api
+      file: compose/api-test.yml
+      service: api-test
     networks:
       monitoring:
 

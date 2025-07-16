@@ -1,8 +1,8 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientGrpc, ClientProxy, Transport } from '@nestjs/microservices';
 
-import { AuthenticatedRequest } from '@api/types/authenticated-request';
-import { ApiService } from '@api/api/api.service';
+import { AuthenticatedRequest } from '@api-test/types/authenticated-request';
+import { ApiService } from '@api-test/api/api.service';
 
 @Injectable()
 export class ApiEmailService {
@@ -12,7 +12,6 @@ export class ApiEmailService {
   ) {}
 
   async send(body: { to: string; subject: string; body: string }, req: AuthenticatedRequest) {
-
     this.emailClient.emit('send_email', {
       to: body.to || "default 'to'",
       subject: body.subject || "default 'subject'",

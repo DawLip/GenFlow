@@ -4,7 +4,8 @@ export const services_config = {
     
     gateway:'http://gateway:3000',
 
-    rest:'http://api:3000',
+    api:'http://api:3000',
+    api_test:'http://api-test:3000',
     graphql:'http://graphql:3000',
     socketio:'http://socket.io:3000',
 

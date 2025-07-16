@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core'; 
 import { LoggerModule } from 'nestjs-pino';
 
-import { AuthModule } from '@api/auth/auth.module';
-import { ProjectModule } from '@api/project/project.module';
-import { TeamModule } from '@api/team/team.module';
-import { EmailModule } from '@api/email/email.module';
+import { AuthModule } from '@api-test/auth/auth.module';
+import { ProjectModule } from '@api-test/project/project.module';
+import { TeamModule } from '@api-test/team/team.module';
+import { EmailModule } from '@api-test/email/email.module';
 
-import { AuthGuard } from '@api/guards/auth.guard';
-import { HealthController } from '@api/api/health.controller';
-import { ApiService } from '@api/api/api.service';
+import { AuthGuard } from '@api-test/guards/auth.guard';
+import { HealthController } from '@api-test/api/health.controller';
+import { ApiService } from '@api-test/api/api.service';
 
 import { services_config } from '@shared/services_config';
 import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
-import { SocketioModule } from '@api/socketio/socketio.module';
+import { SocketioModule } from '@api-test/socketio/socketio.module';
 
 
 const s_name = service_name(name);

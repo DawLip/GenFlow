@@ -1,0 +1,13 @@
+services:
+  api-test:
+    build:
+      context: .
+      dockerfile: ../services/api-test/Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve api-test

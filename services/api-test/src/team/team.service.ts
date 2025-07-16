@@ -6,8 +6,8 @@ import { services_config } from '@shared/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, JoinRequest, JoinResponse, LeaveRequest } from '@proto/team/team';
 
-import { AuthenticatedRequest } from '@api/types/authenticated-request';
-import { ApiService } from '@api/api/api.service';
+import { AuthenticatedRequest } from '@api-test/types/authenticated-request';
+import { ApiService } from '@api-test/api/api.service';
 
 @Injectable()
 export class ApiTeamService implements OnModuleInit {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ApiTeamController } from './team.controller';
 import { ApiTeamService } from './team.service';
-import { ApiService } from '@api/api/api.service';
+import { ApiService } from '@api-test/api/api.service';
 
 @Module({
   controllers: [ApiTeamController],

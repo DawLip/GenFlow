@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { ApiModule } from '@api/api/api.module';
+import { ApiModule } from '@api-test/api/api.module';
 
 import { Logger } from 'nestjs-pino';
 

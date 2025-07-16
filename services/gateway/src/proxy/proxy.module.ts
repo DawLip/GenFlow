@@ -12,13 +12,13 @@ export class ProxyModule implements NestModule {
           next(); 
         },
         createProxyMiddleware({
-          target: services_config.service_url.rest,
+          target: services_config.service_url.api_test,
           changeOrigin: true,
-          pathRewrite: { '^/api': '' },
+          pathRewrite: { '^/api-test': '' },
           selfHandleResponse: false,
         }),
       )
-      .forRoutes('/api');
+      .forRoutes('/api-test');
 
     consumer
       .apply(

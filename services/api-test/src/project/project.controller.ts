@@ -1,9 +1,8 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateResponse, UpdateResponse, CreateFlowResponse, UpdateFlowRequest, UpdateFlowResponse } from '@proto/project/project';
 import { ApiProjectService } from './project.service';
-import { ApiService } from '@api/api/api.service';
 
-import type { AuthenticatedRequest } from '@api/types/authenticated-request';
+import type { AuthenticatedRequest } from '@api-test/types/authenticated-request';
 
 @Controller('project')
 export class ApiProjectController {

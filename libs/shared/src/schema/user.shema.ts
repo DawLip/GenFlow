@@ -13,6 +13,12 @@ export class User {
 
   @Prop({ required: true })
   password!: string;
+
+  @Prop({ required: true })
+  emailConfirmed!: boolean;
+
+  @Prop({ required: true })
+  confirmCode!: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

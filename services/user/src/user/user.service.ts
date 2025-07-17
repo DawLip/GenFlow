@@ -19,7 +19,11 @@ export class UserService {
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
-    const createdUser:User|any = await this.userModel.create(data);
+    const createdUser:User|any = await this.userModel.create({
+      emailConfirmed: false,
+      confirmCode: this.generateConfidmCode(),
+      ...data
+    });
     this.logger.info({input: data, user: createdUser, context:"create"}, "User created")
     return {
       id: createdUser._id.toString(),
@@ -97,5 +101,9 @@ export class UserService {
     const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
     this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
     return res;
+  }
+
+  generateConfidmCode(){
+    return Math.floor(1000 + Math.random() * 9000);;
   }
 }

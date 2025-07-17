@@ -15,6 +15,7 @@ import { services_config } from '@shared/services_config';
 import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
 import { SocketioModule } from '@api-test/socketio/socketio.module';
+import { UserModule } from '@api-test/user/user.module';
 
 
 const s_name = service_name(name);
@@ -36,6 +37,7 @@ const s_name = service_name(name);
       },
     }),
     AuthModule,
+    UserModule,
     TeamModule,
     ProjectModule,
     EmailModule,

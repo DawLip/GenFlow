@@ -51,5 +51,7 @@ message UserResponse{
   string email = 2;
   string username = 3;
   string password = 4;
+  bool emailConfirmed = 5;
+  string confirmCode = 6;
 }
 

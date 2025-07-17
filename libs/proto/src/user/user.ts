@@ -51,6 +51,8 @@ export interface UserResponse {
   email: string;
   username: string;
   password: string;
+  emailConfirmed: boolean;
+  confirmCode: string;
 }
 
 function createBaseCreateRequest(): CreateRequest {
@@ -616,7 +618,7 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseUserResponse(): UserResponse {
-  return { id: "", email: "", username: "", password: "" };
+  return { id: "", email: "", username: "", password: "", emailConfirmed: false, confirmCode: "" };
 }
 
 export const UserResponse: MessageFns<UserResponse> = {
@@ -632,6 +634,12 @@ export const UserResponse: MessageFns<UserResponse> = {
     }
     if (message.password !== "") {
       writer.uint32(34).string(message.password);
+    }
+    if (message.emailConfirmed !== false) {
+      writer.uint32(40).bool(message.emailConfirmed);
+    }
+    if (message.confirmCode !== "") {
+      writer.uint32(50).string(message.confirmCode);
     }
     return writer;
   },
@@ -675,6 +683,22 @@ export const UserResponse: MessageFns<UserResponse> = {
           message.password = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.emailConfirmed = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.confirmCode = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -690,6 +714,8 @@ export const UserResponse: MessageFns<UserResponse> = {
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       password: isSet(object.password) ? globalThis.String(object.password) : "",
+      emailConfirmed: isSet(object.emailConfirmed) ? globalThis.Boolean(object.emailConfirmed) : false,
+      confirmCode: isSet(object.confirmCode) ? globalThis.String(object.confirmCode) : "",
     };
   },
 
@@ -707,6 +733,12 @@ export const UserResponse: MessageFns<UserResponse> = {
     if (message.password !== "") {
       obj.password = message.password;
     }
+    if (message.emailConfirmed !== false) {
+      obj.emailConfirmed = message.emailConfirmed;
+    }
+    if (message.confirmCode !== "") {
+      obj.confirmCode = message.confirmCode;
+    }
     return obj;
   },
 
@@ -719,6 +751,8 @@ export const UserResponse: MessageFns<UserResponse> = {
     message.email = object.email ?? "";
     message.username = object.username ?? "";
     message.password = object.password ?? "";
+    message.emailConfirmed = object.emailConfirmed ?? false;
+    message.confirmCode = object.confirmCode ?? "";
     return message;
   },
 };

@@ -26,6 +26,20 @@ export class ProxyModule implements NestModule {
           next(); 
         },
         createProxyMiddleware({
+          target: services_config.service_url.api,
+          changeOrigin: true,
+          pathRewrite: { '^/api': '' },
+          selfHandleResponse: false,
+        }),
+      )
+      .forRoutes('/api');
+
+    consumer
+      .apply(
+        (req: Request, res: Response, next: NextFunction) => {
+          next(); 
+        },
+        createProxyMiddleware({
           target: services_config.service_url.graphql,
           changeOrigin: true,
           selfHandleResponse: false,

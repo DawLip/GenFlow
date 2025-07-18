@@ -23,8 +23,7 @@ export interface CreateResponse {
 
 export interface UpdateRequest {
   id: string;
-  field: string;
-  value: string;
+  user: User | undefined;
 }
 
 export interface UpdateResponse {
@@ -43,10 +42,10 @@ export interface FindOneByEmailRequest {
 export interface FindResponse {
   status: string;
   msg: string;
-  user?: UserResponse | undefined;
+  user?: User | undefined;
 }
 
-export interface UserResponse {
+export interface User {
   id: string;
   email: string;
   username: string;
@@ -240,7 +239,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
 };
 
 function createBaseUpdateRequest(): UpdateRequest {
-  return { id: "", field: "", value: "" };
+  return { id: "", user: undefined };
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
@@ -248,11 +247,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.field !== "") {
-      writer.uint32(18).string(message.field);
-    }
-    if (message.value !== "") {
-      writer.uint32(26).string(message.value);
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -277,15 +273,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.field = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.value = reader.string();
+          message.user = User.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -300,8 +288,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      field: isSet(object.field) ? globalThis.String(object.field) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
     };
   },
 
@@ -310,11 +297,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.field !== "") {
-      obj.field = message.field;
-    }
-    if (message.value !== "") {
-      obj.value = message.value;
+    if (message.user !== undefined) {
+      obj.user = User.toJSON(message.user);
     }
     return obj;
   },
@@ -325,8 +309,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromPartial(object: DeepPartial<UpdateRequest>): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? "";
-    message.field = object.field ?? "";
-    message.value = object.value ?? "";
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
 };
@@ -536,7 +519,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       writer.uint32(18).string(message.msg);
     }
     if (message.user !== undefined) {
-      UserResponse.encode(message.user, writer.uint32(26).fork()).join();
+      User.encode(message.user, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -569,7 +552,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.user = UserResponse.decode(reader, reader.uint32());
+          message.user = User.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -585,7 +568,7 @@ export const FindResponse: MessageFns<FindResponse> = {
     return {
       status: isSet(object.status) ? globalThis.String(object.status) : "",
       msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
-      user: isSet(object.user) ? UserResponse.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
     };
   },
 
@@ -598,7 +581,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       obj.msg = message.msg;
     }
     if (message.user !== undefined) {
-      obj.user = UserResponse.toJSON(message.user);
+      obj.user = User.toJSON(message.user);
     }
     return obj;
   },
@@ -610,19 +593,17 @@ export const FindResponse: MessageFns<FindResponse> = {
     const message = createBaseFindResponse();
     message.status = object.status ?? "";
     message.msg = object.msg ?? "";
-    message.user = (object.user !== undefined && object.user !== null)
-      ? UserResponse.fromPartial(object.user)
-      : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
 };
 
-function createBaseUserResponse(): UserResponse {
+function createBaseUser(): User {
   return { id: "", email: "", username: "", password: "", emailConfirmed: false, confirmCode: "" };
 }
 
-export const UserResponse: MessageFns<UserResponse> = {
-  encode(message: UserResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const User: MessageFns<User> = {
+  encode(message: User, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -644,10 +625,10 @@ export const UserResponse: MessageFns<UserResponse> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): UserResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): User {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUserResponse();
+    const message = createBaseUser();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -708,7 +689,7 @@ export const UserResponse: MessageFns<UserResponse> = {
     return message;
   },
 
-  fromJSON(object: any): UserResponse {
+  fromJSON(object: any): User {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
@@ -719,7 +700,7 @@ export const UserResponse: MessageFns<UserResponse> = {
     };
   },
 
-  toJSON(message: UserResponse): unknown {
+  toJSON(message: User): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -742,11 +723,11 @@ export const UserResponse: MessageFns<UserResponse> = {
     return obj;
   },
 
-  create(base?: DeepPartial<UserResponse>): UserResponse {
-    return UserResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<User>): User {
+    return User.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<UserResponse>): UserResponse {
-    const message = createBaseUserResponse();
+  fromPartial(object: DeepPartial<User>): User {
+    const message = createBaseUser();
     message.id = object.id ?? "";
     message.email = object.email ?? "";
     message.username = object.username ?? "";

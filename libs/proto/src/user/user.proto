@@ -23,8 +23,7 @@ message CreateResponse {
 
 message UpdateRequest {
   string id = 1;
-  string field = 2;
-  string value = 3;
+  User user = 2;
 }
 
 message UpdateResponse {
@@ -43,10 +42,10 @@ message FindOneByEmailRequest {
 message FindResponse {
   string status = 1;
   string msg = 2;
-  optional UserResponse user = 3;
+  optional User user = 3;
 }
 
-message UserResponse{
+message User{
   string id = 1;
   string email = 2;
   string username = 3;

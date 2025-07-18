@@ -5,9 +5,17 @@ services:
       file: compose/gateway.yml
       service: gateway
     depends_on:
+      - api
       - api-test
       - graphql
       - socket.io
+    networks:
+      monitoring:
+
+  api:
+    extends:
+      file: compose/api.yml
+      service: api
     networks:
       monitoring:
 
@@ -34,6 +42,9 @@ services:
         aliases: [socket.io]
     depends_on:
       - auth
+      - user
+      - project
+      - team
 # Services
   web-ui:
     extends:

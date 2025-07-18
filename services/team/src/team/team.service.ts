@@ -29,7 +29,7 @@ export class TeamService {
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedTeam = await this.teamModel.findByIdAndUpdate(
       data.id,
-      { ...data },
+      { ...data.team },
       { new: true },
     );
 

@@ -28,8 +28,7 @@ message CreateResponse {
 
 message UpdateRequest {
   string id = 1;
-  string field = 2;
-  string value = 3;
+  Team team = 2;
 }
 message UpdateResponse {
   BaseResponse res = 1;
@@ -40,7 +39,7 @@ message FindOneByIdRequest {
 }
 message FindResponse {
   BaseResponse res = 1;
-  optional TeamResponse team = 3;
+  optional Team team = 3;
 }
 
 message JoinRequest {
@@ -59,7 +58,7 @@ message LeaveResponse {
   BaseResponse res = 1;
 }
 
-message TeamResponse{
+message Team{
   string id = 1;
   string name = 2;
   string owner = 3;

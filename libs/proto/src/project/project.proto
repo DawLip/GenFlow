@@ -9,6 +9,7 @@ service ProjectService {
 
   rpc CreateFlow(CreateFlowRequest) returns (CreateFlowResponse);
   rpc UpdateFlow(UpdateFlowRequest) returns (UpdateFlowResponse);
+  rpc FindOneByNameFlow(FindOneByNameFlowRequest) returns (FindFlowResponse);
 }
 
 message BaseResponse {
@@ -30,8 +31,7 @@ message CreateResponse {
 
 message UpdateRequest {
   string id = 1;
-  string field = 2;
-  string value = 3;
+  Project project = 2;
 }
 message UpdateResponse {
   BaseResponse res = 1;
@@ -57,11 +57,19 @@ message CreateFlowResponse {
 message UpdateFlowRequest {
   string id = 1;
   string flowName = 2;
-  string field = 3;
-  string value = 4;
+  Flow flow = 3;
 }
 message UpdateFlowResponse {
   BaseResponse res = 1;
+}
+
+message FindOneByNameFlowRequest {
+  string id = 1;
+  string flowName = 2;
+}
+message FindFlowResponse {
+  string id = 1;
+  Flow flow = 2;
 }
 
 message Project{

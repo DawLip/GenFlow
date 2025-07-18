@@ -28,8 +28,7 @@ export interface CreateResponse {
 
 export interface UpdateRequest {
   id: string;
-  field: string;
-  value: string;
+  team: Team | undefined;
 }
 
 export interface UpdateResponse {
@@ -42,7 +41,7 @@ export interface FindOneByIdRequest {
 
 export interface FindResponse {
   res: BaseResponse | undefined;
-  team?: TeamResponse | undefined;
+  team?: Team | undefined;
 }
 
 export interface JoinRequest {
@@ -63,7 +62,7 @@ export interface LeaveResponse {
   res: BaseResponse | undefined;
 }
 
-export interface TeamResponse {
+export interface Team {
   id: string;
   name: string;
   owner: string;
@@ -331,7 +330,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
 };
 
 function createBaseUpdateRequest(): UpdateRequest {
-  return { id: "", field: "", value: "" };
+  return { id: "", team: undefined };
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
@@ -339,11 +338,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.field !== "") {
-      writer.uint32(18).string(message.field);
-    }
-    if (message.value !== "") {
-      writer.uint32(26).string(message.value);
+    if (message.team !== undefined) {
+      Team.encode(message.team, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -368,15 +364,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.field = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.value = reader.string();
+          message.team = Team.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -391,8 +379,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      field: isSet(object.field) ? globalThis.String(object.field) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      team: isSet(object.team) ? Team.fromJSON(object.team) : undefined,
     };
   },
 
@@ -401,11 +388,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.field !== "") {
-      obj.field = message.field;
-    }
-    if (message.value !== "") {
-      obj.value = message.value;
+    if (message.team !== undefined) {
+      obj.team = Team.toJSON(message.team);
     }
     return obj;
   },
@@ -416,8 +400,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromPartial(object: DeepPartial<UpdateRequest>): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? "";
-    message.field = object.field ?? "";
-    message.value = object.value ?? "";
+    message.team = (object.team !== undefined && object.team !== null) ? Team.fromPartial(object.team) : undefined;
     return message;
   },
 };
@@ -548,7 +531,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.team !== undefined) {
-      TeamResponse.encode(message.team, writer.uint32(26).fork()).join();
+      Team.encode(message.team, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -573,7 +556,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.team = TeamResponse.decode(reader, reader.uint32());
+          message.team = Team.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -588,7 +571,7 @@ export const FindResponse: MessageFns<FindResponse> = {
   fromJSON(object: any): FindResponse {
     return {
       res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
-      team: isSet(object.team) ? TeamResponse.fromJSON(object.team) : undefined,
+      team: isSet(object.team) ? Team.fromJSON(object.team) : undefined,
     };
   },
 
@@ -598,7 +581,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       obj.res = BaseResponse.toJSON(message.res);
     }
     if (message.team !== undefined) {
-      obj.team = TeamResponse.toJSON(message.team);
+      obj.team = Team.toJSON(message.team);
     }
     return obj;
   },
@@ -609,9 +592,7 @@ export const FindResponse: MessageFns<FindResponse> = {
   fromPartial(object: DeepPartial<FindResponse>): FindResponse {
     const message = createBaseFindResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
-    message.team = (object.team !== undefined && object.team !== null)
-      ? TeamResponse.fromPartial(object.team)
-      : undefined;
+    message.team = (object.team !== undefined && object.team !== null) ? Team.fromPartial(object.team) : undefined;
     return message;
   },
 };
@@ -884,12 +865,12 @@ export const LeaveResponse: MessageFns<LeaveResponse> = {
   },
 };
 
-function createBaseTeamResponse(): TeamResponse {
+function createBaseTeam(): Team {
   return { id: "", name: "", owner: "", members: [] };
 }
 
-export const TeamResponse: MessageFns<TeamResponse> = {
-  encode(message: TeamResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const Team: MessageFns<Team> = {
+  encode(message: Team, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -905,10 +886,10 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): TeamResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): Team {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTeamResponse();
+    const message = createBaseTeam();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -953,7 +934,7 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     return message;
   },
 
-  fromJSON(object: any): TeamResponse {
+  fromJSON(object: any): Team {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
@@ -962,7 +943,7 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     };
   },
 
-  toJSON(message: TeamResponse): unknown {
+  toJSON(message: Team): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -979,11 +960,11 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     return obj;
   },
 
-  create(base?: DeepPartial<TeamResponse>): TeamResponse {
-    return TeamResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<Team>): Team {
+    return Team.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<TeamResponse>): TeamResponse {
-    const message = createBaseTeamResponse();
+  fromPartial(object: DeepPartial<Team>): Team {
+    const message = createBaseTeam();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";

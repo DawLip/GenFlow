@@ -6,7 +6,7 @@
     {"path": "./libs/shared"},
 
     {"path": "./services/gateway"},
-    // {"path": "./services/api"},
+    {"path": "./services/api"},
     {"path": "./services/api-test"},
     {"path": "./services/socket.io"},
 
@@ -22,7 +22,7 @@
    "compilerOptions": {
     "paths": {
       "@gateway/*": ["services/gateway/src/*"],
-      // "@api/*": ["services/api/src/*"],
+      "@api/*": ["services/api/src/*"],
       "@api-test/*": ["services/api-test/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],

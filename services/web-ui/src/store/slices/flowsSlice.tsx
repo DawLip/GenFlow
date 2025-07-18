@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from '@xyflow/react';
 import {
   FlowState
-} from '@store/flow.type';
+} from '@web-ui/store/flow.type';
 import { defaultNode } from './defaults/defaultNode';
 
 const initialState: FlowState = {

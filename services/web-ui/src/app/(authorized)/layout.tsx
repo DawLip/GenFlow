@@ -7,9 +7,13 @@ import { Nav } from '@web-ui/components/Nav';
 
 import { useAuth } from '@web-ui/hooks/useAuth';
 import { socket, SocketContext } from '@web-ui/socket/socket';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '@web-ui/store';
+import { fetchClientThunk } from '@web-ui/store/thunks/auth/fetchClientThunk';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const dispatch = useDispatch<AppDispatch>();
+  
   useAuth();
   
   const token = useSelector((state: any) => state.auth.token);
@@ -26,7 +30,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     socket?.on('connect_error', (error:any) => {
       console.error('Socket connection error:', error);
     });
+    return () => {
+      socket?.off('connect');
+      socket?.off('disconnect');
+      socket?.off('connect_error');
+      socket?.disconnect();
+    }
   },[socket, token])
+
+  useEffect(() => {
+    dispatch(fetchClientThunk())
+  }, []);
 
 
   return (

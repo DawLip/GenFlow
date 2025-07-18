@@ -21,15 +21,16 @@ export class UserService {
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdUser:User|any = await this.userModel.create({
       emailConfirmed: false,
-      confirmCode: this.generateConfidmCode(),
+      confirmCode: this.generateConfirmCode(),
       ...data
     });
-    this.logger.info({input: data, user: createdUser, context:"create"}, "User created")
-    return {
-      id: createdUser._id.toString(),
-      status: "SUCCESS",
-      msg: "User created",
-    };
+
+    return this.handleSuccessResponse({
+        res:{msg:"user created"},
+        user: {
+          ...createdUser,
+          id: createdUser._id.toString(),
+      }}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedUser = await this.userModel.findByIdAndUpdate(
@@ -38,57 +39,33 @@ export class UserService {
       { new: true },
     );
 
-    if (!updatedUser) {
-      this.logger.warn({input: data, user: updatedUser, context:"update"}, "User not found")
-      return { status: 'ERROR', msg: 'User not found' };
-    }
+    if (!updatedUser) return this.handleValidationError({res:{msg:"user not found"}}, {context:"update"});
 
-    this.logger.info({input: data, user: updatedUser, context:"update"}, "User created")
-    return {
-      status: 'SUCCESS',
-      msg: 'User updated',
-    };
+    return this.handleSuccessResponse({res:{msg:"user updated"}}, {context:"update"});
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const user = await this.userModel.findById(data.id).lean();
 
-    if (!user) {
-      this.logger.warn({input: data, user: user, context:"findOneById"}, "User not found")
-      return {
-        status: 'ERROR',
-        msg: 'User not found',
-      };
-    }
+    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneById"});
 
-    this.logger.info({input: data, user: user, context:"findOneById"}, "User found")
-    return {
-      status: 'SUCCESS',
-      msg: 'User found',
-      user: {
+    return this.handleSuccessResponse({
+        res:{msg:"user found"},
+        user: {
         ...user,
         id: user._id.toString(),
-      },
-    };
+      }}, {context:"findOneById"});
   }
   async findOneByEmail(data:FindOneByEmailRequest):Promise<FindResponse> {
     const user = await this.userModel.findOne({ email: data.email }).lean();
 
-    if (!user) {
-      this.logger.warn({input: data, user: user, context:"findOneByEmail"}, "User not found")
-      return {
-        status: 'ERROR',
-        msg: 'User not found',
-      };
-    }
+    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneByEmail"});
 
-    return this.handleSuccessResponse(
-      {
-        res:{msg:"user found"},
-        user: {
-          ...user,
-          id: user._id.toString(),
-        }
-      }, {context:"findOneByEmail"});
+    return this.handleSuccessResponse({
+      res:{msg:"user found"},
+      user: {
+        ...user,
+        id: user._id.toString(),
+      }}, {context:"findOneByEmail"});
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {
@@ -103,7 +80,7 @@ export class UserService {
     return res;
   }
 
-  generateConfidmCode(){
-    return Math.floor(1000 + Math.random() * 9000);;
+  generateConfirmCode(){
+    return Math.floor(100000 + Math.random() * 900000);
   }
 }

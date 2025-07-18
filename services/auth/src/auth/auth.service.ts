@@ -35,13 +35,14 @@ export class AuthService implements OnModuleInit {
 
   async register(data: RegisterRequest): Promise<AuthResponse> {
     const user = await firstValueFrom(this.userService.findOneByEmail(data));
-
     if (user.user) return this.handleValidationError({res:{msg:"email is already taken"},}, {context:"register"});
 
     const new_user = await firstValueFrom(this.userService.create(data));
-    const token = this.generateToken(new_user.id);
 
-    return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token, userId: new_user.id}, {context:"login"});
+    if (!new_user.res?.ok) return this.handleValidationError({res:{msg:"user creation failed"},}, {context:"register", new_user});
+    const token = this.generateToken("");
+
+    return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token, userId: new_user.user?.id}, {context:"login"});
   }
 
   async login(data: LoginRequest): Promise<AuthResponse> {
@@ -49,7 +50,6 @@ export class AuthService implements OnModuleInit {
 
     if (!user.user) return this.handleValidationError({res:{msg:"user not found"},}, {context:"login"});
     if (user.user.password !== data.password) return this.handleValidationError({res:{msg:"wrong password"}}, {context:"login"});
-    
 
     const token = this.generateToken(user.user?.id);
     return this.handleSuccessResponse({

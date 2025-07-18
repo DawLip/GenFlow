@@ -9,40 +9,40 @@ service UserService {
   rpc FindOneByEmail (FindOneByEmailRequest) returns (FindResponse);
 }
 
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
 message CreateRequest {
   string email = 1;
   string username = 2;
   string password = 3;
 }
-
 message CreateResponse {
-  string id = 1;
-  string status = 2;
-  string msg = 3;
+  BaseResponse res = 1;
+  User user = 2;
 }
 
 message UpdateRequest {
   string id = 1;
   User user = 2;
 }
-
 message UpdateResponse {
-  string status = 1;
-  string msg = 2;
+  BaseResponse res = 1;
 }
 
 message FindOneByIdRequest {
   string id = 1;
 }
-
 message FindOneByEmailRequest {
   string email = 1;
 }
 
 message FindResponse {
-  string status = 1;
-  string msg = 2;
-  optional User user = 3;
+  BaseResponse res = 1;
+  optional User user = 2;
 }
 
 message User{

@@ -8,6 +8,7 @@ import { AuthService } from '@auth/auth/auth.service';
 import { name } from '../../package.json';
 import { service_name } from '@libs/shared/src/service_name'
 import { services_config } from '@libs/shared/src/services_config';
+import { EmailProvider } from './email.provider';
 
 const s_name = service_name(name);
 
@@ -28,6 +29,6 @@ const s_name = service_name(name);
     }),
   ],
   controllers: [HealthController, AuthController],
-  providers: [AuthService],
+  providers: [AuthService, EmailProvider],
 })
 export class AuthModule {}

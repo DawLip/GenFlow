@@ -28,7 +28,7 @@ export interface CreateResponse {
 
 export interface UpdateRequest {
   id: string;
-  user: User | undefined;
+  user: UserOptional | undefined;
 }
 
 export interface UpdateResponse {
@@ -46,6 +46,15 @@ export interface FindOneByEmailRequest {
 export interface FindResponse {
   res: BaseResponse | undefined;
   user?: User | undefined;
+}
+
+export interface UserOptional {
+  id?: string | undefined;
+  email?: string | undefined;
+  username?: string | undefined;
+  password?: string | undefined;
+  emailConfirmed?: boolean | undefined;
+  confirmCode?: string | undefined;
 }
 
 export interface User {
@@ -327,7 +336,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       writer.uint32(10).string(message.id);
     }
     if (message.user !== undefined) {
-      User.encode(message.user, writer.uint32(18).fork()).join();
+      UserOptional.encode(message.user, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -352,7 +361,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.user = User.decode(reader, reader.uint32());
+          message.user = UserOptional.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -367,7 +376,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
+      user: isSet(object.user) ? UserOptional.fromJSON(object.user) : undefined,
     };
   },
 
@@ -377,7 +386,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
       obj.id = message.id;
     }
     if (message.user !== undefined) {
-      obj.user = User.toJSON(message.user);
+      obj.user = UserOptional.toJSON(message.user);
     }
     return obj;
   },
@@ -388,7 +397,9 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromPartial(object: DeepPartial<UpdateRequest>): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? "";
-    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    message.user = (object.user !== undefined && object.user !== null)
+      ? UserOptional.fromPartial(object.user)
+      : undefined;
     return message;
   },
 };
@@ -639,6 +650,153 @@ export const FindResponse: MessageFns<FindResponse> = {
     const message = createBaseFindResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseUserOptional(): UserOptional {
+  return {
+    id: undefined,
+    email: undefined,
+    username: undefined,
+    password: undefined,
+    emailConfirmed: undefined,
+    confirmCode: undefined,
+  };
+}
+
+export const UserOptional: MessageFns<UserOptional> = {
+  encode(message: UserOptional, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.username !== undefined) {
+      writer.uint32(26).string(message.username);
+    }
+    if (message.password !== undefined) {
+      writer.uint32(34).string(message.password);
+    }
+    if (message.emailConfirmed !== undefined) {
+      writer.uint32(40).bool(message.emailConfirmed);
+    }
+    if (message.confirmCode !== undefined) {
+      writer.uint32(50).string(message.confirmCode);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UserOptional {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserOptional();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.emailConfirmed = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.confirmCode = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UserOptional {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+      emailConfirmed: isSet(object.emailConfirmed) ? globalThis.Boolean(object.emailConfirmed) : undefined,
+      confirmCode: isSet(object.confirmCode) ? globalThis.String(object.confirmCode) : undefined,
+    };
+  },
+
+  toJSON(message: UserOptional): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = message.id;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    if (message.password !== undefined) {
+      obj.password = message.password;
+    }
+    if (message.emailConfirmed !== undefined) {
+      obj.emailConfirmed = message.emailConfirmed;
+    }
+    if (message.confirmCode !== undefined) {
+      obj.confirmCode = message.confirmCode;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UserOptional>): UserOptional {
+    return UserOptional.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UserOptional>): UserOptional {
+    const message = createBaseUserOptional();
+    message.id = object.id ?? undefined;
+    message.email = object.email ?? undefined;
+    message.username = object.username ?? undefined;
+    message.password = object.password ?? undefined;
+    message.emailConfirmed = object.emailConfirmed ?? undefined;
+    message.confirmCode = object.confirmCode ?? undefined;
     return message;
   },
 };

@@ -13,13 +13,16 @@ const clientSlice = createSlice({
   },
   reducers: {
     setClient: (state, action) => {
-      console.log("test");
-      console.log("Setting client data:", action.payload);
       state.userId = action.payload.userId;
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.emailConfirmed = action.payload.emailConfirmed;
       state.loading = false;
+      state.error = null;
+    },
+    confirmEmail: (state, action) => {
+      state.emailConfirmed = true;
+      state.confirmCode = '';
       state.error = null;
     },
     setLoading: (state, action) => {
@@ -31,5 +34,5 @@ const clientSlice = createSlice({
   },
 });
 
-export const { setClient, setLoading, setError } = clientSlice.actions;
+export const { setClient, setLoading, setError, confirmEmail } = clientSlice.actions;
 export default clientSlice.reducer;

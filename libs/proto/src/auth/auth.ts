@@ -40,6 +40,23 @@ export interface UserPayload {
   id: string;
 }
 
+export interface VerifyEmailRequest {
+  id: string;
+  verificationCode: string;
+}
+
+export interface VerifyEmailResponse {
+  res: BaseResponse | undefined;
+}
+
+export interface SendVerificationEmailRequest {
+  id: string;
+}
+
+export interface SendVerificationEmailResponse {
+  res: BaseResponse | undefined;
+}
+
 function createBaseBaseResponse(): BaseResponse {
   return { status: "", msg: "", ok: false };
 }
@@ -504,6 +521,256 @@ export const UserPayload: MessageFns<UserPayload> = {
   fromPartial(object: DeepPartial<UserPayload>): UserPayload {
     const message = createBaseUserPayload();
     message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseVerifyEmailRequest(): VerifyEmailRequest {
+  return { id: "", verificationCode: "" };
+}
+
+export const VerifyEmailRequest: MessageFns<VerifyEmailRequest> = {
+  encode(message: VerifyEmailRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.verificationCode !== "") {
+      writer.uint32(18).string(message.verificationCode);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): VerifyEmailRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVerifyEmailRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.verificationCode = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VerifyEmailRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      verificationCode: isSet(object.verificationCode) ? globalThis.String(object.verificationCode) : "",
+    };
+  },
+
+  toJSON(message: VerifyEmailRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.verificationCode !== "") {
+      obj.verificationCode = message.verificationCode;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<VerifyEmailRequest>): VerifyEmailRequest {
+    return VerifyEmailRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<VerifyEmailRequest>): VerifyEmailRequest {
+    const message = createBaseVerifyEmailRequest();
+    message.id = object.id ?? "";
+    message.verificationCode = object.verificationCode ?? "";
+    return message;
+  },
+};
+
+function createBaseVerifyEmailResponse(): VerifyEmailResponse {
+  return { res: undefined };
+}
+
+export const VerifyEmailResponse: MessageFns<VerifyEmailResponse> = {
+  encode(message: VerifyEmailResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): VerifyEmailResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVerifyEmailResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VerifyEmailResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: VerifyEmailResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<VerifyEmailResponse>): VerifyEmailResponse {
+    return VerifyEmailResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<VerifyEmailResponse>): VerifyEmailResponse {
+    const message = createBaseVerifyEmailResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    return message;
+  },
+};
+
+function createBaseSendVerificationEmailRequest(): SendVerificationEmailRequest {
+  return { id: "" };
+}
+
+export const SendVerificationEmailRequest: MessageFns<SendVerificationEmailRequest> = {
+  encode(message: SendVerificationEmailRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendVerificationEmailRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendVerificationEmailRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendVerificationEmailRequest {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: SendVerificationEmailRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<SendVerificationEmailRequest>): SendVerificationEmailRequest {
+    return SendVerificationEmailRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SendVerificationEmailRequest>): SendVerificationEmailRequest {
+    const message = createBaseSendVerificationEmailRequest();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseSendVerificationEmailResponse(): SendVerificationEmailResponse {
+  return { res: undefined };
+}
+
+export const SendVerificationEmailResponse: MessageFns<SendVerificationEmailResponse> = {
+  encode(message: SendVerificationEmailResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SendVerificationEmailResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendVerificationEmailResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendVerificationEmailResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: SendVerificationEmailResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<SendVerificationEmailResponse>): SendVerificationEmailResponse {
+    return SendVerificationEmailResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SendVerificationEmailResponse>): SendVerificationEmailResponse {
+    const message = createBaseSendVerificationEmailResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     return message;
   },
 };

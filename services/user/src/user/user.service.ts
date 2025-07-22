@@ -24,18 +24,21 @@ export class UserService {
       confirmCode: this.generateConfirmCode(),
       ...data
     });
-
+    console.log(createdUser)
     return this.handleSuccessResponse({
         res:{msg:"user created"},
         user: {
-          ...createdUser,
+          emailConfirmed: createdUser.emailConfirmed,
+          confirmCode: createdUser.confirmCode,
+          email: createdUser.email,
+          username: createdUser.username,
           id: createdUser._id.toString(),
       }}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedUser = await this.userModel.findByIdAndUpdate(
       data.id,
-      { ...data },
+      { ...data.user },
       { new: true },
     );
 

@@ -6,6 +6,8 @@ service AuthService {
   rpc Register (RegisterRequest) returns (AuthResponse);
   rpc Login (LoginRequest) returns (AuthResponse);
   rpc Validate (ValidateRequest) returns (UserPayload);
+  rpc VerifyEmail (VerifyEmailRequest) returns (VerifyEmailResponse);
+  rpc SendVerificationEmail (SendVerificationEmailRequest) returns (VerifyEmailResponse);
 }
 
 message BaseResponse {
@@ -37,4 +39,18 @@ message AuthResponse {
 
 message UserPayload {
   string id = 1;
+}
+
+message VerifyEmailRequest {
+  string id = 1;
+  string verificationCode = 2;
+}
+message VerifyEmailResponse {
+  BaseResponse res = 1;
+}
+message SendVerificationEmailRequest {
+  string id = 1;
+}
+message SendVerificationEmailResponse {
+  BaseResponse res = 1;
 }

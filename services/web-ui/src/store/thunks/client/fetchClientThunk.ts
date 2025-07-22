@@ -1,11 +1,7 @@
-import { login, setLoading, setError } from '@web-ui/store/slices/authSlice';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { client } from '@web-ui/utils/apollo-client';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 
 import { services_config } from '@shared/services_config';
-import { setClient } from '@web-ui/store/slices/clientSlice';
+import { setClient, setLoading, setError } from '@web-ui/store/slices/clientSlice';
 
 export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
   console.log('=== fetchClient ===')

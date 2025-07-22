@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -13,6 +14,7 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.userId = action.payload.userId;
       state.error = null;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${action.payload.token}`;
     },
     logout: (state) => {
       state.token = '';

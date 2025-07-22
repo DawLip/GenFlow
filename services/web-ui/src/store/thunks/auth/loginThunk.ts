@@ -1,6 +1,4 @@
 import { login, setLoading, setError } from '@web-ui/store/slices/authSlice';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-import { client } from '@web-ui/utils/apollo-client';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
@@ -27,6 +25,7 @@ export const loginThunk = ({ email, password }:{
       
       dispatch(login({token: data.accessToken, userId: data.userId}));
 
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
       Cookies.set('token', data.accessToken, { expires: 36500 });
       Cookies.set('userId', data.userId, { expires: 36500 });
     }

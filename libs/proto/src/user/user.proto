@@ -27,7 +27,7 @@ message CreateResponse {
 
 message UpdateRequest {
   string id = 1;
-  User user = 2;
+  UserOptional user = 2;
 }
 message UpdateResponse {
   BaseResponse res = 1;
@@ -43,6 +43,15 @@ message FindOneByEmailRequest {
 message FindResponse {
   BaseResponse res = 1;
   optional User user = 2;
+}
+
+message UserOptional{
+  optional string id = 1;
+  optional string email = 2;
+  optional string username = 3;
+  optional string password = 4;
+  optional bool emailConfirmed = 5;
+  optional string confirmCode = 6;
 }
 
 message User{

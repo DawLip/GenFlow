@@ -3,12 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginThunk } from '@web-ui/store/thunks/auth/loginThunk';
 import { AppDispatch } from '@web-ui/store/index';
 
 import TextInput from '@web-ui/components/inputs/TextInput';
-import { Header } from '@web-ui/components/Header';
 import { Button } from '@web-ui/components/Button';
 
 export default function Page() {
@@ -26,7 +25,6 @@ export default function Page() {
     <div className="pl-16 pt-16 bg-bg min-h-screen flex justify-start items-start gap-16 overflow-hidden">
       <div className="flex-1 self-stretch flex flex-col justify-start items-center gap-2.5">
         <img src='/images/logo_full.svg' className='w-full' onClick={()=>{router.push('/');}}/>
-
       </div>
       <div className="flex-1 inline-flex flex-col justify-start items-center gap-16">
         <div className="w-[512px] flex flex-col justify-start items-start gap-24">

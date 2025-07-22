@@ -9,7 +9,7 @@ import { useAuth } from '@web-ui/hooks/useAuth';
 import { socket, SocketContext } from '@web-ui/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
-import { fetchClientThunk } from '@web-ui/store/thunks/auth/fetchClientThunk';
+import { fetchClientThunk } from '@web-ui/store/thunks/client/fetchClientThunk';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -46,14 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='flex-col h-screen'>
       <SocketContext.Provider value={socket}>
-        <TopBar />
-        <div className='grow'>
-          <Nav />
-          <main className='flex-1'>
-            {children}
-          </main>
-        </div>
-        <div className="self-stretch h-8 relative bg-black border-t-2 border-br"></div>
+        {children}
       </SocketContext.Provider>
     </div>
   )

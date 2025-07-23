@@ -5,7 +5,9 @@ import {
   JoinRequest,
   JoinResponse,
   LeaveRequest,
-  LeaveResponse
+  LeaveResponse,
+  FindByUserIdRequest,
+  FindByUserIdResponse
 } from '@proto/team/team';
 import { TeamService } from '@team/team/team.service';
 
@@ -27,6 +29,12 @@ export class TeamController {
   async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.teamService.findOneById(data);
   }
+
+  @GrpcMethod('TeamService', 'FindByUserId')
+  async findByUserId(data: FindByUserIdRequest): Promise<FindByUserIdResponse> {
+    return await this.teamService.findByUserId(data);
+  }
+
   @GrpcMethod('TeamService', 'Join')
   async join(data: JoinRequest): Promise<JoinResponse> {
     return await this.teamService.join(data);

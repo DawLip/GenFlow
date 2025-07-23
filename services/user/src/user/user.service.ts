@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
 } from '@proto/user/user';
@@ -9,10 +9,31 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User as UserSchema, UserDocument } from '@shared/schema/user.shema';
 import { User } from '@shared/types/User.type'
+import { Client, Transport } from '@nestjs/microservices';
+import type { ClientGrpc } from '@nestjs/microservices';
+import { services_config } from '@libs/shared/src/services_config';
+import { TeamServiceClient } from '@proto/team/team.client';
+import { firstValueFrom } from 'rxjs';
 
 
 @Injectable()
-export class UserService {
+export class UserService implements OnModuleInit {
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'team',
+      protoPath: require.resolve('@proto/team/team.proto'),
+      url: services_config.service_url.team_rpc,
+    },
+  })
+  private client: ClientGrpc;
+
+  private teamService: TeamServiceClient;
+
+  onModuleInit() {
+    this.teamService = this.client.getService<TeamServiceClient>('TeamService');
+  }
+
   constructor(
     @InjectModel(UserSchema.name) private userModel: Model<UserDocument>,
     private readonly logger: PinoLogger,
@@ -24,7 +45,15 @@ export class UserService {
       confirmCode: this.generateConfirmCode(),
       ...data
     });
-    console.log(createdUser)
+    if (!createdUser) return this.handleValidationError({res:{msg:"user creation failed"}}, {context:"create"});
+
+    const createdTeam = await firstValueFrom(this.teamService.create({
+      name: `Private`,
+      owner: createdUser._id,
+      members: [createdUser._id]
+    }));
+    if (!createdTeam.res?.ok) return this.handleValidationError({res:{msg:"team creation failed"}}, {context:"create"});
+
     return this.handleSuccessResponse({
         res:{msg:"user created"},
         user: {
@@ -48,19 +77,21 @@ export class UserService {
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const user = await this.userModel.findById(data.id).lean();
-
     if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneById"});
-
+    
+    const teams = data.populateTeams ? await firstValueFrom(this.teamService.findByUserId({ userId: data.id })) : {res:{ok:true}, teams:[]};
+    if (!teams.res?.ok) return this.handleValidationError({res:{msg:"teams finding failed"}}, {context:"findOneById"});
+    
     return this.handleSuccessResponse({
         res:{msg:"user found"},
         user: {
         ...user,
+        teams: teams.teams,
         id: user._id.toString(),
       }}, {context:"findOneById"});
   }
   async findOneByEmail(data:FindOneByEmailRequest):Promise<FindResponse> {
     const user = await this.userModel.findOne({ email: data.email }).lean();
-
     if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneByEmail"});
 
     return this.handleSuccessResponse({

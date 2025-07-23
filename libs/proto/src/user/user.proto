@@ -35,9 +35,11 @@ message UpdateResponse {
 
 message FindOneByIdRequest {
   string id = 1;
+  optional bool populateTeams = 2;
 }
 message FindOneByEmailRequest {
   string email = 1;
+  optional bool populateTeams = 2;
 }
 
 message FindResponse {
@@ -61,5 +63,12 @@ message User{
   string password = 4;
   bool emailConfirmed = 5;
   string confirmCode = 6;
+  repeated Team teams = 7;
 }
 
+message Team {
+  string id = 1;
+  string name = 2;
+  string owner = 3;
+  repeated string members = 4;
+}

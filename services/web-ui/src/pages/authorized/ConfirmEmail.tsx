@@ -12,12 +12,7 @@ export default function Page() {
   
   const [verificationCode, setVerificationCode] = useState('');
 
-  const handleSendAgain = async () => {
-    console.log('=== handleSendAgain ===');
-
-    const response = await axios.post(`${services_config.service_url.gateway_web_ui}/api/auth/send-verification-email`);
-    console.log('=== handleSendAgain response ===', response);
-  };
+  const handleSendAgain = async () => axios.post(`${services_config.service_url.gateway_web_ui}/api/auth/send-verification-email`);
 
   const handleVerify = () => dispatch(verifyEmailThunk({verificationCode}));
 

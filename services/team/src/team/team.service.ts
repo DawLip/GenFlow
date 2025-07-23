@@ -4,7 +4,9 @@ import {
   JoinRequest,
   JoinResponse,
   LeaveRequest,
-  LeaveResponse
+  LeaveResponse,
+  FindByUserIdRequest,
+  FindByUserIdResponse
 } from '@proto/team/team';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -13,6 +15,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Team as TeamSchema, TeamDocument } from '@shared/schema/team.shema';
 import { Team } from '@shared/types/Team.type'
+import { connectable } from 'rxjs';
 
 
 @Injectable()
@@ -24,6 +27,7 @@ export class TeamService {
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdTeam:Team|any = await this.teamModel.create(data);
+    if (!createdTeam) return this.handleValidationError({res:{msg:"team creation failed"}}, {context:"create"});
     return this.handleSuccessResponse({res:{msg:"team created"}, id: createdTeam._id.toString(),}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
@@ -46,6 +50,18 @@ export class TeamService {
       res:{msg:"team found"},
       team: {...foundTeam, id: foundTeam._id.toString()}
     }, {context:"findOneById"});
+  }
+  
+  async findByUserId(data: FindByUserIdRequest): Promise<FindByUserIdResponse> {
+    
+    const teams = await this.teamModel.find({ members: data.userId }).lean();
+    
+    if (!teams.length) return this.handleValidationError({res:{msg:"teams not found"}}, {context:"findByUserId"});
+    
+    return this.handleSuccessResponse({
+        res:{msg:"teams found"},
+        teams: teams.map(team => ({...team, id: team._id.toString()}))
+    }, {context:"findByUserId"});
   }
 
   async join(data: JoinRequest): Promise<JoinResponse> {

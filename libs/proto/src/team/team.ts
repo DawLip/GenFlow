@@ -44,6 +44,15 @@ export interface FindResponse {
   team?: Team | undefined;
 }
 
+export interface FindByUserIdRequest {
+  userId: string;
+}
+
+export interface FindByUserIdResponse {
+  res: BaseResponse | undefined;
+  teams: Team[];
+}
+
 export interface JoinRequest {
   id: string;
   user: string;
@@ -67,6 +76,7 @@ export interface Team {
   name: string;
   owner: string;
   members: string[];
+  projects: string[];
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -597,6 +607,140 @@ export const FindResponse: MessageFns<FindResponse> = {
   },
 };
 
+function createBaseFindByUserIdRequest(): FindByUserIdRequest {
+  return { userId: "" };
+}
+
+export const FindByUserIdRequest: MessageFns<FindByUserIdRequest> = {
+  encode(message: FindByUserIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByUserIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByUserIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByUserIdRequest {
+    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  },
+
+  toJSON(message: FindByUserIdRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<FindByUserIdRequest>): FindByUserIdRequest {
+    return FindByUserIdRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<FindByUserIdRequest>): FindByUserIdRequest {
+    const message = createBaseFindByUserIdRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseFindByUserIdResponse(): FindByUserIdResponse {
+  return { res: undefined, teams: [] };
+}
+
+export const FindByUserIdResponse: MessageFns<FindByUserIdResponse> = {
+  encode(message: FindByUserIdResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.teams) {
+      Team.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByUserIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByUserIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teams.push(Team.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByUserIdResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      teams: globalThis.Array.isArray(object?.teams) ? object.teams.map((e: any) => Team.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: FindByUserIdResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.teams?.length) {
+      obj.teams = message.teams.map((e) => Team.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<FindByUserIdResponse>): FindByUserIdResponse {
+    return FindByUserIdResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<FindByUserIdResponse>): FindByUserIdResponse {
+    const message = createBaseFindByUserIdResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.teams = object.teams?.map((e) => Team.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBaseJoinRequest(): JoinRequest {
   return { id: "", user: "" };
 }
@@ -866,7 +1010,7 @@ export const LeaveResponse: MessageFns<LeaveResponse> = {
 };
 
 function createBaseTeam(): Team {
-  return { id: "", name: "", owner: "", members: [] };
+  return { id: "", name: "", owner: "", members: [], projects: [] };
 }
 
 export const Team: MessageFns<Team> = {
@@ -882,6 +1026,9 @@ export const Team: MessageFns<Team> = {
     }
     for (const v of message.members) {
       writer.uint32(34).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -925,6 +1072,14 @@ export const Team: MessageFns<Team> = {
           message.members.push(reader.string());
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -940,6 +1095,7 @@ export const Team: MessageFns<Team> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -957,6 +1113,9 @@ export const Team: MessageFns<Team> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
     return obj;
   },
 
@@ -969,6 +1128,7 @@ export const Team: MessageFns<Team> = {
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
     return message;
   },
 };

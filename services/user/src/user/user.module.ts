@@ -11,6 +11,7 @@ import { User, UserSchema } from '@shared/schema/user.shema'
 import { services_config } from '@shared/services_config';
 import { name } from '../../package.json';
 import { service_name } from '@shared/service_name'
+import { Team, TeamSchema } from '@libs/shared/src/schema/team.shema';
 
 const s_name = service_name(name);
 

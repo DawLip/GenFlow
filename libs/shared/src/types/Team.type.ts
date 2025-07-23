@@ -1,7 +1,9 @@
+import { Types } from 'mongoose';
+
 export type Team = {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
-  owner: string;
-  members: [string];
-  team: string;
+  owner: Types.ObjectId;         
+  members: Types.ObjectId[];       
+  projects: Types.ObjectId[];      
 };

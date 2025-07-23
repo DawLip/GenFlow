@@ -2,9 +2,6 @@
 
 import React, { useEffect } from 'react';
 
-import { TopBar } from '@web-ui/components/TopBar';
-import { Nav } from '@web-ui/components/Nav';
-
 import { useAuth } from '@web-ui/hooks/useAuth';
 import { socket, SocketContext } from '@web-ui/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   },[socket, token])
 
   useEffect(() => {
-    dispatch(fetchClientThunk())
+    dispatch(fetchClientThunk());
   }, []);
 
 

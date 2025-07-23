@@ -42,7 +42,7 @@ export class AuthService implements OnModuleInit {
 
     if (!new_user.res?.ok) return this.handleValidationError({res:{msg:"user creation failed"},}, {context:"register", new_user});
     const token = this.generateToken(`${new_user.user?.id}`);
-    console.log("Generated token:", new_user.user);
+    
     this.emailClient.emit('send_email', {
       to: new_user.user?.email,
       subject: "Verification Email",

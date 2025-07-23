@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Param, Get, Patch } from '@nestjs/common';
+import { Controller, Post, Body, Req, Param, Get, Patch, Query } from '@nestjs/common';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateResponse, UpdateResponse, } from '@proto/user/user';
 import { ApiUserService } from './user.service';
 
@@ -9,8 +9,8 @@ export class ApiUserController {
   constructor(private readonly apiUserService: ApiUserService) {}
 
   @Get(':userId')
-  findOneById(@Body() body: FindOneByIdRequest, @Req() req: AuthenticatedRequest, @Param('userId') userId: string): Promise<FindOneByIdRequest> {
-    return this.apiUserService.get(body, req, {userId});
+  findOneById(@Body() body: FindOneByIdRequest, @Req() req: AuthenticatedRequest, @Param('userId') userId: string, @Query('populateTeams') populateTeams: string): Promise<FindOneByIdRequest> {
+    return this.apiUserService.get(body, req, {userId, populateTeams:['1', 'true', 'yes'].includes((populateTeams || '').toLowerCase())});
   }
 
   @Patch(':userId')

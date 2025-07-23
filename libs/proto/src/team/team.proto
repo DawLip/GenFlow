@@ -6,6 +6,7 @@ service TeamService {
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc FindOneById(FindOneByIdRequest) returns (FindResponse);
+  rpc FindByUserId(FindByUserIdRequest) returns (FindByUserIdResponse);
   rpc Join(JoinRequest) returns (JoinResponse);
   rpc Leave(LeaveRequest) returns (LeaveResponse);
 }
@@ -42,6 +43,14 @@ message FindResponse {
   optional Team team = 3;
 }
 
+message FindByUserIdRequest {
+  string userId = 1;
+}
+message FindByUserIdResponse {
+  BaseResponse res = 1;
+  repeated Team teams = 2;
+}
+
 message JoinRequest {
   string id = 1;
   string user = 2;
@@ -63,5 +72,6 @@ message Team{
   string name = 2;
   string owner = 3;
   repeated string members = 4;
+  repeated string projects = 5;
 }
 

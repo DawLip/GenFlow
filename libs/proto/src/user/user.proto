@@ -71,4 +71,5 @@ message Team {
   string name = 2;
   string owner = 3;
   repeated string members = 4;
+  repeated string projects = 5;
 }

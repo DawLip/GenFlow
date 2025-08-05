@@ -39,7 +39,6 @@ export class ApiProjectService implements OnModuleInit {
   async post(body: CreateRequest, req: AuthenticatedRequest, params:any) {
     if(!body.name) return this.apiService.handleValidationError({res:{msg:"Field 'name' is required"}}, {context:"project/post"});
     if(!body.description) return this.apiService.handleValidationError({msg:"Field 'description' is required"}, {context:"project/post"});
-    if(!body.team) return this.apiService.handleValidationError({res:{msg:"Field 'team' is required"}}, {context:"project/post"});
 
     return await firstValueFrom(this.grpcService.create({ ...body, owner: req.user.id }));
   }

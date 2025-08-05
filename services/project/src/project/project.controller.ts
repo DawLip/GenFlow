@@ -6,7 +6,8 @@ import {
   FindOneByIdRequest, FindResponse,
   CreateFlowRequest, CreateFlowResponse,
   UpdateFlowRequest, UpdateFlowResponse,
-  FindOneByNameFlowRequest, FindFlowResponse
+  FindOneByNameFlowRequest, FindFlowResponse,
+  FindByTeamIdRequest, FindByTeamIdResponse
 } from '@proto/project/project';
 import { ProjectService } from '@project/project/project.service';
 
@@ -27,6 +28,11 @@ export class ProjectController {
   @GrpcMethod('ProjectService', 'FindOneById')
   async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.projectService.findOneById(data);
+  }
+
+  @GrpcMethod('ProjectService', 'FindByTeamId')
+  async findByTeamId(data: FindByTeamIdRequest): Promise<FindByTeamIdResponse> {
+    return await this.projectService.findByTeamId(data);
   }
 
   @GrpcMethod('ProjectService', 'FindOneByNameFlow')

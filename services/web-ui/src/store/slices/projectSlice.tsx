@@ -1,23 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const teamSlice = createSlice({
-  name: 'team',
+const projectSlice = createSlice({
+  name: 'project',
   initialState: {
-    teamId: '',
+    projectId: '',
     name: '',
     owner: '',
-    members: [],
-    projects: [],
+    description: '',
+    flows: [],
     loading: true,
     error: null,
   },
   reducers: {
-    setTeam: (state, action) => {
-      state.teamId = action.payload.userId;
+    setProject: (state, action) => {
+      state.projectId = action.payload.projectId;
       state.name = action.payload.name;
       state.owner = action.payload.owner;
-      state.members = action.payload.members;
-      state.projects = action.payload.projects;
+      state.description = action.payload.description;
+      state.flows = action.payload.flows || [];
       state.loading = false;
       state.error = null;
     },
@@ -31,5 +31,5 @@ const teamSlice = createSlice({
   },
 });
 
-export const { setTeam, setLoading, setError } = teamSlice.actions;
-export default teamSlice.reducer;
+export const { setProject, setLoading, setError } = projectSlice.actions;
+export default projectSlice.reducer;

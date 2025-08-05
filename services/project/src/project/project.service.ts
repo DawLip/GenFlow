@@ -5,7 +5,9 @@ import {
   FindOneByIdRequest, FindResponse,
   CreateFlowRequest, CreateFlowResponse,
   UpdateFlowRequest, UpdateFlowResponse,
-  FindFlowResponse, FindOneByNameFlowRequest
+  FindFlowResponse, FindOneByNameFlowRequest,
+  FindByTeamIdRequest,
+  FindByTeamIdResponse
 } from '@proto/project/project';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
@@ -52,6 +54,17 @@ export class ProjectService {
       res:{msg:"project found"},
       project: { ...foundProject, id: foundProject._id.toString()}
     }, {context:"findOneById"});
+  }
+
+  async findByTeamId(data:FindByTeamIdRequest):Promise<FindByTeamIdResponse> {
+    const foundProjects = await this.projectModel.find({ team: data.id }).lean();
+
+    if (!foundProjects) return this.handleValidationError({res:{msg:"projects not found"}}, {context:"findByTeamId"});
+    
+    return this.handleSuccessResponse({
+      res:{msg:"projects found"},
+      projects: foundProjects.map(project => ({ ...project, id: project._id.toString() }))
+    }, {context:"findByTeamId"});
   }
 
 

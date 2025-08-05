@@ -8,6 +8,9 @@ import { UserServiceClient } from '@proto/user/user.client';
 import * as jwt from 'jsonwebtoken';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
+import { TeamServiceClient } from '@proto/team/team.client';
+import { ProjectServiceClient } from '@proto/project/project.client';
+import { create } from 'lodash';
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -24,12 +27,35 @@ export class AuthService implements OnModuleInit {
       url: services_config.service_url.user_rpc,
     },
   })
-  private client: ClientGrpc;
-
+  private userClient: ClientGrpc;
   private userService: UserServiceClient;
 
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'team',
+      protoPath: require.resolve('@proto/team/team.proto'),
+      url: services_config.service_url.team_rpc,
+    },
+  })
+  private teamClient: ClientGrpc;
+  private teamService: TeamServiceClient;
+
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'project',
+      protoPath: require.resolve('@proto/project/project.proto'),
+      url: services_config.service_url.project_rpc,
+    },
+  })
+  private projectClient: ClientGrpc;
+  private projectService: ProjectServiceClient;
+
   onModuleInit(): void {
-    this.userService = this.client.getService<UserServiceClient>('UserService');
+    this.userService = this.userClient.getService<UserServiceClient>('UserService');
+    this.teamService = this.teamClient.getService<TeamServiceClient>('TeamService');
+    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
   }
 
   private readonly jwtSecret = 'secret123';
@@ -39,8 +65,8 @@ export class AuthService implements OnModuleInit {
     if (user.user) return this.handleValidationError({res:{msg:"email is already taken"},}, {context:"register"});
 
     const new_user = await firstValueFrom(this.userService.create(data));
-
     if (!new_user.res?.ok) return this.handleValidationError({res:{msg:"user creation failed"},}, {context:"register", new_user});
+    
     const token = this.generateToken(`${new_user.user?.id}`);
     
     this.emailClient.emit('send_email', {
@@ -49,6 +75,21 @@ export class AuthService implements OnModuleInit {
       body: `Your verification code is: ${new_user.user?.confirmCode}`,
       from: 'noreply@example.com',
     }).subscribe();
+
+     const createdProject = await firstValueFrom(this.projectService.create({
+      name: `My project`,
+      description: `This is my first project`,
+      owner: new_user.user?.id || '',
+    }));
+    if (!createdProject.res?.ok) return this.handleValidationError({res:{msg:"project creation failed"},}, {context:"register", createdProject});
+
+    const createdTeam = await firstValueFrom(this.teamService.create({
+      name: `Private`,
+      owner: new_user.user?.id || '',
+      members: [new_user.user?.id || ''],
+      projects: [createdProject.id || ''],
+    }));
+    if (!createdTeam.res?.ok) return this.handleValidationError({res:{msg:"team creation failed"},}, {context:"register", createdTeam});
 
     return this.handleSuccessResponse({res:{msg:"register successfull"}, accessToken: token, userId: new_user.user?.id}, {context:"login"});
   }

@@ -74,6 +74,7 @@ export interface Team {
   name: string;
   owner: string;
   members: string[];
+  projects: string[];
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -1004,7 +1005,7 @@ export const User: MessageFns<User> = {
 };
 
 function createBaseTeam(): Team {
-  return { id: "", name: "", owner: "", members: [] };
+  return { id: "", name: "", owner: "", members: [], projects: [] };
 }
 
 export const Team: MessageFns<Team> = {
@@ -1020,6 +1021,9 @@ export const Team: MessageFns<Team> = {
     }
     for (const v of message.members) {
       writer.uint32(34).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(42).string(v!);
     }
     return writer;
   },
@@ -1063,6 +1067,14 @@ export const Team: MessageFns<Team> = {
           message.members.push(reader.string());
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1078,6 +1090,7 @@ export const Team: MessageFns<Team> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -1095,6 +1108,9 @@ export const Team: MessageFns<Team> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
     return obj;
   },
 
@@ -1107,6 +1123,7 @@ export const Team: MessageFns<Team> = {
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
     return message;
   },
 };

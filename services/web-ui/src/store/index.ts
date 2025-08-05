@@ -3,13 +3,15 @@ import authReducer from './slices/authSlice';
 import flowsReducer from './slices/flowsSlice';
 import clientReducer from './slices/clientSlice';
 import teamSlice from './slices/teamSlice';
+import projectSlice from './slices/projectSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     flows: flowsReducer,
     client: clientReducer,
-    team: teamSlice
+    team: teamSlice,
+    project: projectSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

@@ -3,12 +3,14 @@ import axios from 'axios';
 import { services_config } from '@shared/services_config';
 import { setClient, setLoading as setLoadingClient, setError as setErrorClient } from '@web-ui/store/slices/clientSlice';
 import { setTeam, setLoading as setLoadingTeams, setError as setErrorTeams } from '@web-ui/store/slices/teamSlice';
+import { setProject, setLoading as setLoadingProject, setError as setErrorProject } from '@web-ui/store/slices/projectSlice';
 
 export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
   console.log('=== fetchClient ===')
 
   dispatch(setLoadingClient(true));
   dispatch(setLoadingTeams(true));
+  dispatch(setLoadingProject(true));
   dispatch(setErrorClient(null));
 
   try {
@@ -26,6 +28,14 @@ export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
         return;
       }
       dispatch(setTeam({...team[0], teamId: team[0].id}));
+
+      const project = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${team[0].projects[0]}`);
+      if (!project.data.res.ok) {
+        console.error("Project not found for user:", data.user.id);
+        dispatch(setErrorProject("Project not found"));
+        return;
+      }
+      dispatch(setProject({...project.data.project, projectId: project.data.project.id}));
     } else {
       console.error("FetchClient failed:", data);
       dispatch(setErrorClient(data.res.msg));
@@ -33,5 +43,5 @@ export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
   } catch (err:any) {
     console.error("Error during fetchClient:", err);
     dispatch(setErrorClient(err.message));
-  } finally { dispatch(setLoadingClient(false)); dispatch(setLoadingTeams(false)); }; 
+  } finally { dispatch(setLoadingClient(false)); dispatch(setLoadingTeams(false)); dispatch(setLoadingProject(false)); };
 };

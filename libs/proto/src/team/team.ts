@@ -19,6 +19,7 @@ export interface CreateRequest {
   name: string;
   owner: string;
   members: string[];
+  projects: string[];
 }
 
 export interface CreateResponse {
@@ -172,7 +173,7 @@ export const BaseResponse: MessageFns<BaseResponse> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", owner: "", members: [] };
+  return { name: "", owner: "", members: [], projects: [] };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -185,6 +186,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     for (const v of message.members) {
       writer.uint32(26).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(34).string(v!);
     }
     return writer;
   },
@@ -220,6 +224,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
           message.members.push(reader.string());
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -234,6 +246,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -248,6 +261,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
     return obj;
   },
 
@@ -259,6 +275,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
     return message;
   },
 };

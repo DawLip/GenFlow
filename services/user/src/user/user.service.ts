@@ -47,13 +47,6 @@ export class UserService implements OnModuleInit {
     });
     if (!createdUser) return this.handleValidationError({res:{msg:"user creation failed"}}, {context:"create"});
 
-    const createdTeam = await firstValueFrom(this.teamService.create({
-      name: `Private`,
-      owner: createdUser._id,
-      members: [createdUser._id]
-    }));
-    if (!createdTeam.res?.ok) return this.handleValidationError({res:{msg:"team creation failed"}}, {context:"create"});
-
     return this.handleSuccessResponse({
         res:{msg:"user created"},
         user: {

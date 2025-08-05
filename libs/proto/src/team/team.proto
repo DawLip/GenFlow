@@ -21,6 +21,7 @@ message CreateRequest {
   string name = 1;
   string owner = 2;
   repeated string members = 3;
+  repeated string projects = 4;
 }
 message CreateResponse {
   BaseResponse res = 1;

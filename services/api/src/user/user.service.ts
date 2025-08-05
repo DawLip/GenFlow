@@ -33,7 +33,10 @@ export class ApiUserService implements OnModuleInit {
   async get(body: FindOneByIdRequest, req: AuthenticatedRequest, params) {
     if(!params.userId) return this.apiService.handleValidationError({res:{msg:"Param 'userId' is required"}}, {context:"user/patch"});
     
-    const user = await firstValueFrom(this.grpcService.findOneById({id: params.userId, populateTeams: params.populateTeams || false}));
+    const user = await firstValueFrom(this.grpcService.findOneById({
+      id: params.userId, 
+      populateTeams: params.populateTeams || false
+    }));
     if (user.user) user.user.password = '<hidden>';
     if (user.user) user.user.confirmCode = '<hidden>';
 

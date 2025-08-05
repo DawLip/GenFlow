@@ -1,11 +1,11 @@
 'use client';
 
-import { ReactNode } from 'react';
 import { Icon } from './Icon';
 import { useSelector } from 'react-redux';
 
 export function TopBar({ }: any) {
   const teamName = useSelector((state: any) => state.team.name) || '- - -';
+  const projectName = useSelector((state: any) => state.project.name) || '- - -';
 
   return (
     <header className="flex justify-between items-center self-stretch h-12 pr-8 bg-black border-b-2 border-br">
@@ -15,7 +15,7 @@ export function TopBar({ }: any) {
         </div>
         <div className="rounded-lg flex items-center justify-center gap-2.5">
           <div className="justify-start text-on_bg/80 text-xl font-['Inter']">{teamName} /</div>
-          <div className="justify-start text-on_bg/80 text-xl font-['Inter']">My project</div>
+          <div className="justify-start text-on_bg/80 text-xl font-['Inter']">{projectName}</div>
         </div>
       </div>
       <div className="flex justify-start items-center gap-2">

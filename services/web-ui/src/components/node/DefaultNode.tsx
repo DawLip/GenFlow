@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { executeFlowThunk } from "@web-ui/store/thunks/auth/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
+  console.log(node)
   const dispatch = useDispatch<AppDispatch>();
 
   const token = useSelector((state: any) => state.auth.token);
@@ -82,6 +83,7 @@ const NodeHeader = ({ node, onExecute }: any) => {
 }
 
 const NodeExternalIO = ({ node }: any) => {
+  console.log(node)
   const externalInputs = useMemo(
     () => node.data.io.filter((io: any) => io.ports.includes(2) && io.io === 'target'),
     [node.data.io]
@@ -91,6 +93,8 @@ const NodeExternalIO = ({ node }: any) => {
     () => node.data.io.filter((io: any) => io.ports.includes(3) && io.io === 'source'),
     [node.data.io]
   );
+  console.log('External Inputs:', externalInputs);
+  console.log('External Outputs:', externalOutputs);
   return (
     <div className="justify-start items-start">
       <div className="grow px-2 flex-col justify-start items-start">
@@ -109,6 +113,7 @@ const NodeInternalIO = ({ node }: any) => {
 }
 
 const NodeIOLabel = ({ label }: any) => {
+  console.log('NodeIOLabel', label);
   return (
     <div className="justify-center items-center h-4 gap-1">
       <div className="justify-start text-on_node_body/80 text-[12px] font-normal font-['Inter'] leading-none">{label}</div>

@@ -6,11 +6,12 @@
 @config "../../tailwind.config.js";
 
 :root {
-  /* --spacing: 1px; */
+  --spacing: 1px;
+  
 }
 
 div, main, footer, header, section, article, aside, nav {
-  display: flex;;
+  display: flex;
 }
 
 
@@ -30,4 +31,8 @@ body {
   background-color: #05010A;
   color: #fff;
   font-family: 'Inter', sans-serif;
+}
+
+.react-flow__node-default {
+  background-color: transparent !important;
 }

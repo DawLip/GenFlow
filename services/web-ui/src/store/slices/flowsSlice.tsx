@@ -11,16 +11,21 @@ const flowsSlice = createSlice({
   initialState,
   reducers: {
     setFlow: (state, {payload:{flowID, data}}) => {
+      console.log(data)
       if(!state[flowID]) {
         state[flowID] = {
           selectedNodes: [],
           selectedEdges: [],
           nodes: [],
           edges: [],
-          ...JSON.parse(data.flowData),
           ...data 
         };
       }
+    },
+    addNode: (state, action) => {
+      const { flowID, node } = action.payload;
+      if (!state[flowID]) { console.error("Flow not found"); return; }
+      state[flowID].nodes.push(node);
     },
     onNodesChange: (state, {payload:{flowID, nodes, changes}}) => {
       if(state[flowID]) state[flowID].nodes = applyNodeChanges(changes, structuredClone(nodes));
@@ -51,5 +56,5 @@ const flowsSlice = createSlice({
   }
 });
 
-export const { setFlow, onNodesChange, onEdgesChange, onConnect, setSelection, flowsSliceClear } = flowsSlice.actions;
+export const { setFlow, onNodesChange, onEdgesChange, onConnect, setSelection, flowsSliceClear, addNode } = flowsSlice.actions;
 export default flowsSlice.reducer;

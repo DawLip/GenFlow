@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { services_config } from '@shared/services_config';
 import { newFlow } from '@web-ui/store/slices/projectSlice';
+import { defaultFlow } from '@web-ui/store/flow.default';
 
 export const createFlowThunk = (name: string) => async (dispatch: any, getState: any) => {
   const state = getState();
@@ -13,10 +14,10 @@ export const createFlowThunk = (name: string) => async (dispatch: any, getState:
     const {data} = await axios.post(`${services_config.service_url.gateway_web_ui}/api/projects/${state.project.projectId}/flows/`,{
       id: state.project.projectId,
       flow: {
+        ...defaultFlow,
         name: name,
         description: " ",
-        flowData: "{ \"nodes\": [], \"edges\": []}",
-        type: "FLOW"
+        type: "FLOW",
       }
     });
     if(!data.res.ok) {
@@ -24,7 +25,7 @@ export const createFlowThunk = (name: string) => async (dispatch: any, getState:
       return;
     }
     console.log("CreateFlow successful:", data.flow);
-    dispatch(newFlow({flowID: state.project.projectId + '-' + name, ...data.flow}));
+    dispatch(newFlow({flowID: state.project.projectId + '-' + name, ...data.flow, flowData: JSON.parse(data.flow.flowData)}));
   } catch (err:any) {
     console.error("Error during createFlow:", err);
   } 

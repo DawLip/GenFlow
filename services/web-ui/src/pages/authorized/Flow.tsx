@@ -34,6 +34,7 @@ import { Aside } from '@web-ui/components/Aside/Aside';
 import { useSocket } from '@web-ui/socket/socket';
 import { DnDProvider, useDnD } from '../../utils/DnDContext';
 import { defaultNode } from '@web-ui/store/node.default';
+import { randomUUID } from 'crypto';
 
 const nodeTypes = {
   default: DefaultNode,
@@ -107,7 +108,7 @@ function Page() {
         y: event.clientY,
       };
 
-      dispatch(addNode({ flowID, node: defaultNode }));
+      dispatch(addNode({ flowID, node: {...defaultNode, id: crypto.randomUUID()} }));
       // @ts-ignore
       setType(null);
     },

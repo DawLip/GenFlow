@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { executeFlowThunk } from "@web-ui/store/thunks/auth/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
-  console.log(node)
   const dispatch = useDispatch<AppDispatch>();
 
   const token = useSelector((state: any) => state.auth.token);
@@ -18,7 +17,6 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
     console.log(evt.target.value);
   }, []);
 
-  const ports = node.data.ports.filter((p: any) => p.id >= 2).map((p: any) => node.data.io.filter((io: any) => io?.ports?.includes(p.id)))
   const onExecute = async () => {
     console.log(`=== Executing node ${node.data.id} ===`)
     dispatch(executeFlowThunk(
@@ -44,25 +42,24 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
           <NodeHeader node={node} onExecute={onExecute} />
           <NodeExternalIO node={node} />
           <NodeSectionDivider />
-          <img src={'http://localhost:3005/files/output.png'} alt="Downloaded" style={{ maxWidth: '100%', height: 'auto' }} />
+          {/* <img src={'http://localhost:3005/files/output.png'} alt="Downloaded" style={{ maxWidth: '100%', height: 'auto' }} /> */}
           {/* <NodeInternalIO node={node} /> */}
+          <div>
+            <NodeInputs node={node} />
+          </div>
         </div>
-        {ports.map((p: any, indexPort: number) => {
-          const port = node.data.ports[indexPort + 2];
-          return (
-            <div className="absolute" style={{ [port.align]: 48, [port.position]: 8, width: 16 }} key={port.id}>
-              {p.map((io: any, indexIO: number) => (
-                <Handle
-                  key={'handle' + io.id}
-                  type={io.io}
-                  position={port.position}
-                  id={io.id}
-                  style={{ top: 16 * indexIO + 1, width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
-                />
-              ))}
-            </div>
-          )
-        })}
+        {/* <div className="absolute" style={{ [port.align]: 48, [port.position]: 8, width: 16 }} key={port.id}>
+          {p.map((io: any, indexIO: number) => (
+            <Handle
+              key={'handle' + io.id}
+              type={io.io}
+              position={port.position}
+              id={io.id}
+              style={{ top: 16 * indexIO + 1, width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
+            />
+          ))}
+        </div> */}
+
       </div>
     </div>
   );
@@ -82,26 +79,60 @@ const NodeHeader = ({ node, onExecute }: any) => {
   );
 }
 
+function NodeInputs({ node }: any) {
+  const inputs = useMemo(
+    () => node.data.inputs,
+    [node.data.inputs]
+  );
+
+  return (
+    <div className="flex-col justify-start items-start gap-1 w-full px-2 py-1">
+      {inputs.map((input: any) => (
+        <div>
+          <Widget key={'input-' + input.id} data={input} />
+          <Handle
+              key={'handle'}
+              type={'source'}
+              position={Position.Left}
+              id={'21'}
+              style={{ position: 'relative', top: 16, left: '-100%', width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
+            />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Widget({ data }: any) {
+  const WidgetComponent = useMemo(
+    () => React.lazy(() => import(`./inputWidgets/${data.widget}Widget`)),
+    [data.widget]
+  );
+
+  return (
+    <React.Suspense fallback={<div>Loading...</div>}>
+      <WidgetComponent data={data}/>
+    </React.Suspense>
+  );
+}
+
 const NodeExternalIO = ({ node }: any) => {
-  console.log(node)
   const externalInputs = useMemo(
-    () => node.data.io.filter((io: any) => io.ports.includes(2) && io.io === 'target'),
-    [node.data.io]
+    () => node.data.inputs,
+    [node.data.inputs]
   );
 
   const externalOutputs = useMemo(
-    () => node.data.io.filter((io: any) => io.ports.includes(3) && io.io === 'source'),
-    [node.data.io]
+    () => node.data.outputs,
+    [node.data.outputs]
   );
-  console.log('External Inputs:', externalInputs);
-  console.log('External Outputs:', externalOutputs);
   return (
     <div className="justify-start items-start">
       <div className="grow px-2 flex-col justify-start items-start">
-        {externalInputs.map((i: any) => <NodeIOLabel key={'ioLabel-' + i.id} label={i.name} />)}
+        {/* {externalInputs.map((i: any) => <NodeIOLabel key={'ioLabel-' + i.id} label={i.label} />)} */}
       </div>
       <div className="grow px-2 flex-col justify-start items-end">
-        {externalOutputs.map((o: any) => <NodeIOLabel key={'ioLabel-' + o.id} label={o.name} />)}
+        {externalOutputs.map((o: any) => <NodeIOLabel key={'ioLabel-' + o.id} label={o.label} />)}
       </div>
     </div>
   );
@@ -113,7 +144,6 @@ const NodeInternalIO = ({ node }: any) => {
 }
 
 const NodeIOLabel = ({ label }: any) => {
-  console.log('NodeIOLabel', label);
   return (
     <div className="justify-center items-center h-4 gap-1">
       <div className="justify-start text-on_node_body/80 text-[12px] font-normal font-['Inter'] leading-none">{label}</div>

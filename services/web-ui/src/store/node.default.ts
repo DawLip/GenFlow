@@ -1,5 +1,3 @@
-import { io } from "socket.io-client";
-
 export const defaultNode = {
   id: 'new-node',
   type: 'default',
@@ -7,17 +5,54 @@ export const defaultNode = {
   data: {
     name: 'New Node',
     description: 'This is a new node',
-    io: [
-      { id: 'input', name: 'internal input', ports: [0], io: 'target' },
-      { id: 'output', name: 'internal output', ports: [1], io: 'source' },
-      { id: 'input2', name: 'external input', ports: [2], io: 'target' },
-      { id: 'output2', name: 'external output', ports: [3], io: 'source' }
+    inputs:[
+      {
+        id: 'input-1',
+        label: 'text input',
+        name: 'textInput1',
+        dataType: 'TEXT',
+        widget: 'LineInput',
+        canBeDefault: false
+      },
+      {
+        id: 'input-2',
+        label: 'text input',
+        name: 'textInput2',
+        dataType: 'TEXT',
+        widget: 'LineInput',
+        canBeDefault: true
+      },
+      {
+        id: 'input-3',
+        label: 'text input',
+        name: 'textInput3',
+        dataType: 'TEXT',
+        widget: 'LineInput',
+        canBeDefault: true
+      },
     ],
-    ports:[
-      { id: 0, type: 'input', align: 'bottom', position: 'left' },
-      { id: 1, type: 'output', align: 'bottom', position: 'right' },
-      { id: 2, type: 'input', align: 'top', position: 'left' },
-      { id: 3, type: 'output', align: 'top', position: 'right' }
+    outputs: [
+      {
+        id: 'output-1',
+        label: 'text output',
+        name: 'textOutput1',
+        dataType: 'TEXT',
+        widget: 'LineOutput'
+      },
+      {
+        id: 'output-2',
+        label: 'text output',
+        name: 'textOutput2',
+        dataType: 'TEXT',
+        widget: 'LineOutput'
+      },
+      {
+        id: 'output-3',
+        label: 'text output',
+        name: 'textOutput3',
+        dataType: 'TEXT',
+        widget: 'LineOutput'
+      },
     ]
   },
 };

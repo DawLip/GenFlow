@@ -4,6 +4,7 @@ import flowsReducer from './slices/flowsSlice';
 import clientReducer from './slices/clientSlice';
 import teamSlice from './slices/teamSlice';
 import projectSlice from './slices/projectSlice';
+import sessionSlice from './slices/sessionSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     flows: flowsReducer,
     client: clientReducer,
     team: teamSlice,
-    project: projectSlice
+    project: projectSlice,
+    session: sessionSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

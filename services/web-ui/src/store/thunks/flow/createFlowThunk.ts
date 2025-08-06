@@ -15,7 +15,7 @@ export const createFlowThunk = (name: string) => async (dispatch: any, getState:
       flow: {
         name: name,
         description: " ",
-        flowData: "{}",
+        flowData: "{ \"nodes\": [], \"edges\": []}",
         type: "FLOW"
       }
     });

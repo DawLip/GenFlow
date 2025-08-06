@@ -25,12 +25,14 @@ const nodeTypes = {
 };
 
 function Page() {
-  const flowID = '1';
   const socket = useSocket();
   const dispatch = useDispatch<AppDispatch>();
-
-  const nodes = useSelector((state: any) => state.flows[flowID].nodes);
-  const edges = useSelector((state: any) => state.flows[flowID].edges);
+  
+  const flowID = useSelector((state: any) => state.session.selectedFlow);
+  const fd = useSelector((state: any) => state.flows[flowID]);
+  console.log(fd)
+  const nodes = useSelector((state: any) => state.flows[flowID].flowData.nodes);
+  const edges = useSelector((state: any) => state.flows[flowID].flowData.edges);
 
   useEffect(()=>{
     if (!socket) return;
@@ -89,7 +91,6 @@ function Page() {
           snapToGrid
           snapGrid={[64, 64]}
 
-          // fitView
           minZoom={0.01}
 
           defaultViewport={{ x: 0, y: 0, zoom: 1 }}

@@ -11,7 +11,16 @@ const flowsSlice = createSlice({
   initialState,
   reducers: {
     setFlow: (state, {payload:{flowID, data}}) => {
-      state[flowID] = data;
+      if(!state[flowID]) {
+        state[flowID] = {
+          selectedNodes: [],
+          selectedEdges: [],
+          nodes: [],
+          edges: [],
+          ...JSON.parse(data.flowData),
+          ...data 
+        };
+      }
     },
     onNodesChange: (state, {payload:{flowID, nodes, changes}}) => {
       if(state[flowID]) state[flowID].nodes = applyNodeChanges(changes, structuredClone(nodes));
@@ -37,7 +46,7 @@ const flowsSlice = createSlice({
       state[flowID].selectedNodes = state[flowID].nodes.filter((node) => selectedNodesIDs.includes(node.id));
     },
     flowsSliceClear: (state) => {
-      return {};
+      return initialState;
     }
   }
 });

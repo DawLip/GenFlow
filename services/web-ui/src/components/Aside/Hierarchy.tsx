@@ -10,7 +10,7 @@ import { setSelection } from '@web-ui/store/slices/flowsSlice';
 export function Hierarchy({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const flowID = '1';
+  const flowID = useSelector((state: any) => state.session.selectedFlow);
   const nodes = useSelector((state: any) => state.flows[flowID].nodes);
 
   const nodesS = useSelector((state: any) => state.flows[flowID].selectedNodes);

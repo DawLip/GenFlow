@@ -1,6 +1,8 @@
 'use client';
 import { Icon } from "@web-ui/components/Icon";
 import { AppDispatch } from "@web-ui/store";
+import { setFlow } from "@web-ui/store/slices/flowsSlice";
+import { selectFlow } from "@web-ui/store/slices/sessionSlice";
 import { createFlowThunk } from "@web-ui/store/thunks/flow/createFlowThunk";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -38,6 +40,13 @@ export default function Page() {
 }
 
 const FlowCard = ({name}:{name:string}) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  const projectId = useSelector((state: any) => state.project.projectId);
+  const flowID = projectId + '-' + name;
+
+  const flow = useSelector((state: any) => state.project.flows.filter((flow: any) => flow.name === name)[0]);
+
   return (
     <div className="self-stretch flex-col justify-start items-start gap-4">
       <div className="self-stretch flex-col justify-start items-start gap-2">
@@ -46,7 +55,10 @@ const FlowCard = ({name}:{name:string}) => {
             {name}
           </div>
           <div>
-            <Icon name="flow" className="size-[24px]"/>
+            <Icon name="flow" className="size-[24px]" onClick={() => {
+                dispatch(setFlow({flowID, data: flow}));
+                dispatch(selectFlow(flowID))
+              }}/>
           </div>
         </div>
       </div>

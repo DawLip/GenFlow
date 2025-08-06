@@ -12,12 +12,13 @@ import { EmptyContent } from './EmptyContent';
 export function Inspector({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const flowID = '1';
+  const flowID = useSelector((state: any) => state.session.selectedFlow);
   const selectedNodes = useSelector((state: any) => state.flows[flowID].selectedNodes);
-  const selectedNode = selectedNodes[0];
-
+  
   if (selectedNodes.length == 0) return <EmptyContent>Select a node</EmptyContent>;
   if (selectedNodes.length > 1) return <EmptyContent>Select one node</EmptyContent>;
+
+  const selectedNode = selectedNodes[0];
 
   return (
     <>

@@ -10,7 +10,8 @@ import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import { TeamServiceClient } from '@proto/team/team.client';
 import { ProjectServiceClient } from '@proto/project/project.client';
-import { create } from 'lodash';
+import { Struct } from 'google-protobuf/google/protobuf/struct_pb';
+
 
 @Injectable()
 export class AuthService implements OnModuleInit {
@@ -82,6 +83,20 @@ export class AuthService implements OnModuleInit {
       owner: new_user.user?.id || '',
     }));
     if (!createdProject.res?.ok) return this.handleValidationError({res:{msg:"project creation failed"},}, {context:"register", createdProject});
+
+    const defaultFlow = {
+      name: `My flow`,
+      description: `This is my first flow`,
+      type: 'FLOW',
+      flowData: "{ nodes: [], edges: [], test: '432' }",
+    }
+
+      console.log("defaultFlow", defaultFlow);
+    const createdFlow = await firstValueFrom(this.projectService.createFlow({
+      id: createdProject.id || '',
+      flow: defaultFlow
+    }));
+    if (!createdFlow.res?.ok) return this.handleValidationError({res:{msg:"flow creation failed"},}, {context:"register", createdFlow});
 
     const createdTeam = await firstValueFrom(this.teamService.create({
       name: `Private`,

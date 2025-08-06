@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from 'js-cookie';
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@web-ui/store";
-import { logout } from "@web-ui/store/slices/authSlice";
+import { logoutThunk } from "@web-ui/store/thunks/auth/logoutThunk";
 
 export default function Page() {
   const router = useRouter();
@@ -15,7 +15,7 @@ export default function Page() {
     Cookies.remove('token');
     Cookies.remove('userId');
 
-    dispatch(logout());
+    dispatch(logoutThunk());
 
     router.push('/');
   }

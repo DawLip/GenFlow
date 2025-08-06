@@ -1349,16 +1349,16 @@ function createBaseFlow(): Flow {
 export const Flow: MessageFns<Flow> = {
   encode(message: Flow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.name !== "") {
-      writer.uint32(10).string(message.name);
+      writer.uint32(18).string(message.name);
     }
     if (message.description !== "") {
-      writer.uint32(18).string(message.description);
+      writer.uint32(26).string(message.description);
     }
     if (message.flowData !== "") {
-      writer.uint32(26).string(message.flowData);
+      writer.uint32(34).string(message.flowData);
     }
     if (message.type !== "") {
-      writer.uint32(34).string(message.type);
+      writer.uint32(42).string(message.type);
     }
     return writer;
   },
@@ -1370,20 +1370,12 @@ export const Flow: MessageFns<Flow> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1: {
-          if (tag !== 10) {
-            break;
-          }
-
-          message.name = reader.string();
-          continue;
-        }
         case 2: {
           if (tag !== 18) {
             break;
           }
 
-          message.description = reader.string();
+          message.name = reader.string();
           continue;
         }
         case 3: {
@@ -1391,11 +1383,19 @@ export const Flow: MessageFns<Flow> = {
             break;
           }
 
-          message.flowData = reader.string();
+          message.description = reader.string();
           continue;
         }
         case 4: {
           if (tag !== 34) {
+            break;
+          }
+
+          message.flowData = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
             break;
           }
 

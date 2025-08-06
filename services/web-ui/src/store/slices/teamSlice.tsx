@@ -28,8 +28,17 @@ const teamSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    teamSliceClear: (state) => {
+      state.teamId = '';
+      state.name = '';
+      state.owner = '';
+      state.members = [];
+      state.projects = [];
+      state.loading = true;
+      state.error = null;
+    }
   },
 });
 
-export const { setTeam, setLoading, setError } = teamSlice.actions;
+export const { setTeam, setLoading, setError, teamSliceClear } = teamSlice.actions;
 export default teamSlice.reducer;

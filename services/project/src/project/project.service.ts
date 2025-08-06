@@ -16,6 +16,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Project as ProjectSchema, ProjectDocument } from '@shared/schema/project.shema';
 import { Project } from '@shared/types/Project.type'
+import { Struct } from 'google-protobuf/google/protobuf/struct_pb';
 
 
 @Injectable()
@@ -85,13 +86,13 @@ export class ProjectService {
   async createFlow(data:CreateFlowRequest):Promise<CreateFlowResponse> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(
       data.id,
-      { $addToSet: { flows: data.flow } },
+      { $addToSet: { flows: { ...data.flow, flowData: data.flow?.flowData } } },
       { new: true },
     );
 
-  if (!updatedProject) return this.handleValidationError({ res: { msg: 'project not found' } }, { context: 'createFlow' });
+    if (!updatedProject) return this.handleValidationError({ res: { msg: 'project not found' } }, { context: 'createFlow' });
 
-  return this.handleSuccessResponse({ res: { msg: 'flow created' } }, { context: 'createFlow' });
+    return this.handleSuccessResponse({ res: { msg: 'flow created' }, flow: { ...data.flow } }, { context: 'createFlow' });
   }
 
   async updateFlow(data: UpdateFlowRequest): Promise<UpdateFlowResponse> {

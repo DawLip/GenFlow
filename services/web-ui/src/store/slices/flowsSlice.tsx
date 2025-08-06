@@ -3,27 +3,14 @@ import { applyNodeChanges, applyEdgeChanges, addEdge, Edge } from '@xyflow/react
 import {
   FlowState
 } from '@web-ui/store/flow.type';
-import { defaultNode } from './defaults/defaultNode';
 
-const initialState: FlowState = {
-  '1': {
-    flowID: '1',
-    flowName: 'Flow 1',
-    selectedNodes: [],
-    selectedEdges: [],
-    nodes: [
-      defaultNode({id: 'node-1', position:{x:0, y:0}}),
-      defaultNode({id: 'node-2', position:{x:128*4, y:128}}),
-    ],
-    edges: [],
-  },
-};
+const initialState: FlowState = {};
 
 const flowsSlice = createSlice({
   name: 'flows',
   initialState,
   reducers: {
-    setFormData: (state, {payload:{flowID, data}}) => {
+    setFlow: (state, {payload:{flowID, data}}) => {
       state[flowID] = data;
     },
     onNodesChange: (state, {payload:{flowID, nodes, changes}}) => {
@@ -38,9 +25,7 @@ const flowsSlice = createSlice({
 
     setSelection: (
       state,
-      {
-        payload: { flowID, selectedNodesIDs },
-      }: PayloadAction<{ flowID: string; selectedNodesIDs: string[] }>
+      {payload: { flowID, selectedNodesIDs }}:PayloadAction<{ flowID: string; selectedNodesIDs: string[] }>
     ) => {
       if (!state[flowID]) return;
     
@@ -50,9 +35,12 @@ const flowsSlice = createSlice({
       }));
     
       state[flowID].selectedNodes = state[flowID].nodes.filter((node) => selectedNodesIDs.includes(node.id));
+    },
+    flowsSliceClear: (state) => {
+      return {};
     }
-  },
+  }
 });
 
-export const { setFormData, onNodesChange, onEdgesChange, onConnect, setSelection } = flowsSlice.actions;
+export const { setFlow, onNodesChange, onEdgesChange, onConnect, setSelection, flowsSliceClear } = flowsSlice.actions;
 export default flowsSlice.reducer;

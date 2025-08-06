@@ -11,7 +11,7 @@ export class Flow {
   @Prop({ required: true })
   description!: string;
 
-  @Prop({ required: true })
+  @Prop({ type: Object, required: true })
   flowData!: string;
 
   @Prop({ required: true })

@@ -31,8 +31,17 @@ const clientSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
+    clientSliceClear: (state) => {
+      state.userId = '';
+      state.email = '';
+      state.username = '';
+      state.emailConfirmed = false;
+      state.confirmCode = '';
+      state.loading = true;
+      state.error = null;
+    }
   },
 });
 
-export const { setClient, setLoading, setError, confirmEmail } = clientSlice.actions;
+export const { setClient, setLoading, setError, confirmEmail, clientSliceClear } = clientSlice.actions;
 export default clientSlice.reducer;

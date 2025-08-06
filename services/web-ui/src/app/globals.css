@@ -25,3 +25,9 @@ input:focus {
   outline: none;
   box-shadow: none;
 }
+
+body {
+  background-color: #05010A;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+}

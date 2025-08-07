@@ -1,21 +1,18 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ReactFlow,
   Controls,
   Background,
   ReactFlowProvider,
-  Handle,
-  Position,
   BackgroundVariant,
   Node,
   Edge,
   OnSelectionChangeParams,
-  NodeResizer,
   useReactFlow,
-  useNodesState,
+  useStore
 } from '@xyflow/react';
 import { throttle } from 'lodash';
 
@@ -34,7 +31,6 @@ import { Aside } from '@web-ui/components/Aside/Aside';
 import { useSocket } from '@web-ui/socket/socket';
 import { DnDProvider, useDnD } from '../../utils/DnDContext';
 import { defaultNode } from '@web-ui/store/node.default';
-import { randomUUID } from 'crypto';
 
 const nodeTypes = {
   default: DefaultNode,
@@ -47,8 +43,11 @@ function Page() {
   const flowID = useSelector((state: any) => state.session.selectedFlow);
   const nodes = useSelector((state: any) => state.flows[flowID].nodes);
   const edges = useSelector((state: any) => state.flows[flowID].edges);
-
+  
   const [type, setType] = useDnD();
+  
+  const [x, y, zoom] = useStore((state:any) => state.transform);
+
 
   useEffect(() => {
     if (!socket) return;
@@ -97,18 +96,16 @@ function Page() {
 
   const onDrop = useCallback(
     (event: React.DragEvent) => {
-      console.log('drop', type);
-
       event.preventDefault();
 
       if (!type) return;
-
+      console.log("x, y, zoom",x,y, zoom, )
       const position = {
-        x: event.clientX,
-        y: event.clientY,
+        x: Math.floor((event.clientX - 190-32-48 - x)/zoom/64)*64,
+        y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
       };
-
-      dispatch(addNode({ flowID, node: {...defaultNode, id: crypto.randomUUID()} }));
+      console.log(position.x, position.y)
+      dispatch(addNode({ flowID, node: {...defaultNode, id: crypto.randomUUID(), position} }));
       // @ts-ignore
       setType(null);
     },

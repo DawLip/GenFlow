@@ -2,6 +2,7 @@ export const defaultNode = {
   id: 'new-node',
   type: 'default',
   position: { x: 0, y: 0 },
+  style: { width: 64*4, height: 64*4 },
   data: {
     name: 'New Node',
     description: 'This is a new node',
@@ -41,14 +42,14 @@ export const defaultNode = {
       },
       {
         id: 'output-2',
-        label: 'text output',
+        label: 'text output 123',
         name: 'textOutput2',
         dataType: 'TEXT',
         widget: 'LineOutput'
       },
       {
         id: 'output-3',
-        label: 'text output',
+        label: 'text output 323211',
         name: 'textOutput3',
         dataType: 'TEXT',
         widget: 'LineOutput'

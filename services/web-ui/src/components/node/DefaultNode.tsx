@@ -10,12 +10,8 @@ import { executeFlowThunk } from "@web-ui/store/thunks/auth/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const dispatch = useDispatch<AppDispatch>();
-
+  
   const token = useSelector((state: any) => state.auth.token);
-
-  const onChange = useCallback((evt: any) => {
-    console.log(evt.target.value);
-  }, []);
 
   const onExecute = async () => {
     console.log(`=== Executing node ${node.data.id} ===`)
@@ -42,24 +38,10 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
           <NodeHeader node={node} onExecute={onExecute} />
           <NodeExternalIO node={node} />
           <NodeSectionDivider />
-          {/* <img src={'http://localhost:3005/files/output.png'} alt="Downloaded" style={{ maxWidth: '100%', height: 'auto' }} /> */}
-          {/* <NodeInternalIO node={node} /> */}
           <div className="flex-1 grow h-full flex-col justify-start items-start gap-1 px-2 py-1">
             <NodeInputs node={node} />
           </div>
         </div>
-        {/* <div className="absolute" style={{ [port.align]: 48, [port.position]: 8, width: 16 }} key={port.id}>
-          {p.map((io: any, indexIO: number) => (
-            <Handle
-              key={'handle' + io.id}
-              type={io.io}
-              position={port.position}
-              id={io.id}
-              style={{ top: 16 * indexIO + 1, width: 12, height: 12, backgroundColor: '#09AD2D', borderColor: '#24202A', borderWidth: 4 }}
-            />
-          ))}
-        </div> */}
-
       </div>
     </div>
   );

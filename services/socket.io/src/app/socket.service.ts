@@ -66,6 +66,28 @@ export class SocketService implements OnModuleInit {
     this.io.to(`user-${userId}`).emit(event, data);
   }
 
+  join_flow_room(data: any, client: Socket){
+    console.log('join_flow_room', data)
+    const room = `flow_room-${data.projectId}-${data.flowName}`;
+    
+    client.join(room);
+
+    this.io.to(room).emit('user_joined', { userId: data.userId });
+  }
+
+  flow_mouse_move(data: any, client: Socket){
+    console.log(data)
+    const room = `flow_room-${data.projectId}-${data.flowName}`;
+
+    client.to(room).emit('flow_mouse_move', { ...data });
+  }
+  flow_update(data: any, client: Socket){
+    console.log(data)
+    const room = `flow_room-${data.projectId}-${data.flowName}`;
+
+    client.to(room).emit('flow_update', { ...data });
+  }
+
   handleDisconetion(client: Socket, logData: any, msg: string, logType:string = "info"){
     this.logger[logType](logData, msg);
     client.disconnect();

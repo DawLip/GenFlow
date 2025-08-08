@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   ReactFlow,
@@ -31,6 +31,10 @@ import { Aside } from '@web-ui/components/Aside/Aside';
 import { useSocket } from '@web-ui/socket/socket';
 import { DnDProvider, useDnD } from '../../utils/DnDContext';
 import { defaultNode } from '@web-ui/store/node.default';
+import { addNodeThunk } from '@web-ui/store/thunks/flow/addNodeThunk';
+import { onNodesChangeThunk } from '@web-ui/store/thunks/flow/onNodesChangeThunk';
+import { onEdgesChangeThunk } from '@web-ui/store/thunks/flow/onEdgesChangeThunk';
+import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
 
 const nodeTypes = {
   default: DefaultNode,
@@ -43,11 +47,69 @@ function Page() {
   const flowID = useSelector((state: any) => state.session.selectedFlow);
   const nodes = useSelector((state: any) => state.flows[flowID].nodes);
   const edges = useSelector((state: any) => state.flows[flowID].edges);
+  const selectedFlowName = useSelector((state: any) => state.flows[flowID].name);
   
   const [type, setType] = useDnD();
+  const { getViewport } = useReactFlow();
+  const [x, y, zoom] = useStore((s) => s.transform);
   
-  const [x, y, zoom] = useStore((state:any) => state.transform);
+  const userId = useSelector((state: any) => state.client.userId);
+  const projectId = useSelector((state: any) => state.project.projectId);
+  
+  const reactFlowRef = useRef<HTMLDivElement>(null);  
+  
+  const [remoteCursor, setRemoteCursor] = useState<{ x: number; y: number } | null>(null);
+  const [mV, setMv] = useState(true);
+  
+  useEffect(() => {
+    const handleMouseMove = throttle((e: MouseEvent) => {
+      const { x, y, zoom } = getViewport();
+      const rect = reactFlowRef.current?.getBoundingClientRect();
+      if (!rect) return;
 
+      socket?.emit('flow_mouse_move',{
+        userId, 
+        projectId, 
+        flowName: selectedFlowName,
+        x: (e.clientX - rect.left - x)/zoom, 
+        y: (e.clientY - rect.top - y)/zoom
+      })
+    }, 100);
+
+    socket?.on('flow_mouse_move', (data)=>{
+      // console.log('mouse pos received', data);
+      if(
+        reactFlowRef.current &&
+        data.x>0 &&
+        data.x<reactFlowRef.current?.clientWidth &&
+        data.y>0 &&
+        data.y<reactFlowRef.current?.clientHeight
+        ){
+        setRemoteCursor({ x: data.x, y: data.y });
+        setMv(true);
+      } else setMv(false);
+    })
+
+    socket?.on('flow_update', (data)=>{
+      console.log('flow update received', data);
+
+      switch(data.context){
+        case 'addNode': dispatch(addNode(data.data)); break;
+        case 'onNodesChange': dispatch(onNodesChange(data.data)); break;
+        case 'onEdgesChange': dispatch(onEdgesChange(data.data)); break;
+        case 'onConnect': dispatch(onConnect(data.data)); break;
+      }
+    })
+
+    const el = reactFlowRef.current;
+    el?.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      el?.removeEventListener('mousemove', handleMouseMove);
+      socket?.off('flow_mouse_move');
+      socket?.off('flow_update');
+    };
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
@@ -58,26 +120,17 @@ function Page() {
   }, [socket]);
 
   const onNodesChangeW = useMemo(
-    () =>
-      throttle((changes: any) => {
-        dispatch(onNodesChange({ flowID, nodes, changes }));
-      }, 100),
+    () =>throttle((changes: any) => {dispatch(onNodesChangeThunk({ flowID, nodes, changes }, socket));}, 100),
     [dispatch, nodes],
   );
 
   const onEdgesChangeW = useMemo(
-    () =>
-      throttle((changes: any) => {
-        dispatch(onEdgesChange({ flowID, edges, changes }));
-      }, 100),
+    () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flowID, edges, changes }, socket));}, 100),
     [dispatch, edges],
   );
 
   const onConnectW = useMemo(
-    () =>
-      throttle((params: any) => {
-        dispatch(onConnect({ flowID, edges, params }));
-      }, 100),
+    () =>throttle((params: any) => {dispatch(onConnectThunk({ flowID, edges, params }, socket));}, 100),
     [dispatch, edges],
   );
 
@@ -105,7 +158,7 @@ function Page() {
         y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
       };
       console.log(position.x, position.y)
-      dispatch(addNode({ flowID, node: {...defaultNode, id: crypto.randomUUID(), position} }));
+      dispatch(addNodeThunk({ flowID, node: {...defaultNode, id: crypto.randomUUID(), position} }, socket));
       // @ts-ignore
       setType(null);
     },
@@ -116,7 +169,12 @@ function Page() {
     <>
       <Aside tabs={['Hierarchy', 'Nodes', 'Files']} />
       <div className="w-full h-full bg-[#0F0B14]">
+        {mV && remoteCursor && <div className="absolute w-4 h-4 bg-red-500 rounded-full" style={{
+          top: remoteCursor.y * zoom + y + 48,
+          left: remoteCursor.x * zoom + x + 270,
+        }}></div>}
         <ReactFlow
+          ref={reactFlowRef}
           nodeTypes={nodeTypes}
           nodes={nodes}
           edges={edges}
@@ -157,3 +215,4 @@ function Providers() {
 }
 
 export default Providers;
+

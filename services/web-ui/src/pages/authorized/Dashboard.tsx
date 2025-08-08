@@ -1,9 +1,12 @@
 'use client';
 import { Icon } from "@web-ui/components/Icon";
+import { socket, useSocket } from "@web-ui/socket/socket";
 import { AppDispatch } from "@web-ui/store";
 import { setFlow } from "@web-ui/store/slices/flowsSlice";
 import { selectFlow } from "@web-ui/store/slices/sessionSlice";
 import { createFlowThunk } from "@web-ui/store/thunks/flow/createFlowThunk";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -40,12 +43,16 @@ export default function Page() {
 }
 
 const FlowCard = ({name}:{name:string}) => {
+  const router = useRouter()
   const dispatch = useDispatch<AppDispatch>();
 
+  const userId = useSelector((state: any) => state.client.userId);
   const projectId = useSelector((state: any) => state.project.projectId);
   const flowID = projectId + '-' + name;
 
   const flow = useSelector((state: any) => state.project.flows.filter((flow: any) => flow.name === name)[0]);
+  const socket = useSocket();
+  if(!socket) return;
 
   return (
     <div className="self-stretch flex-col justify-start items-start gap-4">
@@ -57,7 +64,13 @@ const FlowCard = ({name}:{name:string}) => {
           <div>
             <Icon name="flow" className="size-[24px]" onClick={() => {
                 dispatch(setFlow({flowID, data: flow}));
-                dispatch(selectFlow(flowID))
+                dispatch(selectFlow(flowID));
+                socket.emit('join_flow_room',{
+                  projectId: projectId,
+                  flowName: name,
+                  userId: userId
+                });
+                router.push('/flow');
               }}/>
           </div>
         </div>

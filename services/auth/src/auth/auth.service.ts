@@ -88,7 +88,8 @@ export class AuthService implements OnModuleInit {
       name: `My flow`,
       description: `This is my first flow`,
       type: 'FLOW',
-      flowData: "{ \"nodes\": [], \"edges\": []}",
+      nodes: [],
+      edges: []
     }
 
       console.log("defaultFlow", defaultFlow);

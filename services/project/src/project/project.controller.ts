@@ -7,7 +7,9 @@ import {
   CreateFlowRequest, CreateFlowResponse,
   UpdateFlowRequest, UpdateFlowResponse,
   FindOneByNameFlowRequest, FindFlowResponse,
-  FindByTeamIdRequest, FindByTeamIdResponse
+  FindByTeamIdRequest, FindByTeamIdResponse,
+  UpdateFlowDataResponse,
+  UpdateFlowDataRequest
 } from '@proto/project/project';
 import { ProjectService } from '@project/project/project.service';
 
@@ -48,5 +50,11 @@ export class ProjectController {
   @GrpcMethod('ProjectService', 'UpdateFlow')
   async updateFlow(data: UpdateFlowRequest): Promise<UpdateFlowResponse> {
     return await this.projectService.updateFlow(data);
+  }
+
+  @GrpcMethod('ProjectService', 'UpdateFlowData')
+  async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
+    console.log(data)
+    return await this.projectService.updateFlowData({...data, data: JSON.parse(data.data)});
   }
 }

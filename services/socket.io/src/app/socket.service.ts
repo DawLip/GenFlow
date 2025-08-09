@@ -8,7 +8,7 @@ import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
 import { Socket } from 'socket.io';
 import { Server } from 'socket.io';
-
+import { ProjectServiceClient } from '@proto/project/project.client';
 
 
 interface AuthenticatedRequest extends Request {
@@ -30,14 +30,34 @@ export class SocketService implements OnModuleInit {
       package: 'auth',
       protoPath: require.resolve('@proto/auth/auth.proto'),
       url: services_config.service_url.auth_rpc,
+
+      loader: {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        defaults: true,
+        oneofs: true,
+      },
     },
   })
   private authClient:ClientGrpc;
   private authService:AuthServiceClient;
 
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'project',
+      protoPath: require.resolve('@proto/project/project.proto'),
+      url: services_config.service_url.project_rpc,
+    },
+  })
+  private projectClient:ClientGrpc;
+  private projectService:ProjectServiceClient;
+
 
   onModuleInit():void {
     this.authService = this.authClient.getService<AuthServiceClient>('AuthService');
+    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
   }
 
   async handleConnection(client: Socket) {
@@ -76,16 +96,30 @@ export class SocketService implements OnModuleInit {
   }
 
   flow_mouse_move(data: any, client: Socket){
-    console.log(data)
+    // console.log(data)
     const room = `flow_room-${data.projectId}-${data.flowName}`;
 
     client.to(room).emit('flow_mouse_move', { ...data });
   }
-  flow_update(data: any, client: Socket){
-    console.log(data)
+   flow_update(data: any, client: Socket){
     const room = `flow_room-${data.projectId}-${data.flowName}`;
 
     client.to(room).emit('flow_update', { ...data });
+
+    const updateFlowDataReq = (dataParams:any) => ({
+      operation: data.context,
+      id: data.projectId,
+      flowName: data.flowName,
+      data: JSON.stringify(dataParams)
+    })
+
+    switch(data.context){
+      case 'addNode': (async ()=>{
+        console.log('addNode')
+        console.log('addNode', updateFlowDataReq(data.data))
+        await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data)));
+      })(); break;
+    }
   }
 
   handleDisconetion(client: Socket, logData: any, msg: string, logType:string = "info"){

@@ -17,6 +17,14 @@ async function bootstrap() {
       package: s_name,
       protoPath: require.resolve(`@proto/${s_name}/${s_name}.proto`),
       url: '0.0.0.0:50051',
+
+      loader: {
+        keepCase: true,
+        longs: String,
+        enums: String,
+        defaults: true,
+        oneofs: true,
+      },
     },
     bufferLogs: true,
   });

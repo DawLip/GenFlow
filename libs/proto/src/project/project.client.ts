@@ -7,6 +7,7 @@ import {
   UpdateFlowRequest, UpdateFlowResponse,
   FindOneByNameFlowRequest, FindFlowResponse,
   FindByTeamIdResponse, FindByTeamIdRequest,
+  UpdateFlowDataResponse, UpdateFlowDataRequest,
  } from '@proto/project/project';
 
 export interface ProjectServiceClient {
@@ -16,6 +17,7 @@ export interface ProjectServiceClient {
 
   createFlow(data: CreateFlowRequest): Observable<CreateFlowResponse>;
   updateFlow(data: UpdateFlowRequest): Observable<UpdateFlowResponse>;
+  updateFlowData(data: UpdateFlowDataRequest): Observable<UpdateFlowDataResponse>;
   findOneByNameFlow(data: FindOneByNameFlowRequest): Observable<FindFlowResponse>;
   findByTeamId(data: FindByTeamIdRequest): Observable<FindByTeamIdResponse>;
 }

@@ -7,9 +7,10 @@ import {
   UpdateFlowRequest, UpdateFlowResponse,
   FindFlowResponse, FindOneByNameFlowRequest,
   FindByTeamIdRequest,
-  FindByTeamIdResponse
+  FindByTeamIdResponse,
+  UpdateFlowDataResponse,
+  UpdateFlowDataRequest
 } from '@proto/project/project';
-import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -76,17 +77,24 @@ export class ProjectService {
     const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
     if (!flow.length) return this.handleValidationError({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
 
-
     return this.handleSuccessResponse({
       res:{msg:"flow found"},
-      flow: { ...flow[0]}
+      flow: { 
+        ...flow[0],
+        nodes: flow[0]?.nodes.map((node:any)=>({
+          ...node,
+          position: node.position,
+          style: node.style,
+          data: node.data
+        }))
+      } 
     }, {context:"findOneByNameFlow"});
   }
 
   async createFlow(data:CreateFlowRequest):Promise<CreateFlowResponse> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(
       data.id,
-      { $addToSet: { flows: { ...data.flow, flowData: data.flow?.flowData } } },
+      { $addToSet: { flows: { ...data.flow } } },
       { new: true },
     );
 
@@ -115,6 +123,39 @@ export class ProjectService {
     if (!updatedProject) return this.handleValidationError({res:{msg:"failed to update flow"}}, {context:"updateFlow", data});
 
     return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context:"updateFlow"});
+  }
+
+  async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
+    const context = 'updateFlowData';
+    console.log(`=== ${context} ===`);
+    console.log("data:", data)
+
+    if (!data.operation) return this.handleValidationError({res:{msg:"Field 'operation' is required"}}, {context});
+    if (!data.id) return this.handleValidationError({res:{msg:"Field 'id' is required"}}, {context});
+    if (!data.flowName) return this.handleValidationError({res:{msg:"Field 'flowName' is required"}}, {context});
+    if (!data.data) return this.handleValidationError({res:{msg:"Field 'data' is required"}}, {context});
+
+    const project = await this.projectModel.findById(data.id);
+    if (!project) return this.handleValidationError({res:{msg:"project not found"}}, {context, data});
+
+    const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
+    if (flowIndex === -1) return this.handleValidationError({res:{msg:"flow not found"}}, {context, data});
+
+    switch(data.operation){
+      case 'addNode': this.addNode(project, flowIndex, data.data);
+    }
+
+    return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context});
+  }
+
+  async addNode(project:any, flowIndex:number, data:any){
+    console.log(data)
+    const flow = project.flows[flowIndex];
+
+    if (!Array.isArray(flow.nodes)) flow.nodes = [];
+    flow.nodes.push(data);
+
+    await project.save();
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {

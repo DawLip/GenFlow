@@ -60,7 +60,6 @@ export class ApiProjectService implements OnModuleInit {
     if(!body.flow) return this.apiService.handleValidationError({res:{msg:"Field 'flow' is required"}}, {context:"project/flowPost"});
     if(!body.flow.name) return this.apiService.handleValidationError({res:{msg:"Field 'flow.name' is required"}}, {context:"project/flowPost"});
     if(!body.flow.description) return this.apiService.handleValidationError({res:{msg:"Field 'flow.description' is required"}}, {context:"project/flowPost"});
-    if(!body.flow.flowData) return this.apiService.handleValidationError({res:{msg:"Field 'flow.flowData' is required"}}, {context:"project/flowPost"});
     if(!body.flow.type) return this.apiService.handleValidationError({res:{msg:"Field 'flow.type' is required"}}, {context:"project/flowPost"});
 
     return await firstValueFrom(this.grpcService.createFlow({...body, id: params.projectId}));

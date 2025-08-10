@@ -74,13 +74,12 @@ export class ProjectService {
 
 
   async findOneByNameFlow(data:FindOneByNameFlowRequest):Promise<FindFlowResponse> {
-    console.log("=== findOneByNameFlow ===");
     const foundProject = await this.projectModel.findById(data.id).lean();
     if (!foundProject) return this.handleValidationError({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
     
     const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
-    console.log("flow:", flow[0])
     if (!flow.length) return this.handleValidationError({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
+
     return this.handleSuccessResponse({
       res:{msg:"flow found"},
       flow: { 
@@ -131,8 +130,6 @@ export class ProjectService {
 
   async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
     const context = 'updateFlowData';
-    console.log(`=== ${context} ===`);
-    console.log("data:", data)
 
     if (!data.operation) return this.handleValidationError({res:{msg:"Field 'operation' is required"}}, {context});
     if (!data.id) return this.handleValidationError({res:{msg:"Field 'id' is required"}}, {context});
@@ -145,11 +142,11 @@ export class ProjectService {
     const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
     if (flowIndex === -1) return this.handleValidationError({res:{msg:"flow not found"}}, {context, data});
 
-    console.log(data)
     switch(data.operation){
       case 'addNode': this.addNode(project, flowIndex, data.data); break;
       case 'onNodesChange': this.onNodesChange(project, flowIndex, data.data); break;
       case 'onConnect':  this.onConnect(project, flowIndex, data.data); break;
+      case 'onEdgesChange': this.onEdgesChange(project, flowIndex, data.data); break;
     }
 
     return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context});
@@ -180,6 +177,18 @@ export class ProjectService {
     const flow = project.flows[flowIndex];
     flow.edges.push({id: `xy-edge__${data.params.source}-${data.params.target}`, ...data.params});
     await project.save();
+  }
+
+  async onEdgesChange(project:any, flowIndex:number, data:any){
+    const flow = project.flows[flowIndex];
+    const edgeIndex = flow.edges.findIndex((edge:any) => edge.id === data.changes[0].id);
+    if (edgeIndex !== -1) {
+      switch(data.changes[0].type){
+        case 'remove': flow.edges.splice(edgeIndex, 1); break;
+        case 'update': flow.edges[edgeIndex] = {...flow.edges[edgeIndex], ...data.changes[0].data}; break;
+      }
+      await project.save();
+    }
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {

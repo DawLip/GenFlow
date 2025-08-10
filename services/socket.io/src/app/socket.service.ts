@@ -65,11 +65,11 @@ export class SocketService implements OnModuleInit {
         client.handshake.auth?.token?.replace('Bearer ', '') ||
         client.handshake.headers?.authorization?.replace('Bearer ', '') ||
         client.handshake.query?.token?.toString();
-      if(!token) return this.handleDisconetion(client, {context:"handleConnection"}, "token is required", "error");
-  
+      if(!token) return this.handleDisconnection(client, {context:"handleConnection"}, "token is required", "error");
+
       const payload = await this.getUserFromToken(token)
-      if(!payload?.id) return this.handleDisconetion(client, {token, context:"handleConnection"}, "auth failed", "error");
-  
+      if(!payload?.id) return this.handleDisconnection(client, {token, context:"handleConnection"}, "auth failed", "error");
+
       client.data.user = payload;
 
       client.join(`user-${payload.id}`);
@@ -113,13 +113,10 @@ export class SocketService implements OnModuleInit {
       data: JSON.stringify(dataParams)
     })
 
-    switch(data.context){
-      case 'addNode': await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data))); break;
-      default: await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data))); break;
-    }
+    return await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data)));
   }
 
-  handleDisconetion(client: Socket, logData: any, msg: string, logType:string = "info"){
+  handleDisconnection(client: Socket, logData: any, msg: string, logType:string = "info"){
     this.logger[logType](logData, msg);
     client.disconnect();
   }

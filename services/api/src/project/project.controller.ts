@@ -25,8 +25,14 @@ export class ApiProjectController {
 
 
   @Get(':projectId/flows/:flowName')
-  flowGet(@Body() body: FindOneByNameFlowRequest, @Req() req: AuthenticatedRequest, @Param('projectId') projectId: string, @Param('flowName') flowName: string): Promise<FindFlowResponse> {
-    return this.apiProjectService.flowGet(body, req, {projectId, flowName});
+  async flowGet(@Body() body: FindOneByNameFlowRequest, @Req() req: AuthenticatedRequest, @Param('projectId') projectId: string, @Param('flowName') flowName: string): Promise<FindFlowResponse> {
+    const res = await this.apiProjectService.flowGet(body, req, {projectId, flowName: decodeURIComponent(flowName)});
+    return {...res, flow: res.flow ? {...res.flow, nodes: res.flow.nodes.map((node:any) => ({
+      ...node,
+      position: JSON.parse(node.position),
+      style: JSON.parse(node.style),
+      data: JSON.parse(node.data)
+    }))} : undefined};
   }
 
   @Post(':projectId/flows')
@@ -36,6 +42,6 @@ export class ApiProjectController {
 
   @Patch(':projectId/flows/:flowName')
   flowPatch(@Body() body: UpdateFlowRequest, @Req() req: AuthenticatedRequest, @Param('projectId') projectId: string, @Param('flowName') flowName: string): Promise<UpdateFlowResponse> {
-    return this.apiProjectService.flowPatch(body, req, {projectId, flowName});
+    return this.apiProjectService.flowPatch(body, req, {projectId, flowName: decodeURIComponent(flowName)});
   }
 }

@@ -54,7 +54,6 @@ export class ProjectController {
 
   @GrpcMethod('ProjectService', 'UpdateFlowData')
   async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
-    console.log(data)
     return await this.projectService.updateFlowData({...data, data: JSON.parse(data.data)});
   }
 }

@@ -1,10 +1,12 @@
 'use client';
+import { services_config } from "@libs/shared/src/services_config";
 import { Icon } from "@web-ui/components/Icon";
 import { socket, useSocket } from "@web-ui/socket/socket";
 import { AppDispatch } from "@web-ui/store";
 import { setFlow } from "@web-ui/store/slices/flowsSlice";
 import { selectFlow } from "@web-ui/store/slices/sessionSlice";
 import { createFlowThunk } from "@web-ui/store/thunks/flow/createFlowThunk";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,8 +64,9 @@ const FlowCard = ({name}:{name:string}) => {
             {name}
           </div>
           <div>
-            <Icon name="flow" className="size-[24px]" onClick={() => {
-                dispatch(setFlow({flowID, data: flow}));
+            <Icon name="flow" className="size-[24px]" onClick={async () => {
+                const {data} = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${name}`);
+                dispatch(setFlow({flowID, data: data.flow}));
                 dispatch(selectFlow(flowID));
                 socket.emit('join_flow_room',{
                   projectId: projectId,

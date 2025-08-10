@@ -96,12 +96,12 @@ export class SocketService implements OnModuleInit {
   }
 
   flow_mouse_move(data: any, client: Socket){
-    // console.log(data)
     const room = `flow_room-${data.projectId}-${data.flowName}`;
 
     client.to(room).emit('flow_mouse_move', { ...data });
   }
-   flow_update(data: any, client: Socket){
+  
+  async flow_update(data: any, client: Socket){
     const room = `flow_room-${data.projectId}-${data.flowName}`;
 
     client.to(room).emit('flow_update', { ...data });
@@ -114,11 +114,8 @@ export class SocketService implements OnModuleInit {
     })
 
     switch(data.context){
-      case 'addNode': (async ()=>{
-        console.log('addNode')
-        console.log('addNode', updateFlowDataReq(data.data))
-        await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data)));
-      })(); break;
+      case 'addNode': await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data))); break;
+      default: await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data))); break;
     }
   }
 

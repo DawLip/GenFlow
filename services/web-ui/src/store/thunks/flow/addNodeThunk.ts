@@ -1,6 +1,4 @@
-import { useSocket } from "@web-ui/socket/socket";
 import { addNode } from "@web-ui/store/slices/flowsSlice";
-
 
 export const addNodeThunk = (data:any, socket: any) => async (dispatch: any, getState: any) => {
   const state = getState();

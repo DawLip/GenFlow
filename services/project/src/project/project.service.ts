@@ -17,7 +17,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Project as ProjectSchema, ProjectDocument } from '@shared/schema/project.shema';
 import { Project } from '@shared/types/Project.type'
-import { Struct } from 'google-protobuf/google/protobuf/struct_pb';
 
 
 @Injectable()
@@ -54,7 +53,11 @@ export class ProjectService {
 
     return this.handleSuccessResponse({
       res:{msg:"project found"},
-      project: { ...foundProject, id: foundProject._id.toString()}
+      project: { 
+        ...foundProject, 
+        id: foundProject._id.toString(), 
+        flows: foundProject.flows.map(flow => ({ name: flow.name, description: flow.description, type: flow.type })) 
+      }
     }, {context:"findOneById"});
   }
 
@@ -71,21 +74,22 @@ export class ProjectService {
 
 
   async findOneByNameFlow(data:FindOneByNameFlowRequest):Promise<FindFlowResponse> {
+    console.log("=== findOneByNameFlow ===");
     const foundProject = await this.projectModel.findById(data.id).lean();
     if (!foundProject) return this.handleValidationError({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
     
     const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
+    console.log("flow:", flow[0])
     if (!flow.length) return this.handleValidationError({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
-
     return this.handleSuccessResponse({
       res:{msg:"flow found"},
       flow: { 
         ...flow[0],
         nodes: flow[0]?.nodes.map((node:any)=>({
           ...node,
-          position: node.position,
-          style: node.style,
-          data: node.data
+          position: JSON.stringify(node.position),
+          style: JSON.stringify(node.style),
+          data: JSON.stringify(node.data)
         }))
       } 
     }, {context:"findOneByNameFlow"});
@@ -141,20 +145,40 @@ export class ProjectService {
     const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
     if (flowIndex === -1) return this.handleValidationError({res:{msg:"flow not found"}}, {context, data});
 
+    console.log(data)
     switch(data.operation){
-      case 'addNode': this.addNode(project, flowIndex, data.data);
+      case 'addNode': this.addNode(project, flowIndex, data.data); break;
+      case 'onNodesChange': this.onNodesChange(project, flowIndex, data.data); break;
+      case 'onConnect':  this.onConnect(project, flowIndex, data.data); break;
     }
 
     return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context});
   }
 
   async addNode(project:any, flowIndex:number, data:any){
-    console.log(data)
     const flow = project.flows[flowIndex];
 
     if (!Array.isArray(flow.nodes)) flow.nodes = [];
     flow.nodes.push(data);
 
+    await project.save();
+  }
+
+  async onNodesChange(project:any, flowIndex:number, data:any){
+    const flow = project.flows[flowIndex];
+
+    const node = flow.nodes.find((node:any) => node.id === data.changes[0].id);
+
+    switch(data.changes[0].type){
+      case 'position': node.position = data.changes[0].position; break;
+    }
+
+    await project.save();
+  }
+
+  async onConnect(project:any, flowIndex:number, data:any){
+    const flow = project.flows[flowIndex];
+    flow.edges.push({id: `xy-edge__${data.params.source}-${data.params.target}`, ...data.params});
     await project.save();
   }
 

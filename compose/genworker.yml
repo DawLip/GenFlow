@@ -1,0 +1,13 @@
+services:
+  genworker:
+    build:
+      context: .
+      dockerfile: ../services/genworker/Dockerfile.dev
+    ports:
+      - "3022:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve genworker

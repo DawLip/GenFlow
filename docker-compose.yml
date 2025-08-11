@@ -46,6 +46,15 @@ services:
       - project
       - team
 # Services
+  genworker:
+    extends:
+      file: compose/genworker.yml
+      service: genworker
+    networks:
+      monitoring: 
+        aliases: [genworker]
+    depends_on:
+      - mongodb
   web-ui:
     extends:
       file: compose/web-ui.yml

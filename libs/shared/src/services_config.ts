@@ -21,6 +21,9 @@ export const services_config = {
     team:'http://team:3000',
     team_rpc:'team:50051',
 
+    genworker:'http://genworker:3000',
+    genworker_rpc:'genworker:50051',
+
     mongodb: 'mongodb://mongodb:27017',
     rabbitmq: 'amqp://rabbitmq:5672',
 

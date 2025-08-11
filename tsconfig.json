@@ -16,6 +16,9 @@
     {"path": "./services/project"},
     {"path": "./services/team"},
     {"path": "./services/email"},
+    {"path": "./services/genworker"},
+
+    {"path": "./services/genworker-app"},
 
     {"path": "./services/web-ui"}
   ],
@@ -34,6 +37,9 @@
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
       "@email/*": ["services/email/src/*"],
+      "@genworker/*": ["services/genworker/src/*"],
+
+      "@genworker-app/*": ["services/genworker-app/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

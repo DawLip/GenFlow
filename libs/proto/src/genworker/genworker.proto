@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package genworker;
+
+service GenWorkerService {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
+
+  rpc Register (RegisterRequest) returns (DefaultResponse);
+}
+
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
+message DefaultResponse {
+  BaseResponse res = 1;
+}
+
+message CreateRequest {
+  string name = 1;
+  string ownerId = 2;
+}
+message CreateResponse {
+  BaseResponse res = 1;
+  GenWorker genworker = 2;
+}
+
+message UpdateRequest {
+  string id = 1;
+  GenWorker genworker = 2;
+}
+message UpdateResponse {
+  BaseResponse res = 1;
+}
+
+message FindOneByIdRequest {
+  string id = 1;
+  optional bool populateTeams = 2;
+}
+message FindResponse {
+  BaseResponse res = 1;
+  optional GenWorker genworker = 2;
+}
+
+message RegisterRequest {
+  string ownerId = 1;
+  string name = 2;
+}
+
+message GenWorker {
+  string id = 1;
+  string ownerId = 2;
+  string name = 3;
+  bool isActive = 4;
+}

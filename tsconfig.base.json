@@ -37,6 +37,9 @@
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
       "@email/*": ["services/email/src/*"],
+      "@genworker/*": ["services/genworker/src/*"],
+
+      "@genworker-app/*": ["services/genworker-app/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

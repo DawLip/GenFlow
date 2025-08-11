@@ -1,12 +1,14 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse,
+  RegisterGenWorkerRequest,
+  RegisterGenWorkerResponse
 } from '@proto/user/user';
 import * as jwt from 'jsonwebtoken';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { User as UserSchema, UserDocument } from '@shared/schema/user.shema';
 import { User } from '@shared/types/User.type'
 import { Client, Transport } from '@nestjs/microservices';
@@ -93,6 +95,20 @@ export class UserService implements OnModuleInit {
         ...user,
         id: user._id.toString(),
       }}, {context:"findOneByEmail"});
+  }
+
+  async registerGenWorker(data: RegisterGenWorkerRequest):Promise<RegisterGenWorkerResponse>{
+    const context = 'registerGenWorker'
+
+    const user = await this.userModel.findById(data.userId);
+    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context});
+    
+    if (!user.genWorkers) user.genWorkers = [];
+    user.genWorkers.push(new Types.ObjectId(data.genWorkerId));
+
+    await user.save();
+
+    return this.handleSuccessResponse({res:{msg:"GenWorker registered"}}, {context}); 
   }
 
   handleValidationError(response:any, logData:any, logMsg?:string):any {

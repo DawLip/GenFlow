@@ -3,12 +3,14 @@ import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { AuthServiceClient } from '@proto/auth/auth.client';
-import { firstValueFrom } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
 import { Socket } from 'socket.io';
 import { Server } from 'socket.io';
 import { ProjectServiceClient } from '@proto/project/project.client';
+import { UserServiceClient } from '@proto/user/user.client';
+import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
 
 
 interface AuthenticatedRequest extends Request {
@@ -54,10 +56,22 @@ export class SocketService implements OnModuleInit {
   private projectClient:ClientGrpc;
   private projectService:ProjectServiceClient;
 
+  @Client({
+    transport: Transport.GRPC,
+    options: {
+      package: 'genworker',
+      protoPath: require.resolve('@proto/genworker/genworker.proto'),
+      url: services_config.service_url.genworker_rpc,
+    },
+  })
+  private genworkerClient:ClientGrpc;
+  private genworkerService:GenWorkerServiceClient;
+
 
   onModuleInit():void {
     this.authService = this.authClient.getService<AuthServiceClient>('AuthService');
     this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
+    this.genworkerService = this.genworkerClient.getService<GenWorkerServiceClient>('GenWorkerService');
   }
 
   async handleConnection(client: Socket) {
@@ -120,4 +134,13 @@ export class SocketService implements OnModuleInit {
     this.logger[logType](logData, msg);
     client.disconnect();
   }
+
+  async genworker_register(data: any, client: Socket){
+    await firstValueFrom(this.genworkerService.register({...data, ownerId: data.userId}));
+  }
+
+  genworker_assign(data: any, client: Socket){
+    client.join(`worker--${client.data.user.id}--${data.name}`);
+  }
+
 }

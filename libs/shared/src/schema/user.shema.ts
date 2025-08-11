@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -19,6 +19,8 @@ export class User {
 
   @Prop({ required: true })
   confirmCode!: string;
-}
 
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'GenWorker', default: [] })
+  genWorkers!: Types.ObjectId[];
+}
 export const UserSchema = SchemaFactory.createForClass(User);

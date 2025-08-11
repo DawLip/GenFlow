@@ -11,7 +11,6 @@ import { DefaultExceptionFilter } from '@libs/shared/src/default-exception.filte
 const s_name = service_name(name);
 
 async function bootstrap() {
-  console.log(s_name)
   const grpcApp = await NestFactory.createMicroservice<MicroserviceOptions>(AuthModule, {
     transport: Transport.GRPC,
     options: {

@@ -19,6 +19,7 @@ import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc, ClientProxy } from '@nestjs/microservices';
 import { services_config } from '@shared/services_config';
 import { ProjectServiceClient } from '@proto/project/project.client';
+import { gRPC_client } from '@libs/shared/src/grpc/client';
 
 
 @Injectable()
@@ -28,16 +29,8 @@ export class TeamService {
     private readonly logger: PinoLogger,
   ) {}
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'project',
-      protoPath: require.resolve('@proto/project/project.proto'),
-      url: services_config.service_url.project_rpc,
-    },
-  })
+  @Client(gRPC_client('project'))
   private client: ClientGrpc;
-
   private projectService: ProjectServiceClient;
 
   onModuleInit(): void {

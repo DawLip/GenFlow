@@ -1,19 +1,21 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 
-import { HealthController } from '@genworker/genworker/health.controller';
+import { createHealthController } from '@shared/health/health.controller';
 import { GenWorkerController } from '@genworker/genworker/genworker.controller';
-import { GenWorkerService } from '@genworker/genworker/genworker.service';
+import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 
 import { MongooseModule } from '@nestjs/mongoose';
 import { GenWorker, GenWorkerSchema } from '@shared/schema/genworker.schema';
 
-import { services_config } from '@shared/services_config';
+import { services_config } from '@libs/shared/src/services_config';
 import { name } from '../../package.json';
-import { service_name } from '@shared/service_name'
+import { service_name } from '@libs/shared/src/service_name'
 import { Team, TeamSchema } from '@libs/shared/src/schema/team.shema';
+import { TasksQueueService } from './services/tasks_queue.service';
 
-const s_name = service_name(name);
+const sName = service_name(name);
+const HealthController = createHealthController(sName);
 
 @Module({
   imports: [
@@ -24,9 +26,9 @@ const s_name = service_name(name);
         transport: {
           target: 'pino-loki',
           options: {
-            host: services_config.service_url.loki, 
-            labels: { service: `gf_${s_name}` }, 
-            interval: 5, 
+            host: services_config.service_url.loki,
+            labels: { service: `gf_${sName}` },
+            interval: 5,
             timeout: 3000,
           },
         },
@@ -34,6 +36,6 @@ const s_name = service_name(name);
     }),
   ],
   controllers: [HealthController, GenWorkerController],
-  providers: [GenWorkerService],
+  providers: [GenWorkerService, TasksQueueService],
 })
 export class GenWorkerModule {}

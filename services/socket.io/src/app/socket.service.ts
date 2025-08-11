@@ -11,6 +11,7 @@ import { Server } from 'socket.io';
 import { ProjectServiceClient } from '@proto/project/project.client';
 import { UserServiceClient } from '@proto/user/user.client';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
+import { gRPC_client } from '@libs/shared/src/grpc/client';
 
 
 interface AuthenticatedRequest extends Request {
@@ -26,44 +27,15 @@ export class SocketService implements OnModuleInit {
   }
 
   constructor(private readonly logger: PinoLogger) {}
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'auth',
-      protoPath: require.resolve('@proto/auth/auth.proto'),
-      url: services_config.service_url.auth_rpc,
-
-      loader: {
-        keepCase: true,
-        longs: String,
-        enums: String,
-        defaults: true,
-        oneofs: true,
-      },
-    },
-  })
+  @Client(gRPC_client('auth'))
   private authClient:ClientGrpc;
   private authService:AuthServiceClient;
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'project',
-      protoPath: require.resolve('@proto/project/project.proto'),
-      url: services_config.service_url.project_rpc,
-    },
-  })
+  @Client(gRPC_client('project'))
   private projectClient:ClientGrpc;
   private projectService:ProjectServiceClient;
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'genworker',
-      protoPath: require.resolve('@proto/genworker/genworker.proto'),
-      url: services_config.service_url.genworker_rpc,
-    },
-  })
+  @Client(gRPC_client('genworker'))
   private genworkerClient:ClientGrpc;
   private genworkerService:GenWorkerServiceClient;
 

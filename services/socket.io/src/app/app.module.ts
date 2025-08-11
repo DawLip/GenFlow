@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
-import { HealthController } from '@socket.io/app/health.controller';
+import { createHealthController } from '@shared/health/health.controller';
 
 import { services_config } from '@shared/services_config';
 import { name } from '../../package.json';
@@ -9,7 +9,8 @@ import { SocketGateway } from '@socket.io/app/socket.gateway';
 import { SocketService } from './socket.service';
 import { NotificationsGateway } from './notifications.gateway';
 
-const s_name = service_name(name);
+const sName = service_name(name);
+const HealthController = createHealthController(sName);
 
 @Module({
   imports: [
@@ -18,9 +19,9 @@ const s_name = service_name(name);
         transport: {
           target: 'pino-loki',
           options: {
-            host: services_config.service_url.loki, 
-            labels: { service: `gf_${s_name}` }, 
-            interval: 5, 
+            host: services_config.service_url.loki,
+            labels: { service: `gf_${sName}` },
+            interval: 5,
             timeout: 3000,
           },
         },

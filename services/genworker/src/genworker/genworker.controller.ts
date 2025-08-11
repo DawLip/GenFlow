@@ -5,7 +5,7 @@ import {
   DefaultResponse,
   RegisterRequest,
 } from '@proto/genworker/genworker';
-import { GenWorkerService } from '@genworker/genworker/genworker.service';
+import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 
 @Controller()
 export class GenWorkerController {

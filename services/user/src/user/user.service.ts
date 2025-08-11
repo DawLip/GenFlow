@@ -16,20 +16,13 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
 import { firstValueFrom } from 'rxjs';
+import { gRPC_client } from '@libs/shared/src/grpc/client';
 
 
 @Injectable()
 export class UserService implements OnModuleInit {
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'team',
-      protoPath: require.resolve('@proto/team/team.proto'),
-      url: services_config.service_url.team_rpc,
-    },
-  })
+  @Client(gRPC_client('team'))
   private client: ClientGrpc;
-
   private teamService: TeamServiceClient;
 
   onModuleInit() {

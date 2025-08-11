@@ -2,7 +2,7 @@ services:
   genworker:
     build:
       context: .
-      dockerfile: ../services/genworker/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "3022:3000"
     volumes:

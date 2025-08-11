@@ -2,7 +2,7 @@ services:
   socket.io:
     build:
       context: .
-      dockerfile: ../services/socket.io/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "3003:3000"
     volumes:

@@ -2,7 +2,7 @@ services:
   graphql:
     build:
       context: .
-      dockerfile: ../services/graphql/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "3002:3000"
     volumes:

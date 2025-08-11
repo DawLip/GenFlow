@@ -15,18 +15,12 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { firstValueFrom } from 'rxjs';
 import { UserServiceClient } from '@proto/user/user.client';
+import { gRPC_client } from '@libs/shared/src/grpc/client';
 
 
 @Injectable()
 export class GenWorkerService implements OnModuleInit {
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'user',
-      protoPath: require.resolve('@proto/user/user.proto'),
-      url: services_config.service_url.user_rpc,
-    },
-  })
+  @Client(gRPC_client('user'))
   private userClient:ClientGrpc;
   private userService:UserServiceClient;
   

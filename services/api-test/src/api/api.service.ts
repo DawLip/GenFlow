@@ -7,45 +7,18 @@ import { ProjectServiceClient } from '@proto/project/project.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
-
-import {
-  RegisterRequest,
-  LoginRequest,
-} from '@proto/auth/auth';
-import {
-  CreateRequest,
-  FindOneByIdRequest,
-  UpdateRequest
-} from '@proto/project/project';
-
-interface AuthenticatedRequest extends Request {
-  user: { id: string };
-}
+import { gRPC_client } from '@libs/shared/src/grpc/client';
 
 @Injectable()
 export class ApiService implements OnModuleInit {
   constructor(
     private readonly logger: PinoLogger,
   ) {}
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'auth',
-      protoPath: require.resolve('@proto/auth/auth.proto'),
-      url: services_config.service_url.auth_rpc,
-    },
-  })
+  @Client(gRPC_client('auth'))
   private authClient:ClientGrpc;
   private authService:AuthServiceClient;
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'project',
-      protoPath: require.resolve('@proto/project/project.proto'),
-      url: services_config.service_url.project_rpc,
-    },
-  })
+  @Client(gRPC_client('project'))
   private projectClient:ClientGrpc;
   private projectService:ProjectServiceClient;
 

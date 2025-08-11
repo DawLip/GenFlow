@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
 
-import { HealthController } from '@email/email/health.controller';
+import { createHealthController } from '@shared/health/health.controller';
 import { EmailService } from '@email/email/email.service';
 
 import { services_config } from '@shared/services_config';
@@ -10,7 +10,8 @@ import { service_name } from '@shared/service_name'
 import { EmailConsumer } from './email.consumer';
 import { CustomMailProvider } from './custom.provider';
 
-const s_name = service_name(name);
+const sName = service_name(name);
+const HealthController = createHealthController(sName);
 
 @Module({
   imports: [
@@ -19,9 +20,9 @@ const s_name = service_name(name);
         transport: {
           target: 'pino-loki',
           options: {
-            host: services_config.service_url.loki, 
-            labels: { service: `gf_${s_name}` }, 
-            interval: 5, 
+            host: services_config.service_url.loki,
+            labels: { service: `gf_${sName}` },
+            interval: 5,
             timeout: 3000,
           },
         },

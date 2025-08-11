@@ -4,7 +4,7 @@ import { Logger } from 'nestjs-pino';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 import { name } from '../package.json';
-import { service_name } from '@shared/service_name'
+import { service_name } from '@libs/shared/src/service_name'
 import { DefaultExceptionFilter } from '@libs/shared/src/default-exception.filter';
 import { GrpcExceptionFilter } from '@libs/shared/src/grpc-exception.filter';
 

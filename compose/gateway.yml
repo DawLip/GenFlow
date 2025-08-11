@@ -2,7 +2,7 @@ services:
   gateway:
     build:
       context: .
-      dockerfile: ../services/gateway/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "3000:3000"
     volumes:

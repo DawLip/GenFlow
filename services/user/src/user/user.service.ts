@@ -16,7 +16,8 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
 import { firstValueFrom } from 'rxjs';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 @Injectable()
@@ -32,6 +33,7 @@ export class UserService implements OnModuleInit {
   constructor(
     @InjectModel(UserSchema.name) private userModel: Model<UserDocument>,
     private readonly logger: PinoLogger,
+    private readonly response: ResponseService
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
@@ -40,9 +42,9 @@ export class UserService implements OnModuleInit {
       confirmCode: this.generateConfirmCode(),
       ...data
     });
-    if (!createdUser) return this.handleValidationError({res:{msg:"user creation failed"}}, {context:"create"});
+    if (!createdUser) return this.response.error({res:{msg:"user creation failed"}}, {context:"create"});
 
-    return this.handleSuccessResponse({
+    return this.response.success({
         res:{msg:"user created"},
         user: {
           emailConfirmed: createdUser.emailConfirmed,
@@ -59,18 +61,18 @@ export class UserService implements OnModuleInit {
       { new: true },
     );
 
-    if (!updatedUser) return this.handleValidationError({res:{msg:"user not found"}}, {context:"update"});
+    if (!updatedUser) return this.response.fail({res:{msg:"user not found"}}, {context:"update"});
 
-    return this.handleSuccessResponse({res:{msg:"user updated"}}, {context:"update"});
+    return this.response.success({res:{msg:"user updated"}}, {context:"update"});
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const user = await this.userModel.findById(data.id).lean();
-    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneById"});
-    
+    if (!user) return this.response.fail({res:{msg:"user not found"}}, {context:"findOneById"});
+
     const teams = data.populateTeams ? await firstValueFrom(this.teamService.findByUserId({ userId: data.id })) : {res:{ok:true}, teams:[]};
-    if (!teams.res?.ok) return this.handleValidationError({res:{msg:"teams finding failed"}}, {context:"findOneById"});
-    
-    return this.handleSuccessResponse({
+    if (!teams.res?.ok) return this.response.fail({res:{msg:"teams finding failed"}}, {context:"findOneById"});
+
+    return this.response.success({
         res:{msg:"user found"},
         user: {
         ...user,
@@ -80,9 +82,9 @@ export class UserService implements OnModuleInit {
   }
   async findOneByEmail(data:FindOneByEmailRequest):Promise<FindResponse> {
     const user = await this.userModel.findOne({ email: data.email }).lean();
-    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context:"findOneByEmail"});
+    if (!user) return this.response.fail({res:{msg:"user not found"}}, {context:"findOneByEmail"});
 
-    return this.handleSuccessResponse({
+    return this.response.success({
       res:{msg:"user found"},
       user: {
         ...user,
@@ -94,26 +96,14 @@ export class UserService implements OnModuleInit {
     const context = 'registerGenWorker'
 
     const user = await this.userModel.findById(data.userId);
-    if (!user) return this.handleValidationError({res:{msg:"user not found"}}, {context});
-    
+    if (!user) return this.response.fail({res:{msg:"user not found"}}, {context});
+
     if (!user.genWorkers) user.genWorkers = [];
     user.genWorkers.push(new Types.ObjectId(data.genWorkerId));
 
     await user.save();
 
-    return this.handleSuccessResponse({res:{msg:"GenWorker registered"}}, {context}); 
-  }
-
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
-  }
-
-  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
+    return this.response.success({res:{msg:"GenWorker registered"}}, {context}); 
   }
 
   generateConfirmCode(){

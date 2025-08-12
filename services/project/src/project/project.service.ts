@@ -17,6 +17,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Project as ProjectSchema, ProjectDocument } from '@shared/schema/project.shema';
 import { Project } from '@shared/types/Project.type'
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 @Injectable()
@@ -24,6 +25,7 @@ export class ProjectService {
   constructor(
     @InjectModel(ProjectSchema.name) private projectModel: Model<ProjectDocument>,
     private readonly logger: PinoLogger,
+    private readonly response: ResponseService
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
@@ -31,7 +33,7 @@ export class ProjectService {
       flows:[],
       ...data
     });
-    return this.handleSuccessResponse({res:{msg:"project created"}, id: createdProject._id.toString(),}, {context:"create"});
+    return this.response.success({res:{msg:"project created"}, id: createdProject._id.toString(),}, {context:"create"});
   }
 
   async update(data:UpdateRequest):Promise<UpdateResponse> {
@@ -41,17 +43,17 @@ export class ProjectService {
       { new: true },
     );
 
-    if (!updatedProject) return this.handleValidationError({res:{msg:"project not found"},}, {context:"update"});
+    if (!updatedProject) return this.response.fail({res:{msg:"project not found"},}, {context:"update"});
 
-    return this.handleSuccessResponse({res:{msg:"project updated"}}, {context:"update"});
+    return this.response.success({res:{msg:"project updated"}}, {context:"update"});
   }
 
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const foundProject = await this.projectModel.findById(data.id).lean();
 
-    if (!foundProject) return this.handleValidationError({res:{msg:"project not found"}}, {context:"findOneById"});
+    if (!foundProject) return this.response.fail({res:{msg:"project not found"}}, {context:"findOneById"});
 
-    return this.handleSuccessResponse({
+    return this.response.success({
       res:{msg:"project found"},
       project: { 
         ...foundProject, 
@@ -64,9 +66,9 @@ export class ProjectService {
   async findByTeamId(data:FindByTeamIdRequest):Promise<FindByTeamIdResponse> {
     const foundProjects = await this.projectModel.find({ team: data.id }).lean();
 
-    if (!foundProjects) return this.handleValidationError({res:{msg:"projects not found"}}, {context:"findByTeamId"});
-    
-    return this.handleSuccessResponse({
+    if (!foundProjects) return this.response.fail({res:{msg:"projects not found"}}, {context:"findByTeamId"});
+
+    return this.response.success({
       res:{msg:"projects found"},
       projects: foundProjects.map(project => ({ ...project, id: project._id.toString() }))
     }, {context:"findByTeamId"});
@@ -75,12 +77,12 @@ export class ProjectService {
 
   async findOneByNameFlow(data:FindOneByNameFlowRequest):Promise<FindFlowResponse> {
     const foundProject = await this.projectModel.findById(data.id).lean();
-    if (!foundProject) return this.handleValidationError({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
-    
-    const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
-    if (!flow.length) return this.handleValidationError({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
+    if (!foundProject) return this.response.fail({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
 
-    return this.handleSuccessResponse({
+    const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
+    if (!flow.length) return this.response.fail({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
+
+    return this.response.success({
       res:{msg:"flow found"},
       flow: { 
         ...flow[0],
@@ -101,21 +103,21 @@ export class ProjectService {
       { new: true },
     );
 
-    if (!updatedProject) return this.handleValidationError({ res: { msg: 'project not found' } }, { context: 'createFlow' });
+    if (!updatedProject) return this.response.fail({ res: { msg: 'project not found' } }, { context: 'createFlow' });
 
-    return this.handleSuccessResponse({ res: { msg: 'flow created' }, flow: { ...data.flow } }, { context: 'createFlow' });
+    return this.response.success({ res: { msg: 'flow created' }, flow: { ...data.flow } }, { context: 'createFlow' });
   }
 
   async updateFlow(data: UpdateFlowRequest): Promise<UpdateFlowResponse> {
-    if (!data.id) return this.handleValidationError({res:{msg:"Field 'id' is required"}}, {context:"updateFlow"});
-    if (!data.flow) return this.handleValidationError({res:{msg:"Field 'flow' is required"}}, {context:"updateFlow"});
-    if (!data.flowName) return this.handleValidationError({res:{msg:"Field 'flowName' is required"}}, {context:"updateFlow"});
+    if (!data.id) return this.response.validationFail({res:{msg:"Field 'id' is required"}}, {context:"updateFlow"});
+    if (!data.flow) return this.response.validationFail({res:{msg:"Field 'flow' is required"}}, {context:"updateFlow"});
+    if (!data.flowName) return this.response.validationFail({res:{msg:"Field 'flowName' is required"}}, {context:"updateFlow"});
 
     const project = await this.projectModel.findById(data.id);
-    if (!project) return this.handleValidationError({res:{msg:"project not found"}}, {context:"updateFlow", data});
+    if (!project) return this.response.fail({res:{msg:"project not found"}}, {context:"updateFlow", data});
 
     const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
-    if (flowIndex === -1) return this.handleValidationError({res:{msg:"flow not found"}}, {context:"updateFlow", data});
+    if (flowIndex === -1) return this.response.fail({res:{msg:"flow not found"}}, {context:"updateFlow", data});
 
     const updatedProject = await this.projectModel.findByIdAndUpdate(
       data.id,
@@ -123,24 +125,24 @@ export class ProjectService {
       {new: true}
     );
 
-    if (!updatedProject) return this.handleValidationError({res:{msg:"failed to update flow"}}, {context:"updateFlow", data});
+    if (!updatedProject) return this.response.fail({res:{msg:"failed to update flow"}}, {context:"updateFlow", data});
 
-    return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context:"updateFlow"});
+    return this.response.success({res:{msg:"flow updated"}}, {context:"updateFlow"});
   }
 
   async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
     const context = 'updateFlowData';
 
-    if (!data.operation) return this.handleValidationError({res:{msg:"Field 'operation' is required"}}, {context});
-    if (!data.id) return this.handleValidationError({res:{msg:"Field 'id' is required"}}, {context});
-    if (!data.flowName) return this.handleValidationError({res:{msg:"Field 'flowName' is required"}}, {context});
-    if (!data.data) return this.handleValidationError({res:{msg:"Field 'data' is required"}}, {context});
+    if (!data.operation) return this.response.validationFail({res:{msg:"Field 'operation' is required"}}, {context});
+    if (!data.id) return this.response.validationFail({res:{msg:"Field 'id' is required"}}, {context});
+    if (!data.flowName) return this.response.validationFail({res:{msg:"Field 'flowName' is required"}}, {context});
+    if (!data.data) return this.response.validationFail({res:{msg:"Field 'data' is required"}}, {context});
 
     const project = await this.projectModel.findById(data.id);
-    if (!project) return this.handleValidationError({res:{msg:"project not found"}}, {context, data});
+    if (!project) return this.response.fail({res:{msg:"project not found"}}, {context, data});
 
     const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
-    if (flowIndex === -1) return this.handleValidationError({res:{msg:"flow not found"}}, {context, data});
+    if (flowIndex === -1) return this.response.fail({res:{msg:"flow not found"}}, {context, data});
 
     switch(data.operation){
       case 'addNode': this.addNode(project, flowIndex, data.data); break;
@@ -149,7 +151,7 @@ export class ProjectService {
       case 'onEdgesChange': this.onEdgesChange(project, flowIndex, data.data); break;
     }
 
-    return this.handleSuccessResponse({res:{msg:"flow updated"}}, {context});
+    return this.response.success({res:{msg:"flow updated"}}, {context});
   }
 
   async addNode(project:any, flowIndex:number, data:any){
@@ -189,17 +191,5 @@ export class ProjectService {
       }
       await project.save();
     }
-  }
-
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
-  }
-
-  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
   }
 }

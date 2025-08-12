@@ -3,11 +3,13 @@ import { Client, ClientGrpc, ClientProxy, Transport } from '@nestjs/microservice
 
 import { AuthenticatedRequest } from '@api/types/authenticated-request';
 import { ApiService } from '@api/api/api.service';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 @Injectable()
 export class ApiEmailService {
   constructor(
     private readonly apiService: ApiService,
+    private readonly response: ResponseService,
     @Inject('EMAIL_CLIENT') private readonly emailClient: ClientProxy,
   ) {}
 

@@ -15,7 +15,8 @@ import type { ClientGrpc } from '@nestjs/microservices';
 import { services_config } from '@libs/shared/src/services_config';
 import { firstValueFrom } from 'rxjs';
 import { UserServiceClient } from '@proto/user/user.client';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 @Injectable()
@@ -31,15 +32,16 @@ export class GenWorkerService implements OnModuleInit {
   constructor(
     @InjectModel(GenWorkerSchema.name) private genworkerModel: Model<GenWorkerDocument>,
     private readonly logger: PinoLogger,
+    private readonly response: ResponseService
   ) {}
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const context = 'create';
 
     const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, owner: new Types.ObjectId(data.ownerId), isActive: true});
-    if (!createdGenWorker) return this.handleValidationError({res:{msg:"GenWorker creation failed"}}, {context});
+    if (!createdGenWorker) return this.response.error({res:{msg:"GenWorker creation failed"}}, {context});
 
-    return this.handleSuccessResponse({res:{msg:"GenWorker created"}, genworker: {...createdGenWorker.genworker, id: createdGenWorker._id.toString()}}, {context});
+    return this.response.success({res:{msg:"GenWorker created"}, genworker: {...createdGenWorker.genworker, id: createdGenWorker._id.toString()}}, {context});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const context = 'update';
@@ -50,17 +52,17 @@ export class GenWorkerService implements OnModuleInit {
       { new: true },
     );
 
-    if (!updatedGenWorker) return this.handleValidationError({res:{msg:"GenWorker not found"}}, {context});
+    if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
 
-    return this.handleSuccessResponse({res:{msg:"GenWorker updated"}}, {context});
+    return this.response.success({res:{msg:"GenWorker updated"}}, {context});
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const context = 'findOneById';
 
     const genworker = await this.genworkerModel.findById(data.id).lean();
-    if (!genworker) return this.handleValidationError({res:{msg:"GenWorker not found"}}, {context});
+    if (!genworker) return this.response.fail({res:{msg:"GenWorker not found"}}, {context});
     
-    return this.handleSuccessResponse({
+    return this.response.success({
         res:{msg:"GenWorker found"},
         genworker: {
         ...genworker,
@@ -72,9 +74,9 @@ export class GenWorkerService implements OnModuleInit {
     const context = 'findOneByName';
 
     const genworker = await this.genworkerModel.findOne({ name: data.name }).lean();
-    if (!genworker) return this.handleValidationError({res:{msg:"GenWorker not found"}}, {context});
+    if (!genworker) return this.response.fail({res:{msg:"GenWorker not found"}}, {context});
     
-    return this.handleSuccessResponse({
+    return this.response.success({
         res:{msg:"GenWorker found"},
         genworker: {
         ...genworker,
@@ -91,10 +93,10 @@ export class GenWorkerService implements OnModuleInit {
     { new: true, lean: true }
   );
 
-  if (!doc) return this.handleValidationError({ res: { msg: 'GenWorker not found' } },{ context });
+  if (!doc) return this.response.fail({ res: { msg: 'GenWorker not found' } },{ context });
   
   const { _id, ...rest } = doc as any;
-  return this.handleSuccessResponse(
+  return this.response.success(
     {
       res: { msg: `GenWorker ${active ? 'activated' : 'deactivated'}` },
       genworker: { ...rest, id: _id.toString() },
@@ -109,26 +111,14 @@ export class GenWorkerService implements OnModuleInit {
     const foundGenWorker = await this.findOneByName({ name: data.name });
     if (foundGenWorker.res.ok) {
       this.setActive(foundGenWorker.genworker.id, true);
-      return this.handleSuccessResponse({res:{msg:"GenWorker registered"}}, {context});
+      return this.response.success({res:{msg:"GenWorker registered"}}, {context});
     }
 
     const genworker = await this.create(data);
-    if (!genworker || !genworker.genworker) return this.handleValidationError({res:{msg:"GenWorker registration failed"}}, {context});
+    if (!genworker || !genworker.genworker) return this.response.error({res:{msg:"GenWorker registration failed"}}, {context});
 
     await firstValueFrom(this.userService.registerGenWorker({genWorkerId: genworker.genworker?.id, userId: data.ownerId}));
 
-    return this.handleSuccessResponse({res:{msg:"GenWorker registered"}}, {context});
-  }
-
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
-  }
-
-  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
+    return this.response.success({res:{msg:"GenWorker registered"}}, {context});
   }
 }

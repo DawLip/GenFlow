@@ -7,7 +7,7 @@ import { ProjectServiceClient } from '@proto/project/project.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 
 @Injectable()
 export class ApiService implements OnModuleInit {
@@ -38,17 +38,5 @@ export class ApiService implements OnModuleInit {
 
   async getUserFromToken(token: string) {
     return await firstValueFrom(this.authService.validate({ token }));
-  }
-
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
-  }
-
-  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
   }
 }

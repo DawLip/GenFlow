@@ -11,7 +11,7 @@ import { Server } from 'socket.io';
 import { ProjectServiceClient } from '@proto/project/project.client';
 import { UserServiceClient } from '@proto/user/user.client';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 
 
 interface AuthenticatedRequest extends Request {

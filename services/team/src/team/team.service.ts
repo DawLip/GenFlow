@@ -19,7 +19,8 @@ import { Client, Transport } from '@nestjs/microservices';
 import type { ClientGrpc, ClientProxy } from '@nestjs/microservices';
 import { services_config } from '@shared/services_config';
 import { ProjectServiceClient } from '@proto/project/project.client';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 @Injectable()
@@ -27,6 +28,7 @@ export class TeamService {
   constructor(
     @InjectModel(TeamSchema.name) private teamModel: Model<TeamDocument>,
     private readonly logger: PinoLogger,
+    private readonly response: ResponseService
   ) {}
 
   @Client(gRPC_client('project'))
@@ -39,8 +41,8 @@ export class TeamService {
 
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdTeam:Team|any = await this.teamModel.create(data);
-    if (!createdTeam) return this.handleValidationError({res:{msg:"team creation failed"}}, {context:"create"});
-    return this.handleSuccessResponse({res:{msg:"team created"}, id: createdTeam._id.toString(),}, {context:"create"});
+    if (!createdTeam) return this.response.error({res:{msg:"team creation failed"}}, {context:"create"});
+    return this.response.success({res:{msg:"team created"}, id: createdTeam._id.toString(),}, {context:"create"});
   }
   async update(data:UpdateRequest):Promise<UpdateResponse> {
     const updatedTeam = await this.teamModel.findByIdAndUpdate(
@@ -49,16 +51,16 @@ export class TeamService {
       { new: true },
     );
 
-    if (!updatedTeam) return this.handleValidationError({res:{msg:"team not found"},}, {context:"update"});
+    if (!updatedTeam) return this.response.fail({res:{msg:"team not found"},}, {context:"update"});
 
-    return this.handleSuccessResponse({res:{msg:"team updated"}}, {context:"update"});
+    return this.response.success({res:{msg:"team updated"}}, {context:"update"});
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const foundTeam = await this.teamModel.findById(data.id).lean();
 
-    if (!foundTeam) return this.handleValidationError({res:{msg:"team not found"},}, {context:"findOneById"});
+    if (!foundTeam) return this.response.fail({res:{msg:"team not found"},}, {context:"findOneById"});
 
-    return this.handleSuccessResponse({
+    return this.response.success({
       res:{msg:"team found"},
       team: {...foundTeam, id: foundTeam._id.toString()},
     }, {context:"findOneById"});
@@ -66,9 +68,9 @@ export class TeamService {
   
   async findByUserId(data: FindByUserIdRequest): Promise<FindByUserIdResponse> {
     const teams = await this.teamModel.find({ members: data.userId }).lean();
-    if (!teams.length) return this.handleValidationError({res:{msg:"teams not found"}}, {context:"findByUserId"});
-    
-    return this.handleSuccessResponse({
+    if (!teams.length) return this.response.fail({res:{msg:"teams not found"}}, {context:"findByUserId"});
+
+    return this.response.success({
         res:{msg:"teams found"},
         teams: teams.map(team => {
           return {...team, id: team._id.toString()}
@@ -82,32 +84,22 @@ export class TeamService {
       { $addToSet: { members: data.user } },
       { new: true },
     );
-    if (!updatedTeam) return this.handleValidationError({ res: { msg: 'team not found' } }, { context: 'join' });
+    if (!updatedTeam) return this.response.fail({ res: { msg: 'team not found' } }, { context: 'join' });
 
-    return this.handleSuccessResponse({ res: { msg: 'user joined team' } }, { context: 'join' });
+    return this.response.success({ res: { msg: 'user joined team' } }, { context: 'join' });
   }
 
-async leave(data: LeaveRequest): Promise<LeaveResponse> {
-  const updatedTeam = await this.teamModel.findByIdAndUpdate(
-    data.id,
-    { $pull: { members: data.user } },
-    { new: true },
-  );
+  async leave(data: LeaveRequest): Promise<LeaveResponse> {
+    const updatedTeam = await this.teamModel.findByIdAndUpdate(
+      data.id,
+      { $pull: { members: data.user } },
+      { new: true },
+    );
 
-  if (!updatedTeam) return this.handleValidationError({ res: { msg: 'team not found' } }, { context: 'leave' });
+    if (!updatedTeam) return this.response.fail({ res: { msg: 'team not found' } }, { context: 'leave' });
 
-  return this.handleSuccessResponse({ res: { msg: 'user left team' } }, { context: 'leave' });
-}
-
-  handleValidationError(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:false, status:"ERROR", ...response.res}};
-    this.logger.error({r:res, ...logData }, logMsg || response.res.msg);
-    return res;
+    return this.response.success({ res: { msg: 'user left team' } }, { context: 'leave' });
   }
 
-  handleSuccessResponse(response:any, logData:any, logMsg?:string):any {
-    const res = {...response, res:{ok:true, status:"SUCCESS", ...response.res}};
-    this.logger.info({response:res, ...logData }, logMsg || response.res.msg);
-    return res;
-  }
+
 }

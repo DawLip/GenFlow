@@ -8,14 +8,15 @@ import { TeamModule } from '@api/team/team.module';
 import { EmailModule } from '@api/email/email.module';
 
 import { AuthGuard } from '@api/guards/auth.guard';
-import { createHealthController } from '@shared/health/health.controller';
+import { createHealthController } from '@libs/shared/src/sharedServices/health.controller';
 import { ApiService } from '@api/api/api.service';
 
-import { services_config } from '@shared/services_config';
 import { service_name } from '@shared/service_name'
 import { name } from '../../package.json';
 import { SocketioModule } from '@api/socketio/socketio.module';
 import { UserModule } from '@api/user/user.module';
+import { pinoConfig } from '@libs/shared/src/config/pino.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 const sName = service_name(name);
@@ -23,20 +24,7 @@ const HealthController = createHealthController(sName);
 
 @Module({
   imports: [
-  LoggerModule.forRoot({
-      pinoHttp: {
-        level: 'debug',
-        transport: {
-          target: 'pino-loki',
-          options: {
-            host: services_config.service_url.loki,
-            labels: { service: `gf_${sName}` },
-            interval: 5,
-            timeout: 3000,
-          },
-        },
-      },
-    }),
+  LoggerModule.forRoot(pinoConfig({ sName })),
     AuthModule,
     UserModule,
     TeamModule,
@@ -50,7 +38,9 @@ const HealthController = createHealthController(sName);
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    }
+    },
+    ResponseService
   ],
+  exports: [ApiService, ResponseService],
 })
 export class ApiModule {}

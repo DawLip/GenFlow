@@ -9,21 +9,18 @@ import { CreateRequest, UpdateRequest, FindOneByIdRequest } from '@proto/user/us
 import { ApiService } from '@api/api/api.service';
 
 import { AuthenticatedRequest } from '@api/types/authenticated-request';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 @Injectable()
 export class ApiUserService implements OnModuleInit {
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly response: ResponseService
+  ) {}
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'user',
-      protoPath: require.resolve('@proto/user/user.proto'),
-      url: services_config.service_url.user_rpc,
-    },
-  })
+  @Client(gRPC_client('user'))
   private client: ClientGrpc;
-
   private grpcService: UserServiceClient;
 
   onModuleInit() {
@@ -31,7 +28,7 @@ export class ApiUserService implements OnModuleInit {
   }
 
   async get(body: FindOneByIdRequest, req: AuthenticatedRequest, params) {
-    if(!params.userId) return this.apiService.handleValidationError({res:{msg:"Param 'userId' is required"}}, {context:"user/patch"});
+    if(!params.userId) return this.response.validationFail({res:{msg:"Param 'userId' is required"}}, {context:"user/patch"});
     
     const user = await firstValueFrom(this.grpcService.findOneById({
       id: params.userId, 
@@ -44,8 +41,8 @@ export class ApiUserService implements OnModuleInit {
   }
 
   async patch(body: UpdateRequest, req: AuthenticatedRequest, params) {
-    if(!body.user) return this.apiService.handleValidationError({res:{msg:"Field 'user' is required"}}, {context:"user/patch"});
-    if(!params.userId) return this.apiService.handleValidationError({res:{msg:"Param 'userId' is required"}}, {context:"user/patch"});
+    if(!body.user) return this.response.validationFail({res:{msg:"Field 'user' is required"}}, {context:"user/patch"});
+    if(!params.userId) return this.response.validationFail({res:{msg:"Param 'userId' is required"}}, {context:"user/patch"});
 
     return await firstValueFrom(this.grpcService.update(body));
   }

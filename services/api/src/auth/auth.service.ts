@@ -7,19 +7,17 @@ import { AuthServiceClient } from '@proto/auth/auth.client';
 import { LoginRequest, RegisterRequest, SendVerificationEmailRequest, SendVerificationEmailResponse, VerifyEmailRequest } from '@proto/auth/auth';
 import { ApiService } from '@api/api/api.service';
 import { AuthenticatedRequest } from '@api/types/authenticated-request';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 @Injectable()
 export class ApiAuthService implements OnModuleInit {
-  constructor(private readonly apiService: ApiService) {}
+  constructor(
+    private readonly apiService: ApiService,
+    private readonly response: ResponseService,
+  ) {}
 
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'auth',
-      protoPath: require.resolve('@proto/auth/auth.proto'),
-      url: services_config.service_url.auth_rpc,
-    },
-  })
+  @Client(gRPC_client('auth'))
   private client: ClientGrpc;
 
   private grpcService: AuthServiceClient;
@@ -29,22 +27,22 @@ export class ApiAuthService implements OnModuleInit {
   }
 
   login(body: LoginRequest) {
-    if(!body.email) return this.apiService.handleValidationError({res:{msg:"Field 'email' is required"}}, {context:"auth/login"});
-    if(!body.password) return this.apiService.handleValidationError({res:{msg:"Field 'password' is required"}}, {context:"auth/login"});
+    if(!body.email) return this.response.validationFail({res:{msg:"Field 'email' is required"}}, {context:"auth/login"});
+    if(!body.password) return this.response.validationFail({res:{msg:"Field 'password' is required"}}, {context:"auth/login"});
 
     return this.grpcService.login(body);
   }
 
   register(body: RegisterRequest) {
-    if(!body.username) return this.apiService.handleValidationError({res:{msg:"Field 'username' is required"}}, {context:"auth/register"});
-    if(!body.email) return this.apiService.handleValidationError({res:{msg:"Field 'email' is required"}}, {context:"auth/register"});
-    if(!body.password) return this.apiService.handleValidationError({res:{msg:"Field 'password' is required"}}, {context:"auth/register"});
+    if(!body.username) return this.response.validationFail({res:{msg:"Field 'username' is required"}}, {context:"auth/register"});
+    if(!body.email) return this.response.validationFail({res:{msg:"Field 'email' is required"}}, {context:"auth/register"});
+    if(!body.password) return this.response.validationFail({res:{msg:"Field 'password' is required"}}, {context:"auth/register"});
 
     return this.grpcService.register(body);
   }
 
   verifyEmail(body: VerifyEmailRequest, req: AuthenticatedRequest) {
-    if(!body.verificationCode) return this.apiService.handleValidationError({res:{msg:"Field 'verificationCode' is required"}}, {context:"auth/verifyEmail"});
+    if(!body.verificationCode) return this.response.validationFail({res:{msg:"Field 'verificationCode' is required"}}, {context:"auth/verifyEmail"});
 
     return this.grpcService.verifyEmail({...body, id: req.user.id});
   }

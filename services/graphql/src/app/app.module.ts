@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { LoggerModule } from 'nestjs-pino';
-import { createHealthController } from '@shared/health/health.controller';
+import { createHealthController } from '@shared/sharedServices/health.controller';
 
 import { services_config } from '@shared/services_config';
 import { name } from '../../package.json';

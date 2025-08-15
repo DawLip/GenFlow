@@ -121,6 +121,20 @@ services:
     networks:
       monitoring:
 
+  redis:
+    extends:
+      file: compose/infra/redis.yml
+      service: redis
+    networks:
+      monitoring:
+
+  redis-commander:
+    extends:
+      file: compose/infra/redis-commander.yml
+      service: redis-commander
+    networks:
+      monitoring:
+
 # Logs
   grafana:
     extends:
@@ -151,6 +165,7 @@ volumes:
   rabbitmq-data:
   mongodb-data:
   grafana-storage: {}
+  redis-data:
 
 networks:
   monitoring:  

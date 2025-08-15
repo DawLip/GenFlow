@@ -26,6 +26,7 @@ export const services_config = {
 
     mongodb: 'mongodb://mongodb:27017',
     rabbitmq: 'amqp://rabbitmq:5672',
+    redis:'redis://redis:6379',
 
     loki: 'http://loki:3100'
   }

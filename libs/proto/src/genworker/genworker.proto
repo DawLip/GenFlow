@@ -8,6 +8,9 @@ service GenWorkerService {
   rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
 
   rpc Register (RegisterRequest) returns (DefaultResponse);
+
+  rpc Enqueue (EnqueueRequest) returns (DefaultResponse);
+  rpc Dequeue (DequeueRequest) returns (DequeueResponse);
 }
 
 message BaseResponse {
@@ -44,6 +47,22 @@ message FindOneByIdRequest {
 message FindResponse {
   BaseResponse res = 1;
   optional GenWorker genworker = 2;
+}
+
+
+message EnqueueRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string data = 3;
+}
+
+message DequeueRequest {
+  string projectId = 1;
+  string flowName = 2;
+}
+message DequeueResponse {
+  BaseResponse res = 1;
+  string data = 2;
 }
 
 message RegisterRequest {

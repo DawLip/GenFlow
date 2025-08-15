@@ -48,6 +48,22 @@ export interface FindResponse {
   genworker?: GenWorker | undefined;
 }
 
+export interface EnqueueRequest {
+  projectId: string;
+  flowName: string;
+  data: string;
+}
+
+export interface DequeueRequest {
+  projectId: string;
+  flowName: string;
+}
+
+export interface DequeueResponse {
+  res: BaseResponse | undefined;
+  data: string;
+}
+
 export interface RegisterRequest {
   ownerId: string;
   name: string;
@@ -650,6 +666,250 @@ export const FindResponse: MessageFns<FindResponse> = {
     message.genworker = (object.genworker !== undefined && object.genworker !== null)
       ? GenWorker.fromPartial(object.genworker)
       : undefined;
+    return message;
+  },
+};
+
+function createBaseEnqueueRequest(): EnqueueRequest {
+  return { projectId: "", flowName: "", data: "" };
+}
+
+export const EnqueueRequest: MessageFns<EnqueueRequest> = {
+  encode(message: EnqueueRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(18).string(message.flowName);
+    }
+    if (message.data !== "") {
+      writer.uint32(26).string(message.data);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): EnqueueRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseEnqueueRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.data = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): EnqueueRequest {
+    return {
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      data: isSet(object.data) ? globalThis.String(object.data) : "",
+    };
+  },
+
+  toJSON(message: EnqueueRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<EnqueueRequest>): EnqueueRequest {
+    return EnqueueRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<EnqueueRequest>): EnqueueRequest {
+    const message = createBaseEnqueueRequest();
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    message.data = object.data ?? "";
+    return message;
+  },
+};
+
+function createBaseDequeueRequest(): DequeueRequest {
+  return { projectId: "", flowName: "" };
+}
+
+export const DequeueRequest: MessageFns<DequeueRequest> = {
+  encode(message: DequeueRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(18).string(message.flowName);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DequeueRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDequeueRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DequeueRequest {
+    return {
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+    };
+  },
+
+  toJSON(message: DequeueRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DequeueRequest>): DequeueRequest {
+    return DequeueRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DequeueRequest>): DequeueRequest {
+    const message = createBaseDequeueRequest();
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    return message;
+  },
+};
+
+function createBaseDequeueResponse(): DequeueResponse {
+  return { res: undefined, data: "" };
+}
+
+export const DequeueResponse: MessageFns<DequeueResponse> = {
+  encode(message: DequeueResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    if (message.data !== "") {
+      writer.uint32(18).string(message.data);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DequeueResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDequeueResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.data = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DequeueResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      data: isSet(object.data) ? globalThis.String(object.data) : "",
+    };
+  },
+
+  toJSON(message: DequeueResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DequeueResponse>): DequeueResponse {
+    return DequeueResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DequeueResponse>): DequeueResponse {
+    const message = createBaseDequeueResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.data = object.data ?? "";
     return message;
   },
 };

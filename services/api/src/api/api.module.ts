@@ -17,6 +17,7 @@ import { SocketioModule } from '@api/socketio/socketio.module';
 import { UserModule } from '@api/user/user.module';
 import { pinoConfig } from '@libs/shared/src/config/pino.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
+import { GenWorkerModule } from '@api/genworker/genworker.module';
 
 
 const sName = service_name(name);
@@ -30,7 +31,8 @@ const HealthController = createHealthController(sName);
     TeamModule,
     ProjectModule,
     EmailModule,
-    SocketioModule
+    SocketioModule,
+    GenWorkerModule
   ],
   controllers: [HealthController],
   providers: [

@@ -7,7 +7,7 @@ import { ProjectServiceClient } from '@proto/project/project.client';
 import { firstValueFrom } from 'rxjs';
 import { PinoLogger } from 'nestjs-pino';
 import type { Request } from 'express';
-import { gRPC_client } from '@libs/shared/src/grpc/client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 
 @Injectable()
 export class ApiService implements OnModuleInit {

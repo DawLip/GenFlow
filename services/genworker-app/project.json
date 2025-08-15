@@ -6,7 +6,7 @@
     "serve": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "watchmedo auto-restart --directory=./ --pattern=\"*.py\" --recursive -- python services/genworker-app/main.py"
+        "command": "watchmedo auto-restart --directory=./ --pattern=\"*.py\" --recursive -- python services/genworker-app/src/main.py"
       }
     },
     "test": {

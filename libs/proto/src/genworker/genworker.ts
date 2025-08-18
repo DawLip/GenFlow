@@ -19,6 +19,7 @@ export interface DefaultResponse {
   res: BaseResponse | undefined;
 }
 
+/** CRUD */
 export interface CreateRequest {
   name: string;
   ownerId: string;
@@ -48,20 +49,27 @@ export interface FindResponse {
   genworker?: GenWorker | undefined;
 }
 
+/** Special */
 export interface EnqueueRequest {
   projectId: string;
   flowName: string;
   data: string;
 }
 
-export interface DequeueRequest {
+export interface FinishPartialTaskRequest {
+  taskId: string;
+  workerId: string;
   projectId: string;
   flowName: string;
+  status: string;
 }
 
-export interface DequeueResponse {
-  res: BaseResponse | undefined;
-  data: string;
+export interface FinishTaskRequest {
+  taskId: string;
+  workerId: string;
+  projectId: string;
+  flowName: string;
+  status: string;
 }
 
 export interface RegisterRequest {
@@ -69,6 +77,16 @@ export interface RegisterRequest {
   name: string;
 }
 
+export interface GenWorkerAssignRequest {
+  genworkerId: string;
+  workerPools: string[];
+}
+
+export interface GenWorkerDisconnectRequest {
+  genworkerId: string;
+}
+
+/** Objects */
 export interface GenWorker {
   id: string;
   ownerId: string;
@@ -762,42 +780,75 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
   },
 };
 
-function createBaseDequeueRequest(): DequeueRequest {
-  return { projectId: "", flowName: "" };
+function createBaseFinishPartialTaskRequest(): FinishPartialTaskRequest {
+  return { taskId: "", workerId: "", projectId: "", flowName: "", status: "" };
 }
 
-export const DequeueRequest: MessageFns<DequeueRequest> = {
-  encode(message: DequeueRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
+  encode(message: FinishPartialTaskRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.taskId !== "") {
+      writer.uint32(10).string(message.taskId);
+    }
+    if (message.workerId !== "") {
+      writer.uint32(18).string(message.workerId);
+    }
     if (message.projectId !== "") {
-      writer.uint32(10).string(message.projectId);
+      writer.uint32(26).string(message.projectId);
     }
     if (message.flowName !== "") {
-      writer.uint32(18).string(message.flowName);
+      writer.uint32(34).string(message.flowName);
+    }
+    if (message.status !== "") {
+      writer.uint32(42).string(message.status);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): DequeueRequest {
+  decode(input: BinaryReader | Uint8Array, length?: number): FinishPartialTaskRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDequeueRequest();
+    const message = createBaseFinishPartialTaskRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1: {
           if (tag !== 10) {
+            break;
+          }
+
+          message.taskId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.workerId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
             break;
           }
 
           message.projectId = reader.string();
           continue;
         }
-        case 2: {
-          if (tag !== 18) {
+        case 4: {
+          if (tag !== 34) {
             break;
           }
 
           message.flowName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.status = reader.string();
           continue;
         }
       }
@@ -809,54 +860,78 @@ export const DequeueRequest: MessageFns<DequeueRequest> = {
     return message;
   },
 
-  fromJSON(object: any): DequeueRequest {
+  fromJSON(object: any): FinishPartialTaskRequest {
     return {
+      taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
+      workerId: isSet(object.workerId) ? globalThis.String(object.workerId) : "",
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
     };
   },
 
-  toJSON(message: DequeueRequest): unknown {
+  toJSON(message: FinishPartialTaskRequest): unknown {
     const obj: any = {};
+    if (message.taskId !== "") {
+      obj.taskId = message.taskId;
+    }
+    if (message.workerId !== "") {
+      obj.workerId = message.workerId;
+    }
     if (message.projectId !== "") {
       obj.projectId = message.projectId;
     }
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
     }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
     return obj;
   },
 
-  create(base?: DeepPartial<DequeueRequest>): DequeueRequest {
-    return DequeueRequest.fromPartial(base ?? {});
+  create(base?: DeepPartial<FinishPartialTaskRequest>): FinishPartialTaskRequest {
+    return FinishPartialTaskRequest.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<DequeueRequest>): DequeueRequest {
-    const message = createBaseDequeueRequest();
+  fromPartial(object: DeepPartial<FinishPartialTaskRequest>): FinishPartialTaskRequest {
+    const message = createBaseFinishPartialTaskRequest();
+    message.taskId = object.taskId ?? "";
+    message.workerId = object.workerId ?? "";
     message.projectId = object.projectId ?? "";
     message.flowName = object.flowName ?? "";
+    message.status = object.status ?? "";
     return message;
   },
 };
 
-function createBaseDequeueResponse(): DequeueResponse {
-  return { res: undefined, data: "" };
+function createBaseFinishTaskRequest(): FinishTaskRequest {
+  return { taskId: "", workerId: "", projectId: "", flowName: "", status: "" };
 }
 
-export const DequeueResponse: MessageFns<DequeueResponse> = {
-  encode(message: DequeueResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.res !== undefined) {
-      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
+  encode(message: FinishTaskRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.taskId !== "") {
+      writer.uint32(10).string(message.taskId);
     }
-    if (message.data !== "") {
-      writer.uint32(18).string(message.data);
+    if (message.workerId !== "") {
+      writer.uint32(18).string(message.workerId);
+    }
+    if (message.projectId !== "") {
+      writer.uint32(26).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(34).string(message.flowName);
+    }
+    if (message.status !== "") {
+      writer.uint32(42).string(message.status);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): DequeueResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): FinishTaskRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDequeueResponse();
+    const message = createBaseFinishTaskRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -865,7 +940,7 @@ export const DequeueResponse: MessageFns<DequeueResponse> = {
             break;
           }
 
-          message.res = BaseResponse.decode(reader, reader.uint32());
+          message.taskId = reader.string();
           continue;
         }
         case 2: {
@@ -873,7 +948,31 @@ export const DequeueResponse: MessageFns<DequeueResponse> = {
             break;
           }
 
-          message.data = reader.string();
+          message.workerId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.status = reader.string();
           continue;
         }
       }
@@ -885,31 +984,46 @@ export const DequeueResponse: MessageFns<DequeueResponse> = {
     return message;
   },
 
-  fromJSON(object: any): DequeueResponse {
+  fromJSON(object: any): FinishTaskRequest {
     return {
-      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
-      data: isSet(object.data) ? globalThis.String(object.data) : "",
+      taskId: isSet(object.taskId) ? globalThis.String(object.taskId) : "",
+      workerId: isSet(object.workerId) ? globalThis.String(object.workerId) : "",
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
     };
   },
 
-  toJSON(message: DequeueResponse): unknown {
+  toJSON(message: FinishTaskRequest): unknown {
     const obj: any = {};
-    if (message.res !== undefined) {
-      obj.res = BaseResponse.toJSON(message.res);
+    if (message.taskId !== "") {
+      obj.taskId = message.taskId;
     }
-    if (message.data !== "") {
-      obj.data = message.data;
+    if (message.workerId !== "") {
+      obj.workerId = message.workerId;
+    }
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
     }
     return obj;
   },
 
-  create(base?: DeepPartial<DequeueResponse>): DequeueResponse {
-    return DequeueResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<FinishTaskRequest>): FinishTaskRequest {
+    return FinishTaskRequest.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<DequeueResponse>): DequeueResponse {
-    const message = createBaseDequeueResponse();
-    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
-    message.data = object.data ?? "";
+  fromPartial(object: DeepPartial<FinishTaskRequest>): FinishTaskRequest {
+    const message = createBaseFinishTaskRequest();
+    message.taskId = object.taskId ?? "";
+    message.workerId = object.workerId ?? "";
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    message.status = object.status ?? "";
     return message;
   },
 };
@@ -986,6 +1100,142 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     const message = createBaseRegisterRequest();
     message.ownerId = object.ownerId ?? "";
     message.name = object.name ?? "";
+    return message;
+  },
+};
+
+function createBaseGenWorkerAssignRequest(): GenWorkerAssignRequest {
+  return { genworkerId: "", workerPools: [] };
+}
+
+export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
+  encode(message: GenWorkerAssignRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.genworkerId !== "") {
+      writer.uint32(10).string(message.genworkerId);
+    }
+    for (const v of message.workerPools) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorkerAssignRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorkerAssignRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.workerPools.push(reader.string());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorkerAssignRequest {
+    return {
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+      workerPools: globalThis.Array.isArray(object?.workerPools)
+        ? object.workerPools.map((e: any) => globalThis.String(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GenWorkerAssignRequest): unknown {
+    const obj: any = {};
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    if (message.workerPools?.length) {
+      obj.workerPools = message.workerPools;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
+    return GenWorkerAssignRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
+    const message = createBaseGenWorkerAssignRequest();
+    message.genworkerId = object.genworkerId ?? "";
+    message.workerPools = object.workerPools?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseGenWorkerDisconnectRequest(): GenWorkerDisconnectRequest {
+  return { genworkerId: "" };
+}
+
+export const GenWorkerDisconnectRequest: MessageFns<GenWorkerDisconnectRequest> = {
+  encode(message: GenWorkerDisconnectRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.genworkerId !== "") {
+      writer.uint32(10).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorkerDisconnectRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorkerDisconnectRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorkerDisconnectRequest {
+    return { genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "" };
+  },
+
+  toJSON(message: GenWorkerDisconnectRequest): unknown {
+    const obj: any = {};
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorkerDisconnectRequest>): GenWorkerDisconnectRequest {
+    return GenWorkerDisconnectRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorkerDisconnectRequest>): GenWorkerDisconnectRequest {
+    const message = createBaseGenWorkerDisconnectRequest();
+    message.genworkerId = object.genworkerId ?? "";
     return message;
   },
 };

@@ -1,13 +1,18 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, DequeueRequest, DequeueResponse } from '@proto/genworker/genworker';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, FinishTaskRequest, FinishPartialTaskRequest } from '@proto/genworker/genworker';
 
 export interface GenWorkerServiceClient {
+  // CRUD
   create(data: CreateRequest): Observable<CreateResponse>;
   update(data: UpdateRequest): Observable<UpdateResponse>;
   findOneById(data: FindOneByIdRequest): Observable<FindResponse>;
 
-  register(data: RegisterRequest): Observable<DefaultResponse>;
+  // Special
+  enqueueTask(data: EnqueueRequest): Observable<DefaultResponse>;
+  finishPartialTask(data: FinishPartialTaskRequest): Observable<DefaultResponse>;
+  finishTask(data: FinishTaskRequest): Observable<DefaultResponse>;
 
-  enqueue(data: EnqueueRequest): Observable<DefaultResponse>;
-  dequeue(data: DequeueRequest): Observable<DequeueResponse>;
+  register(data: RegisterRequest): Observable<DefaultResponse>;
+  genWorkerAssign(data: GenWorkerAssignRequest): Observable<DefaultResponse>;
+  genWorkerDisconnect(data: GenWorkerDisconnectRequest): Observable<DefaultResponse>;
 }

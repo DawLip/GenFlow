@@ -7,6 +7,7 @@ import { name } from '../package.json';
 import { service_name } from '@shared/service_name'
 import { GrpcExceptionFilter } from '@shared/grpc-exception.filter';
 import { DefaultExceptionFilter } from '@libs/shared/src/default-exception.filter';
+import { services_config } from '@libs/shared/src'
 
 const s_name = service_name(name);
 

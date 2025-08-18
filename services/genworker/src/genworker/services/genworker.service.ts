@@ -1,8 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
-  RegisterRequest,
-
 } from '@proto/genworker/genworker';
 import { PinoLogger } from 'nestjs-pino';
 
@@ -10,23 +8,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { GenWorker as GenWorkerSchema, GenWorkerDocument } from '@shared/schema/genworker.schema';
 import { GenWorker } from '@shared/types/GenWorker.type';
-import { Client } from '@nestjs/microservices';
-import type { ClientGrpc } from '@nestjs/microservices';
-import { firstValueFrom } from 'rxjs';
-import { UserServiceClient } from '@proto/user/user.client';
-import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 
 
 @Injectable()
 export class GenWorkerService implements OnModuleInit {
-  @Client(gRPC_client('user'))
-  private userClient:ClientGrpc;
-  private userService:UserServiceClient;
-  
-  onModuleInit() {
-    this.userService = this.userClient.getService<UserServiceClient>('UserService');
-  }
+  onModuleInit() {}
 
   constructor(
     @InjectModel(GenWorkerSchema.name) private genworkerModel: Model<GenWorkerDocument>,
@@ -37,7 +24,10 @@ export class GenWorkerService implements OnModuleInit {
   async create(data:CreateRequest):Promise<CreateResponse> {
     const context = 'create';
 
-    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, owner: new Types.ObjectId(data.ownerId), isActive: true});
+    console.log(context, data)
+
+    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, owner: new Types.ObjectId(data.ownerId)});
+    console.log(context, createdGenWorker);
     if (!createdGenWorker) return this.response.error({res:{msg:"GenWorker creation failed"}}, {context});
 
     return this.response.success({res:{msg:"GenWorker created"}, genworker: {...createdGenWorker.genworker, id: createdGenWorker._id.toString()}}, {context});
@@ -83,41 +73,5 @@ export class GenWorkerService implements OnModuleInit {
       }}, {context});
   }
 
-  async setActive(id: string, active: boolean) {
-  const context = 'setActive';
 
-  const doc = await this.genworkerModel.findByIdAndUpdate(
-    id,
-    { active },
-    { new: true, lean: true }
-  );
-
-  if (!doc) return this.response.fail({ res: { msg: 'GenWorker not found' } },{ context });
-  
-  const { _id, ...rest } = doc as any;
-  return this.response.success(
-    {
-      res: { msg: `GenWorker ${active ? 'activated' : 'deactivated'}` },
-      genworker: { ...rest, id: _id.toString() },
-    },
-    { context }
-  );
-}
-
-  async register(data: RegisterRequest){
-    const context = 'register';
-
-    const foundGenWorker = await this.findOneByName({ name: data.name });
-    if (foundGenWorker.res.ok) {
-      this.setActive(foundGenWorker.genworker.id, true);
-      return this.response.success({res:{msg:"GenWorker registered"}}, {context});
-    }
-
-    const genworker = await this.create(data);
-    if (!genworker || !genworker.genworker) return this.response.error({res:{msg:"GenWorker registration failed"}}, {context});
-
-    await firstValueFrom(this.userService.registerGenWorker({genWorkerId: genworker.genworker?.id, userId: data.ownerId}));
-
-    return this.response.success({res:{msg:"GenWorker registered"}}, {context});
-  }
 }

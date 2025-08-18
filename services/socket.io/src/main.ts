@@ -26,6 +26,26 @@ async function bootstrap() {
     },
   });
 
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.GRPC,
+    options: {
+      url: services_config.service_url.socketio_rpc, 
+      package: ['socketio'],
+      protoPath: [require.resolve(`@proto/socketio/socketio.proto`)],
+      loader: {
+        enums: String,
+        objects: true,
+        arrays: true,
+        longs: String,
+        defaults: true,
+        oneofs: true,
+        keepCase: false,
+      },
+      maxReceiveMessageLength: 10 * 1024 * 1024,
+      maxSendMessageLength: 10 * 1024 * 1024,
+    },
+  });
+
   app.enableCors();
   app.useLogger(app.get(Logger));
 

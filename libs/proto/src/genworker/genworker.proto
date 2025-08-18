@@ -3,14 +3,19 @@ syntax = "proto3";
 package genworker;
 
 service GenWorkerService {
+  // CRUD
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Update (UpdateRequest) returns (UpdateResponse);
   rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
 
-  rpc Register (RegisterRequest) returns (DefaultResponse);
+  // Special
+  rpc EnqueueTask (EnqueueRequest) returns (DefaultResponse);
+  rpc FinishPartialTask (FinishPartialTaskRequest) returns (DefaultResponse);
+  rpc FinishTask (FinishTaskRequest) returns (DefaultResponse);
 
-  rpc Enqueue (EnqueueRequest) returns (DefaultResponse);
-  rpc Dequeue (DequeueRequest) returns (DequeueResponse);
+  rpc Register (RegisterRequest) returns (DefaultResponse);
+  rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
+  rpc GenWorkerDisconnect (GenWorkerDisconnectRequest) returns (DefaultResponse);
 }
 
 message BaseResponse {
@@ -23,6 +28,7 @@ message DefaultResponse {
   BaseResponse res = 1;
 }
 
+// CRUD
 message CreateRequest {
   string name = 1;
   string ownerId = 2;
@@ -49,27 +55,39 @@ message FindResponse {
   optional GenWorker genworker = 2;
 }
 
-
+// Special
 message EnqueueRequest {
   string projectId = 1;
   string flowName = 2;
   string data = 3;
 }
-
-message DequeueRequest {
-  string projectId = 1;
-  string flowName = 2;
+message FinishPartialTaskRequest {
+  string taskId = 1;
+  string workerId = 2;
+  string projectId = 3;
+  string flowName = 4;
+  string status = 5;
 }
-message DequeueResponse {
-  BaseResponse res = 1;
-  string data = 2;
+message FinishTaskRequest {
+  string taskId = 1;
+  string workerId = 2;
+  string projectId = 3;
+  string flowName = 4;
+  string status = 5;
 }
-
 message RegisterRequest {
   string ownerId = 1;
   string name = 2;
 }
+message GenWorkerAssignRequest {
+  string genworkerId = 1;
+  repeated string workerPools = 2;
+}
+message GenWorkerDisconnectRequest {
+  string genworkerId = 1;
+}
 
+// Objects
 message GenWorker {
   string id = 1;
   string ownerId = 2;

@@ -1,7 +1,7 @@
 import { GrpcOptions, Transport } from '@nestjs/microservices';
 import { services_config } from '../services_config';
 
-type serviceNameType = 'auth' | 'user' | 'project' | 'team' | 'genworker';
+type serviceNameType = 'auth' | 'user' | 'project' | 'team' | 'genworker' | 'socketio';
 
 export function gRPC_client(serviceName: serviceNameType): GrpcOptions {
   const url = services_config.service_url[`${serviceName}_rpc`];

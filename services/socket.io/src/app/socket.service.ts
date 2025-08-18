@@ -12,6 +12,7 @@ import { ProjectServiceClient } from '@proto/project/project.client';
 import { UserServiceClient } from '@proto/user/user.client';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { DefaultResponse, EmitRequest, JoinRequest } from '@proto/socketio/socketio';
 
 
 interface AuthenticatedRequest extends Request {
@@ -108,11 +109,25 @@ export class SocketService implements OnModuleInit {
   }
 
   async genworker_register(data: any, client: Socket){
+    // this.io.to()
     await firstValueFrom(this.genworkerService.register({...data, ownerId: data.userId}));
+  }
+
+  async emit(data: EmitRequest): Promise<DefaultResponse> {
+    this.logger.trace({context:"emit", payload:data}, "emit request received");
+    
+    this.io.to(data.room).emit(data.event, data.data);
+    return {res:{ ok: true, status: "SUCCESS", msg: "emit success" }};
+  }
+
+  async join(data: JoinRequest): Promise<DefaultResponse> {
+    (await this.io.to(data.objectId).fetchSockets())[0].join(data.room);
+
+    return {res:{ ok: true, status: "SUCCESS", msg: "join success" }};
   }
 
   genworker_assign(data: any, client: Socket){
     client.join(`worker--${client.data.user.id}--${data.name}`);
+    data.assignTo.forEach((joinRoom:string) => client.join(joinRoom));
   }
-
 }

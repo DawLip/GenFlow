@@ -8,6 +8,7 @@ export const services_config = {
     api_test:'http://api-test:3000',
     graphql:'http://graphql:3000',
     socketio:'http://socket.io:3000',
+    socketio_rpc:'socket.io:50051',
 
     auth:'http://auth:3000',
     auth_rpc:'auth:50051',

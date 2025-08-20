@@ -23,6 +23,7 @@ export interface DefaultResponse {
 export interface CreateRequest {
   name: string;
   ownerId: string;
+  path: string;
 }
 
 export interface CreateResponse {
@@ -75,6 +76,7 @@ export interface FinishTaskRequest {
 export interface RegisterRequest {
   ownerId: string;
   name: string;
+  path: string;
 }
 
 export interface GenWorkerAssignRequest {
@@ -91,6 +93,7 @@ export interface GenWorker {
   id: string;
   ownerId: string;
   name: string;
+  path: string;
   isActive: boolean;
 }
 
@@ -245,7 +248,7 @@ export const DefaultResponse: MessageFns<DefaultResponse> = {
 };
 
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", ownerId: "" };
+  return { name: "", ownerId: "", path: "" };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -255,6 +258,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     if (message.ownerId !== "") {
       writer.uint32(18).string(message.ownerId);
+    }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
     }
     return writer;
   },
@@ -282,6 +288,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
           message.ownerId = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -295,6 +309,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
     };
   },
 
@@ -306,6 +321,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.ownerId !== "") {
       obj.ownerId = message.ownerId;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     return obj;
   },
 
@@ -316,6 +334,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     const message = createBaseCreateRequest();
     message.name = object.name ?? "";
     message.ownerId = object.ownerId ?? "";
+    message.path = object.path ?? "";
     return message;
   },
 };
@@ -1029,7 +1048,7 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
 };
 
 function createBaseRegisterRequest(): RegisterRequest {
-  return { ownerId: "", name: "" };
+  return { ownerId: "", name: "", path: "" };
 }
 
 export const RegisterRequest: MessageFns<RegisterRequest> = {
@@ -1039,6 +1058,9 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
+    }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
     }
     return writer;
   },
@@ -1066,6 +1088,14 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
           message.name = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1079,6 +1109,7 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     return {
       ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
     };
   },
 
@@ -1090,6 +1121,9 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     return obj;
   },
 
@@ -1100,6 +1134,7 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
     const message = createBaseRegisterRequest();
     message.ownerId = object.ownerId ?? "";
     message.name = object.name ?? "";
+    message.path = object.path ?? "";
     return message;
   },
 };
@@ -1241,7 +1276,7 @@ export const GenWorkerDisconnectRequest: MessageFns<GenWorkerDisconnectRequest> 
 };
 
 function createBaseGenWorker(): GenWorker {
-  return { id: "", ownerId: "", name: "", isActive: false };
+  return { id: "", ownerId: "", name: "", path: "", isActive: false };
 }
 
 export const GenWorker: MessageFns<GenWorker> = {
@@ -1255,8 +1290,11 @@ export const GenWorker: MessageFns<GenWorker> = {
     if (message.name !== "") {
       writer.uint32(26).string(message.name);
     }
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
+    }
     if (message.isActive !== false) {
-      writer.uint32(32).bool(message.isActive);
+      writer.uint32(40).bool(message.isActive);
     }
     return writer;
   },
@@ -1293,7 +1331,15 @@ export const GenWorker: MessageFns<GenWorker> = {
           continue;
         }
         case 4: {
-          if (tag !== 32) {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
             break;
           }
 
@@ -1314,6 +1360,7 @@ export const GenWorker: MessageFns<GenWorker> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
     };
   },
@@ -1329,6 +1376,9 @@ export const GenWorker: MessageFns<GenWorker> = {
     if (message.name !== "") {
       obj.name = message.name;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     if (message.isActive !== false) {
       obj.isActive = message.isActive;
     }
@@ -1343,6 +1393,7 @@ export const GenWorker: MessageFns<GenWorker> = {
     message.id = object.id ?? "";
     message.ownerId = object.ownerId ?? "";
     message.name = object.name ?? "";
+    message.path = object.path ?? "";
     message.isActive = object.isActive ?? false;
     return message;
   },

@@ -58,7 +58,7 @@ export class ProjectService {
       project: { 
         ...foundProject, 
         id: foundProject._id.toString(), 
-        flows: foundProject.flows.map(flow => ({ name: flow.name, description: flow.description, type: flow.type })) 
+        flows: foundProject.flows.map(flow => ({...flow, data: undefined})) 
       }
     }, {context:"findOneById"});
   }

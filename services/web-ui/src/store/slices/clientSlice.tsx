@@ -8,6 +8,7 @@ const clientSlice = createSlice({
     username: '',
     emailConfirmed: false,
     confirmCode: '',
+    genworkers: [],
     loading: true,
     error: null,
   },
@@ -17,6 +18,7 @@ const clientSlice = createSlice({
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.emailConfirmed = action.payload.emailConfirmed;
+      state.genworkers = action.payload.genWorkers
       state.loading = false;
       state.error = null;
     },

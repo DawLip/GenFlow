@@ -18,6 +18,7 @@ import { TeamServiceClient } from '@proto/team/team.client';
 import { firstValueFrom } from 'rxjs';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
+import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
 
 
 @Injectable()
@@ -26,8 +27,13 @@ export class UserService implements OnModuleInit {
   private client: ClientGrpc;
   private teamService: TeamServiceClient;
 
+  @Client(gRPC_client('genworker'))
+  private genworkerClient: ClientGrpc;
+  private genworkerService: GenWorkerServiceClient;
+
   onModuleInit() {
     this.teamService = this.client.getService<TeamServiceClient>('TeamService');
+    this.genworkerService = this.genworkerClient.getService<GenWorkerServiceClient>('GenWorkerService');
   }
 
   constructor(
@@ -72,11 +78,18 @@ export class UserService implements OnModuleInit {
     const teams = data.populateTeams ? await firstValueFrom(this.teamService.findByUserId({ userId: data.id })) : {res:{ok:true}, teams:[]};
     if (!teams.res?.ok) return this.response.fail({res:{msg:"teams finding failed"}}, {context:"findOneById"});
 
+    const genworkers = (await Promise.all(
+      user.genWorkers.map(
+        async (genworker) => await firstValueFrom(this.genworkerService.findOneById({ id: genworker.toString() })))
+      )
+    ).map((genworker)=>genworker.genworker);
+
     return this.response.success({
         res:{msg:"user found"},
         user: {
         ...user,
         teams: teams.teams,
+        genWorkers: genworkers,
         id: user._id.toString(),
       }}, {context:"findOneById"});
   }

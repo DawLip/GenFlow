@@ -104,6 +104,7 @@ export interface Project {
 
 export interface Flow {
   name: string;
+  path: string;
   description: string;
   type: string;
   nodes: Node[];
@@ -1537,13 +1538,16 @@ export const Project: MessageFns<Project> = {
 };
 
 function createBaseFlow(): Flow {
-  return { name: "", description: "", type: "", nodes: [], edges: [] };
+  return { name: "", path: "", description: "", type: "", nodes: [], edges: [] };
 }
 
 export const Flow: MessageFns<Flow> = {
   encode(message: Flow, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.name !== "") {
-      writer.uint32(18).string(message.name);
+      writer.uint32(10).string(message.name);
+    }
+    if (message.path !== "") {
+      writer.uint32(18).string(message.path);
     }
     if (message.description !== "") {
       writer.uint32(26).string(message.description);
@@ -1567,12 +1571,20 @@ export const Flow: MessageFns<Flow> = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
         case 2: {
           if (tag !== 18) {
             break;
           }
 
-          message.name = reader.string();
+          message.path = reader.string();
           continue;
         }
         case 3: {
@@ -1619,6 +1631,7 @@ export const Flow: MessageFns<Flow> = {
   fromJSON(object: any): Flow {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       description: isSet(object.description) ? globalThis.String(object.description) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
       nodes: globalThis.Array.isArray(object?.nodes) ? object.nodes.map((e: any) => Node.fromJSON(e)) : [],
@@ -1630,6 +1643,9 @@ export const Flow: MessageFns<Flow> = {
     const obj: any = {};
     if (message.name !== "") {
       obj.name = message.name;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
     }
     if (message.description !== "") {
       obj.description = message.description;
@@ -1652,6 +1668,7 @@ export const Flow: MessageFns<Flow> = {
   fromPartial(object: DeepPartial<Flow>): Flow {
     const message = createBaseFlow();
     message.name = object.name ?? "";
+    message.path = object.path ?? "";
     message.description = object.description ?? "";
     message.type = object.type ?? "";
     message.nodes = object.nodes?.map((e) => Node.fromPartial(e)) || [];

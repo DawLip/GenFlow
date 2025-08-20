@@ -26,7 +26,7 @@ export class GenWorkerService implements OnModuleInit {
 
     console.log(context, data)
 
-    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, owner: new Types.ObjectId(data.ownerId)});
+    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, ownerId: new Types.ObjectId(data.ownerId), isActive: false});
     console.log(context, createdGenWorker);
     if (!createdGenWorker) return this.response.error({res:{msg:"GenWorker creation failed"}}, {context});
 

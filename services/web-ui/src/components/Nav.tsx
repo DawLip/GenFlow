@@ -14,6 +14,7 @@ export function Nav({ }: any) {
           <NavItem icon="flow" onClick={()=>router.replace('/flow')}/>
       </ul>
       <ul className="flex flex-col justify-start items-start">
+        <NavItem icon="genworkers" onClick={()=>router.replace('/genworkers')}/>
         <NavItem icon="plugins" onClick={()=>router.replace('/plugins')}/>
         <NavItem icon="settings" onClick={()=>router.replace('/settings')}/>
       </ul>

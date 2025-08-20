@@ -21,6 +21,7 @@ export type Edge = {
 
 export type Flow = {
   name: string;
+  path: string;
   description: string;
   type: string;
   nodes: Node[];

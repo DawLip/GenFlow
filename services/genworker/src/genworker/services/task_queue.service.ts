@@ -141,7 +141,7 @@ export class TaskQueueService implements OnModuleInit {
     const foundGenWorker = await this.genworkerService.findOneByName({ name: data.name });
     if (foundGenWorker.res.ok) return this.response.success({res:{msg:"GenWorker registered"}}, {context});
 
-    const genworker = await this.genworkerService.create({ownerId: data.ownerId, name: data.name});
+    const genworker = await this.genworkerService.create({ownerId: data.ownerId, name: data.name, path: data.path});
     if (!genworker || !genworker.genworker) return this.response.error({res:{msg:"GenWorker registration failed"}}, {context});
 
     await firstValueFrom(this.userService.registerGenWorker({genWorkerId: genworker.genworker?.id, userId: data.ownerId}));

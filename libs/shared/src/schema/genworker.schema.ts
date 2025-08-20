@@ -8,10 +8,14 @@ export class GenWorker {
   @Prop({ required: true })
   name!: string;
 
+  @Prop({ required: true })
+  path!: string;
+  
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', default: null })
-  owner!: Types.ObjectId;
+  ownerId!: Types.ObjectId;
 
   @Prop({ required: true, default: false })
   isActive!: boolean;
+
 }
 export const GenWorkerSchema = SchemaFactory.createForClass(GenWorker);

@@ -58,6 +58,9 @@ export class Flow {
 
   @Prop({ type: [EdgeSchema], required: true })
   edges!: Edge[];
+
+  @Prop({ required: true })
+  path!: string;
 }
 const FlowSchema = SchemaFactory.createForClass(Flow);
 

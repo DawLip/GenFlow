@@ -100,7 +100,8 @@ message Project{
 }
 
 message Flow {
-  string name = 2;
+  string name = 1;
+  string path = 2;
   string description = 3;
   string type = 4;
   repeated Node nodes = 5;

@@ -88,8 +88,11 @@ export interface Team {
 }
 
 export interface GenWorker {
-  userId: string;
+  id: string;
+  ownerId: string;
   name: string;
+  isActive: boolean;
+  path: string;
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -1305,16 +1308,25 @@ export const Team: MessageFns<Team> = {
 };
 
 function createBaseGenWorker(): GenWorker {
-  return { userId: "", name: "" };
+  return { id: "", ownerId: "", name: "", isActive: false, path: "" };
 }
 
 export const GenWorker: MessageFns<GenWorker> = {
   encode(message: GenWorker, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.ownerId !== "") {
+      writer.uint32(18).string(message.ownerId);
     }
     if (message.name !== "") {
-      writer.uint32(18).string(message.name);
+      writer.uint32(26).string(message.name);
+    }
+    if (message.isActive !== false) {
+      writer.uint32(32).bool(message.isActive);
+    }
+    if (message.path !== "") {
+      writer.uint32(42).string(message.path);
     }
     return writer;
   },
@@ -1331,7 +1343,7 @@ export const GenWorker: MessageFns<GenWorker> = {
             break;
           }
 
-          message.userId = reader.string();
+          message.id = reader.string();
           continue;
         }
         case 2: {
@@ -1339,7 +1351,31 @@ export const GenWorker: MessageFns<GenWorker> = {
             break;
           }
 
+          message.ownerId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
           message.name = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isActive = reader.bool();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.path = reader.string();
           continue;
         }
       }
@@ -1353,18 +1389,30 @@ export const GenWorker: MessageFns<GenWorker> = {
 
   fromJSON(object: any): GenWorker {
     return {
-      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
+      isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
     };
   },
 
   toJSON(message: GenWorker): unknown {
     const obj: any = {};
-    if (message.userId !== "") {
-      obj.userId = message.userId;
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.ownerId !== "") {
+      obj.ownerId = message.ownerId;
     }
     if (message.name !== "") {
       obj.name = message.name;
+    }
+    if (message.isActive !== false) {
+      obj.isActive = message.isActive;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
     }
     return obj;
   },
@@ -1374,8 +1422,11 @@ export const GenWorker: MessageFns<GenWorker> = {
   },
   fromPartial(object: DeepPartial<GenWorker>): GenWorker {
     const message = createBaseGenWorker();
-    message.userId = object.userId ?? "";
+    message.id = object.id ?? "";
+    message.ownerId = object.ownerId ?? "";
     message.name = object.name ?? "";
+    message.isActive = object.isActive ?? false;
+    message.path = object.path ?? "";
     return message;
   },
 };

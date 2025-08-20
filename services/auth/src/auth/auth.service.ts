@@ -68,10 +68,11 @@ export class AuthService implements OnModuleInit {
 
     const defaultFlow = {
       name: `My flow`,
+      path: '/',
       description: `This is my first flow`,
       type: 'FLOW',
       nodes: [],
-      edges: []
+      edges: [],
     }
 
     const createdFlow = await firstValueFrom(this.projectService.createFlow({

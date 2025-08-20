@@ -1,6 +1,7 @@
 export type GenWorker = {
   id: string;
   name: string;
-  owner: string;
+  ownerId: string;
   isActive: boolean;
+  path: string;
 };

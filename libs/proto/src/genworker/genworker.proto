@@ -15,6 +15,7 @@ service GenWorkerService {
 
   rpc Register (RegisterRequest) returns (DefaultResponse);
   rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
+  rpc GetGenWorkersAssignedToFlow (GetGenWorkersAssignedToFlowRequest) returns (GetGenWorkersAssignedToFlowResponse);
   rpc GenWorkerDisconnect (GenWorkerDisconnectRequest) returns (DefaultResponse);
 }
 
@@ -84,6 +85,15 @@ message RegisterRequest {
 message GenWorkerAssignRequest {
   string genworkerId = 1;
   repeated string workerPools = 2;
+}
+message GetGenWorkersAssignedToFlowRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string path = 3;
+}
+message GetGenWorkersAssignedToFlowResponse {
+  BaseResponse res = 1;
+  repeated GenWorker genworkers = 2;
 }
 message GenWorkerDisconnectRequest {
   string genworkerId = 1;

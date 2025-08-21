@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, FinishTaskRequest, FinishPartialTaskRequest } from '@proto/genworker/genworker';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, FinishTaskRequest, FinishPartialTaskRequest, GetGenWorkersAssignedToFlowRequest, GetGenWorkersAssignedToFlowResponse } from '@proto/genworker/genworker';
 
 export interface GenWorkerServiceClient {
   // CRUD
@@ -14,5 +14,6 @@ export interface GenWorkerServiceClient {
 
   register(data: RegisterRequest): Observable<DefaultResponse>;
   genWorkerAssign(data: GenWorkerAssignRequest): Observable<DefaultResponse>;
+  getGenWorkersAssignedToFlow(data: GetGenWorkersAssignedToFlowRequest): Observable<GetGenWorkersAssignedToFlowResponse>;
   genWorkerDisconnect(data: GenWorkerDisconnectRequest): Observable<DefaultResponse>;
 }

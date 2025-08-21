@@ -162,6 +162,15 @@ export class TaskQueueService implements OnModuleInit {
     return this.response.success({res:{msg:"genworker assigned"}}, {context})
   }
 
+  async getGenWorkersAssignedToFlow(data) {
+    const context = 'getGenWorkersAssignedToFlow';
+    const genworkersIds = await this.redis.smembers(`${data.projectId}:${data.path}${data.flowName}:worker_pool:all`);
+    
+    const genworkers = (await this.genworkerService.findByIds({genworkerIds: genworkersIds})).genworkers;
+    console.log('getGenWorkersAssignedToFlow')
+    return this.response.success({res:{msg:"genworkers returned"}, genworkers}, {context})
+  }
+
   async genWorkerDisconnect(data) {
     const context = 'genWorkerDisconnect';
 

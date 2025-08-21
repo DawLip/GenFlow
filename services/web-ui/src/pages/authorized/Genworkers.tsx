@@ -1,21 +1,33 @@
 'use client';
+import { services_config } from '@libs/shared/src/services_config';
 import { Icon } from '@web-ui/components/Icon';
 import { AppDispatch } from '@web-ui/store';
+import axios from 'axios';
 import path from 'path';
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
 
+  
   const genworkers = useSelector((state:any)=>state.client.genworkers);
   const clientName = useSelector((state:any)=>state.client.username);
   const flows = useSelector((state:any)=>state.project.flows);
 
   const [selectedFlow, setSelectedFlow] = useState<FlowListItemNode | null>(null);
   const [flowListTree, setFlowListTree] = useState<FlowListItemNode | null>(null);
+  const [genworkersAssignedToFlow, setGenworkersAssignedToFlow] = useState<any[] | null>(null);
   
+  const featchGenworkersAssignedToFlow = async (projectId:string, flowName:string, path: string) => {
+    const genworkersAssigned = await axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/get-genworkers-assigned-to-flow`,{
+      projectId,
+      flowName,
+      path
+    });
+
+    setGenworkersAssignedToFlow(genworkersAssigned.data.genworkers);
+  }
   // const flows = [
   //   {flowName: "My flow5", path: "/test/test2/"},
   //   {flowName: "My flow6", path: "/test/test2/"},
@@ -37,14 +49,29 @@ export default function Page() {
               Find...
             </div>
           </div>
-          {flowListTree && <FlowList flowListTree={flowListTree} setSelectedFlow={setSelectedFlow}/>}
+          {flowListTree && <FlowList flowListTree={flowListTree} setSelectedFlow={setSelectedFlow} selectedFlow={selectedFlow} featchGenworkersAssignedToFlow={featchGenworkersAssignedToFlow}/>}
         </div>
       </div>
       <div className="flex-1 self-stretch px-8 pt-8 flex justify-start items-start gap-16 overflow-hidden">
         <section className="flex-1 flex-col justify-center items-start gap-8">
-          <GenWorkersList header={'Assigned to Flow'} genworkers={[]} assigned />
-          <GenWorkersList header={'Project GenWorkers'} genworkers={[]} />
-          <GenWorkersList header={'Your GenWorkers'} genworkers={genworkers && genworkers.map((genworker:any)=>({...genworker, userName: clientName}))} />
+          <GenWorkersList 
+            header={'Assigned to Flow'} 
+            placeholder={'No GenWorkers assigned to that flow'}
+            genworkers={genworkersAssignedToFlow} assigned 
+            selectedFlow={selectedFlow}
+          />
+          <GenWorkersList 
+            header={'Project GenWorkers'} 
+            placeholder={'No GenWorkers assigned to that project'}
+            genworkers={[]} 
+            selectedFlow={selectedFlow}
+          />
+          <GenWorkersList 
+            header={'Your GenWorkers'} 
+            placeholder={'No GenWorkers assigned to your account'}
+            genworkers={genworkers && genworkers.map((genworker:any)=>({...genworker, ownerName: clientName}))} 
+            selectedFlow={selectedFlow}
+          />
         </section>
         <section className="flex-1 flex-col justify-start items-start gap-4 overflow-hidden">
           <div className="self-stretch flex flex-col justify-center items-start gap-2.5">
@@ -62,15 +89,15 @@ export default function Page() {
 }
 
 const GenWorkersListItem = ({
-  genworkerName,
-  ownerName,
+  genworker,
   light = false,
-  assigned = false
+  assigned = false,
+  assignGenWorkerToFlow
 }: {
-  genworkerName: string;
-  ownerName: string;
+  genworker: any;
   light?: Boolean;
-  assigned?: Boolean
+  assigned?: Boolean,
+  assignGenWorkerToFlow: any
 }) => {
   return (
     <div
@@ -78,36 +105,50 @@ const GenWorkersListItem = ({
     >
       <div className="flex-1 flex justify-start items-center">
         <div className="w-32 justify-start text-white text-base font-bold font-['Inter'] leading-none">
-          {genworkerName}
+          {genworker.name}
         </div>
         <div className="justify-start text-white text-base font-normal font-['Inter'] leading-none">
-          {ownerName}
+          {genworker.ownerName}
         </div>
       </div>
       <div data-direction="DOWN" className="w-6 h-6 relative">
-        <Icon name={`arrow_${assigned ? 'down' : 'up'}`} onClick={() => {}} />
+        <Icon name={`arrow_${assigned ? 'down' : 'up'}`} onClick={assignGenWorkerToFlow} />
       </div>
     </div>
   );
 };
 
-const GenWorkersList = ({ header, assigned=false, genworkers }: { header: string, assigned?: boolean, genworkers:any[] }) => {
+const GenWorkersList = ({ header, placeholder, assigned=false, genworkers, selectedFlow }: { header: string, placeholder: string, assigned?: boolean, genworkers:any[]|null, selectedFlow: FlowListItemNode | null }) => {
+  const projectId = useSelector((state:any)=>state.project.projectId);
+
+  const assignGenWorkerToFlow = (genworker: any) => {
+    axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/genworker-assign`, {
+      genworkerId: `${genworker.ownerId}:${genworker.name}`,
+      workerPools: [
+        `${projectId}:${selectedFlow?.path}${selectedFlow?.name}:worker_pool`
+      ]
+    });
+  }
+  
   return (
     <div className="self-stretch flex-col justify-start items-start gap-2">
       <div className="self-stretch justify-start items-center gap-2.5">
         <div className="justify-start text-on_bg/80 text-3xl font-bold font-['Inter'] leading-loose">
-          {header}
+          {header }
         </div>
       </div>
       <div className="self-stretch flex flex-col justify-start items-start">
-        {genworkers && genworkers.map(genworker => (
-          <GenWorkersListItem
-          genworkerName={genworker.name}
-          ownerName={genworker.userName}
-          light={false}
-          assigned={assigned}
-        />
-        ))}
+        {genworkers && genworkers.length>0
+          ? genworkers.map(genworker => (
+              <GenWorkersListItem
+                genworker={genworker}
+                light={false}
+                assigned={assigned}
+                assignGenWorkerToFlow={()=>assignGenWorkerToFlow(genworker)}
+              />
+            )) 
+          : placeholder
+        }
       </div>
     </div>
   );
@@ -142,13 +183,19 @@ const createFlowListTree = (flows:any[]) => {
         currentNode = newChild;
       }
     });
-    currentNode.addChild(new FlowListItemNode(flow.name, path.join(currentNode.path, flow.name)));
+    currentNode.addChild(new FlowListItemNode(flow.name, currentNode.path));
   });
 
   return root
 }
 
-const FlowList = ({flowListTree, setSelectedFlow}:{flowListTree:FlowListItemNode, setSelectedFlow: any}) => {
+const FlowList = ({flowListTree, setSelectedFlow, selectedFlow, featchGenworkersAssignedToFlow}:
+  {
+    flowListTree:FlowListItemNode, 
+    setSelectedFlow: any, 
+    selectedFlow: FlowListItemNode | null,
+    featchGenworkersAssignedToFlow: any
+  }) => {
   if (flowListTree.children.length > 0) return (
     <div className="self-stretch flex flex-col justify-start items-start">
       <div className="w-24 justify-start text-white text-base font-bold font-['Inter'] leading-none">
@@ -157,18 +204,35 @@ const FlowList = ({flowListTree, setSelectedFlow}:{flowListTree:FlowListItemNode
       <div className="self-stretch pl-4 flex flex-col justify-start items-start">
         {flowListTree.children
             .sort((a,b) => (a.children.length==0?-1:1))
-            .map((child:FlowListItemNode) => (<FlowList key={child.path} flowListTree={child} setSelectedFlow={setSelectedFlow}/>))
+            .map((child:FlowListItemNode) => (<FlowList key={child.path} flowListTree={child} selectedFlow={selectedFlow} setSelectedFlow={setSelectedFlow} featchGenworkersAssignedToFlow={featchGenworkersAssignedToFlow}/>))
         }
       </div>
     </div>
   );
 
-  return <FlowListItem flowListTree={flowListTree} setSelectedFlow={setSelectedFlow}/>
+  return <FlowListItem flowListTree={flowListTree} selectedFlow={selectedFlow} setSelectedFlow={setSelectedFlow} featchGenworkersAssignedToFlow={featchGenworkersAssignedToFlow}/>
 };
 
-const FlowListItem = ({flowListTree, setSelectedFlow}: {flowListTree: FlowListItemNode, setSelectedFlow: any}) => {
+const FlowListItem = ({flowListTree, selectedFlow, setSelectedFlow, featchGenworkersAssignedToFlow}: 
+  {
+    flowListTree: FlowListItemNode, 
+    selectedFlow:any, 
+    setSelectedFlow: any,
+    featchGenworkersAssignedToFlow: any
+  }) => {
+  const projectId = useSelector((state:any)=>state.project.projectId);
+  const isSelected = selectedFlow && selectedFlow.name == flowListTree.name && selectedFlow.path == flowListTree.path;
+
+  const onFlowListItemClick = ()=>{
+    if (selectedFlow && selectedFlow.name == flowListTree.name && selectedFlow.path == flowListTree.path) setSelectedFlow(null);
+    else {
+      setSelectedFlow(flowListTree);
+      featchGenworkersAssignedToFlow(projectId, flowListTree.name, flowListTree.path);
+    }
+  }
+
   return (
-    <div className="self-stretch py-1 inline-flex justify-start items-start gap-4" onClick={()=>setSelectedFlow(flowListTree)}>
+    <div className="self-stretch py-1 inline-flex justify-start items-start gap-4" onClick={onFlowListItemClick} style={{background: isSelected&&"#fff2"}}>
       <div className="flex-1 self-stretch inline-flex flex-col justify-center items-start gap-2">
         <div className="justify-start text-on_bg/80 text-base font-normal font-['Inter'] leading-none">
           {flowListTree.name}

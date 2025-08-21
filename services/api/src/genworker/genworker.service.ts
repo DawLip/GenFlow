@@ -7,7 +7,7 @@ import { ApiService } from '@api/api/api.service';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, RegisterRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
 
 @Injectable()
 export class ApiGenWorkerService implements OnModuleInit {
@@ -76,6 +76,12 @@ export class ApiGenWorkerService implements OnModuleInit {
     if (!data.workerPools) return this.response.validationFail({res:{msg:"field 'workerPools' is required"}}, {context});
     
     return firstValueFrom(this.grpcService.genWorkerAssign(data));
+  }
+
+  getGenWorkersAssignedToFlow(data: GetGenWorkersAssignedToFlowRequest) {
+    const context = 'getGenWorkersAssignedToFlow';
+
+    return firstValueFrom(this.grpcService.getGenWorkersAssignedToFlow(data));
   }
 
   genWorkerDisconnect(data: GenWorkerDisconnectRequest) {

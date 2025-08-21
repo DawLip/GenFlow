@@ -84,6 +84,17 @@ export interface GenWorkerAssignRequest {
   workerPools: string[];
 }
 
+export interface GetGenWorkersAssignedToFlowRequest {
+  projectId: string;
+  flowName: string;
+  path: string;
+}
+
+export interface GetGenWorkersAssignedToFlowResponse {
+  res: BaseResponse | undefined;
+  genworkers: GenWorker[];
+}
+
 export interface GenWorkerDisconnectRequest {
   genworkerId: string;
 }
@@ -1213,6 +1224,176 @@ export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
     const message = createBaseGenWorkerAssignRequest();
     message.genworkerId = object.genworkerId ?? "";
     message.workerPools = object.workerPools?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseGetGenWorkersAssignedToFlowRequest(): GetGenWorkersAssignedToFlowRequest {
+  return { projectId: "", flowName: "", path: "" };
+}
+
+export const GetGenWorkersAssignedToFlowRequest: MessageFns<GetGenWorkersAssignedToFlowRequest> = {
+  encode(message: GetGenWorkersAssignedToFlowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(18).string(message.flowName);
+    }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetGenWorkersAssignedToFlowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGenWorkersAssignedToFlowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGenWorkersAssignedToFlowRequest {
+    return {
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
+    };
+  },
+
+  toJSON(message: GetGenWorkersAssignedToFlowRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetGenWorkersAssignedToFlowRequest>): GetGenWorkersAssignedToFlowRequest {
+    return GetGenWorkersAssignedToFlowRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetGenWorkersAssignedToFlowRequest>): GetGenWorkersAssignedToFlowRequest {
+    const message = createBaseGetGenWorkersAssignedToFlowRequest();
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
+    return message;
+  },
+};
+
+function createBaseGetGenWorkersAssignedToFlowResponse(): GetGenWorkersAssignedToFlowResponse {
+  return { res: undefined, genworkers: [] };
+}
+
+export const GetGenWorkersAssignedToFlowResponse: MessageFns<GetGenWorkersAssignedToFlowResponse> = {
+  encode(message: GetGenWorkersAssignedToFlowResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.genworkers) {
+      GenWorker.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetGenWorkersAssignedToFlowResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetGenWorkersAssignedToFlowResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkers.push(GenWorker.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetGenWorkersAssignedToFlowResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      genworkers: globalThis.Array.isArray(object?.genworkers)
+        ? object.genworkers.map((e: any) => GenWorker.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: GetGenWorkersAssignedToFlowResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.genworkers?.length) {
+      obj.genworkers = message.genworkers.map((e) => GenWorker.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetGenWorkersAssignedToFlowResponse>): GetGenWorkersAssignedToFlowResponse {
+    return GetGenWorkersAssignedToFlowResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetGenWorkersAssignedToFlowResponse>): GetGenWorkersAssignedToFlowResponse {
+    const message = createBaseGetGenWorkersAssignedToFlowResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.genworkers = object.genworkers?.map((e) => GenWorker.fromPartial(e)) || [];
     return message;
   },
 };

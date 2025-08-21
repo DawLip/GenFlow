@@ -54,6 +54,11 @@ export class GenWorkerController {
     return await this.taskQueueService.genWorkerAssign(data);
   }
 
+  @GrpcMethod('GenWorkerService', 'GetGenWorkersAssignedToFlow')
+  async getGenWorkersAssignedToFlow(data: GenWorkerAssignRequest): Promise<DefaultResponse> {
+    return await this.taskQueueService.getGenWorkersAssignedToFlow(data);
+  }
+
   @GrpcMethod('GenWorkerService', 'GenWorkerDisconnect')
   async genworkerDisconnect(data: GenWorkerDisconnectRequest): Promise<DefaultResponse> {
     return await this.taskQueueService.genWorkerDisconnect(data);

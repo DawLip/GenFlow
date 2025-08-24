@@ -10,6 +10,7 @@ import { GenWorkerService } from '@genworker/genworker/services/genworker.servic
 import { UserServiceClient } from '@proto/user/user.client';
 import { RegisterRequest } from '@proto/genworker/genworker';
 import { TaskService } from './task.service';
+import { Types } from 'mongoose';
 
 
 @Injectable()
@@ -36,8 +37,8 @@ export class TaskQueueService implements OnModuleInit {
   ) {}
   
   // === redis wrappers ===
-  redisKey({object, projectId, flowName}) {
-    let redisKey = `${projectId}:${flowName}:${object}`;
+  redisKey({object, projectId, flowName, path}) {
+    let redisKey = `${projectId}:${path}${flowName}:${object}`;
     return redisKey;
   }
 
@@ -59,13 +60,24 @@ export class TaskQueueService implements OnModuleInit {
     return this.response.success({res:{msg:"task dequeued"}, data}, {context});
   }
 
+  async assignTaskToWorker(taskId: string, workerId: string, workerPool: string){
+    this.redis.smove(`${workerPool}:ready`, `${workerPool}:working`, workerId);
+
+    await this.taskService.update({id: taskId, task: {isProcessingBy: new Types.ObjectId(workerId)}});
+
+    this.socketioService.emit({room: workerId, event: 'task_assigned', data: taskId})
+  }
   // === supporting methods ===
 
-  async handleNewTask({projectId, flowName, data, taskState}) {
+  async handleNewTask({projectId, flowName, path, data, taskState}) {
     const context = 'handleNewTask';
 
-    this.redis.rpush(this.redisKey({object: `task_queue:${taskState}`, projectId, flowName}), data);
-    this.taskService.create({projectId, flowName, data, taskState});
+    const task = await this.taskService.create({projectId, flowName, path, data, taskState});
+    this.redis.rpush(this.redisKey({object: `task_queue:${taskState}`, projectId, flowName, path}), task.task.id);
+
+    const genworkersReady = await this.redis.smembers(`${projectId}:${path}${flowName}:worker_pool:ready`);
+    if(genworkersReady.length==0) return this.response.fail({res:{msg:"there is no free genworkers"}, data}, {context});
+    this.assignTaskToWorker(task.task.id, genworkersReady[0], `${projectId}:${path}${flowName}:worker_pool`);
 
     return this.response.success({res:{msg:"new task handled"}, data}, {context});
   }
@@ -94,13 +106,13 @@ export class TaskQueueService implements OnModuleInit {
 
   // === gRPC handlers ===
 
-  async enqueueTask({projectId, flowName, data}) {
+  async enqueueTask({projectId, flowName, path, data}) {
     const context = 'enqueueTask';
-
+    console.log(context, projectId, flowName, path, data)
     const taskSegmentsRes = this.segmentTask({data, strategy: 'noSegmentationStrategy'});
     if (!taskSegmentsRes.res.ok) return this.response.error({res:{msg:"task segmentation error"}}, {context});
 
-    taskSegmentsRes.data.forEach(async (segment: any) => this.handleNewTask({projectId, flowName, data: JSON.parse(segment.data), taskState: segment.taskState}));
+    taskSegmentsRes.data.forEach(async (segment: any) => this.handleNewTask({projectId, flowName, path, data: JSON.parse(segment.data), taskState: segment.taskState}));
 
     return this.response.success({res:{msg:"task enqueued"}}, {context})
   }
@@ -116,11 +128,11 @@ export class TaskQueueService implements OnModuleInit {
   async finishTask(data) {
     const context = 'finishTask';
 
-    this.redis.srem(this.redisKey({object: 'task_queue:waiting', projectId: data.projectId, flowName: data.flowName}), data.taskId);
+    this.redis.srem(this.redisKey({object: 'task_queue:waiting', projectId: data.projectId, flowName: data.flowName, path: data.path}), data.taskId);
 
     this.redis.smove(
-      this.redisKey({object: ':worker_pool:working', projectId: data.projectId, flowName: data.flowName}), 
-      this.redisKey({object: ':worker_pool:ready', projectId: data.projectId, flowName: data.flowName}), 
+      this.redisKey({object: ':worker_pool:working', projectId: data.projectId, flowName: data.flowName, path: data.path}), 
+      this.redisKey({object: ':worker_pool:ready', projectId: data.projectId, flowName: data.flowName, path: data.path}), 
       data.workerId
     );
 
@@ -167,7 +179,7 @@ export class TaskQueueService implements OnModuleInit {
     const genworkersIds = await this.redis.smembers(`${data.projectId}:${data.path}${data.flowName}:worker_pool:all`);
     
     const genworkers = (await this.genworkerService.findByIds({genworkerIds: genworkersIds})).genworkers;
-    console.log('getGenWorkersAssignedToFlow')
+
     return this.response.success({res:{msg:"genworkers returned"}, genworkers}, {context})
   }
 

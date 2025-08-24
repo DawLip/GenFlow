@@ -6,19 +6,17 @@ import { useCallback } from "react";
 import { Icon } from "../Icon";
 import { AppDispatch } from "@web-ui/store";
 import { useDispatch, useSelector } from "react-redux";
-import { executeFlowThunk } from "@web-ui/store/thunks/auth/executeFlowThunk";
+import { executeFlowThunk } from "@web-ui/store/thunks/flow/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const dispatch = useDispatch<AppDispatch>();
-  
-  const token = useSelector((state: any) => state.auth.token);
 
   const onExecute = async () => {
     console.log(`=== Executing node ${node.data.id} ===`)
     dispatch(executeFlowThunk(
-      [{ id: "1", type: "start", data: {}, position: {}, style: { } }],
-      [{ id: "e1", source: "1", target: "2", data: {} }],
-      token
+      // [{ id: "1", type: "start", data: {}, position: {}, style: { } }],
+      // [{ id: "e1", source: "1", target: "2", data: {} }],
+      
     ))
   }
 

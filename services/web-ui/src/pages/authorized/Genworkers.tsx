@@ -20,6 +20,8 @@ export default function Page() {
   const [genworkersAssignedToFlow, setGenworkersAssignedToFlow] = useState<any[] | null>(null);
   
   const featchGenworkersAssignedToFlow = async (projectId:string, flowName:string, path: string) => {
+    if (!projectId) setGenworkersAssignedToFlow(null);
+    
     const genworkersAssigned = await axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/get-genworkers-assigned-to-flow`,{
       projectId,
       flowName,
@@ -54,12 +56,13 @@ export default function Page() {
       </div>
       <div className="flex-1 self-stretch px-8 pt-8 flex justify-start items-start gap-16 overflow-hidden">
         <section className="flex-1 flex-col justify-center items-start gap-8">
-          <GenWorkersList 
-            header={'Assigned to Flow'} 
-            placeholder={'No GenWorkers assigned to that flow'}
-            genworkers={genworkersAssignedToFlow} assigned 
-            selectedFlow={selectedFlow}
-          />
+          {<GenWorkersList 
+                header={'Assigned to Flow'} 
+                placeholder={selectedFlow ? 'No GenWorkers assigned to that flow' : 'Select flow'}
+                genworkers={genworkersAssignedToFlow} assigned 
+                selectedFlow={selectedFlow}
+              />
+            }
           <GenWorkersList 
             header={'Project GenWorkers'} 
             placeholder={'No GenWorkers assigned to that project'}
@@ -224,8 +227,10 @@ const FlowListItem = ({flowListTree, selectedFlow, setSelectedFlow, featchGenwor
   const isSelected = selectedFlow && selectedFlow.name == flowListTree.name && selectedFlow.path == flowListTree.path;
 
   const onFlowListItemClick = ()=>{
-    if (selectedFlow && selectedFlow.name == flowListTree.name && selectedFlow.path == flowListTree.path) setSelectedFlow(null);
-    else {
+    if (selectedFlow && selectedFlow.name == flowListTree.name && selectedFlow.path == flowListTree.path) {
+      setSelectedFlow(null);
+      featchGenworkersAssignedToFlow(null, null, null);
+    } else {
       setSelectedFlow(flowListTree);
       featchGenworkersAssignedToFlow(projectId, flowListTree.name, flowListTree.path);
     }

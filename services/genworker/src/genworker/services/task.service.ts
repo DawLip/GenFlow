@@ -23,7 +23,7 @@ export class TaskService implements OnModuleInit {
 
     console.log(context, data)
 
-    const createdTask:Task|any = await this.taskModel.create({...data, owner: new Types.ObjectId(data.ownerId)});
+    const createdTask:Task|any = await this.taskModel.create({...data, owner: new Types.ObjectId(data.ownerId), processingBy: null});
     console.log(context, createdTask);
     if (!createdTask) return this.response.error({res:{msg:"Task creation failed"}}, {context});
 
@@ -31,11 +31,11 @@ export class TaskService implements OnModuleInit {
   }
   async update(data) {
     const context = 'update';
-
+    console.log(data)
     const updatedTask = await this.taskModel.findByIdAndUpdate(
-      data.id,
-      { ...data.task },
-      { new: true },
+      new Types.ObjectId(data.id),
+      { ...data.task, flowName: "test" },
+      {new: true}
     );
 
     if (!updatedTask) return this.response.error({res:{msg:"Task not found"}}, {context});

@@ -62,20 +62,23 @@ message EnqueueRequest {
   string projectId = 1;
   string flowName = 2;
   string data = 3;
+  string path = 4;
 }
 message FinishPartialTaskRequest {
   string taskId = 1;
   string workerId = 2;
   string projectId = 3;
   string flowName = 4;
-  string status = 5;
+  string path = 5;
+  string status = 6;
 }
 message FinishTaskRequest {
   string taskId = 1;
   string workerId = 2;
   string projectId = 3;
   string flowName = 4;
-  string status = 5;
+  string path = 5;
+  string status = 6;
 }
 message RegisterRequest {
   string ownerId = 1;

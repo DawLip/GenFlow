@@ -57,6 +57,7 @@ export interface CreateFlowResponse {
 export interface UpdateFlowRequest {
   id: string;
   flowName: string;
+  path: string;
   flow: Flow | undefined;
 }
 
@@ -68,6 +69,7 @@ export interface UpdateFlowDataRequest {
   operation: string;
   id: string;
   flowName: string;
+  path: string;
   data: string;
 }
 
@@ -78,6 +80,7 @@ export interface UpdateFlowDataResponse {
 export interface FindOneByNameFlowRequest {
   id: string;
   flowName: string;
+  path: string;
 }
 
 export interface FindFlowResponse {
@@ -812,7 +815,7 @@ export const CreateFlowResponse: MessageFns<CreateFlowResponse> = {
 };
 
 function createBaseUpdateFlowRequest(): UpdateFlowRequest {
-  return { id: "", flowName: "", flow: undefined };
+  return { id: "", flowName: "", path: "", flow: undefined };
 }
 
 export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
@@ -823,8 +826,11 @@ export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
     if (message.flowName !== "") {
       writer.uint32(18).string(message.flowName);
     }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
+    }
     if (message.flow !== undefined) {
-      Flow.encode(message.flow, writer.uint32(26).fork()).join();
+      Flow.encode(message.flow, writer.uint32(34).fork()).join();
     }
     return writer;
   },
@@ -857,6 +863,14 @@ export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
             break;
           }
 
+          message.path = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
           message.flow = Flow.decode(reader, reader.uint32());
           continue;
         }
@@ -873,6 +887,7 @@ export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       flow: isSet(object.flow) ? Flow.fromJSON(object.flow) : undefined,
     };
   },
@@ -884,6 +899,9 @@ export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
     }
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
     }
     if (message.flow !== undefined) {
       obj.flow = Flow.toJSON(message.flow);
@@ -898,6 +916,7 @@ export const UpdateFlowRequest: MessageFns<UpdateFlowRequest> = {
     const message = createBaseUpdateFlowRequest();
     message.id = object.id ?? "";
     message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
     message.flow = (object.flow !== undefined && object.flow !== null) ? Flow.fromPartial(object.flow) : undefined;
     return message;
   },
@@ -962,7 +981,7 @@ export const UpdateFlowResponse: MessageFns<UpdateFlowResponse> = {
 };
 
 function createBaseUpdateFlowDataRequest(): UpdateFlowDataRequest {
-  return { operation: "", id: "", flowName: "", data: "" };
+  return { operation: "", id: "", flowName: "", path: "", data: "" };
 }
 
 export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
@@ -976,8 +995,11 @@ export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
     if (message.flowName !== "") {
       writer.uint32(26).string(message.flowName);
     }
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
+    }
     if (message.data !== "") {
-      writer.uint32(34).string(message.data);
+      writer.uint32(42).string(message.data);
     }
     return writer;
   },
@@ -1018,6 +1040,14 @@ export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
             break;
           }
 
+          message.path = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
           message.data = reader.string();
           continue;
         }
@@ -1035,6 +1065,7 @@ export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
       operation: isSet(object.operation) ? globalThis.String(object.operation) : "",
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       data: isSet(object.data) ? globalThis.String(object.data) : "",
     };
   },
@@ -1050,6 +1081,9 @@ export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     if (message.data !== "") {
       obj.data = message.data;
     }
@@ -1064,6 +1098,7 @@ export const UpdateFlowDataRequest: MessageFns<UpdateFlowDataRequest> = {
     message.operation = object.operation ?? "";
     message.id = object.id ?? "";
     message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
     message.data = object.data ?? "";
     return message;
   },
@@ -1128,7 +1163,7 @@ export const UpdateFlowDataResponse: MessageFns<UpdateFlowDataResponse> = {
 };
 
 function createBaseFindOneByNameFlowRequest(): FindOneByNameFlowRequest {
-  return { id: "", flowName: "" };
+  return { id: "", flowName: "", path: "" };
 }
 
 export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
@@ -1138,6 +1173,9 @@ export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
     }
     if (message.flowName !== "") {
       writer.uint32(18).string(message.flowName);
+    }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
     }
     return writer;
   },
@@ -1165,6 +1203,14 @@ export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
           message.flowName = reader.string();
           continue;
         }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1178,6 +1224,7 @@ export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
     };
   },
 
@@ -1189,6 +1236,9 @@ export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     return obj;
   },
 
@@ -1199,6 +1249,7 @@ export const FindOneByNameFlowRequest: MessageFns<FindOneByNameFlowRequest> = {
     const message = createBaseFindOneByNameFlowRequest();
     message.id = object.id ?? "";
     message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
     return message;
   },
 };

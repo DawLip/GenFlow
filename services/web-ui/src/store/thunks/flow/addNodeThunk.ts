@@ -9,6 +9,7 @@ export const addNodeThunk = (data:any, socket: any) => async (dispatch: any, get
     context: 'addNode',
     projectId: state.project.projectId,
     flowName: state.flows[state.session.selectedFlow].name,
+    path: state.flows[state.session.selectedFlow].path,
     data: JSON.parse(JSON.stringify(data.node)),
   })
 };

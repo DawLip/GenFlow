@@ -8,6 +8,7 @@ export const onNodesChangeThunk = (data:any, socket: any) => async (dispatch: an
     context: 'onNodesChange',
     projectId: state.project.projectId,
     flowName: state.flows[state.session.selectedFlow].name,
+    path: state.flows[state.session.selectedFlow].path,
     data, 
   })
 };

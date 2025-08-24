@@ -55,6 +55,7 @@ export interface EnqueueRequest {
   projectId: string;
   flowName: string;
   data: string;
+  path: string;
 }
 
 export interface FinishPartialTaskRequest {
@@ -62,6 +63,7 @@ export interface FinishPartialTaskRequest {
   workerId: string;
   projectId: string;
   flowName: string;
+  path: string;
   status: string;
 }
 
@@ -70,6 +72,7 @@ export interface FinishTaskRequest {
   workerId: string;
   projectId: string;
   flowName: string;
+  path: string;
   status: string;
 }
 
@@ -719,7 +722,7 @@ export const FindResponse: MessageFns<FindResponse> = {
 };
 
 function createBaseEnqueueRequest(): EnqueueRequest {
-  return { projectId: "", flowName: "", data: "" };
+  return { projectId: "", flowName: "", data: "", path: "" };
 }
 
 export const EnqueueRequest: MessageFns<EnqueueRequest> = {
@@ -732,6 +735,9 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
     }
     if (message.data !== "") {
       writer.uint32(26).string(message.data);
+    }
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
     }
     return writer;
   },
@@ -767,6 +773,14 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
           message.data = reader.string();
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -781,6 +795,7 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
       data: isSet(object.data) ? globalThis.String(object.data) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
     };
   },
 
@@ -795,6 +810,9 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
     if (message.data !== "") {
       obj.data = message.data;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     return obj;
   },
 
@@ -806,12 +824,13 @@ export const EnqueueRequest: MessageFns<EnqueueRequest> = {
     message.projectId = object.projectId ?? "";
     message.flowName = object.flowName ?? "";
     message.data = object.data ?? "";
+    message.path = object.path ?? "";
     return message;
   },
 };
 
 function createBaseFinishPartialTaskRequest(): FinishPartialTaskRequest {
-  return { taskId: "", workerId: "", projectId: "", flowName: "", status: "" };
+  return { taskId: "", workerId: "", projectId: "", flowName: "", path: "", status: "" };
 }
 
 export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
@@ -828,8 +847,11 @@ export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
     if (message.flowName !== "") {
       writer.uint32(34).string(message.flowName);
     }
+    if (message.path !== "") {
+      writer.uint32(42).string(message.path);
+    }
     if (message.status !== "") {
-      writer.uint32(42).string(message.status);
+      writer.uint32(50).string(message.status);
     }
     return writer;
   },
@@ -878,6 +900,14 @@ export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
             break;
           }
 
+          message.path = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
           message.status = reader.string();
           continue;
         }
@@ -896,6 +926,7 @@ export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
       workerId: isSet(object.workerId) ? globalThis.String(object.workerId) : "",
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       status: isSet(object.status) ? globalThis.String(object.status) : "",
     };
   },
@@ -914,6 +945,9 @@ export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     if (message.status !== "") {
       obj.status = message.status;
     }
@@ -929,13 +963,14 @@ export const FinishPartialTaskRequest: MessageFns<FinishPartialTaskRequest> = {
     message.workerId = object.workerId ?? "";
     message.projectId = object.projectId ?? "";
     message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
     message.status = object.status ?? "";
     return message;
   },
 };
 
 function createBaseFinishTaskRequest(): FinishTaskRequest {
-  return { taskId: "", workerId: "", projectId: "", flowName: "", status: "" };
+  return { taskId: "", workerId: "", projectId: "", flowName: "", path: "", status: "" };
 }
 
 export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
@@ -952,8 +987,11 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
     if (message.flowName !== "") {
       writer.uint32(34).string(message.flowName);
     }
+    if (message.path !== "") {
+      writer.uint32(42).string(message.path);
+    }
     if (message.status !== "") {
-      writer.uint32(42).string(message.status);
+      writer.uint32(50).string(message.status);
     }
     return writer;
   },
@@ -1002,6 +1040,14 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
             break;
           }
 
+          message.path = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
           message.status = reader.string();
           continue;
         }
@@ -1020,6 +1066,7 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
       workerId: isSet(object.workerId) ? globalThis.String(object.workerId) : "",
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       status: isSet(object.status) ? globalThis.String(object.status) : "",
     };
   },
@@ -1038,6 +1085,9 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
     if (message.flowName !== "") {
       obj.flowName = message.flowName;
     }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
     if (message.status !== "") {
       obj.status = message.status;
     }
@@ -1053,6 +1103,7 @@ export const FinishTaskRequest: MessageFns<FinishTaskRequest> = {
     message.workerId = object.workerId ?? "";
     message.projectId = object.projectId ?? "";
     message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
     message.status = object.status ?? "";
     return message;
   },

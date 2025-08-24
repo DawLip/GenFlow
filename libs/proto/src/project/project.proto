@@ -58,7 +58,8 @@ message CreateFlowResponse {
 message UpdateFlowRequest {
   string id = 1;
   string flowName = 2;
-  Flow flow = 3;
+  string path = 3;
+  Flow flow = 4;
 }
 message UpdateFlowResponse {
   BaseResponse res = 1;
@@ -68,7 +69,8 @@ message UpdateFlowDataRequest {
   string operation = 1;
   string id = 2;
   string flowName = 3;
-  string data = 4;
+  string path = 4;
+  string data = 5;
 }
 message UpdateFlowDataResponse {
   BaseResponse res = 1;
@@ -77,6 +79,7 @@ message UpdateFlowDataResponse {
 message FindOneByNameFlowRequest {
   string id = 1;
   string flowName = 2;
+  string path = 3;
 }
 message FindFlowResponse {
   string id = 1;

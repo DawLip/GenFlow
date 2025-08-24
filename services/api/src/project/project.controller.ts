@@ -24,10 +24,15 @@ export class ApiProjectController {
   }
 
 
-  @Get(':projectId/flows/:flowName')
-  async flowGet(@Body() body: FindOneByNameFlowRequest, @Req() req: AuthenticatedRequest, @Param('projectId') projectId: string, @Param('flowName') flowName: string): Promise<FindFlowResponse> {
-    const res = await this.apiProjectService.flowGet(body, req, {projectId, flowName: decodeURIComponent(flowName)});
-    return {...res, flow: res.flow ? {...res.flow, nodes: res.flow.nodes.map((node:any) => ({
+  @Get(':projectId/flows/*')  
+  async flowGet(@Body() body: FindOneByNameFlowRequest, @Req() req: AuthenticatedRequest, @Param('projectId') projectId: string): Promise<FindFlowResponse> {
+    const fullPath = req.params.path;
+    const flowName = fullPath[fullPath.length-1];
+    // @ts-ignore
+    const path = `/${fullPath.slice(0, fullPath.length-1).join('/')}/`;
+    
+    const res = await this.apiProjectService.flowGet(body, req, {projectId, flowName: decodeURIComponent(flowName), path});
+    return {...res, flow: res.flow ? {...res.flow, nodes: res.flow?.nodes?.map((node:any) => ({
       ...node,
       position: JSON.parse(node.position),
       style: JSON.parse(node.style),

@@ -97,6 +97,7 @@ export class SocketService implements OnModuleInit {
       operation: data.context,
       id: data.projectId,
       flowName: data.flowName,
+      path: data.path,
       data: JSON.stringify(dataParams)
     })
 

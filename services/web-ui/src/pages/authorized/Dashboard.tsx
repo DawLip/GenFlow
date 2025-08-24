@@ -26,14 +26,14 @@ export default function Page() {
             </div>
             <div className="flex justify-start items-center gap-4">
               <Icon name="template" />
-              <Icon name="plus" onClick={() => {dispatch(createFlowThunk("New Flow"))}} />
+              <Icon name="plus" onClick={() => {dispatch(createFlowThunk("New Flow", '/'))}} />
             </div>
           </div>
           <div className="self-stretch flex flex-col justify-start items-start">
             <div className="self-stretch flex-col justify-start items-start gap-2">
               {Object.keys(flows).length === 0 
                 ? <div>No flows found</div>
-                : Object.keys(flows).reverse().map((flowID, i) => i < 5 && <FlowCard key={flowID} name={flows[flowID].name} />)
+                : Object.keys(flows).reverse().map((flowID, i) => i < 5 && <FlowCard key={flowID} name={flows[flowID].name} path={flows[flowID].path} />)
               }
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function Page() {
   );
 }
 
-const FlowCard = ({name}:{name:string}) => {
+const FlowCard = ({name, path}:{name:string, path:string}) => {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>();
 
@@ -65,7 +65,7 @@ const FlowCard = ({name}:{name:string}) => {
           </div>
           <div>
             <Icon name="flow" className="size-[24px]" onClick={async () => {
-                const {data} = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${name}`);
+                const {data} = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${path}${name}`);
                 dispatch(setFlow({flowID, data: data.flow}));
                 dispatch(selectFlow(flowID));
                 socket.emit('join_flow_room',{

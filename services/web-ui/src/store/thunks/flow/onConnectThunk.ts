@@ -9,6 +9,7 @@ export const onConnectThunk = (data:any, socket: any) => async (dispatch: any, g
     context: 'onConnect',
     projectId: state.project.projectId,
     flowName: state.flows[state.session.selectedFlow].name,
+    path: state.flows[state.session.selectedFlow].path,
     data, 
   })
 };

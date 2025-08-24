@@ -51,7 +51,7 @@ export class ApiProjectService implements OnModuleInit {
   async flowGet(body: FindOneByNameFlowRequest, req: AuthenticatedRequest, params:any) {
     if(!params.projectId) return this.response.validationFail({res:{msg:"Param 'projectId' is required"}}, {context:"project/get"});
 
-    return await firstValueFrom(this.grpcService.findOneByNameFlow({id: params.projectId, flowName: params.flowName}));
+    return await firstValueFrom(this.grpcService.findOneByNameFlow({id: params.projectId, flowName: params.flowName, path: params.path}));
   }
 
   async flowPost(body: CreateFlowRequest, req: AuthenticatedRequest, params:any) {

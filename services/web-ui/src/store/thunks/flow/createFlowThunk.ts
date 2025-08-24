@@ -4,7 +4,7 @@ import { services_config } from '@shared/services_config';
 import { newFlow } from '@web-ui/store/slices/projectSlice';
 import { defaultFlow } from '@web-ui/store/flow.default';
 
-export const createFlowThunk = (name: string) => async (dispatch: any, getState: any) => {
+export const createFlowThunk = (name: string, path: string) => async (dispatch: any, getState: any) => {
   const state = getState();
   console.log('=== createFlow ===')
   
@@ -16,6 +16,7 @@ export const createFlowThunk = (name: string) => async (dispatch: any, getState:
       flow: {
         ...defaultFlow,
         name: name,
+        path: path,
         description: " ",
         type: "FLOW",
       }

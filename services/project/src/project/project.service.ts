@@ -79,7 +79,7 @@ export class ProjectService {
     const foundProject = await this.projectModel.findById(data.id).lean();
     if (!foundProject) return this.response.fail({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
 
-    const flow = foundProject.flows.filter(flow=>flow.name==data.flowName)
+    const flow = foundProject.flows.filter(flow=>flow.name==data.flowName && flow.path==data.path)
     if (!flow.length) return this.response.fail({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
 
     return this.response.success({
@@ -116,7 +116,7 @@ export class ProjectService {
     const project = await this.projectModel.findById(data.id);
     if (!project) return this.response.fail({res:{msg:"project not found"}}, {context:"updateFlow", data});
 
-    const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
+    const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName && flow.path === data.path);
     if (flowIndex === -1) return this.response.fail({res:{msg:"flow not found"}}, {context:"updateFlow", data});
 
     const updatedProject = await this.projectModel.findByIdAndUpdate(
@@ -141,7 +141,7 @@ export class ProjectService {
     const project = await this.projectModel.findById(data.id);
     if (!project) return this.response.fail({res:{msg:"project not found"}}, {context, data});
 
-    const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName);
+    const flowIndex = project.flows.findIndex(flow => flow.name === data.flowName && flow.path === data.path);
     if (flowIndex === -1) return this.response.fail({res:{msg:"flow not found"}}, {context, data});
 
     switch(data.operation){

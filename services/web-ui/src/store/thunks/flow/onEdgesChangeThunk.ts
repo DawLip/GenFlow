@@ -9,6 +9,7 @@ export const onEdgesChangeThunk = (data:any, socket: any) => async (dispatch: an
     context: 'onEdgesChange',
     projectId: state.project.projectId,
     flowName: state.flows[state.session.selectedFlow].name,
+    path: state.flows[state.session.selectedFlow].path,
     data, 
   })
 };

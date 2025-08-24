@@ -12,6 +12,9 @@ export class Task {
   flowName: string;
 
   @Prop({ type: Object, required: true })
+  path: string;
+
+  @Prop({ type: Object, required: true })
   data: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'GenWorker'})

@@ -8,10 +8,10 @@ from ui_reader import ui_reader
 from sio import socket
 
 async def main():
-  root = render_gui()
+  render_gui()
   
   await asyncio.gather(
-    tk_pump(root),
+    tk_pump(),
     worker(),
     ui_reader(),
     socket()

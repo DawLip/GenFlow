@@ -1,5 +1,5 @@
 services:
-  socket.io:
+  socketio:
     build:
       context: .
       dockerfile: ../libs/shared/Dockerfile.default.dev

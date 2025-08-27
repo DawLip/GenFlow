@@ -1,26 +1,21 @@
 import asyncio
-import socketio
 
-from controller import controller
+from gui.gui import render_gui
 
-from login import login
-
-from store.store import Store
-from config.sio_config import sio_client, sio_connect
-
-sio = sio_client()
-
-controller(sio)
+from tk_pump import tk_pump
+from worker import worker
+from ui_reader import ui_reader
+from sio import socket
 
 async def main():
-  s = Store()
+  root = render_gui()
   
-  await login('1', '1')
-  await sio_connect(sio)
-  await sio.emit('genworker_register', {'name': 'my-worker', 'userId': s.auth['userId']})
+  await asyncio.gather(
+    tk_pump(root),
+    worker(),
+    ui_reader(),
+    socket()
+  )
   
-  # await sio.emit('genworker_assign', {'name': 'my-worker'})
-
-  await sio.wait()
-
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

@@ -48,3 +48,6 @@ Thumbs.db
 # Next.js
 .next
 out
+
+*.pyc
+/*.pyc

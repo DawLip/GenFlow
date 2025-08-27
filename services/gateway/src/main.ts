@@ -14,12 +14,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {bodyParser: false});
   const expressApp = app.getHttpAdapter().getInstance();
 
-  const socketProxy = createProxyMiddleware({
-    target: services_config.service_url.socketio,
-    ws: true,
-    changeOrigin: true,
-  });
-
+  const socketProxy = createProxyMiddleware({target: services_config.service_url.socketio});
   expressApp.use('/socket.io', socketProxy);
 
   app.enableCors();

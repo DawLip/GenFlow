@@ -8,7 +8,7 @@ services:
       - api
       - api-test
       - graphql
-      - socket.io
+      - socketio
     networks:
       monitoring:
 
@@ -33,13 +33,12 @@ services:
     networks:
       monitoring:
 
-  socket.io:
+  socketio:
     extends:
-      file: compose/socket.io.yml
-      service: socket.io
+      file: compose/socketio.yml
+      service: socketio
     networks:
       monitoring:
-        aliases: [socket.io]
     depends_on:
       - auth
       - user

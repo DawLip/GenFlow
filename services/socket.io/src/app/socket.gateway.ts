@@ -13,7 +13,7 @@ import { SocketService } from './socket.service';
 import { PinoLogger } from 'nestjs-pino';
 import { subscribe } from 'diagnostics_channel';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway({ cors: true, path: '/socket.io' })
 export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -28,6 +28,7 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleConnection(client: Socket) {
+    console.log('handleConnection')
     this.socketService.handleConnection(client);
   }
 

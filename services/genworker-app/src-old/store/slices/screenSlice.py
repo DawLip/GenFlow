@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-class screenSlice(dict):
+class ScreenSlice(dict):
   def __init__(self):
     self._screens: list[tk.Frame] = {}
     self.current: tk.Frame|None = None

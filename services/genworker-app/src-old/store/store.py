@@ -1,11 +1,15 @@
-class Store:
-  _instance = None
+from .slices.screenSlice import ScreenSlice
+from .slices.ioQueueSlice import IOQueueSlice
+from .slices.authSlice import AuthSlice
 
-  def __new__(cls):
-    if cls._instance is None:
-      cls._instance = super().__new__(cls)
-      cls._instance.auth = {
-        'accessToken': '',
-        'userId': ''
-      }
-    return cls._instance
+class store:
+  io_queue = None
+  ui = {}
+  screens = None
+  auth = None
+  
+  def init():
+    store.io_queue = IOQueueSlice()
+    store.ui = {}
+    store.screens = ScreenSlice()
+    store.auth = AuthSlice(store)

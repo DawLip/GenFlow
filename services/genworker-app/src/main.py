@@ -1,21 +1,10 @@
-import asyncio
+import threading
 
-from gui.gui import render_gui
+from SIO import SIO
+from ui.ui_factory import ui_factory
 
-from tk_pump import tk_pump
-from worker import worker
-from ui_reader import ui_reader
-from sio import socket
+SIO.init("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OTYxNGE2MDZmN2EzN2E3MjA3OWU3YiIsImlhdCI6MTc1NTA1Mjk3MywiZXhwIjoyMzAzNDY4MTYxNzN9.wNBc-8ZDUqmUVCaH96TbAMhogFTXrBGqM7qF_yuxgOI")
+ui = ui_factory("console").init()
 
-async def main():
-  render_gui()
-  
-  await asyncio.gather(
-    tk_pump(),
-    worker(),
-    ui_reader(),
-    socket()
-  )
-  
-if __name__ == "__main__":
-    asyncio.run(main())
+while True:
+  pass

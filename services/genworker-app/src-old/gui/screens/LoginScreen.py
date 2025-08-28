@@ -21,4 +21,4 @@ class LoginScreen():
     # self.lbl = ttk.Label(self.screen, text="Status: idle"); self.lbl.grid(padx=8, pady=8)
     # btn = ttk.Button(self.screen, text="Start 5 kroków"); btn.grid(padx=8, pady=8)
     
-    btn.config(command=lambda: s.io_queue.ui_in.put_nowait(("LOGIN")))
+    btn.config(command=lambda: s.auth.login(self.screen.loginEntry.get(), self.screen.passwordEntry.get()))

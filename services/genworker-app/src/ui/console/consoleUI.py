@@ -1,6 +1,7 @@
 import threading
 
 from .LoginScreen import LoginScreen
+from .DashboardScreen import DashboardScreen
 
 class consoleUI:
   _screens={}
@@ -14,8 +15,14 @@ class consoleUI:
   @classmethod
   def init(cls):
     cls._screens = {
-      "login": LoginScreen(cls)
+      "login": LoginScreen(cls),
+      "dashboard": DashboardScreen(cls)
     }
     threading.Thread(target=cls.worker, daemon=True).start()
     
     return cls
+  
+  @classmethod
+  def change_screen(cls, new_screen):
+    cls.current_screen = new_screen
+  

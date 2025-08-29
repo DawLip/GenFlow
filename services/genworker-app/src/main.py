@@ -1,10 +1,22 @@
 import threading
+from queue import Queue
 
-from SIO import SIO
-from ui.ui_factory import ui_factory
+from domain.Domain import Domain
 
-SIO.init("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4OTYxNGE2MDZmN2EzN2E3MjA3OWU3YiIsImlhdCI6MTc1NTA1Mjk3MywiZXhwIjoyMzAzNDY4MTYxNzN9.wNBc-8ZDUqmUVCaH96TbAMhogFTXrBGqM7qF_yuxgOI")
-ui = ui_factory("console").init()
+from sio.SIO import SIO
+from ui.UI import UI
+
+from dispatch import dispatch
+
+from event_queue import q
+
+UI.init("console")
+Domain.init()
 
 while True:
-  pass
+  event, payload = q.get()
+  
+  handler = dispatch.get(event)
+  if handler: handler(payload)
+  else: print("Unknown event:", event)
+  

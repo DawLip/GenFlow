@@ -48,8 +48,6 @@ export class SocketService implements OnModuleInit {
   }
 
   async handleConnection(client: Socket) {
-    console.log("client attemt to connect: ", client)
-    console.log("test")
       const token =
         client.handshake.auth?.token?.replace('Bearer ', '') ||
         client.handshake.headers?.authorization?.replace('Bearer ', '') ||

@@ -15,13 +15,12 @@ class TaskSchedulerGateway:
     ).json()
     
     print(response)
+    
+    return response["genworkerId"]
   
-  def assign(self, user_id, worker_name, flows):
+  def assign(self, genworker_id):
     response = requests.post("http://localhost:3000/api/task-queue/genworker-assign", 
-      json={
-        "genworkerId": f"{user_id}:{worker_name}",
-        "workerPools": [ f"{f['projectId']}:/{f['flowName']}:worker_pool" for f in flows]
-      },
+      json={"genworkerId": genworker_id},
       headers={"Authorization": f"Bearer {self._token()}"}
     ).json()
     

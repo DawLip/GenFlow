@@ -9,5 +9,5 @@ class TaskScheduler:
   def init(self, user_id, worker_name):
     flows = [{"projectId": "1", "flowName":"1"}]
     
-    self.gateway.register(user_id, worker_name)
-    self.gateway.assign(user_id, worker_name, flows)
+    genworker_id = self.gateway.register(user_id, worker_name)
+    self.gateway.assign(genworker_id)

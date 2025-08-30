@@ -151,22 +151,21 @@ export class TaskQueueService implements OnModuleInit {
     const context = 'register';
 
     const foundGenWorker = await this.genworkerService.findOneByName({ name: data.name });
-    if (foundGenWorker.res.ok) return this.response.success({res:{msg:"GenWorker registered"}}, {context});
+    if (foundGenWorker.res.ok) return this.response.success({res:{msg:"GenWorker registered"}, genworkerId: foundGenWorker.genworker.id}, {context});
 
     const genworker = await this.genworkerService.create({ownerId: data.ownerId, name: data.name, path: data.path});
     if (!genworker || !genworker.genworker) return this.response.error({res:{msg:"GenWorker registration failed"}}, {context});
 
     await firstValueFrom(this.userService.registerGenWorker({genWorkerId: genworker.genworker?.id, userId: data.ownerId}));
-
-    return this.response.success({res:{msg:"GenWorker registered"}}, {context});
+    
+    return this.response.success({res:{msg:"GenWorker registered"}, genworkerId: genworker.genworker.id}, {context});
   }
 
   async genWorkerAssign(data) {
     const context = 'genWorkerAssign';
     const genworker = await this.genworkerService.findOneById({id: data.genworkerId})
-    console.log(genworker)
     // @ts-ignore
-    genworker.genworker?.projects.forEach((workerPool:any) => {
+    if(genworker.genworker?.projects) genworker.genworker?.projects.forEach((workerPool:any) => {
       this.redis.sadd(`${workerPool}:all`, data.genworkerId);
       this.redis.sadd(`${workerPool}:ready`, data.genworkerId);
       this.socketioService.join({objectId: data.genworkerId, room: workerPool});

@@ -13,7 +13,7 @@ service GenWorkerService {
   rpc FinishPartialTask (FinishPartialTaskRequest) returns (DefaultResponse);
   rpc FinishTask (FinishTaskRequest) returns (DefaultResponse);
 
-  rpc Register (RegisterRequest) returns (DefaultResponse);
+  rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
   rpc GenWorkerAssignToFlow (GenWorkerAssignToFlowRequest) returns (DefaultResponse);
   rpc GetGenWorkersAssignedToFlow (GetGenWorkersAssignedToFlowRequest) returns (GetGenWorkersAssignedToFlowResponse);
@@ -85,6 +85,10 @@ message RegisterRequest {
   string ownerId = 1;
   string name = 2;
   string path = 3;
+}
+message RegisterResponse {
+  BaseResponse res = 1;
+  string genworkerId = 2;
 }
 message GenWorkerAssignRequest {
   string genworkerId = 1;

@@ -163,7 +163,10 @@ export class TaskQueueService implements OnModuleInit {
 
   async genWorkerAssign(data) {
     const context = 'genWorkerAssign';
-    data.workerPools.forEach((workerPool:any) => {
+    const genworker = await this.genworkerService.findOneById({id: data.genworkerId})
+    console.log(genworker)
+    // @ts-ignore
+    genworker.genworker?.projects.forEach((workerPool:any) => {
       this.redis.sadd(`${workerPool}:all`, data.genworkerId);
       this.redis.sadd(`${workerPool}:ready`, data.genworkerId);
       this.socketioService.join({objectId: data.genworkerId, room: workerPool});
@@ -172,6 +175,14 @@ export class TaskQueueService implements OnModuleInit {
     // this.handleFreeWorker(data.genWorkerId);
 
     return this.response.success({res:{msg:"genworker assigned"}}, {context})
+  }
+
+  async genWorkerAssignToFlow(data) {
+    const context = 'genWorkerAssignToFlow';
+
+    this.genworkerService.assignToFlow(data)
+
+    return this.response.success({res:{msg:"genworker assigned to flow"}}, {context})
   }
 
   async getGenWorkersAssignedToFlow(data) {

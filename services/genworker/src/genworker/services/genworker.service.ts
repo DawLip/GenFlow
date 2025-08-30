@@ -26,7 +26,7 @@ export class GenWorkerService implements OnModuleInit {
 
     console.log(context, data)
 
-    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, ownerId: new Types.ObjectId(data.ownerId), isActive: false});
+    const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, ownerId: new Types.ObjectId(data.ownerId), isActive: false, projects: []});
     console.log(context, createdGenWorker);
     if (!createdGenWorker) return this.response.error({res:{msg:"GenWorker creation failed"}}, {context});
 
@@ -44,6 +44,19 @@ export class GenWorkerService implements OnModuleInit {
     if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
 
     return this.response.success({res:{msg:"GenWorker updated"}}, {context});
+  }
+  async assignToFlow(data) {
+    const context = 'assignToFlow';
+
+    const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
+      data.genworkerId,
+      { $addToSet: { projects: `${data.projectId}:${data.flowName}` } }, 
+      { new: true },
+    );
+
+    if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
+
+    return this.response.success({res:{msg:"GenWorker assigned to flow"}}, {context});
   }
   async findByIds(data){
     const context = 'findByIds';

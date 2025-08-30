@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Req } from '@nestjs/common';
 import { Public } from '@api/guards/auth.public';
 import { ApiGenWorkerService } from './genworker.service';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerAssignToFlowRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
 
 @Controller('task-queue')
 export class ApiGenWorkerController {
@@ -30,6 +30,10 @@ export class ApiGenWorkerController {
   @Post('genworker-assign')
   async genWorkerAssign(@Body() body: GenWorkerAssignRequest) {
     return this.genWorkerService.genWorkerAssign(body);
+  }
+  @Post('genworker-assign-to-flow')
+  async genWorkerAssignToFlow(@Body() body: GenWorkerAssignToFlowRequest) {
+    return this.genWorkerService.genWorkerAssignToFlow(body);
   }
    @Post('get-genworkers-assigned-to-flow')
   async getGenWorkersAssignedToFlow(@Body() body: GetGenWorkersAssignedToFlowRequest) {

@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest,
+  GenWorkerAssignToFlowRequest,
 } from '@proto/genworker/genworker';
 import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 import { TaskQueueService } from './services/task_queue.service';
@@ -52,6 +53,11 @@ export class GenWorkerController {
   @GrpcMethod('GenWorkerService', 'GenWorkerAssign')
   async genworkerAssign(data: GenWorkerAssignRequest): Promise<DefaultResponse> {
     return await this.taskQueueService.genWorkerAssign(data);
+  }
+
+  @GrpcMethod('GenWorkerService', 'GenWorkerAssignToFlow')
+  async genworkerAssignToFlow(data: GenWorkerAssignToFlowRequest): Promise<DefaultResponse> {
+    return await this.taskQueueService.genWorkerAssignToFlow(data);
   }
 
   @GrpcMethod('GenWorkerService', 'GetGenWorkersAssignedToFlow')

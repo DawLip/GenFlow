@@ -5,7 +5,6 @@ class TaskSchedulerGateway:
     self._token = token
     
   def register(self, owner_id, worker_name):
-    print(self._token())
     response = requests.post("http://localhost:3000/api/task-queue/register", 
       json={
         "ownerId": owner_id,
@@ -14,6 +13,16 @@ class TaskSchedulerGateway:
       },
       headers={"Authorization": f"Bearer {self._token()}"}
     ).json()
+    
     print(response)
-    return True
   
+  def assign(self, user_id, worker_name, flows):
+    response = requests.post("http://localhost:3000/api/task-queue/genworker-assign", 
+      json={
+        "genworkerId": f"{user_id}:{worker_name}",
+        "workerPools": [ f"{f['projectId']}:/{f['flowName']}:worker_pool" for f in flows]
+      },
+      headers={"Authorization": f"Bearer {self._token()}"}
+    ).json()
+    
+    print(response)

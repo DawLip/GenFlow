@@ -14,6 +14,9 @@ export class GenWorker {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', default: null })
   ownerId!: Types.ObjectId;
 
+  @Prop({ required: true })
+  projects!: string[];
+
   @Prop({ required: true, default: false })
   isActive!: boolean;
 

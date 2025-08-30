@@ -1,4 +1,3 @@
-import requests
 from sio.SIO import SIO
 
 class Auth:

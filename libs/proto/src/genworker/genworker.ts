@@ -84,7 +84,12 @@ export interface RegisterRequest {
 
 export interface GenWorkerAssignRequest {
   genworkerId: string;
-  workerPools: string[];
+}
+
+export interface GenWorkerAssignToFlowRequest {
+  genworkerId: string;
+  projectId: string;
+  flowName: string;
 }
 
 export interface GetGenWorkersAssignedToFlowRequest {
@@ -1202,16 +1207,13 @@ export const RegisterRequest: MessageFns<RegisterRequest> = {
 };
 
 function createBaseGenWorkerAssignRequest(): GenWorkerAssignRequest {
-  return { genworkerId: "", workerPools: [] };
+  return { genworkerId: "" };
 }
 
 export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
   encode(message: GenWorkerAssignRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.genworkerId !== "") {
       writer.uint32(10).string(message.genworkerId);
-    }
-    for (const v of message.workerPools) {
-      writer.uint32(18).string(v!);
     }
     return writer;
   },
@@ -1231,12 +1233,84 @@ export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
           message.genworkerId = reader.string();
           continue;
         }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorkerAssignRequest {
+    return { genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "" };
+  },
+
+  toJSON(message: GenWorkerAssignRequest): unknown {
+    const obj: any = {};
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
+    return GenWorkerAssignRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
+    const message = createBaseGenWorkerAssignRequest();
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseGenWorkerAssignToFlowRequest(): GenWorkerAssignToFlowRequest {
+  return { genworkerId: "", projectId: "", flowName: "" };
+}
+
+export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowRequest> = {
+  encode(message: GenWorkerAssignToFlowRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.genworkerId !== "") {
+      writer.uint32(10).string(message.genworkerId);
+    }
+    if (message.projectId !== "") {
+      writer.uint32(18).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(26).string(message.flowName);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorkerAssignToFlowRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorkerAssignToFlowRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
         case 2: {
           if (tag !== 18) {
             break;
           }
 
-          message.workerPools.push(reader.string());
+          message.projectId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.flowName = reader.string();
           continue;
         }
       }
@@ -1248,33 +1322,36 @@ export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
     return message;
   },
 
-  fromJSON(object: any): GenWorkerAssignRequest {
+  fromJSON(object: any): GenWorkerAssignToFlowRequest {
     return {
       genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
-      workerPools: globalThis.Array.isArray(object?.workerPools)
-        ? object.workerPools.map((e: any) => globalThis.String(e))
-        : [],
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
     };
   },
 
-  toJSON(message: GenWorkerAssignRequest): unknown {
+  toJSON(message: GenWorkerAssignToFlowRequest): unknown {
     const obj: any = {};
     if (message.genworkerId !== "") {
       obj.genworkerId = message.genworkerId;
     }
-    if (message.workerPools?.length) {
-      obj.workerPools = message.workerPools;
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
     }
     return obj;
   },
 
-  create(base?: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
-    return GenWorkerAssignRequest.fromPartial(base ?? {});
+  create(base?: DeepPartial<GenWorkerAssignToFlowRequest>): GenWorkerAssignToFlowRequest {
+    return GenWorkerAssignToFlowRequest.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<GenWorkerAssignRequest>): GenWorkerAssignRequest {
-    const message = createBaseGenWorkerAssignRequest();
+  fromPartial(object: DeepPartial<GenWorkerAssignToFlowRequest>): GenWorkerAssignToFlowRequest {
+    const message = createBaseGenWorkerAssignToFlowRequest();
     message.genworkerId = object.genworkerId ?? "";
-    message.workerPools = object.workerPools?.map((e) => e) || [];
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
     return message;
   },
 };

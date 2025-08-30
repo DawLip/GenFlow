@@ -7,7 +7,7 @@ import { ApiService } from '@api/api/api.service';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GetGenWorkersAssignedToFlowRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GenWorkerAssignToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
 
 @Injectable()
 export class ApiGenWorkerService implements OnModuleInit {
@@ -73,9 +73,17 @@ export class ApiGenWorkerService implements OnModuleInit {
     const context = 'genWorkerAssign';
 
     if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
-    if (!data.workerPools) return this.response.validationFail({res:{msg:"field 'workerPools' is required"}}, {context});
     
     return firstValueFrom(this.grpcService.genWorkerAssign(data));
+  }
+
+  genWorkerAssignToFlow(data: GenWorkerAssignToFlowRequest) {
+    const context = 'genWorkerAssign';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.projectId) return this.response.validationFail({res:{msg:"field 'projectId' is required"}}, {context});
+    
+    return firstValueFrom(this.grpcService.genWorkerAssignToFlow(data));
   }
 
   getGenWorkersAssignedToFlow(data: GetGenWorkersAssignedToFlowRequest) {

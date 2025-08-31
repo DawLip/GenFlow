@@ -1,11 +1,16 @@
-import { Controller, Post, Body, Req } from '@nestjs/common';
+import { Controller, Post, Body, Req, Get, Param } from '@nestjs/common';
 import { Public } from '@api/guards/auth.public';
 import { ApiGenWorkerService } from './genworker.service';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerAssignToFlowRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, GetTaskByIdRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerAssignToFlowRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
 
 @Controller('task-queue')
 export class ApiGenWorkerController {
   constructor(private readonly genWorkerService: ApiGenWorkerService) {}
+
+  @Get('tasks/:taskId')
+  async getTask(@Body() body: GetTaskByIdRequest, @Param('taskId') taskId: string) {
+    return this.genWorkerService.getTask({id: taskId});
+  }
 
   @Post('enqueue-task')
   async enqueueTask(@Body() body: EnqueueRequest) {

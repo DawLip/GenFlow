@@ -124,13 +124,14 @@ const GenWorkersListItem = ({
 const GenWorkersList = ({ header, placeholder, assigned=false, genworkers, selectedFlow }: { header: string, placeholder: string, assigned?: boolean, genworkers:any[]|null, selectedFlow: FlowListItemNode | null }) => {
   const projectId = useSelector((state:any)=>state.project.projectId);
 
-  const assignGenWorkerToFlow = (genworker: any) => {
-    axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/genworker-assign`, {
+  const assignGenWorkerToFlow = async (genworker: any) => {
+    console.log('assignGenWorkerToFlow')
+    const x = await axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/genworker-assign-to-flow`, {
       genworkerId: `${genworker.ownerId}:${genworker.name}`,
-      workerPools: [
-        `${projectId}:${selectedFlow?.path}${selectedFlow?.name}:worker_pool`
-      ]
+      projectId,
+      flowName: `${selectedFlow?.path}/${selectedFlow?.name}`
     });
+    console.log(x)
   }
   
   return (

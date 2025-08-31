@@ -21,17 +21,13 @@ export class TaskService implements OnModuleInit {
   async create(data) {
     const context = 'create';
 
-    console.log(context, data)
-
     const createdTask:Task|any = await this.taskModel.create({...data, owner: new Types.ObjectId(data.ownerId), processingBy: null});
-    console.log(context, createdTask);
     if (!createdTask) return this.response.error({res:{msg:"Task creation failed"}}, {context});
 
     return this.response.success({res:{msg:"Task created"}, task: {...createdTask.task, id: createdTask._id.toString()}}, {context});
   }
   async update(data) {
     const context = 'update';
-    console.log(data)
     const updatedTask = await this.taskModel.findByIdAndUpdate(
       new Types.ObjectId(data.id),
       { ...data.task, flowName: "test" },

@@ -18,6 +18,9 @@ service GenWorkerService {
   rpc GenWorkerAssignToFlow (GenWorkerAssignToFlowRequest) returns (DefaultResponse);
   rpc GetGenWorkersAssignedToFlow (GetGenWorkersAssignedToFlowRequest) returns (GetGenWorkersAssignedToFlowResponse);
   rpc GenWorkerDisconnect (GenWorkerDisconnectRequest) returns (DefaultResponse);
+
+  //Task
+  rpc GetTask(GetTaskByIdRequest) returns (FindTaskResponse);
 }
 
 message BaseResponse {
@@ -111,6 +114,14 @@ message GenWorkerDisconnectRequest {
   string genworkerId = 1;
 }
 
+message GetTaskByIdRequest {
+  string id = 1;
+}
+message FindTaskResponse {
+  BaseResponse res = 1;
+  Task  task = 2;
+}
+
 // Objects
 message GenWorker {
   string id = 1;
@@ -118,4 +129,13 @@ message GenWorker {
   string name = 3;
   string path = 4;
   bool isActive = 5;
+}
+
+message Task {
+  string id = 1;
+  string projectId = 2;
+  string flowName = 3;
+  string path = 4;
+  string data = 5;
+  optional string isProcessingBy = 6;
 }

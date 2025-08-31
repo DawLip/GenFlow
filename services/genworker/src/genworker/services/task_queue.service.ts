@@ -61,23 +61,31 @@ export class TaskQueueService implements OnModuleInit {
   }
 
   async assignTaskToWorker(taskId: string, workerId: string, workerPool: string){
-    this.redis.smove(`${workerPool}:ready`, `${workerPool}:working`, workerId);
+    // this.redis.smove(`${workerPool}:ready`, `${workerPool}:working`, workerId); TODO: uncomment
 
-    await this.taskService.update({id: taskId, task: {isProcessingBy: new Types.ObjectId(workerId)}});
-
-    this.socketioService.emit({room: workerId, event: 'task_assigned', data: taskId})
+    await this.taskService.update({id: taskId, task: {isProcessingBy: new Types.ObjectId(await this.getGenworkerId(workerId))}});
+    await firstValueFrom(this.socketioService.emit({room: workerId, event: 'task_assigned', data: taskId}))
   }
+
+  async getGenworkerId(genworkerId:string): Promise<string> {
+    if (!genworkerId.includes(":")) return genworkerId
+
+    const res = await this.genworkerService.findByIds({genworkerIds:[genworkerId]})
+    return res.genworkers[0]._id.toString()
+}
   // === supporting methods ===
 
   async handleNewTask({projectId, flowName, path, data, taskState}) {
     const context = 'handleNewTask';
-
+    
     const task = await this.taskService.create({projectId, flowName, path, data, taskState});
     this.redis.rpush(this.redisKey({object: `task_queue:${taskState}`, projectId, flowName, path}), task.task.id);
-
+    
     const genworkersReady = await this.redis.smembers(`${projectId}:${path}${flowName}:worker_pool:ready`);
     if(genworkersReady.length==0) return this.response.fail({res:{msg:"there is no free genworkers"}, data}, {context});
-    this.assignTaskToWorker(task.task.id, genworkersReady[0], `${projectId}:${path}${flowName}:worker_pool`);
+    
+    const genworker = await this.genworkerService.findOneById({id: genworkersReady[0]})
+    await this.assignTaskToWorker(task.task.id, `${genworker.genworker?.ownerId}:${genworker.genworker?.name}`, `${projectId}:${path}${flowName}:worker_pool`);
 
     return this.response.success({res:{msg:"new task handled"}, data}, {context});
   }
@@ -108,7 +116,6 @@ export class TaskQueueService implements OnModuleInit {
 
   async enqueueTask({projectId, flowName, path, data}) {
     const context = 'enqueueTask';
-    console.log(context, projectId, flowName, path, data)
     const taskSegmentsRes = this.segmentTask({data, strategy: 'noSegmentationStrategy'});
     if (!taskSegmentsRes.res.ok) return this.response.error({res:{msg:"task segmentation error"}}, {context});
 
@@ -163,12 +170,13 @@ export class TaskQueueService implements OnModuleInit {
 
   async genWorkerAssign(data) {
     const context = 'genWorkerAssign';
-    const genworker = await this.genworkerService.findOneById({id: data.genworkerId})
+    const genworker = await this.genworkerService.findOneById({id: await this.getGenworkerId(data.genworkerId)})
+
     // @ts-ignore
     if(genworker.genworker?.projects) genworker.genworker?.projects.forEach((workerPool:any) => {
-      this.redis.sadd(`${workerPool}:all`, data.genworkerId);
-      this.redis.sadd(`${workerPool}:ready`, data.genworkerId);
-      this.socketioService.join({objectId: data.genworkerId, room: workerPool});
+      this.redis.sadd(`${workerPool}:worker_pool:all`, data.genworkerId);
+      this.redis.sadd(`${workerPool}:worker_pool:ready`, data.genworkerId);
+      firstValueFrom(this.socketioService.join({objectId: `${genworker.genworker?.ownerId}:${genworker.genworker?.name}`, room: workerPool}));
     });
 
     // this.handleFreeWorker(data.genWorkerId);
@@ -178,8 +186,8 @@ export class TaskQueueService implements OnModuleInit {
 
   async genWorkerAssignToFlow(data) {
     const context = 'genWorkerAssignToFlow';
-
-    this.genworkerService.assignToFlow(data)
+    const genworkerId = await this.getGenworkerId(data.genworkerId)
+    this.genworkerService.assignToFlow({...data, genworkerId})
 
     return this.response.success({res:{msg:"genworker assigned to flow"}}, {context})
   }

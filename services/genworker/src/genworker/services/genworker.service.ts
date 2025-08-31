@@ -24,10 +24,7 @@ export class GenWorkerService implements OnModuleInit {
   async create(data:CreateRequest):Promise<CreateResponse> {
     const context = 'create';
 
-    console.log(context, data)
-
     const createdGenWorker:GenWorker|any = await this.genworkerModel.create({...data, ownerId: new Types.ObjectId(data.ownerId), isActive: false, projects: []});
-    console.log(context, createdGenWorker);
     if (!createdGenWorker) return this.response.error({res:{msg:"GenWorker creation failed"}}, {context});
 
     return this.response.success({res:{msg:"GenWorker created"}, genworker: {...createdGenWorker.genworker, id: createdGenWorker._id.toString()}}, {context});
@@ -60,7 +57,6 @@ export class GenWorkerService implements OnModuleInit {
   }
   async findByIds(data){
     const context = 'findByIds';
-    console.log('findByIds')
 
     const genworkers = await Promise.all(data.genworkerIds.map(async (id:string)=>{
       const [ownerId, name] = id.split(':');
@@ -101,6 +97,4 @@ export class GenWorkerService implements OnModuleInit {
         id: genworker._id.toString(),
       }}, {context});
   }
-
-
 }

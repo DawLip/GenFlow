@@ -35,6 +35,6 @@ class Auth:
     cls.authRepo.login(token, userId, payload["worker_name"])
     
     cls.uiService.change_screen("dashboard")
-    SIO.init(token)
+    SIO.init(token, payload["worker_name"], cls.taskSchedulerService)
     cls.taskSchedulerService.init(userId, payload["worker_name"])
     

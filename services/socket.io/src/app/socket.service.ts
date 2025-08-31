@@ -59,7 +59,13 @@ export class SocketService implements OnModuleInit {
 
       client.data.user = payload;
 
-      client.join(`user-${payload.id}`);
+      if(client.handshake.auth.isWorker){
+        console.log(`worker roined: ${payload.id}:${client.handshake.auth.workerName}`)
+        client.join(`${payload.id}:${client.handshake.auth.workerName}`);
+      } else {
+        console.log(`user joined: ${payload.id}`)
+        client.join(`${payload.id}`);
+      }
   
       this.logger.info({socketID:client.id, userID:client.data.user.id, context:"handleConnection"}, `client connected`);
     }
@@ -116,7 +122,6 @@ export class SocketService implements OnModuleInit {
 
   async emit(data: EmitRequest): Promise<DefaultResponse> {
     this.logger.trace({context:"emit", payload:data}, "emit request received");
-    
     this.io.to(data.room).emit(data.event, data.data);
     return {res:{ ok: true, status: "SUCCESS", msg: "emit success" }};
   }

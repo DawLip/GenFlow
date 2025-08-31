@@ -9,6 +9,7 @@ import { SocketService } from './socket.service';
 import { NotificationsGateway } from './notifications.gateway';
 import { pinoConfig } from '@libs/shared/src/config/pino.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
+import { SocketController } from './socket.controller';
 
 const sName = service_name(name);
 const HealthController = createHealthController(sName);
@@ -17,7 +18,7 @@ const HealthController = createHealthController(sName);
   imports: [
     LoggerModule.forRoot(pinoConfig({ sName })),
   ],
-  controllers: [HealthController, NotificationsGateway],
+  controllers: [HealthController, NotificationsGateway, SocketController],
   providers: [SocketService, SocketGateway, ResponseService],
 })
 export class AppModule {}

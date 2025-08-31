@@ -112,6 +112,15 @@ export interface GenWorkerDisconnectRequest {
   genworkerId: string;
 }
 
+export interface GetTaskByIdRequest {
+  id: string;
+}
+
+export interface FindTaskResponse {
+  res: BaseResponse | undefined;
+  task: Task | undefined;
+}
+
 /** Objects */
 export interface GenWorker {
   id: string;
@@ -119,6 +128,15 @@ export interface GenWorker {
   name: string;
   path: string;
   isActive: boolean;
+}
+
+export interface Task {
+  id: string;
+  projectId: string;
+  flowName: string;
+  path: string;
+  data: string;
+  isProcessingBy?: string | undefined;
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -1665,6 +1683,140 @@ export const GenWorkerDisconnectRequest: MessageFns<GenWorkerDisconnectRequest> 
   },
 };
 
+function createBaseGetTaskByIdRequest(): GetTaskByIdRequest {
+  return { id: "" };
+}
+
+export const GetTaskByIdRequest: MessageFns<GetTaskByIdRequest> = {
+  encode(message: GetTaskByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GetTaskByIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetTaskByIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetTaskByIdRequest {
+    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+  },
+
+  toJSON(message: GetTaskByIdRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GetTaskByIdRequest>): GetTaskByIdRequest {
+    return GetTaskByIdRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GetTaskByIdRequest>): GetTaskByIdRequest {
+    const message = createBaseGetTaskByIdRequest();
+    message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseFindTaskResponse(): FindTaskResponse {
+  return { res: undefined, task: undefined };
+}
+
+export const FindTaskResponse: MessageFns<FindTaskResponse> = {
+  encode(message: FindTaskResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    if (message.task !== undefined) {
+      Task.encode(message.task, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindTaskResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindTaskResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.task = Task.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindTaskResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      task: isSet(object.task) ? Task.fromJSON(object.task) : undefined,
+    };
+  },
+
+  toJSON(message: FindTaskResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.task !== undefined) {
+      obj.task = Task.toJSON(message.task);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<FindTaskResponse>): FindTaskResponse {
+    return FindTaskResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<FindTaskResponse>): FindTaskResponse {
+    const message = createBaseFindTaskResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.task = (object.task !== undefined && object.task !== null) ? Task.fromPartial(object.task) : undefined;
+    return message;
+  },
+};
+
 function createBaseGenWorker(): GenWorker {
   return { id: "", ownerId: "", name: "", path: "", isActive: false };
 }
@@ -1785,6 +1937,146 @@ export const GenWorker: MessageFns<GenWorker> = {
     message.name = object.name ?? "";
     message.path = object.path ?? "";
     message.isActive = object.isActive ?? false;
+    return message;
+  },
+};
+
+function createBaseTask(): Task {
+  return { id: "", projectId: "", flowName: "", path: "", data: "", isProcessingBy: undefined };
+}
+
+export const Task: MessageFns<Task> = {
+  encode(message: Task, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.projectId !== "") {
+      writer.uint32(18).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(26).string(message.flowName);
+    }
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
+    }
+    if (message.data !== "") {
+      writer.uint32(42).string(message.data);
+    }
+    if (message.isProcessingBy !== undefined) {
+      writer.uint32(50).string(message.isProcessingBy);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Task {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTask();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.data = reader.string();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.isProcessingBy = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Task {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
+      data: isSet(object.data) ? globalThis.String(object.data) : "",
+      isProcessingBy: isSet(object.isProcessingBy) ? globalThis.String(object.isProcessingBy) : undefined,
+    };
+  },
+
+  toJSON(message: Task): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    if (message.data !== "") {
+      obj.data = message.data;
+    }
+    if (message.isProcessingBy !== undefined) {
+      obj.isProcessingBy = message.isProcessingBy;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Task>): Task {
+    return Task.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Task>): Task {
+    const message = createBaseTask();
+    message.id = object.id ?? "";
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
+    message.data = object.data ?? "";
+    message.isProcessingBy = object.isProcessingBy ?? undefined;
     return message;
   },
 };

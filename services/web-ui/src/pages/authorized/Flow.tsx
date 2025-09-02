@@ -26,19 +26,16 @@ import {
 } from '@web-ui/store/slices/flowsSlice';
 
 import '@xyflow/react/dist/style.css';
-import { DefaultNode } from '@web-ui/components/node/DefaultNode';
 import { Aside } from '@web-ui/components/Aside/Aside';
 import { useSocket } from '@web-ui/socket/socket';
 import { DnDProvider, useDnD } from '../../utils/DnDContext';
-import { defaultNode } from '@web-ui/store/node.default';
+import { defaultNode } from '@web-ui/store/nodes/node.default';
 import { addNodeThunk } from '@web-ui/store/thunks/flow/addNodeThunk';
 import { onNodesChangeThunk } from '@web-ui/store/thunks/flow/onNodesChangeThunk';
 import { onEdgesChangeThunk } from '@web-ui/store/thunks/flow/onEdgesChangeThunk';
 import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
 
-const nodeTypes = {
-  default: DefaultNode,
-};
+import {nodesRegistry} from '@web-ui/store/nodes/nodesRegistry';
 
 function Page() {
   const socket = useSocket();
@@ -175,7 +172,7 @@ function Page() {
         }}></div>}
         <ReactFlow
           ref={reactFlowRef}
-          nodeTypes={nodeTypes}
+          nodeTypes={nodesRegistry.nodeTypes}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChangeW}

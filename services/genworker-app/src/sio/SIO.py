@@ -4,7 +4,8 @@ import threading
 class SIO:
   sio = socketio.Client()
   task_scheduler = None
-  
+  file_system = None
+
   @classmethod
   def _bind_handlers(cls):
     @cls.sio.event
@@ -23,6 +24,13 @@ class SIO:
     def on_task_assigned(task_id):
       cls.task_scheduler.new_task(task_id)
       
+    @cls.sio.on("file_save")
+    def on_file_save(file):
+      cls.file_system.save_file(file["full_path"], file["content"])
+
+    @cls.sio.on("file_get")
+    def on_file_get(file):
+      cls.file_system.get_file(file["full_path"])
 
   @classmethod
   def worker(cls, token, worker_name):
@@ -40,6 +48,7 @@ class SIO:
     cls.sio.wait() 
     
   @classmethod
-  def init(cls, token, worker_name, task_scheduler):
+  def init(cls, domain, token, worker_name):
     threading.Thread(target=cls.worker, args=(token, worker_name), daemon=True).start()
-    cls.task_scheduler = task_scheduler
+    cls.task_scheduler = domain.task_scheduler
+    cls.file_system = domain.file_system

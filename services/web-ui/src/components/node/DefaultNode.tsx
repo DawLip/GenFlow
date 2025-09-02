@@ -2,10 +2,9 @@
 
 import { Handle, NodeResizer, Position } from "@xyflow/react";
 import React, { useEffect, useMemo, useState } from "react";
-import { useCallback } from "react";
 import { Icon } from "../Icon";
 import { AppDispatch } from "@web-ui/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { executeFlowThunk } from "@web-ui/store/thunks/flow/executeFlowThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
@@ -13,11 +12,7 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
 
   const onExecute = async () => {
     console.log(`=== Executing node ${node.data.id} ===`)
-    dispatch(executeFlowThunk(
-      // [{ id: "1", type: "start", data: {}, position: {}, style: { } }],
-      // [{ id: "e1", source: "1", target: "2", data: {} }],
-      
-    ))
+    dispatch(executeFlowThunk())
   }
 
   return (

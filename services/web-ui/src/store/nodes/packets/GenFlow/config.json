@@ -1,0 +1,8 @@
+{
+  "name": "GenFlow",
+  "description": "A packet for GenFlow nodes",
+  "version": "1.0.0",
+  "nodes": [
+    "Text/TextInput"
+  ]
+}

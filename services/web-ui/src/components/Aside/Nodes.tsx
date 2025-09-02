@@ -4,6 +4,7 @@ import { useDnD } from '../../utils/DnDContext'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
+import React from 'react';
 
 export function Nodes({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,16 +20,19 @@ export function Nodes({ }: any) {
 
   return (
     <>
-      <div className="description">You can drag these nodes to the pane on the right.</div>
-      <div className="dndnode input" onDragStart={(event) => onDragStart(event, 'input')} draggable>
-        Input Node
-      </div>
       <div className="dndnode" onDragStart={(event) => onDragStart(event, 'default')} draggable>
         Default Node
       </div>
-      <div className="dndnode output" onDragStart={(event) => onDragStart(event, 'output')} draggable>
-        Output Node
-      </div>
+      <Node nodeType="default" onDragStart={onDragStart} />
+      <Node nodeType="output" onDragStart={onDragStart} />
     </>
   );
 }
+
+const Node = React.memo(function Node({ nodeType, onDragStart }: { nodeType: string, onDragStart: (event: React.DragEvent, nodeType: string) => void }) {
+  return (
+    <div className={`dndnode ${nodeType}`} onDragStart={(event) => onDragStart(event, nodeType)} draggable>
+      {nodeType.charAt(0).toUpperCase() + nodeType.slice(1)} Node
+    </div>
+  );
+});

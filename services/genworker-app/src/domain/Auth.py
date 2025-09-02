@@ -23,18 +23,19 @@ class Auth:
     return cls.authRepo.token != None
   
   @classmethod
-  def init(cls, authRepo, authGateway, uiService, taskSchedulerService):
+  def init(cls, domain, authRepo, authGateway, uiService):
     cls.authRepo = authRepo
     cls.authGateway = authGateway
     cls.uiService= uiService
-    cls.taskSchedulerService = taskSchedulerService
-    
+    cls.domain = domain
+
   @classmethod
   def login(cls, payload):
     token, userId = cls.authGateway.login(payload["email"], payload["password"])
     cls.authRepo.login(token, userId, payload["worker_name"])
     
     cls.uiService.change_screen("dashboard")
-    SIO.init(token, payload["worker_name"], cls.taskSchedulerService)
-    cls.taskSchedulerService.init(userId, payload["worker_name"])
-    
+    SIO.init(cls.domain, token, payload["worker_name"])
+    cls.domain.task_scheduler.init(userId, payload["worker_name"])
+
+    cls.domain.file_system.save_file("test.txt", "Test content")

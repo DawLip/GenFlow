@@ -1,0 +1,13 @@
+import json
+
+class FileSystem:
+  def __init__(self, domain, files_repo):
+    self.domain = domain
+    self.files_repo = files_repo
+
+  def save_file(self, full_path, content):
+    self.files_repo.save(full_path, content)
+    print(f"[FileSystem] Zapisano plik: {full_path}")
+
+  def get_file(self, full_path):
+    return self.files_repo.get(full_path)

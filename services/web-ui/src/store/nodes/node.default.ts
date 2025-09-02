@@ -1,6 +1,8 @@
 export const defaultNode = {
   id: 'new-node',
-  type: 'default',
+  type: 'TextInput',
+  packet: 'GenFlow',
+  path: 'Text/Base',
   position: { x: 0, y: 0 },
   style: { width: 64*4, height: 64*4 },
   data: {

@@ -2,6 +2,7 @@
 import { services_config } from '@libs/shared/src/services_config';
 import { Icon } from '@web-ui/components/Icon';
 import { AppDispatch } from '@web-ui/store';
+import { assignGenWorkerToFlowThunk } from '@web-ui/store/thunks/flow/assignGenWorkerToFlowThunk';
 import axios from 'axios';
 import path from 'path';
 import { useEffect, useState } from 'react';
@@ -122,17 +123,7 @@ const GenWorkersListItem = ({
 };
 
 const GenWorkersList = ({ header, placeholder, assigned=false, genworkers, selectedFlow }: { header: string, placeholder: string, assigned?: boolean, genworkers:any[]|null, selectedFlow: FlowListItemNode | null }) => {
-  const projectId = useSelector((state:any)=>state.project.projectId);
-
-  const assignGenWorkerToFlow = async (genworker: any) => {
-    console.log('assignGenWorkerToFlow')
-    const x = await axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/genworker-assign-to-flow`, {
-      genworkerId: `${genworker.ownerId}:${genworker.name}`,
-      projectId,
-      flowName: `${selectedFlow?.path}/${selectedFlow?.name}`
-    });
-    console.log(x)
-  }
+    const dispatch = useDispatch<AppDispatch>();
   
   return (
     <div className="self-stretch flex-col justify-start items-start gap-2">
@@ -148,7 +139,7 @@ const GenWorkersList = ({ header, placeholder, assigned=false, genworkers, selec
                 genworker={genworker}
                 light={false}
                 assigned={assigned}
-                assignGenWorkerToFlow={()=>assignGenWorkerToFlow(genworker)}
+                assignGenWorkerToFlow={()=>dispatch(assignGenWorkerToFlowThunk({genworker, selectedFlow}))}
               />
             )) 
           : placeholder

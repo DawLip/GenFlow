@@ -3,12 +3,12 @@ import json
 
 class TaskScheduler:
   gateway = None
-  authService = None
+  domain = None
   taskRepo = None
   
-  def __init__(self, gateway, authService, taskRepo):
+  def __init__(self, domain, gateway, taskRepo):
     self.gateway = gateway
-    self.authService = authService
+    self.domain = domain
     self.taskRepo = taskRepo
   
   def init(self, user_id, worker_name):
@@ -24,3 +24,4 @@ class TaskScheduler:
     
     
     print(self.taskRepo.nodes)
+    

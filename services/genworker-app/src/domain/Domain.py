@@ -9,6 +9,9 @@ from adapters.repos.TaskRepo import TaskRepo
 from domain.FileSystem import FileSystem
 from adapters.repos.FilesRepo import FilesRepo
 
+from domain.Packages import Packages
+from adapters.gateways.PackagesGateway import PackagesGateway
+
 from ui.UI import UI
 
 class Domain:
@@ -18,3 +21,4 @@ class Domain:
     cls.file_system = FileSystem(cls, FilesRepo())
     cls.task_scheduler = TaskScheduler(cls, TaskSchedulerGateway(Auth.token), TaskRepo())
     cls.auth = Auth.init(cls, AuthRepo(), AuthGateway(), UI.ui)
+    cls.packages = Packages(cls, PackagesGateway.init(cls))

@@ -61,6 +61,16 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.socketService.genworker_assign(data, client);
   }
 
+  @SubscribeMessage('genworker_get_nodes') 
+  genworker_get_nodes(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
+    this.socketService.genworker_get_nodes(data, client);
+  }
+
+  @SubscribeMessage('genworker_get_nodes_answer') 
+  genworker_get_nodes_answer(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
+    this.socketService.genworker_get_nodes_answer(data, client);
+  }
+
   @SubscribeMessage('ping')
   handlePing(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
     client.emit('pong', { msg: 'pong from server' });

@@ -76,7 +76,7 @@ export class SocketService implements OnModuleInit {
 
   emitToUser(userId: string, event: string, data: any) {
     this.logger.info({response:{ res:{ok:true, status:"SUCCESS"}}, context:"emitToUser", payload:{data, event, userId} }, "message send");
-    this.io.to(`user-${userId}`).emit(event, data);
+    this.io.to(`${userId}`).emit(event, data);
   }
 
   join_flow_room(data: any, client: Socket){
@@ -133,7 +133,17 @@ export class SocketService implements OnModuleInit {
   }
 
   genworker_assign(data: any, client: Socket){
-    client.join(`worker--${client.data.user.id}--${data.name}`);
+    client.join(`${client.data.user.id}:${data.name}`);
     data.assignTo.forEach((joinRoom:string) => client.join(joinRoom));
   }
+
+  genworker_get_nodes(data: any, client: Socket){
+    client.to(`${data.workerId}`).emit('genworker_get_nodes', data);
+  }
+
+  genworker_get_nodes_answer(data: any, client: Socket){
+    console.log("genworker_get_nodes_answer", data)
+    client.to(`${data.userId}`).emit('genworker_get_nodes_answer', data);
+  }
+
 }

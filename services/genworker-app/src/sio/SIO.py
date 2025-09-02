@@ -5,6 +5,7 @@ class SIO:
   sio = socketio.Client()
   task_scheduler = None
   file_system = None
+  packages = None
 
   @classmethod
   def _bind_handlers(cls):
@@ -32,6 +33,11 @@ class SIO:
     def on_file_get(file):
       cls.file_system.get_file(file["full_path"])
 
+    @cls.sio.on("genworker_get_nodes")
+    def on_genworker_get_nodes(data):
+      print("on_genworker_get_nodes: ", data)
+      cls.packages.get_nodes(data)
+
   @classmethod
   def worker(cls, token, worker_name):
     cls._bind_handlers()
@@ -52,3 +58,6 @@ class SIO:
     threading.Thread(target=cls.worker, args=(token, worker_name), daemon=True).start()
     cls.task_scheduler = domain.task_scheduler
     cls.file_system = domain.file_system
+    cls.packages = domain.packages
+    
+    return cls

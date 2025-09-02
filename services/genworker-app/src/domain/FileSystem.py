@@ -11,3 +11,6 @@ class FileSystem:
 
   def get_file(self, full_path):
     return self.files_repo.get(full_path)
+  
+  def ls(self, full_path):
+    return self.files_repo.ls(full_path)

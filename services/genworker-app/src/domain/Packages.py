@@ -8,22 +8,31 @@ class Packages:
   def __init__(self, domain, gateway):
     self.domain = domain
     self.gateway = gateway
-
-  def get_nodes(self, data):
-    nodes = []
+    
+  def get_nodes_list(self):
+    nodes_list = []
     packages_list = self.domain.file_system.ls("packages")
     
     for package_name in packages_list:
-      print(f"Found package: {package_name}")
+      
+      package = json.loads(self.domain.file_system.get_file(f"packages/{package_name}/config.json"))
+      nodes_list.extend([f"{package_name}/{node}" for node in package["nodes"]])
+
+    return nodes_list
+
+  def get_nodes(self, data):
+    packages = []
+    packages_list = self.domain.file_system.ls("packages")
+    
+    for package_name in packages_list:
       
       package = json.loads(self.domain.file_system.get_file(f"packages/{package_name}/config.json"))
       package_nodes = package["nodes"]
       package["nodes"] = []
       
       for node in package_nodes:
-        node_data = self.domain.file_system.get_file(f"packages/{package_name}/{node}.json")
+        node_data = self.domain.file_system.get_file(f"packages/{package_name}/{node}/{node.split('/')[-1]}.json")
         package["nodes"].append(json.loads(node_data))
 
-      nodes.append(package)
-
-    self.gateway.genworker_get_nodes_answer({"nodes": nodes, "userId": data["userId"], "workerId": data["workerId"]})
+      packages.append(package)
+    self.gateway.genworker_get_nodes_answer({"packages": packages, "userId": data["userId"], "workerId": data["workerId"]})

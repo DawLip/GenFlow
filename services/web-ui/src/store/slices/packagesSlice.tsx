@@ -1,15 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const nodesSlice = createSlice({
-  name: 'nodes',
+const packagesSlice = createSlice({
+  name: 'packages',
   initialState: {
-    nodes: {},
+    packages: {},
     loading: true,
     error: null,
   },
   reducers: {
-    setNodes: (state, action) => {
-      state.nodes = action.payload;
+    setPackages: (state, action) => {
+      state.packages = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -19,13 +19,13 @@ const nodesSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload;
     },
-    nodesSliceClear: (state) => {
-      state.nodes = {};
+    packagesSliceClear: (state) => {
+      state.packages = {};
       state.loading = true;
       state.error = null;
     }
   },
 });
 
-export const { setNodes, setLoading, setError, nodesSliceClear } = nodesSlice.actions;
-export default nodesSlice.reducer;
+export const { setPackages, setLoading, setError, packagesSliceClear } = packagesSlice.actions;
+export default packagesSlice.reducer;

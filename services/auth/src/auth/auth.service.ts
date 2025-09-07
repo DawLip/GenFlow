@@ -73,6 +73,7 @@ export class AuthService implements OnModuleInit {
       type: 'FLOW',
       nodes: [],
       edges: [],
+      genworkers: []
     }
 
     const createdFlow = await firstValueFrom(this.projectService.createFlow({

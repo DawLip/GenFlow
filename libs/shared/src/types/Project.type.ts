@@ -33,4 +33,5 @@ export type Project = {
   description: string;
   owner: Types.ObjectId; 
   flows: Flow[];
+  genworkers: Types.ObjectId[];
 };

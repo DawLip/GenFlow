@@ -21,7 +21,39 @@ export class TaskService implements OnModuleInit {
   async create(data) {
     const context = 'create';
 
-    const createdTask:Task|any = await this.taskModel.create({...data, owner: new Types.ObjectId(data.ownerId), processingBy: null});
+    const createdTask:Task|any = await this.taskModel.create({
+      projectId: data.projectId, 
+      flowName: data.flowName,
+      path: data.path,
+      data: JSON.stringify({
+        nodes: JSON.parse(data.data).nodes.map((node:any) => ({
+          id: node.id,
+          type: node.type,
+          packet: node.packet,
+          path: node.path,
+          data: {
+            id: node.data.id,
+            name: node.data.name,
+            inputs: node.data.inputs && node.data.inputs.map((input:any) => ({
+              id: input.id,
+              name: input.name,
+              type: input.type,
+              value: input.value || null
+            })),
+            outputs: node.data.outputs && node.data.outputs.map((output:any) => ({
+              id: output.id,
+              name: output.name,
+              type: output.type,
+              value: output.value || null
+            })),
+            // only include other properties if they exist
+          }
+        })),
+        edges: JSON.parse(data.data).edges
+      }),
+      owner: new Types.ObjectId(data.ownerId), 
+      processingBy: null
+    });
     if (!createdTask) return this.response.error({res:{msg:"Task creation failed"}}, {context});
 
     return this.response.success({res:{msg:"Task created"}, task: {...createdTask.task, id: createdTask._id.toString()}}, {context});
@@ -39,16 +71,17 @@ export class TaskService implements OnModuleInit {
     return this.response.success({res:{msg:"Task updated"}}, {context});
   }
   async findOneById(data) {
+    console.log('findOneById', data);
     const context = 'findOneById';
 
     const task = await this.taskModel.findById(data.id).lean();
     if (!task) return this.response.fail({res:{msg:"Task not found"}}, {context});
 
     return this.response.success({
-        res:{msg:"Task found"},
-        task: {
-        ...task,
-        id: task._id.toString(),
-      }}, {context});
+      res:{msg:"Task found"},
+      task: {
+      ...task,
+      id: task._id.toString(),
+    }}, {context});
   }
 }

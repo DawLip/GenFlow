@@ -26,7 +26,7 @@ export const createFlowThunk = (name: string, path: string) => async (dispatch: 
       return;
     }
     console.log("CreateFlow successful:", data.flow);
-    dispatch(newFlow({flowID: state.project.projectId + '-' + name, ...data.flow}));
+    dispatch(newFlow({flowID: state.project.projectId + ':' + path + name, ...data.flow}));
   } catch (err:any) {
     console.error("Error during createFlow:", err);
   } 

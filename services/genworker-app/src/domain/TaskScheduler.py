@@ -21,7 +21,51 @@ class TaskScheduler:
     task = self.gateway.get_task(task_id)
     # print(json.dumps(task, indent=1, ensure_ascii=False))
     self.taskRepo.new_task(task["task"])
+    self.nodes_scheduler()
     
+  def nodes_scheduler(self):
+    cpu_worker = self.domain.cpu_worker
     
-    print(self.taskRepo.nodes)
+    nodes = self.taskRepo.nodes
+    edges = self.taskRepo.edges
     
+    indegree, adjacency_list, available_nodes, outcoming_ports, incoming_ports = self.compute_indegree_and_adjacency(edges, nodes)
+    
+    print("Indegree:", indegree, "\n")
+    print("Adjacency List:", adjacency_list, "\n")
+    print("Available Nodes:", available_nodes, "\n")
+    
+    while available_nodes:
+      node_id = available_nodes.pop()
+      node = [x for x in nodes if x["id"] == node_id][0]
+
+      for adjacent in adjacency_list[node_id]:
+        indegree[adjacent] -= 1
+        if indegree[adjacent] == 0: available_nodes.add(adjacent)
+        
+      cpu_worker.execute_node(node, outcoming_ports, incoming_ports)
+    
+    print("All nodes have been executed.")
+
+  def compute_indegree_and_adjacency(self, edges, nodes):
+    available_nodes = set()  
+    indegree = {}
+    adjacency_list = {}
+    
+    outcoming_ports = {}
+    incoming_ports = {}
+    
+    for node in nodes:
+      available_nodes.add(node["id"])
+      indegree[node["id"]] = 0
+      adjacency_list[node["id"]] = []
+
+    for edge in edges:
+      available_nodes.discard(edge["target"])
+      indegree[edge["target"]] += 1
+      adjacency_list[edge["source"]].append(edge["target"])
+      
+      outcoming_ports[(edge["source"], edge["sourceHandle"])] = ( edge["target"], edge["targetHandle"] )
+      incoming_ports[(edge["target"], edge["targetHandle"])] = ( edge["source"], edge["sourceHandle"] )
+
+    return indegree, adjacency_list, available_nodes, outcoming_ports, incoming_ports

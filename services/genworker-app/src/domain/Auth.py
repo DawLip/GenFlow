@@ -38,4 +38,4 @@ class Auth:
     cls.domain.SIO = SIO.init(cls.domain, token, payload["worker_name"])
     cls.domain.task_scheduler.init(userId, payload["worker_name"])
 
-    cls.domain.file_system.save_file("test.txt", "Test content")
+    #cls.domain.file_system.save_file("test.txt", "Test content")

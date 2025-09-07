@@ -12,6 +12,12 @@ service ProjectService {
   rpc UpdateFlowData(UpdateFlowDataRequest) returns (UpdateFlowDataResponse);
   rpc FindOneByNameFlow(FindOneByNameFlowRequest) returns (FindFlowResponse);
   rpc FindByTeamId(FindByTeamIdRequest) returns (FindByTeamIdResponse);
+
+  rpc AssignGenworker(AssignGenworkerRequest) returns (DefaultResponse);
+}
+
+message DefaultResponse {
+  BaseResponse res = 1;
 }
 
 message BaseResponse {
@@ -94,6 +100,13 @@ message FindByTeamIdResponse {
   repeated Project projects = 2;
 }
 
+message AssignGenworkerRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string path = 3;
+  string genworkerId = 4;
+}
+
 message Project{
   string id = 1;
   string name = 2;
@@ -109,6 +122,7 @@ message Flow {
   string type = 4;
   repeated Node nodes = 5;
   repeated Edge edges = 6;
+  repeated string genworkers = 7;
 }
 
 message Node {

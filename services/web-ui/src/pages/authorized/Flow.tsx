@@ -35,7 +35,9 @@ import { onNodesChangeThunk } from '@web-ui/store/thunks/flow/onNodesChangeThunk
 import { onEdgesChangeThunk } from '@web-ui/store/thunks/flow/onEdgesChangeThunk';
 import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
 
-import {nodesRegistry} from '@web-ui/store/nodes/nodesRegistry';
+import { featchNodesThunk } from '@web-ui/store/thunks/flow/featchNodesThunk';
+import { DefaultNode } from '@web-ui/components/node/DefaultNode';
+import { setPackages } from '@web-ui/store/slices/packagesSlice';
 
 function Page() {
   const socket = useSocket();
@@ -45,7 +47,9 @@ function Page() {
   const nodes = useSelector((state: any) => state.flows[flowID].nodes);
   const edges = useSelector((state: any) => state.flows[flowID].edges);
   const selectedFlowName = useSelector((state: any) => state.flows[flowID].name);
-  
+  const selectedFlowPath = useSelector((state: any) => state.flows[flowID].path);
+  const packages = useSelector((state: any) => state.packages.packages);
+
   const [type, setType] = useDnD();
   const { getViewport } = useReactFlow();
   const [x, y, zoom] = useStore((s) => s.transform);
@@ -57,7 +61,29 @@ function Page() {
   
   const [remoteCursor, setRemoteCursor] = useState<{ x: number; y: number } | null>(null);
   const [mV, setMv] = useState(true);
-  
+
+  const nodeTypes = {
+    Default: DefaultNode
+  }
+  const nodeTypes2 = useMemo(() => {
+    console.log("packages:", packages)
+    if (!packages.length) return {};
+    const nodes = {};
+
+    packages.forEach((pkg: any) => {
+      pkg.nodes.forEach((node: any) => {
+        nodes[`${node.package}/${node.path}/${node.data.name}`] = node
+      });
+    })
+;
+    return nodes
+  }, [packages]);
+  console.log("nodeTypes2:", nodeTypes2)
+
+  useEffect(() => {
+    dispatch(featchNodesThunk(socket))
+  },[])
+
   useEffect(() => {
     const handleMouseMove = throttle((e: MouseEvent) => {
       const { x, y, zoom } = getViewport();
@@ -68,6 +94,7 @@ function Page() {
         userId, 
         projectId, 
         flowName: selectedFlowName,
+        path: selectedFlowPath,
         x: (e.clientX - rect.left - x)/zoom, 
         y: (e.clientY - rect.top - y)/zoom
       })
@@ -114,6 +141,17 @@ function Page() {
     socket?.on('connect', () => {
       console.log('[SOCKET] Socket connected');
     });
+
+    socket.once('genworker_get_nodes_answer', (msg: any) => {
+      console.log("genworker_get_nodes_answer:", msg)
+
+      dispatch(setPackages(msg.packages))
+    })
+
+    return () => {
+      socket.off('connect');
+      socket.off('genworker_get_nodes_answer');
+    };
   }, [socket]);
 
   const onNodesChangeW = useMemo(
@@ -147,15 +185,32 @@ function Page() {
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-
+      console.log("<><><><><><><> onDrop:", type)
       if (!type) return;
-      console.log("x, y, zoom",x,y, zoom, )
+      const t = type;
+      // @ts-ignore
+      console.log(">>>>>>>>>>>>>",t, nodeTypes2, nodeTypes2[t])
       const position = {
         x: Math.floor((event.clientX - 190-32-48 - x)/zoom/64)*64,
         y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
       };
       console.log(position.x, position.y)
-      dispatch(addNodeThunk({ flowID, node: {...defaultNode, id: crypto.randomUUID(), position} }, socket));
+      dispatch(addNodeThunk({ 
+        flowID, 
+        node: {
+          ...defaultNode,
+          // @ts-ignore
+          ...nodeTypes2[t],
+          style: {
+            // @ts-ignore
+            width: (nodeTypes2[t]?.style?.width || 2)*64,
+            // @ts-ignore
+            height: (nodeTypes2[t]?.style?.height || 2)*64,
+          },
+          id: crypto.randomUUID(),
+          position
+        }
+      }, socket));
       // @ts-ignore
       setType(null);
     },
@@ -172,7 +227,7 @@ function Page() {
         }}></div>}
         <ReactFlow
           ref={reactFlowRef}
-          nodeTypes={nodesRegistry.nodeTypes}
+          nodeTypes={nodeTypes}
           nodes={nodes}
           edges={edges}
           onNodesChange={onNodesChangeW}

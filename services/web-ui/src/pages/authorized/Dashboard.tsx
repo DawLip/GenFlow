@@ -50,7 +50,7 @@ const FlowCard = ({name, path}:{name:string, path:string}) => {
 
   const userId = useSelector((state: any) => state.client.userId);
   const projectId = useSelector((state: any) => state.project.projectId);
-  const flowID = projectId + '-' + name;
+  const flowID = projectId + ':' + path + name;
 
   const flow = useSelector((state: any) => state.project.flows.filter((flow: any) => flow.name === name)[0]);
   const socket = useSocket();
@@ -65,12 +65,16 @@ const FlowCard = ({name, path}:{name:string, path:string}) => {
           </div>
           <div>
             <Icon name="flow" className="size-[24px]" onClick={async () => {
-                const {data} = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${path}${name}`);
+                path = path.replace(/^\/|\/$/g, "");
+                const url = `${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${path ? `${path}/` : ""}${name}`;
+                console.log("Fetching flow from URL:", url);
+                const {data} = await axios.get(url);
                 dispatch(setFlow({flowID, data: data.flow}));
                 dispatch(selectFlow(flowID));
                 socket.emit('join_flow_room',{
                   projectId: projectId,
                   flowName: name,
+                  flowPath: path,
                   userId: userId
                 });
                 router.push('/flow');

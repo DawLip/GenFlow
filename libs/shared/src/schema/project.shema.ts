@@ -30,6 +30,12 @@ export class Node {
   @Prop({ required: true })
   type!: string;
 
+  @Prop({ required: true })
+  packet!: string;
+
+  @Prop({ required: true })
+  path!: string;
+
   @Prop({ type: Object, required: true })
   position!: string;
 
@@ -61,6 +67,9 @@ export class Flow {
 
   @Prop({ required: true })
   path!: string;
+
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', required: true })
+  genworkers!: Types.ObjectId[];
 }
 const FlowSchema = SchemaFactory.createForClass(Flow);
 

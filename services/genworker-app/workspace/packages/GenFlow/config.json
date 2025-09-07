@@ -3,6 +3,8 @@
   "description": "A packet for GenFlow nodes",
   "version": "1.0.0",
   "nodes": [
-    "Text/TextInput"
+    "Text/Base/TextInput",
+    "Text/Operations/TextConcat",
+    "File/Save/TextFileSave"
   ]
 }

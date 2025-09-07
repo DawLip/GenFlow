@@ -7,6 +7,7 @@ service GenWorkerService {
   rpc Create (CreateRequest) returns (CreateResponse);
   rpc Update (UpdateRequest) returns (UpdateResponse);
   rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
+  rpc FindOneByProject (FindOneByProjectRequest) returns (FindResponse);
 
   // Special
   rpc EnqueueTask (EnqueueRequest) returns (DefaultResponse);
@@ -56,6 +57,11 @@ message FindOneByIdRequest {
   string id = 1;
   optional bool populateTeams = 2;
 }
+message FindOneByProjectRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string flowPath = 3;
+}
 message FindResponse {
   BaseResponse res = 1;
   optional GenWorker genworker = 2;
@@ -100,6 +106,7 @@ message GenWorkerAssignToFlowRequest {
   string genworkerId = 1;
   string projectId = 2;
   string flowName = 3;
+  string path = 4;
 }
 message GetGenWorkersAssignedToFlowRequest {
   string projectId = 1;
@@ -116,6 +123,7 @@ message GenWorkerDisconnectRequest {
 
 message GetTaskByIdRequest {
   string id = 1;
+  bool genworker = 2;
 }
 message FindTaskResponse {
   BaseResponse res = 1;

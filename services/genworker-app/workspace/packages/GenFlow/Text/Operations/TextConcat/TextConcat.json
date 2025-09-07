@@ -1,16 +1,23 @@
 {
-  "type": "TextInput",
-  "path": "Text/Base",
-  "packet": "GenFlow",
-  "style": { "width": 256, "height": 256 },
+  "type": "Default",
+  "path": "Text/Operations",
+  "package": "GenFlow",
+  "style": { "width": 4, "height": 4 },
   "data": {
-    "name": "TextInput",
+    "name": "TextConcat",
     "description": "This is a new node",
     "inputs": [
       {
         "id": "input-1",
         "label": "text input",
-        "name": "textInput",
+        "name": "textInput1",
+        "dataType": "TEXT",
+        "widget": "LineInput"
+      },
+      {
+        "id": "input-2",
+        "label": "text input",
+        "name": "textInput2",
         "dataType": "TEXT",
         "widget": "LineInput"
       }

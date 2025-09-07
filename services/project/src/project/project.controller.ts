@@ -9,7 +9,9 @@ import {
   FindOneByNameFlowRequest, FindFlowResponse,
   FindByTeamIdRequest, FindByTeamIdResponse,
   UpdateFlowDataResponse,
-  UpdateFlowDataRequest
+  UpdateFlowDataRequest,
+  AssignGenworkerRequest,
+  DefaultResponse
 } from '@proto/project/project';
 import { ProjectService } from '@project/project/project.service';
 
@@ -55,5 +57,10 @@ export class ProjectController {
   @GrpcMethod('ProjectService', 'UpdateFlowData')
   async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
     return await this.projectService.updateFlowData({...data, data: JSON.parse(data.data)});
+  }
+
+  @GrpcMethod('ProjectService', 'AssignGenworker')
+  async assignGenworker(data: AssignGenworkerRequest): Promise<DefaultResponse> {
+    return await this.projectService.assignGenworker(data);
   }
 }

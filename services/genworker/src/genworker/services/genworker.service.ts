@@ -1,7 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import {
   CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse,
+  FindOneByProjectRequest,
 } from '@proto/genworker/genworker';
+import { Client, type ClientGrpc } from '@nestjs/microservices';
 import { PinoLogger } from 'nestjs-pino';
 
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,11 +11,20 @@ import { Model, Types } from 'mongoose';
 import { GenWorker as GenWorkerSchema, GenWorkerDocument } from '@shared/schema/genworker.schema';
 import { GenWorker } from '@shared/types/GenWorker.type';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
+import { firstValueFrom } from 'rxjs';
+import { ProjectServiceClient } from '@proto/project/project.client';
+import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 
 
 @Injectable()
 export class GenWorkerService implements OnModuleInit {
-  onModuleInit() {}
+  @Client(gRPC_client('project'))
+  private projectClient:ClientGrpc;
+  private projectService:ProjectServiceClient;
+
+  onModuleInit() {
+    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
+  }
 
   constructor(
     @InjectModel(GenWorkerSchema.name) private genworkerModel: Model<GenWorkerDocument>,
@@ -44,14 +55,19 @@ export class GenWorkerService implements OnModuleInit {
   }
   async assignToFlow(data) {
     const context = 'assignToFlow';
+    console.log('assignToFlow', data)
+
+    const path = data.path=="//" ? "/" : data.path;
 
     const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
       data.genworkerId,
-      { $addToSet: { projects: `${data.projectId}:${data.flowName}` } }, 
+      { $addToSet: { projects: `${data.projectId}:${path}${data.flowName}` } },
       { new: true },
     );
 
     if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
+
+    await firstValueFrom(this.projectService.assignGenworker(data));
 
     return this.response.success({res:{msg:"GenWorker assigned to flow"}}, {context});
   }
@@ -74,6 +90,20 @@ export class GenWorkerService implements OnModuleInit {
     const context = 'findOneById';
 
     const genworker = await this.genworkerModel.findById(data.id).lean();
+    if (!genworker) return this.response.fail({res:{msg:"GenWorker not found"}}, {context});
+    
+    return this.response.success({
+        res:{msg:"GenWorker found"},
+        genworker: {
+        ...genworker,
+        id: genworker._id.toString(),
+      }}, {context});
+  }
+
+  async findOneByProject(data:FindOneByProjectRequest):Promise<FindResponse> {
+    const context = 'findOneByProject';
+
+    const genworker = await this.genworkerModel.findOne({ projectId: data.projectId, path: data.flowPath, name: data.flowName }).lean();
     if (!genworker) return this.response.fail({res:{msg:"GenWorker not found"}}, {context});
     
     return this.response.success({

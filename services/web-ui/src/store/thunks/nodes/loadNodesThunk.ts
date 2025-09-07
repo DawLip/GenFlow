@@ -2,7 +2,7 @@ import { setLoading, setError, confirmEmail } from '@web-ui/store/slices/clientS
 import axios from 'axios';
 
 import { services_config } from '@shared/services_config';
-import { setNodes } from '@web-ui/store/slices/nodesSlice';
+import { setNodes } from '@web-ui/store/slices/packagesSlice';
 
 export const loadNodesThunk = () => async (dispatch: any, getState: any) => {
   console.log('=== loadNodesThunk ===')

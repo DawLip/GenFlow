@@ -9,7 +9,8 @@ import {
   FindByTeamIdRequest,
   FindByTeamIdResponse,
   UpdateFlowDataResponse,
-  UpdateFlowDataRequest
+  UpdateFlowDataRequest,
+  DefaultResponse
 } from '@proto/project/project';
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
 
@@ -76,12 +77,13 @@ export class ProjectService {
 
 
   async findOneByNameFlow(data:FindOneByNameFlowRequest):Promise<FindFlowResponse> {
+    console.log('findOneByNameFlow', data);
     const foundProject = await this.projectModel.findById(data.id).lean();
     if (!foundProject) return this.response.fail({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
-
+    console.log('foundProject', foundProject);
     const flow = foundProject.flows.filter(flow=>flow.name==data.flowName && flow.path==data.path)
     if (!flow.length) return this.response.fail({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
-
+    console.log('flow', flow);
     return this.response.success({
       res:{msg:"flow found"},
       flow: { 
@@ -109,10 +111,6 @@ export class ProjectService {
   }
 
   async updateFlow(data: UpdateFlowRequest): Promise<UpdateFlowResponse> {
-    if (!data.id) return this.response.validationFail({res:{msg:"Field 'id' is required"}}, {context:"updateFlow"});
-    if (!data.flow) return this.response.validationFail({res:{msg:"Field 'flow' is required"}}, {context:"updateFlow"});
-    if (!data.flowName) return this.response.validationFail({res:{msg:"Field 'flowName' is required"}}, {context:"updateFlow"});
-
     const project = await this.projectModel.findById(data.id);
     if (!project) return this.response.fail({res:{msg:"project not found"}}, {context:"updateFlow", data});
 
@@ -132,11 +130,6 @@ export class ProjectService {
 
   async updateFlowData(data: UpdateFlowDataRequest): Promise<UpdateFlowDataResponse> {
     const context = 'updateFlowData';
-
-    if (!data.operation) return this.response.validationFail({res:{msg:"Field 'operation' is required"}}, {context});
-    if (!data.id) return this.response.validationFail({res:{msg:"Field 'id' is required"}}, {context});
-    if (!data.flowName) return this.response.validationFail({res:{msg:"Field 'flowName' is required"}}, {context});
-    if (!data.data) return this.response.validationFail({res:{msg:"Field 'data' is required"}}, {context});
 
     const project = await this.projectModel.findById(data.id);
     if (!project) return this.response.fail({res:{msg:"project not found"}}, {context, data});
@@ -191,5 +184,20 @@ export class ProjectService {
       }
       await project.save();
     }
+  }
+
+  async assignGenworker(data){ 
+    data.path = data.path=="//" ? "/" : data.path;
+    console.log('assignGenworker', data, data.path)
+    const project = await this.projectModel.findById(data.projectId);
+    const flow = project?.flows.find(flow => flow.name === data.flowName && flow.path === data.path);
+    
+    if (!flow) return this.response.fail({res:{msg:"flow not found"}}, {context:"assignGenworker", data});
+    if(!flow?.genworkers) flow.genworkers = [];
+
+    flow.genworkers.push(data.genworkerId);
+    await project?.save();  
+
+    return this.response.success({res:{msg:"worker assigned to project"}}, {});
   }
 }

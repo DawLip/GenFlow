@@ -8,7 +8,9 @@ import {
   FindOneByNameFlowRequest, FindFlowResponse,
   FindByTeamIdResponse, FindByTeamIdRequest,
   UpdateFlowDataResponse, UpdateFlowDataRequest,
+  AssignGenworkerRequest,
  } from '@proto/project/project';
+import { DefaultResponse } from '@proto/socketio/socketio';
 
 export interface ProjectServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;
@@ -20,4 +22,6 @@ export interface ProjectServiceClient {
   updateFlowData(data: UpdateFlowDataRequest): Observable<UpdateFlowDataResponse>;
   findOneByNameFlow(data: FindOneByNameFlowRequest): Observable<FindFlowResponse>;
   findByTeamId(data: FindByTeamIdRequest): Observable<FindByTeamIdResponse>;
+
+  assignGenworker(data: AssignGenworkerRequest): Observable<DefaultResponse>;
 }

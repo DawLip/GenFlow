@@ -4,8 +4,9 @@ import { Handle, NodeResizer, Position } from "@xyflow/react";
 import React, { useEffect, useMemo, useState } from "react";
 import { Icon } from "../Icon";
 import { AppDispatch } from "@web-ui/store";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { executeFlowThunk } from "@web-ui/store/thunks/flow/executeFlowThunk";
+import { setInputValue } from "@web-ui/store/slices/flowsSlice";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,7 +15,7 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
     console.log(`=== Executing node ${node.data.id} ===`)
     dispatch(executeFlowThunk())
   }
-
+  console.log('Rendering DefaultNode', node);
   return (
     <div
       style={{ width: node.style?.width, height: node.style?.height }}
@@ -55,18 +56,26 @@ const NodeHeader = ({ node, onExecute }: any) => {
 }
 
 function NodeInputs({ node }: any) {
+  const dispatch = useDispatch<AppDispatch>();
+  
   const inputs = useMemo(() => node.data.inputs, [node.data.inputs]);
+  const flowId =  useSelector((state: any) => state.session.selectedFlow);
 
   return (
     <div className="flex-col gap-1 w-full py-1">
       {inputs.map((input: any, i: number) => (
         <div className="w-full relative" key={input.id}>
-          <Widget key={'input-' + input.id} data={input} />
+          <Widget 
+            key={'input-' + input.id} 
+            data={{...input, value: input.value, setValue: (value: string) => {
+              dispatch(setInputValue({ flowID: flowId, nodeId: node.id, inputId: input.id, value }));
+            }}} 
+          />
           <div>
             <Handle
             type="target" 
             position={Position.Left}
-            id={`${node.id}-${input.id}`}
+            id={input.id}
             style={{
               position:'absolute',
               height: 12,
@@ -115,7 +124,7 @@ const NodeExternalIO = ({ node }: any) => {
         {/* {externalInputs.map((i: any) => <NodeIOLabel key={'ioLabel-' + i.id} label={i.label} />)} */}
       </div>
       <div className="grow px-2 flex-col justify-start items-end">
-        {externalOutputs.map((o: any, i:number) => <NodeIOLabel key={'ioLabel-' + o.id} IO={o} i={i} />)}
+        {externalOutputs && externalOutputs.map((o: any, i:number) => <NodeIOLabel key={'ioLabel-' + o.id} IO={o} i={i} />)}
       </div>
     </div>
   );
@@ -138,10 +147,6 @@ const NodeIOLabel = ({ IO, i }: any) => {
 const NodeSectionDivider = () => {
   return (
     <div className="self-stretch h-2 px-2 py-1 rounded-[32px] justify-center items-center gap-1">
-      <div className="flex-1 h-px relative bg-zinc-400 rounded-[32px]" />
-      <div className="w-2 h-2 relative rounded-[32px]">
-        <div className="w-1.5 h-1.5 left-[1px] top-[1.33px] absolute outline outline-[0.75px] outline-offset-[-0.38px] outline-zinc-400" />
-      </div>
       <div className="flex-1 h-px relative bg-zinc-400 rounded-[32px]" />
     </div>
   );

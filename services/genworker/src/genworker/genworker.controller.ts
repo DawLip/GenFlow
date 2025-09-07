@@ -5,6 +5,7 @@ import {
   GenWorkerAssignToFlowRequest,
   GetTaskByIdRequest,
   FindTaskResponse,
+  FindOneByProjectRequest,
 } from '@proto/genworker/genworker';
 import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 import { TaskQueueService } from './services/task_queue.service';
@@ -31,6 +32,11 @@ export class GenWorkerController {
   @GrpcMethod('GenWorkerService', 'FindOneById')
   async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.genWorkerService.findOneById(data);
+  }
+
+  @GrpcMethod('GenWorkerService', 'FindOneByProject')
+  async findOneByProject(data: FindOneByProjectRequest): Promise<FindResponse> {
+    return await this.genWorkerService.findOneByProject(data);
   }
 
 

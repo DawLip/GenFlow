@@ -19,7 +19,7 @@ export class ResponseService {
   success(response:any, logData:any, logMsg?:string):any {
     const res = this.prepareResponse(response, 'SUCCESS');
     this.logger.trace({response:res, ...logData, level: 'trace' }, logMsg || response.res.msg);
-    console.log("test")
+
     return res;
   }
 

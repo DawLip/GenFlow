@@ -31,16 +31,7 @@ export default function Page() {
 
     setGenworkersAssignedToFlow(genworkersAssigned.data.genworkers);
   }
-  // const flows = [
-  //   {flowName: "My flow5", path: "/test/test2/"},
-  //   {flowName: "My flow6", path: "/test/test2/"},
-  //   {flowName: "My flow1", path: "/"},
-  //   {flowName: "My flow2", path: "/"},
-  //   {flowName: "My flow3", path: "/test/"},
-  //   {flowName: "My flow4", path: "/test/"},
-  //   {flowName: "My flow7", path: "/t/t/"},
-  //   {flowName: "My flow8", path: "/t/t/"},
-  // ]
+
   if(flows.length>0 && flows && flowListTree==null) setFlowListTree(createFlowListTree(flows));
 
   return (
@@ -180,7 +171,7 @@ const createFlowListTree = (flows:any[]) => {
     });
     currentNode.addChild(new FlowListItemNode(flow.name, currentNode.path));
   });
-
+  console.log(root)
   return root
 }
 

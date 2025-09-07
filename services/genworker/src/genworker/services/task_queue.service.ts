@@ -39,6 +39,7 @@ export class TaskQueueService implements OnModuleInit {
   // === redis wrappers ===
   redisKey({object, projectId, flowName, path}) {
     let redisKey = `${projectId}:${path}${flowName}:${object}`;
+    console.log('redisKey', redisKey);
     return redisKey;
   }
 
@@ -76,14 +77,15 @@ export class TaskQueueService implements OnModuleInit {
   // === supporting methods ===
 
   async handleNewTask({projectId, flowName, path, data, taskState}) {
+    console.log('handleNewTask', {projectId, flowName, path, data, taskState});
     const context = 'handleNewTask';
     
     const task = await this.taskService.create({projectId, flowName, path, data, taskState});
     this.redis.rpush(this.redisKey({object: `task_queue:${taskState}`, projectId, flowName, path}), task.task.id);
-    
-    const genworkersReady = await this.redis.smembers(`${projectId}:${path}${flowName}:worker_pool:ready`);
+
+    const genworkersReady = await this.redis.smembers(this.redisKey({object: `worker_pool:ready`, projectId, flowName, path}));
+    console.log('genworkersReady', genworkersReady);
     if(genworkersReady.length==0) return this.response.fail({res:{msg:"there is no free genworkers"}, data}, {context});
-    
     const genworker = await this.genworkerService.findOneById({id: genworkersReady[0]})
     await this.assignTaskToWorker(task.task.id, `${genworker.genworker?.ownerId}:${genworker.genworker?.name}`, `${projectId}:${path}${flowName}:worker_pool`);
 
@@ -186,6 +188,7 @@ export class TaskQueueService implements OnModuleInit {
 
   async genWorkerAssignToFlow(data) {
     const context = 'genWorkerAssignToFlow';
+    console.log('genWorkerAssignToFlow', data)
     const genworkerId = await this.getGenworkerId(data.genworkerId)
     this.genworkerService.assignToFlow({...data, genworkerId})
 

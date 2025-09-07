@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Req, Patch, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Req, Patch, Get, Param, Query } from '@nestjs/common';
 import { CreateRequest, UpdateRequest, FindOneByIdRequest, CreateFlowRequest, CreateResponse, UpdateResponse, CreateFlowResponse, UpdateFlowRequest, UpdateFlowResponse, FindOneByNameFlowRequest, FindFlowResponse } from '@proto/project/project';
 import { ApiProjectService } from './project.service';
 
@@ -29,7 +29,8 @@ export class ApiProjectController {
     const fullPath = req.params.path;
     const flowName = fullPath[fullPath.length-1];
     // @ts-ignore
-    const path = `/${fullPath.slice(0, fullPath.length-1).join('/')}/`;
+    let path = `/${fullPath.slice(0, fullPath.length-1).join('/')}/`;
+    if(path === '//') path = '/';
     
     const res = await this.apiProjectService.flowGet(body, req, {projectId, flowName: decodeURIComponent(flowName), path});
     return {...res, flow: res.flow ? {...res.flow, nodes: res.flow?.nodes?.map((node:any) => ({

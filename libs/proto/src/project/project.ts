@@ -9,6 +9,10 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "project";
 
+export interface DefaultResponse {
+  res: BaseResponse | undefined;
+}
+
 export interface BaseResponse {
   status: string;
   msg: string;
@@ -97,6 +101,13 @@ export interface FindByTeamIdResponse {
   projects: Project[];
 }
 
+export interface AssignGenworkerRequest {
+  projectId: string;
+  flowName: string;
+  path: string;
+  genworkerId: string;
+}
+
 export interface Project {
   id: string;
   name: string;
@@ -112,6 +123,7 @@ export interface Flow {
   type: string;
   nodes: Node[];
   edges: Edge[];
+  genworkers: string[];
 }
 
 export interface Node {
@@ -129,6 +141,64 @@ export interface Edge {
   target: string;
   targetHandle: string;
 }
+
+function createBaseDefaultResponse(): DefaultResponse {
+  return { res: undefined };
+}
+
+export const DefaultResponse: MessageFns<DefaultResponse> = {
+  encode(message: DefaultResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DefaultResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDefaultResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DefaultResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: DefaultResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DefaultResponse>): DefaultResponse {
+    return DefaultResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DefaultResponse>): DefaultResponse {
+    const message = createBaseDefaultResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    return message;
+  },
+};
 
 function createBaseBaseResponse(): BaseResponse {
   return { status: "", msg: "", ok: false };
@@ -1464,6 +1534,114 @@ export const FindByTeamIdResponse: MessageFns<FindByTeamIdResponse> = {
   },
 };
 
+function createBaseAssignGenworkerRequest(): AssignGenworkerRequest {
+  return { projectId: "", flowName: "", path: "", genworkerId: "" };
+}
+
+export const AssignGenworkerRequest: MessageFns<AssignGenworkerRequest> = {
+  encode(message: AssignGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.projectId !== "") {
+      writer.uint32(10).string(message.projectId);
+    }
+    if (message.flowName !== "") {
+      writer.uint32(18).string(message.flowName);
+    }
+    if (message.path !== "") {
+      writer.uint32(26).string(message.path);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(34).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AssignGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAssignGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.flowName = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AssignGenworkerRequest {
+    return {
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: AssignGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.flowName !== "") {
+      obj.flowName = message.flowName;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<AssignGenworkerRequest>): AssignGenworkerRequest {
+    return AssignGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<AssignGenworkerRequest>): AssignGenworkerRequest {
+    const message = createBaseAssignGenworkerRequest();
+    message.projectId = object.projectId ?? "";
+    message.flowName = object.flowName ?? "";
+    message.path = object.path ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
 function createBaseProject(): Project {
   return { id: "", name: "", description: "", owner: "", flows: [] };
 }
@@ -1589,7 +1767,7 @@ export const Project: MessageFns<Project> = {
 };
 
 function createBaseFlow(): Flow {
-  return { name: "", path: "", description: "", type: "", nodes: [], edges: [] };
+  return { name: "", path: "", description: "", type: "", nodes: [], edges: [], genworkers: [] };
 }
 
 export const Flow: MessageFns<Flow> = {
@@ -1611,6 +1789,9 @@ export const Flow: MessageFns<Flow> = {
     }
     for (const v of message.edges) {
       Edge.encode(v!, writer.uint32(50).fork()).join();
+    }
+    for (const v of message.genworkers) {
+      writer.uint32(58).string(v!);
     }
     return writer;
   },
@@ -1670,6 +1851,14 @@ export const Flow: MessageFns<Flow> = {
           message.edges.push(Edge.decode(reader, reader.uint32()));
           continue;
         }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.genworkers.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1687,6 +1876,9 @@ export const Flow: MessageFns<Flow> = {
       type: isSet(object.type) ? globalThis.String(object.type) : "",
       nodes: globalThis.Array.isArray(object?.nodes) ? object.nodes.map((e: any) => Node.fromJSON(e)) : [],
       edges: globalThis.Array.isArray(object?.edges) ? object.edges.map((e: any) => Edge.fromJSON(e)) : [],
+      genworkers: globalThis.Array.isArray(object?.genworkers)
+        ? object.genworkers.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -1710,6 +1902,9 @@ export const Flow: MessageFns<Flow> = {
     if (message.edges?.length) {
       obj.edges = message.edges.map((e) => Edge.toJSON(e));
     }
+    if (message.genworkers?.length) {
+      obj.genworkers = message.genworkers;
+    }
     return obj;
   },
 
@@ -1724,6 +1919,7 @@ export const Flow: MessageFns<Flow> = {
     message.type = object.type ?? "";
     message.nodes = object.nodes?.map((e) => Node.fromPartial(e)) || [];
     message.edges = object.edges?.map((e) => Edge.fromPartial(e)) || [];
+    message.genworkers = object.genworkers?.map((e) => e) || [];
     return message;
   },
 };

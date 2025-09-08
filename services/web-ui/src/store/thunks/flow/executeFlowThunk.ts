@@ -16,5 +16,13 @@ export const executeFlowThunk = () => async (dispatch: any, getState: any) => {
       edges: state.flows[state.session.selectedFlow].edges
     }
   });
-  console.log('executeFlowThunk', data)
+  console.log('executeFlowThunk', data, {
+    projectId: state.project.projectId,
+    flowName: state.flows[state.session.selectedFlow].name,
+    path: state.flows[state.session.selectedFlow].path,
+    data: {
+      nodes: state.flows[state.session.selectedFlow].nodes,
+      edges: state.flows[state.session.selectedFlow].edges
+    }
+  })
 };

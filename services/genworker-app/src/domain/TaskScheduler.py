@@ -42,7 +42,7 @@ class TaskScheduler:
       for adjacent in adjacency_list[node_id]:
         indegree[adjacent] -= 1
         if indegree[adjacent] == 0: available_nodes.add(adjacent)
-        
+      print(f"Executing node {node_id} - {node}") 
       cpu_worker.execute_node(node, outcoming_ports, incoming_ports)
     
     print("All nodes have been executed.")
@@ -69,3 +69,17 @@ class TaskScheduler:
       incoming_ports[(edge["target"], edge["targetHandle"])] = ( edge["source"], edge["sourceHandle"] )
 
     return indegree, adjacency_list, available_nodes, outcoming_ports, incoming_ports
+  
+  def new_artifact(self, artifact):
+    print("New artifact:", {
+      'projectId': self.taskRepo.projectId,
+      'path': self.taskRepo.path,
+      'flowName': self.taskRepo.flowName,
+      'artifact': artifact
+    })
+    self.domain.SIO.sio.emit('new_artifact', {
+      'projectId': self.taskRepo.projectId,
+      'path': self.taskRepo.path,
+      'flowName': self.taskRepo.flowName,
+      'artifact': artifact
+    })

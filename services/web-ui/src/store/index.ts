@@ -6,17 +6,18 @@ import teamSlice from './slices/teamSlice';
 import projectSlice from './slices/projectSlice';
 import sessionSlice from './slices/sessionSlice';
 import packagesSlice from './slices/packagesSlice';
+import artifactsSlice from './slices/artifactsSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    flows: flowsReducer,
-    packages: packagesSlice,
     client: clientReducer,
+    session: sessionSlice,
     team: teamSlice,
     project: projectSlice,
-    session: sessionSlice,
-
+    flows: flowsReducer,
+    packages: packagesSlice,
+    artifacts: artifactsSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

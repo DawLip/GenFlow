@@ -65,7 +65,7 @@ const FlowCard = ({name, path}:{name:string, path:string}) => {
           </div>
           <div>
             <Icon name="flow" className="size-[24px]" onClick={async () => {
-                path = path.replace(/^\/|\/$/g, "");
+                path = path.replace(/^\/|\/$/g, "")=="" ? "/" : path.replace(/^\/|\/$/g, "") + '/';
                 const url = `${services_config.service_url.gateway_web_ui}/api/projects/${projectId}/flows/${path ? `${path}/` : ""}${name}`;
                 console.log("Fetching flow from URL:", url);
                 const {data} = await axios.get(url);

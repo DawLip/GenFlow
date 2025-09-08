@@ -38,6 +38,7 @@ import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
 import { featchNodesThunk } from '@web-ui/store/thunks/flow/featchNodesThunk';
 import { DefaultNode } from '@web-ui/components/node/DefaultNode';
 import { setPackages } from '@web-ui/store/slices/packagesSlice';
+import { newArtifact } from '@web-ui/store/slices/artifactsSlice';
 
 function Page() {
   const socket = useSocket();
@@ -148,9 +149,15 @@ function Page() {
       dispatch(setPackages(msg.packages))
     })
 
+    socket.on('new_artifact', (data:any) => {
+      console.log('new_artifact received', data);
+      dispatch(newArtifact({...data.artifact, time: (new Date()).toISOString()}));
+    });
+
     return () => {
       socket.off('connect');
       socket.off('genworker_get_nodes_answer');
+      socket.off('new_artifact');
     };
   }, [socket]);
 
@@ -185,16 +192,12 @@ function Page() {
   const onDrop = useCallback(
     (event: React.DragEvent) => {
       event.preventDefault();
-      console.log("<><><><><><><> onDrop:", type)
       if (!type) return;
       const t = type;
-      // @ts-ignore
-      console.log(">>>>>>>>>>>>>",t, nodeTypes2, nodeTypes2[t])
       const position = {
         x: Math.floor((event.clientX - 190-32-48 - x)/zoom/64)*64,
         y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
       };
-      console.log(position.x, position.y)
       dispatch(addNodeThunk({ 
         flowID, 
         node: {
@@ -252,7 +255,7 @@ function Page() {
           <Controls />
         </ReactFlow>
       </div>
-      <Aside tabs={['Inspector', 'Runs', 'Viewer']} />
+      <Aside tabs={['Inspector', 'Runs', 'Artifacts']} />
     </>
   );
 }

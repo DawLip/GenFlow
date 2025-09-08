@@ -77,13 +77,12 @@ export class ProjectService {
 
 
   async findOneByNameFlow(data:FindOneByNameFlowRequest):Promise<FindFlowResponse> {
-    console.log('findOneByNameFlow', data);
     const foundProject = await this.projectModel.findById(data.id).lean();
     if (!foundProject) return this.response.fail({res:{msg:"project not found"}}, {context:"findOneByNameFlow"});
-    console.log('foundProject', foundProject);
+  
     const flow = foundProject.flows.filter(flow=>flow.name==data.flowName && flow.path==data.path)
     if (!flow.length) return this.response.fail({res:{msg:"flow not found"}}, {context:"findOneByNameFLow"});
-    console.log('flow', flow);
+
     return this.response.success({
       res:{msg:"flow found"},
       flow: { 
@@ -160,9 +159,9 @@ export class ProjectService {
     const flow = project.flows[flowIndex];
 
     const node = flow.nodes.find((node:any) => node.id === data.changes[0].id);
-
     switch(data.changes[0].type){
       case 'position': node.position = data.changes[0].position; break;
+      case 'remove': flow.nodes.splice(flow.nodes.indexOf(node), 1); break;
     }
 
     await project.save();
@@ -188,7 +187,6 @@ export class ProjectService {
 
   async assignGenworker(data){ 
     data.path = data.path=="//" ? "/" : data.path;
-    console.log('assignGenworker', data, data.path)
     const project = await this.projectModel.findById(data.projectId);
     const flow = project?.flows.find(flow => flow.name === data.flowName && flow.path === data.path);
     

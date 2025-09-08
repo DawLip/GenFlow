@@ -130,6 +130,8 @@ export interface Node {
   id: string;
   type: string;
   position: string;
+  packet: string;
+  path: string;
   style: string;
   data: string;
 }
@@ -1925,7 +1927,7 @@ export const Flow: MessageFns<Flow> = {
 };
 
 function createBaseNode(): Node {
-  return { id: "", type: "", position: "", style: "", data: "" };
+  return { id: "", type: "", position: "", packet: "", path: "", style: "", data: "" };
 }
 
 export const Node: MessageFns<Node> = {
@@ -1938,6 +1940,12 @@ export const Node: MessageFns<Node> = {
     }
     if (message.position !== "") {
       writer.uint32(26).string(message.position);
+    }
+    if (message.packet !== "") {
+      writer.uint32(50).string(message.packet);
+    }
+    if (message.path !== "") {
+      writer.uint32(58).string(message.path);
     }
     if (message.style !== "") {
       writer.uint32(34).string(message.style);
@@ -1979,6 +1987,22 @@ export const Node: MessageFns<Node> = {
           message.position = reader.string();
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.packet = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
         case 4: {
           if (tag !== 34) {
             break;
@@ -2009,6 +2033,8 @@ export const Node: MessageFns<Node> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
       position: isSet(object.position) ? globalThis.String(object.position) : "",
+      packet: isSet(object.packet) ? globalThis.String(object.packet) : "",
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
       style: isSet(object.style) ? globalThis.String(object.style) : "",
       data: isSet(object.data) ? globalThis.String(object.data) : "",
     };
@@ -2024,6 +2050,12 @@ export const Node: MessageFns<Node> = {
     }
     if (message.position !== "") {
       obj.position = message.position;
+    }
+    if (message.packet !== "") {
+      obj.packet = message.packet;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
     }
     if (message.style !== "") {
       obj.style = message.style;
@@ -2042,6 +2074,8 @@ export const Node: MessageFns<Node> = {
     message.id = object.id ?? "";
     message.type = object.type ?? "";
     message.position = object.position ?? "";
+    message.packet = object.packet ?? "";
+    message.path = object.path ?? "";
     message.style = object.style ?? "";
     message.data = object.data ?? "";
     return message;

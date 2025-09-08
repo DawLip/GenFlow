@@ -46,7 +46,6 @@ export class TaskService implements OnModuleInit {
               type: output.type,
               value: output.value || null
             })),
-            // only include other properties if they exist
           }
         })),
         edges: JSON.parse(data.data).edges
@@ -62,7 +61,7 @@ export class TaskService implements OnModuleInit {
     const context = 'update';
     const updatedTask = await this.taskModel.findByIdAndUpdate(
       new Types.ObjectId(data.id),
-      { ...data.task, flowName: "test" },
+      { ...data.task },
       {new: true}
     );
 
@@ -71,7 +70,6 @@ export class TaskService implements OnModuleInit {
     return this.response.success({res:{msg:"Task updated"}}, {context});
   }
   async findOneById(data) {
-    console.log('findOneById', data);
     const context = 'findOneById';
 
     const task = await this.taskModel.findById(data.id).lean();

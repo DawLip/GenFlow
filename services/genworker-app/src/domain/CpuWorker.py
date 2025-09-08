@@ -17,6 +17,7 @@ class CpuWorker:
       
   def execute_node(self, node, outcoming_ports, incoming_ports):
     # node_to_execute = self.node_registry[f"{node['packet']}/{node['path']}/{node['data']['name']}"]
+    print(node)
     self.domain.Node.execute(node, outcoming_ports, incoming_ports)
 
     print('')

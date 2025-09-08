@@ -75,4 +75,9 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handlePing(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
     client.emit('pong', { msg: 'pong from server' });
   }
+
+  @SubscribeMessage('new_artifact')
+  handleNewArtifact(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
+    this.socketService.handleNewArtifact(data, client);
+  }
 }

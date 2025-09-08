@@ -6,6 +6,7 @@ import { Hierarchy } from './Hierarchy';
 import { Inspector } from './Inspector';
 import { EmptyContent } from './EmptyContent';
 import { Nodes } from './Nodes';
+import { Artifacts } from './Artifacts';
 
 export function Aside({ tabs=["Hierarchy","Nodes", "Files"]}: any) { 
   const [ selectedTab , setSelectedTab ] = useState(0);
@@ -38,9 +39,9 @@ const Content = ({ tabName }: { tabName: string }) => {
     case 'Inspector':
       return <Inspector />;
     case 'Runs':
-      return <EmptyContent>Nodes</EmptyContent>;
-    case 'Viewer':
-      return <EmptyContent>Files</EmptyContent>;
+      return <EmptyContent>Runs</EmptyContent>;
+    case 'Artifacts':
+      return <Artifacts />;
     default:
       return null;
   }

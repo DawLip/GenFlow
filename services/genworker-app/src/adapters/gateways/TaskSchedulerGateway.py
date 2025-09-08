@@ -32,4 +32,5 @@ class TaskSchedulerGateway:
       headers={"Authorization": f"Bearer {self._token()}"}
     ).json()
     response["task"]["data"] = json.loads(response["task"]["data"])
+    print("Task data:", response["task"]["data"])
     return response

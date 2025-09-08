@@ -18,8 +18,8 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   console.log('Rendering DefaultNode', node);
   return (
     <div
-      style={{ width: node.style?.width, height: node.style?.height }}
-      className={`grow rounded-lg justify-start items-start p-2`}
+      // style={{ width: node.style?.width, height: node.style?.height }}
+      className={`flex-1 grow rounded-lg justify-start items-start p-2`}
     >
       <div className="relative flex-1 grow h-full justify-start items-center gap-1">
         <NodeResizer
@@ -28,7 +28,7 @@ export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
           minWidth={64}
           minHeight={64}
         />
-        <div className="h-full flex-col pb-1 rounded-[8px] bg-[#0F0B14] border border-[#24202A]">
+        <div className="h-full flex-col grow flex-1 pb-1 rounded-[8px] bg-[#0F0B14] border border-[#24202A]">
           <NodeHeader node={node} onExecute={onExecute} />
           <NodeExternalIO node={node} />
           <NodeSectionDivider />

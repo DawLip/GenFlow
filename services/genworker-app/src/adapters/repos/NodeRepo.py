@@ -23,6 +23,7 @@ class NodeRepo:
     print(f"\nNode registered: {node_path}")
 
   def get_node_path(self, node):
+    print(f"Getting node path for: {node}")
     return f"{node['packet']}/{node['path']}/{node['data']['name']}"
 
     

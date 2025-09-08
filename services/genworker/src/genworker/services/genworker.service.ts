@@ -55,7 +55,6 @@ export class GenWorkerService implements OnModuleInit {
   }
   async assignToFlow(data) {
     const context = 'assignToFlow';
-    console.log('assignToFlow', data)
 
     const path = data.path=="//" ? "/" : data.path;
 

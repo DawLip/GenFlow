@@ -129,6 +129,8 @@ message Node {
   string id = 1;
   string type = 2;
   string position = 3;
+  string packet = 6;
+  string path = 7;
   string style = 4;
   string data = 5;
 }

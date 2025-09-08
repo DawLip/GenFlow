@@ -81,8 +81,8 @@ export class SocketService implements OnModuleInit {
 
   join_flow_room(data: any, client: Socket){
     console.log('join_flow_room', data)
-    const room = `${data.projectId}:${data.path}${data.flowName}`;
-    
+    const room = `${data.projectId}:${data.flowPath}${data.flowName}`;
+    console.log("Joining room:", room)
     client.join(room);
 
     this.io.to(room).emit('user_joined', { userId: data.userId });
@@ -138,19 +138,24 @@ export class SocketService implements OnModuleInit {
   }
 
   async genworker_get_nodes(data: any, client: Socket){
-    console.log("genworker_get_nodes", data)
     // const genworker = await firstValueFrom(this.genworkerService.findOneByProject({projectId: data.projectId, flowName: data.flowName, flowPath: data.flowPath}));
 
     const flow = await firstValueFrom(this.projectService.findOneByNameFlow({id: data.projectId, flowName: data.flowName, path: data.flowPath}));
     if(!flow.flow) return;
     const genworker = await firstValueFrom(this.genworkerService.findOneById({id: flow.flow.genworkers?.[0]}));
-    console.log('flow', flow);
+
     client.to(`${genworker.genworker?.ownerId}:${genworker.genworker?.name}`).emit('genworker_get_nodes', {...data, workerId: genworker.genworker?.id});
   }
 
   genworker_get_nodes_answer(data: any, client: Socket){
-    console.log("genworker_get_nodes_answer", data)
     client.to(`${data.userId}`).emit('genworker_get_nodes_answer', data);
+  }
+
+  handleNewArtifact(data: any, client: Socket){
+    console.log("handleNewArtifact", data)
+    const room = `${data.projectId}:${data.path}${data.flowName}`;
+    console.log("room:", room)
+    this.io.to(room).emit('new_artifact', { ...data });
   }
 
 }

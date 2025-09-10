@@ -29,7 +29,7 @@ export class TaskService implements OnModuleInit {
         nodes: JSON.parse(data.data).nodes.map((node:any) => ({
           id: node.id,
           type: node.type,
-          packet: node.packet,
+          package: node.package,
           path: node.path,
           data: {
             id: node.data.id,

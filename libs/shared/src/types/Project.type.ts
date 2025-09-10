@@ -3,7 +3,7 @@ import { Types } from 'mongoose';
 export type Node = {
   id: string,
   type: string,
-  packet: string,
+  package: string,
   path: string,
   position: {
     x: number,

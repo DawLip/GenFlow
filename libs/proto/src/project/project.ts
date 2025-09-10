@@ -130,7 +130,7 @@ export interface Node {
   id: string;
   type: string;
   position: string;
-  packet: string;
+  package: string;
   path: string;
   style: string;
   data: string;
@@ -1927,7 +1927,7 @@ export const Flow: MessageFns<Flow> = {
 };
 
 function createBaseNode(): Node {
-  return { id: "", type: "", position: "", packet: "", path: "", style: "", data: "" };
+  return { id: "", type: "", position: "", package: "", path: "", style: "", data: "" };
 }
 
 export const Node: MessageFns<Node> = {
@@ -1941,8 +1941,8 @@ export const Node: MessageFns<Node> = {
     if (message.position !== "") {
       writer.uint32(26).string(message.position);
     }
-    if (message.packet !== "") {
-      writer.uint32(50).string(message.packet);
+    if (message.package !== "") {
+      writer.uint32(50).string(message.package);
     }
     if (message.path !== "") {
       writer.uint32(58).string(message.path);
@@ -1992,7 +1992,7 @@ export const Node: MessageFns<Node> = {
             break;
           }
 
-          message.packet = reader.string();
+          message.package = reader.string();
           continue;
         }
         case 7: {
@@ -2033,7 +2033,7 @@ export const Node: MessageFns<Node> = {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       type: isSet(object.type) ? globalThis.String(object.type) : "",
       position: isSet(object.position) ? globalThis.String(object.position) : "",
-      packet: isSet(object.packet) ? globalThis.String(object.packet) : "",
+      package: isSet(object.package) ? globalThis.String(object.package) : "",
       path: isSet(object.path) ? globalThis.String(object.path) : "",
       style: isSet(object.style) ? globalThis.String(object.style) : "",
       data: isSet(object.data) ? globalThis.String(object.data) : "",
@@ -2051,8 +2051,8 @@ export const Node: MessageFns<Node> = {
     if (message.position !== "") {
       obj.position = message.position;
     }
-    if (message.packet !== "") {
-      obj.packet = message.packet;
+    if (message.package !== "") {
+      obj.package = message.package;
     }
     if (message.path !== "") {
       obj.path = message.path;
@@ -2074,7 +2074,7 @@ export const Node: MessageFns<Node> = {
     message.id = object.id ?? "";
     message.type = object.type ?? "";
     message.position = object.position ?? "";
-    message.packet = object.packet ?? "";
+    message.package = object.package ?? "";
     message.path = object.path ?? "";
     message.style = object.style ?? "";
     message.data = object.data ?? "";

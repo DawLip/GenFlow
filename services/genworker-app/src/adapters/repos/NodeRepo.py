@@ -24,7 +24,7 @@ class NodeRepo:
 
   def get_node_path(self, node):
     print(f"Getting node path for: {node}")
-    return f"{node['packet']}/{node['path']}/{node['data']['name']}"
+    return f"{node['package']}/{node['path']}/{node['data']['name']}"
 
     
   

@@ -1,0 +1,8 @@
+{
+  "name": "Diffusers",
+  "description": "A packet for Diffusers nodes",
+  "version": "1.0.0",
+  "nodes": [
+    "Tests/Base/Generate"
+  ]
+}

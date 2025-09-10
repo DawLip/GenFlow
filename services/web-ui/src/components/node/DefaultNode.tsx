@@ -63,7 +63,7 @@ function NodeInputs({ node }: any) {
 
   return (
     <div className="flex-col gap-1 w-full py-1">
-      {inputs.map((input: any, i: number) => (
+      {inputs && inputs.map((input: any, i: number) => (
         <div className="w-full relative" key={input.id}>
           <Widget 
             key={'input-' + input.id} 

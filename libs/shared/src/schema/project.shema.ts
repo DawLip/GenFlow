@@ -31,7 +31,7 @@ export class Node {
   type!: string;
 
   @Prop({ required: true })
-  packet!: string;
+  package!: string;
 
   @Prop({ required: true })
   path!: string;

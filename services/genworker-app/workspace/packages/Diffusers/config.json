@@ -3,6 +3,6 @@
   "description": "A packet for Diffusers nodes",
   "version": "1.0.0",
   "nodes": [
-    "Tests/Base/Generate"
+    "Unified/Base/Txt2ImgUnified"
   ]
 }

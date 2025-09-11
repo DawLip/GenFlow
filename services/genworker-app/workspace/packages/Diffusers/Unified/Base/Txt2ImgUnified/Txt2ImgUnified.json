@@ -1,0 +1,68 @@
+{
+  "type": "Default",
+  "path": "Unified/Base",
+  "package": "Diffusers",
+  "style": { "width": 4, "height": 5 },
+  "data": {
+    "name": "Txt2ImgUnified",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "positivePrompt",
+        "label": "positive prompt",
+        "name": "positivePrompt",
+        "default": "a little cat",
+        "dataType": "TEXT",
+        "widget": "LineInput"
+      },
+      {
+        "id": "negativePrompt",
+        "label": "negative prompt",
+        "name": "negativePrompt",
+        "default": "ugly, deformed, unnatural",
+        "dataType": "TEXT",
+        "widget": "LineInput"
+      },
+      {
+        "id": "seed",
+        "label": "seed",
+        "name": "seed",
+        "default": 12345,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "height",
+        "label": "height",
+        "name": "height",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "width",
+        "label": "width",
+        "name": "width",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "guidanceScale",
+        "label": "guidance scale",
+        "name": "guidanceScale",
+        "default": 6,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "steps",
+        "label": "steps",
+        "name": "steps",
+        "default": 30,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      }
+    ]
+  }
+}

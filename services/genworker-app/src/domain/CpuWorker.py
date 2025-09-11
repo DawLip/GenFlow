@@ -11,6 +11,7 @@ class CpuWorker:
     self.task_repo = domain.task_repo
     self.node_repo = domain.node_repo
     
+    print('\n')
     nodes_list = domain.packages.get_nodes_list()
     for node_path in nodes_list:
       self.node_repo.register(node_path)

@@ -5,6 +5,7 @@
   "nodes": [
     "Text/Base/TextInput",
     "Text/Operations/TextConcat",
+    "Number/Base/NumberInput",
     "File/Save/TextFileSave"
   ]
 }

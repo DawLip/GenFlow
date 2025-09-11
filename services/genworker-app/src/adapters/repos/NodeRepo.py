@@ -20,7 +20,7 @@ class NodeRepo:
       
     self._nodes[node_path] = m.Node()
 
-    print(f"\nNode registered: {node_path}")
+    print(f"Node registered: {node_path}")
 
   def get_node_path(self, node):
     print(f"Getting node path for: {node}")

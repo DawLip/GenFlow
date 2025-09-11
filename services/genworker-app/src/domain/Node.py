@@ -6,7 +6,6 @@ class Node:
 
   def return_data(self, target, data):
     self.outputs[target] = data
-    print(f"Returning data from node {target}: {data}")
 
   def get_data(self, target):
     return self.outputs[target]

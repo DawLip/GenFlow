@@ -32,6 +32,6 @@ class Domain:
 
     cls.file_system = FileSystem(cls, cls.file_repo)
     cls.task_scheduler = TaskScheduler(cls, TaskSchedulerGateway(Auth.token), cls.task_repo)
-    cls.auth = Auth.init(cls, AuthRepo(), AuthGateway(), UI.ui)
     cls.packages = Packages(cls, PackagesGateway.init(cls))
+    cls.auth = Auth.init(cls, AuthRepo(), AuthGateway(), UI.ui)
     cls.cpu_worker = CpuWorker(cls)

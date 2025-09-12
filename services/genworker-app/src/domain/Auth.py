@@ -1,3 +1,4 @@
+import json
 from sio.SIO import SIO
 
 class Auth:
@@ -28,6 +29,14 @@ class Auth:
     cls.authGateway = authGateway
     cls.uiService= uiService
     cls.domain = domain
+    
+    if "auth.json" in cls.domain.file_system.ls(""):
+      auth_data = json.loads(cls.domain.file_system.get_file("auth.json"))
+      cls.authRepo.login(auth_data["token"], auth_data["user_id"], auth_data["worker_name"])
+
+      cls.uiService.change_screen("dashboard")
+      cls.domain.SIO = SIO.init(cls.domain, auth_data["token"], auth_data["worker_name"])
+      cls.domain.task_scheduler.init(auth_data["user_id"], auth_data["worker_name"])
 
   @classmethod
   def login(cls, payload):
@@ -38,4 +47,8 @@ class Auth:
     cls.domain.SIO = SIO.init(cls.domain, token, payload["worker_name"])
     cls.domain.task_scheduler.init(userId, payload["worker_name"])
 
-    #cls.domain.file_system.save_file("test.txt", "Test content")
+    cls.domain.file_system.save_file("auth.json", json.dumps({
+      "token": token,
+      "user_id": userId,
+      "worker_name": payload["worker_name"]
+    }))

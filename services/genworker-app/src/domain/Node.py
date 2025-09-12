@@ -12,9 +12,6 @@ class Node:
   
   def execute(self, node, outcoming_ports, incoming_ports):
     print(f"\nExecuting node {node['data']['name']}: {node['id']}")
-    print(f"\nOutcoming ports: {outcoming_ports}")
-    print(f"\nIncoming ports: {incoming_ports}")
-    print(f"\nNode data: {node['data']}")
     
     node_to_execute = self.node_repo.get(self.node_repo.get_node_path(node))
     

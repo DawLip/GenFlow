@@ -2,16 +2,30 @@
   "type": "Default",
   "path": "Unified/Base",
   "package": "Diffusers",
-  "style": { "width": 4, "height": 5 },
+  "style": { "width": 4, "height": 6 },
   "data": {
     "name": "Txt2ImgUnified",
     "description": "This is a new node",
     "inputs": [
       {
+        "id": "model",
+        "label": "model",
+        "name": "model",
+        "default": "runwayml/stable-diffusion-v1-5",
+        "dataType": "STRING",
+        "widget": "Select",
+        "options": [
+          { "label": "runwayml/stable-diffusion-v1-5", "value": "runwayml/stable-diffusion-v1-5" },
+          { "label": "CompVis/stable-diffusion-v1-4", "value": "CompVis/stable-diffusion-v1-4" },
+          { "label": "stabilityai/stable-diffusion-2-base", "value": "stabilityai/stable-diffusion-2-base" },
+          { "label": "stabilityai/stable-diffusion-2", "value": "stabilityai/stable-diffusion-2" },
+          { "label": "hakurei/waifu-diffusion-v1-4", "value": "hakurei/waifu-diffusion-v1-4" }
+        ]
+      },{
         "id": "positivePrompt",
         "label": "positive prompt",
         "name": "positivePrompt",
-        "default": "a little cat",
+        "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
         "dataType": "TEXT",
         "widget": "LineInput"
       },
@@ -19,7 +33,7 @@
         "id": "negativePrompt",
         "label": "negative prompt",
         "name": "negativePrompt",
-        "default": "ugly, deformed, unnatural",
+        "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
         "dataType": "TEXT",
         "widget": "LineInput"
       },
@@ -62,6 +76,15 @@
         "default": 30,
         "dataType": "NUMBER",
         "widget": "NumberInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "imageOutput",
+        "label": "image",
+        "name": "imageOutput",
+        "dataType": "IMAGE",
+        "widget": "Label"
       }
     ]
   }

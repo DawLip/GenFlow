@@ -65,12 +65,12 @@ function NodeInputs({ node }: any) {
     <div className="flex-col gap-1 w-full py-1">
       {inputs && inputs.map((input: any, i: number) => (
         <div className="w-full relative" key={input.id}>
-          <Widget 
+          {<Widget 
             key={'input-' + input.id} 
             data={{...input, value: input.value, setValue: (value: string) => {
               dispatch(setInputValue({ flowID: flowId, nodeId: node.id, inputId: input.id, value }));
             }}} 
-          />
+          />}
           <div>
             <Handle
             type="target" 

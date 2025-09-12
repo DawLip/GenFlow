@@ -1,0 +1,19 @@
+{
+  "type": "Default",
+  "path": "Image/Base",
+  "package": "GenFlow",
+  "style": { "width": 4, "height": 2 },
+  "data": {
+    "name": "ImageSave",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "imageInput",
+        "label": "image",
+        "name": "imageInput",
+        "dataType": "IMAGE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

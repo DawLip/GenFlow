@@ -6,6 +6,7 @@
     "Text/Base/TextInput",
     "Text/Operations/TextConcat",
     "Number/Base/NumberInput",
+    "Image/Base/ImageSave",
     "File/Save/TextFileSave"
   ]
 }

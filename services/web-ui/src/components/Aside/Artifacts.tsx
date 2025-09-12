@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export function Artifacts({ children}: any) { 
   const dispatch = useDispatch<AppDispatch>();
-  const artifacts = useSelector((state: any) => state.artifacts.artifacts);
+  const artifacts = [...useSelector((state: any) => state.artifacts.artifacts)].reverse();
   return (
     <div className="flex-col gap-2 justify-start text-on_bg_gray/50 font-['Inter'] leading-none">
       {artifacts.map((artifact: any) => (

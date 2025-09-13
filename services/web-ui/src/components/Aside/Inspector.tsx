@@ -13,21 +13,17 @@ export function Inspector({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
   const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const selectedNodes = useSelector((state: any) => state.flows[flowID].selectedNodes);
+  const selectedNodes = flowID && useSelector((state: any) => state.flows[flowID].selectedNodes);
   
-  if (selectedNodes.length == 0) return <EmptyContent>Select a node</EmptyContent>;
-  if (selectedNodes.length > 1) return <EmptyContent>Select one node</EmptyContent>;
+  if (flowID && selectedNodes.length == 0) return <EmptyContent>Select a node</EmptyContent>;
+  if (flowID && selectedNodes.length > 1) return <EmptyContent>Select one node</EmptyContent>;
 
-  const selectedNode = selectedNodes[0];
-
-  return (
-    <>
-      <InspectorHeader selectedNode={selectedNode} />
-      <InspectorSection name='Transform'>TODO</InspectorSection>
-      <InspectorSection name='Inputs'>TODO</InspectorSection>
-      <InspectorSection name='Outputs'>TODO</InspectorSection>
-    </>
-  );
+  return selectedNodes && (<>
+    <InspectorHeader selectedNode={selectedNodes[0]} />
+    <InspectorSection name='Transform'>TODO</InspectorSection>
+    <InspectorSection name='Inputs'>TODO</InspectorSection>
+    <InspectorSection name='Outputs'>TODO</InspectorSection>
+  </>);
 }
 
 const InspectorHeader = ({ selectedNode }: any) => {

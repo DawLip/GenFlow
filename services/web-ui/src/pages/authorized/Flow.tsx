@@ -1,16 +1,10 @@
 'use client';
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  ReactFlow,
-  Controls,
-  Background,
+
   ReactFlowProvider,
-  BackgroundVariant,
-  Node,
-  Edge,
-  OnSelectionChangeParams,
   useReactFlow,
   useStore
 } from '@xyflow/react';
@@ -21,37 +15,28 @@ import {
   onNodesChange,
   onEdgesChange,
   onConnect,
-  setSelection,
   addNode,
 } from '@web-ui/store/slices/flowsSlice';
 
 import '@xyflow/react/dist/style.css';
 import { Aside } from '@web-ui/components/Aside/Aside';
 import { useSocket } from '@web-ui/socket/socket';
-import { DnDProvider, useDnD } from '../../utils/DnDContext';
-import { defaultNode } from '@web-ui/store/nodes/node.default';
-import { addNodeThunk } from '@web-ui/store/thunks/flow/addNodeThunk';
-import { onNodesChangeThunk } from '@web-ui/store/thunks/flow/onNodesChangeThunk';
-import { onEdgesChangeThunk } from '@web-ui/store/thunks/flow/onEdgesChangeThunk';
-import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
+import { DnDProvider } from '../../utils/DnDContext';
 
 import { featchNodesThunk } from '@web-ui/store/thunks/flow/featchNodesThunk';
-import { DefaultNode } from '@web-ui/components/node/DefaultNode';
 import { setPackages } from '@web-ui/store/slices/packagesSlice';
 import { newArtifact } from '@web-ui/store/slices/artifactsSlice';
+import { FlowWorkspace } from '@web-ui/components/FlowWorkspace';
 
 function Page() {
   const socket = useSocket();
   const dispatch = useDispatch<AppDispatch>();
 
   const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const nodes = useSelector((state: any) => state.flows[flowID].nodes);
-  const edges = useSelector((state: any) => state.flows[flowID].edges);
-  const selectedFlowName = useSelector((state: any) => state.flows[flowID].name);
-  const selectedFlowPath = useSelector((state: any) => state.flows[flowID].path);
-  const packages = useSelector((state: any) => state.packages.packages);
+  
+  const selectedFlowName = flowID && useSelector((state: any) => state.flows[flowID].name);
+  const selectedFlowPath = flowID && useSelector((state: any) => state.flows[flowID].path);
 
-  const [type, setType] = useDnD();
   const { getViewport } = useReactFlow();
   const [x, y, zoom] = useStore((s) => s.transform);
   
@@ -62,24 +47,7 @@ function Page() {
   
   const [remoteCursor, setRemoteCursor] = useState<{ x: number; y: number } | null>(null);
   const [mV, setMv] = useState(true);
-
-  const nodeTypes = {
-    Default: DefaultNode
-  }
-  const nodeTypes2 = useMemo(() => {
-    console.log("packages:", packages)
-    if (!packages.length) return {};
-    const nodes = {};
-
-    packages.forEach((pkg: any) => {
-      pkg.nodes.forEach((node: any) => {
-        nodes[`${node.package}/${node.path}/${node.data.name}`] = node
-      });
-    })
-;
-    return nodes
-  }, [packages]);
-  console.log("nodeTypes2:", nodeTypes2)
+  
 
   useEffect(() => {
     dispatch(featchNodesThunk(socket))
@@ -161,65 +129,6 @@ function Page() {
     };
   }, [socket]);
 
-  const onNodesChangeW = useMemo(
-    () =>throttle((changes: any) => {dispatch(onNodesChangeThunk({ flowID, nodes, changes }, socket));}, 100),
-    [dispatch, nodes],
-  );
-
-  const onEdgesChangeW = useMemo(
-    () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flowID, edges, changes }, socket));}, 100),
-    [dispatch, edges],
-  );
-
-  const onConnectW = useMemo(
-    () =>throttle((params: any) => {dispatch(onConnectThunk({ flowID, edges, params }, socket));}, 100),
-    [dispatch, edges],
-  );
-
-  const handleSelectionChange = useCallback(
-    ({ nodes }: OnSelectionChangeParams<Node, Edge>) => {
-      const selectedIds = nodes.map((n) => n.id);
-      dispatch(setSelection({ flowID, selectedNodesIDs: selectedIds }));
-    },
-    [dispatch, flowID],
-  );
-
-  const onDragOver = useCallback((event: React.DragEvent) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
-  }, []);
-
-  const onDrop = useCallback(
-    (event: React.DragEvent) => {
-      event.preventDefault();
-      if (!type) return;
-      const t = type;
-      const position = {
-        x: Math.floor((event.clientX - 190-32-48 - x)/zoom/64)*64,
-        y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
-      };
-      dispatch(addNodeThunk({ 
-        flowID, 
-        node: {
-          ...defaultNode,
-          // @ts-ignore
-          ...nodeTypes2[t],
-          style: {
-            // @ts-ignore
-            width: (nodeTypes2[t]?.style?.width || 2)*64,
-            // @ts-ignore
-            height: (nodeTypes2[t]?.style?.height || 2)*64,
-          },
-          id: crypto.randomUUID(),
-          position
-        }
-      }, socket));
-      // @ts-ignore
-      setType(null);
-    },
-    [type],
-  );
-
   return (
     <>
       <Aside tabs={['Hierarchy', 'Nodes', 'Files']} />
@@ -228,32 +137,7 @@ function Page() {
           top: remoteCursor.y * zoom + y + 48,
           left: remoteCursor.x * zoom + x + 270,
         }}></div>}
-        <ReactFlow
-          ref={reactFlowRef}
-          nodeTypes={nodeTypes}
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChangeW}
-          onEdgesChange={onEdgesChangeW}
-          onConnect={onConnectW}
-          onSelectionChange={handleSelectionChange}
-          onDrop={onDrop}
-          onDragOver={onDragOver}
-          snapToGrid
-          snapGrid={[64, 64]}
-          minZoom={0.01}
-          defaultViewport={{ x: 0, y: 0, zoom: 1 }}
-        >
-          <Background
-            id="1"
-            offset={[64, 64]}
-            gap={64}
-            size={1}
-            color="#F1E7FE"
-            variant={BackgroundVariant.Dots}
-          />
-          <Controls />
-        </ReactFlow>
+        {flowID && <FlowWorkspace reactFlowRef={reactFlowRef}/>}
       </div>
       <Aside tabs={['Inspector', 'Runs', 'Artifacts']} />
     </>

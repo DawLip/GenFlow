@@ -72,7 +72,7 @@ const createPackageItemTree = (packages:any[]) => {
   let currentNode = root;
 
   console.log("Creating package tree from:", packages)
-  packages.forEach((_package:any) => {
+  packages && packages.forEach((_package:any) => {
     root.addChild(new PackageItemNode(_package.name, "/"+_package.name));
     currentNode = root.children[root.children.length - 1];
     

@@ -11,10 +11,10 @@ export function Hierarchy({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
   const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const nodes = useSelector((state: any) => state.flows[flowID].nodes);
+  const nodes = flowID && useSelector((state: any) => state.flows[flowID].nodes);
 
-  const nodesS = useSelector((state: any) => state.flows[flowID].selectedNodes);
-  const edgesS = useSelector((state: any) => state.flows[flowID].selectedEgdes);
+  const nodesS = flowID && useSelector((state: any) => state.flows[flowID].selectedNodes);
+  const edgesS = flowID && useSelector((state: any) => state.flows[flowID].selectedEdges);
 
   const selectNode = (node:any) => {
     dispatch(setSelection({ flowID, selectedNodesIDs: [node.id] }));
@@ -26,7 +26,7 @@ export function Hierarchy({ }: any) {
         <div className="justify-start text-on_bg_gray/50 text-base font-normal font-['Inter'] leading-none">Find...</div>
       </div>
       <div className="flex-col justify-start items-start gap-1">
-        {nodes.map((node: Node) => (
+        {nodes && nodes.map((node: Node) => (
           <HierarchyNodeItem key={node.id} node={node} onClick={selectNode} />
         ))}
       </div>

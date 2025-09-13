@@ -1,0 +1,376 @@
+"filename", "language", "JSON", "JSON with Comments", "TypeScript", "Markdown", "Ignore", "Python", "JavaScript", "TypeScript JSX", "JavaScript JSX", "YAML", "PostCSS", "XML", "Protocol Buffers", "comment", "blank", "total"
+"/home/david/workspace/GenFlow/.prettierignore", "Ignore", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 5
+"/home/david/workspace/GenFlow/.prettierrc", "JSON", 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/README.md", "Markdown", 0, 0, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 42, 110
+"/home/david/workspace/GenFlow/compose/api-test.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/api.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/auth.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/email.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/gateway.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 15
+"/home/david/workspace/GenFlow/compose/genworker.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/graphql.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/infra/mongodb.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 9
+"/home/david/workspace/GenFlow/compose/infra/rabbitmq.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/infra/redis-commander.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 12
+"/home/david/workspace/GenFlow/compose/infra/redis.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 1, 14
+"/home/david/workspace/GenFlow/compose/logs/datasources/loki.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 3, 11
+"/home/david/workspace/GenFlow/compose/logs/grafana.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/compose/logs/loki-config.yaml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 34, 0, 0, 0, 0, 7, 41
+"/home/david/workspace/GenFlow/compose/logs/loki.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 12
+"/home/david/workspace/GenFlow/compose/logs/promtail-config.yaml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 5, 34
+"/home/david/workspace/GenFlow/compose/logs/promtail.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 10
+"/home/david/workspace/GenFlow/compose/project.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/socketio.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/team.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/user.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/compose/web-ui.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 13
+"/home/david/workspace/GenFlow/docker-compose.yml", "YAML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 157, 0, 0, 0, 4, 12, 173
+"/home/david/workspace/GenFlow/libs/proto/README.md", "Markdown", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4
+"/home/david/workspace/GenFlow/libs/proto/project.json", "JSON", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/libs/proto/src/auth/auth.client.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/david/workspace/GenFlow/libs/proto/src/auth/auth.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 47, 0, 10, 57
+"/home/david/workspace/GenFlow/libs/proto/src/auth/auth.ts", "TypeScript", 0, 0, 697, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 95, 798
+"/home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.client.ts", "TypeScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 5, 24
+"/home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 135, 0, 14, 149
+"/home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.ts", "TypeScript", 0, 0, 1995, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 234, 2238
+"/home/david/workspace/GenFlow/libs/proto/src/project/project.client.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 27
+"/home/david/workspace/GenFlow/libs/proto/src/project/project.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 125, 0, 19, 144
+"/home/david/workspace/GenFlow/libs/proto/src/project/project.ts", "TypeScript", 0, 0, 1989, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 234, 2229
+"/home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.client.ts", "TypeScript", 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 6, 29
+"/home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.ts", "TypeScript", 0, 0, 321, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 44, 371
+"/home/david/workspace/GenFlow/libs/proto/src/team/team.client.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/libs/proto/src/team/team.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 67, 0, 12, 79
+"/home/david/workspace/GenFlow/libs/proto/src/team/team.ts", "TypeScript", 0, 0, 1033, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 134, 1173
+"/home/david/workspace/GenFlow/libs/proto/src/user/user.client.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/david/workspace/GenFlow/libs/proto/src/user/user.proto", "Protocol Buffers", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 81, 0, 14, 95
+"/home/david/workspace/GenFlow/libs/proto/src/user/user.ts", "TypeScript", 0, 0, 1299, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 149, 1454
+"/home/david/workspace/GenFlow/libs/proto/tsconfig.json", "JSON with Comments", 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14
+"/home/david/workspace/GenFlow/libs/proto/tsconfig.lib.json", "JSON", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/libs/shared/README.md", "Markdown", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4
+"/home/david/workspace/GenFlow/libs/shared/project.json", "JSON", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/libs/shared/src/config/gRPC_client.config.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/david/workspace/GenFlow/libs/shared/src/config/pino.config.ts", "TypeScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 21
+"/home/david/workspace/GenFlow/libs/shared/src/default-exception.filter.ts", "TypeScript", 0, 0, 68, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10, 79
+"/home/david/workspace/GenFlow/libs/shared/src/grpc-exception.filter.ts", "TypeScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 21
+"/home/david/workspace/GenFlow/libs/shared/src/index.ts", "TypeScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"/home/david/workspace/GenFlow/libs/shared/src/schema/genworker.schema.ts", "TypeScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 25
+"/home/david/workspace/GenFlow/libs/shared/src/schema/project.shema.ts", "TypeScript", 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26, 91
+"/home/david/workspace/GenFlow/libs/shared/src/schema/task.shema.ts", "TypeScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 25
+"/home/david/workspace/GenFlow/libs/shared/src/schema/team.shema.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 22
+"/home/david/workspace/GenFlow/libs/shared/src/schema/user.shema.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 27
+"/home/david/workspace/GenFlow/libs/shared/src/service_name.ts", "TypeScript", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3
+"/home/david/workspace/GenFlow/libs/shared/src/services_config.ts", "TypeScript", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 35
+"/home/david/workspace/GenFlow/libs/shared/src/sharedServices/health.controller.ts", "TypeScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 20
+"/home/david/workspace/GenFlow/libs/shared/src/sharedServices/response.service.ts", "TypeScript", 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 43
+"/home/david/workspace/GenFlow/libs/shared/src/types/GenWorker.type.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9
+"/home/david/workspace/GenFlow/libs/shared/src/types/Project.type.ts", "TypeScript", 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 40
+"/home/david/workspace/GenFlow/libs/shared/src/types/Task.type.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/david/workspace/GenFlow/libs/shared/src/types/Team.type.ts", "TypeScript", 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10
+"/home/david/workspace/GenFlow/libs/shared/src/types/User.type.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 12
+"/home/david/workspace/GenFlow/libs/shared/tsconfig.json", "JSON with Comments", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/libs/shared/tsconfig.lib.json", "JSON", 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 15
+"/home/david/workspace/GenFlow/nx.json", "JSON", 62, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 63
+"/home/david/workspace/GenFlow/package-lock.json", "JSON", 27197, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 27198
+"/home/david/workspace/GenFlow/package.json", "JSON", 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 121
+"/home/david/workspace/GenFlow/services/api-test/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/api-test/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api-test/src/api/api.module.ts", "TypeScript", 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 7, 56
+"/home/david/workspace/GenFlow/services/api-test/src/api/api.service.ts", "TypeScript", 0, 0, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 55
+"/home/david/workspace/GenFlow/services/api-test/src/api/health.controller.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 19
+"/home/david/workspace/GenFlow/services/api-test/src/auth/auth.controller.ts", "TypeScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 21
+"/home/david/workspace/GenFlow/services/api-test/src/auth/auth.module.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api-test/src/auth/auth.service.ts", "TypeScript", 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 48
+"/home/david/workspace/GenFlow/services/api-test/src/email/email.controller.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/david/workspace/GenFlow/services/api-test/src/email/email.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api-test/src/email/email.provider.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/api-test/src/email/email.service.ts", "TypeScript", 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 25
+"/home/david/workspace/GenFlow/services/api-test/src/guards/auth.guard.ts", "TypeScript", 0, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 54
+"/home/david/workspace/GenFlow/services/api-test/src/guards/auth.public.ts", "TypeScript", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/api-test/src/main.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 29
+"/home/david/workspace/GenFlow/services/api-test/src/project/project.controller.ts", "TypeScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 35
+"/home/david/workspace/GenFlow/services/api-test/src/project/project.module.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api-test/src/project/project.service.ts", "TypeScript", 0, 0, 54, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 18, 72
+"/home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.controller.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.provider.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.service.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 24
+"/home/david/workspace/GenFlow/services/api-test/src/team/team.controller.ts", "TypeScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 35
+"/home/david/workspace/GenFlow/services/api-test/src/team/team.module.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api-test/src/team/team.service.ts", "TypeScript", 0, 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 61
+"/home/david/workspace/GenFlow/services/api-test/src/types/authenticated-request.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/api-test/src/user/user.controller.ts", "TypeScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 21
+"/home/david/workspace/GenFlow/services/api-test/src/user/user.module.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api-test/src/user/user.service.ts", "TypeScript", 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 54
+"/home/david/workspace/GenFlow/services/api-test/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/api-test/tsconfig.json", "JSON with Comments", 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"/home/david/workspace/GenFlow/services/api/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/api/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/api/src/api/api.module.ts", "TypeScript", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 49
+"/home/david/workspace/GenFlow/services/api/src/api/api.service.ts", "TypeScript", 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 43
+"/home/david/workspace/GenFlow/services/api/src/auth/auth.controller.ts", "TypeScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 32
+"/home/david/workspace/GenFlow/services/api/src/auth/auth.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api/src/auth/auth.service.ts", "TypeScript", 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 57
+"/home/david/workspace/GenFlow/services/api/src/email/email.controller.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/david/workspace/GenFlow/services/api/src/email/email.module.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13
+"/home/david/workspace/GenFlow/services/api/src/email/email.provider.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/api/src/email/email.service.ts", "TypeScript", 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 27
+"/home/david/workspace/GenFlow/services/api/src/genworker/genworker.controller.ts", "TypeScript", 0, 0, 44, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 53
+"/home/david/workspace/GenFlow/services/api/src/genworker/genworker.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api/src/genworker/genworker.service.ts", "TypeScript", 0, 0, 80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, 111
+"/home/david/workspace/GenFlow/services/api/src/guards/auth.guard.ts", "TypeScript", 0, 0, 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 54
+"/home/david/workspace/GenFlow/services/api/src/guards/auth.public.ts", "TypeScript", 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/api/src/main.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 29
+"/home/david/workspace/GenFlow/services/api/src/project/project.controller.ts", "TypeScript", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11, 54
+"/home/david/workspace/GenFlow/services/api/src/project/project.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api/src/project/project.service.ts", "TypeScript", 0, 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 72
+"/home/david/workspace/GenFlow/services/api/src/socketio/socketio.controller.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/david/workspace/GenFlow/services/api/src/socketio/socketio.module.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13
+"/home/david/workspace/GenFlow/services/api/src/socketio/socketio.provider.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/api/src/socketio/socketio.service.ts", "TypeScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"/home/david/workspace/GenFlow/services/api/src/team/team.controller.ts", "TypeScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 36
+"/home/david/workspace/GenFlow/services/api/src/team/team.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api/src/team/team.service.ts", "TypeScript", 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 59
+"/home/david/workspace/GenFlow/services/api/src/types/authenticated-request.ts", "TypeScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/api/src/user/user.controller.ts", "TypeScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 21
+"/home/david/workspace/GenFlow/services/api/src/user/user.module.ts", "TypeScript", 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 12
+"/home/david/workspace/GenFlow/services/api/src/user/user.service.ts", "TypeScript", 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 50
+"/home/david/workspace/GenFlow/services/api/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/api/tsconfig.json", "JSON with Comments", 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"/home/david/workspace/GenFlow/services/auth/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/auth/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/auth/src/auth/auth.controller.ts", "TypeScript", 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 45
+"/home/david/workspace/GenFlow/services/auth/src/auth/auth.module.ts", "TypeScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"/home/david/workspace/GenFlow/services/auth/src/auth/auth.service.ts", "TypeScript", 0, 0, 121, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 151
+"/home/david/workspace/GenFlow/services/auth/src/auth/email.provider.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/auth/src/main.ts", "TypeScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 35
+"/home/david/workspace/GenFlow/services/auth/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/auth/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/email/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/email/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/email/src/email/custom.provider.ts", "TypeScript", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/email/src/email/email.consumer.ts", "TypeScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 22
+"/home/david/workspace/GenFlow/services/email/src/email/email.module.ts", "TypeScript", 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 24
+"/home/david/workspace/GenFlow/services/email/src/email/email.service.ts", "TypeScript", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 21
+"/home/david/workspace/GenFlow/services/email/src/main.ts", "TypeScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 33
+"/home/david/workspace/GenFlow/services/email/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/email/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/gateway/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/gateway/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/gateway/src/app/app.module.ts", "TypeScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 23
+"/home/david/workspace/GenFlow/services/gateway/src/main.ts", "TypeScript", 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 33
+"/home/david/workspace/GenFlow/services/gateway/src/proxy/proxy.module.ts", "TypeScript", 0, 0, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 51
+"/home/david/workspace/GenFlow/services/gateway/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/gateway/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/genworker-app/project.json", "JSON", 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/AuthGateway.py", "Python", 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/PackagesGateway.py", "Python", 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 4, 14
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/TaskSchedulerGateway.py", "Python", 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 7, 36
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/AuthRepo.py", "Python", 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 8, 28
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/FilesRepo.py", "Python", 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 5, 16
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/NodeRepo.py", "Python", 0, 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0, 12, 31
+"/home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/TaskRepo.py", "Python", 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 7, 17
+"/home/david/workspace/GenFlow/services/genworker-app/src/dispatch.py", "Python", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 2, 8
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/Auth.py", "Python", 0, 0, 0, 0, 0, 43, 0, 0, 0, 0, 0, 0, 0, 0, 12, 55
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/CpuWorker.py", "Python", 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 1, 8, 26
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/Domain.py", "Python", 0, 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 10, 37
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/FileSystem.py", "Python", 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 5, 17
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/Node.py", "Python", 0, 0, 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 10, 32
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/Packages.py", "Python", 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 12, 38
+"/home/david/workspace/GenFlow/services/genworker-app/src/domain/TaskScheduler.py", "Python", 0, 0, 0, 0, 0, 66, 0, 0, 0, 0, 0, 0, 0, 1, 20, 87
+"/home/david/workspace/GenFlow/services/genworker-app/src/event_queue.py", "Python", 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4
+"/home/david/workspace/GenFlow/services/genworker-app/src/main.py", "Python", 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 8, 22
+"/home/david/workspace/GenFlow/services/genworker-app/src/sio/SIO.py", "Python", 0, 0, 0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 0, 0, 12, 64
+"/home/david/workspace/GenFlow/services/genworker-app/src/ui/UI.py", "Python", 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/services/genworker-app/src/ui/console/DashboardScreen.py", "Python", 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10
+"/home/david/workspace/GenFlow/services/genworker-app/src/ui/console/LoginScreen.py", "Python", 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 5, 19
+"/home/david/workspace/GenFlow/services/genworker-app/src/ui/console/consoleUI.py", "Python", 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 7, 28
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/auth.json", "JSON", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/Unified/Base/Txt2ImgUnified/Txt2ImgUnified.json", "JSON", 91, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 92
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/Unified/Base/Txt2ImgUnified/Txt2ImgUnified.py", "Python", 0, 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 9, 46
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/config.json", "JSON", 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/File/Save/TextFileSave/TextFileSave.json", "JSON", 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/File/Save/TextFileSave/TextFileSave.py", "Python", 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 2, 17
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Image/Base/ImageSave/ImageSave.json", "JSON", 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Image/Base/ImageSave/ImageSave.py", "Python", 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 0, 6, 29
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Number/Base/NumberInput/NumberInput.json", "JSON", 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 29
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Number/Base/NumberInput/NumberInput.py", "Python", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Base/TextInput/TextInput.json", "JSON", 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 29
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Base/TextInput/TextInput.py", "Python", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Operations/TextConcat/TextConcat.json", "JSON", 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 36
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Operations/TextConcat/TextConcat.py", "Python", 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/config.json", "JSON", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12
+"/home/david/workspace/GenFlow/services/genworker/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/genworker/project.json", "JSON", 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 13
+"/home/david/workspace/GenFlow/services/genworker/src/genworker/genworker.controller.ts", "TypeScript", 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 88
+"/home/david/workspace/GenFlow/services/genworker/src/genworker/genworker.module.ts", "TypeScript", 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 43
+"/home/david/workspace/GenFlow/services/genworker/src/genworker/services/genworker.service.ts", "TypeScript", 0, 0, 103, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 130
+"/home/david/workspace/GenFlow/services/genworker/src/genworker/services/task.service.ts", "TypeScript", 0, 0, 74, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 86
+"/home/david/workspace/GenFlow/services/genworker/src/genworker/services/task_queue.service.ts", "TypeScript", 0, 0, 157, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 60, 224
+"/home/david/workspace/GenFlow/services/genworker/src/main.ts", "TypeScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 33
+"/home/david/workspace/GenFlow/services/genworker/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/genworker/tsconfig.json", "JSON with Comments", 0, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 35
+"/home/david/workspace/GenFlow/services/graphql/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/graphql/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/graphql/src/app/app.module.ts", "TypeScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 20
+"/home/david/workspace/GenFlow/services/graphql/src/main.ts", "TypeScript", 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 22
+"/home/david/workspace/GenFlow/services/graphql/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/graphql/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/project/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/project/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/project/src/main.ts", "TypeScript", 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 45
+"/home/david/workspace/GenFlow/services/project/src/project/project.controller.ts", "TypeScript", 0, 0, 56, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 67
+"/home/david/workspace/GenFlow/services/project/src/project/project.module.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 30
+"/home/david/workspace/GenFlow/services/project/src/project/project.service.ts", "TypeScript", 0, 0, 159, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43, 202
+"/home/david/workspace/GenFlow/services/project/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/project/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/socket.io/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/socket.io/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/socket.io/src/app/app.module.ts", "TypeScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 25
+"/home/david/workspace/GenFlow/services/socket.io/src/app/notifications.gateway.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"/home/david/workspace/GenFlow/services/socket.io/src/app/socket.controller.ts", "TypeScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 31
+"/home/david/workspace/GenFlow/services/socket.io/src/app/socket.gateway.ts", "TypeScript", 0, 0, 69, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 84
+"/home/david/workspace/GenFlow/services/socket.io/src/app/socket.service.ts", "TypeScript", 0, 0, 123, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 37, 162
+"/home/david/workspace/GenFlow/services/socket.io/src/main.ts", "TypeScript", 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 61
+"/home/david/workspace/GenFlow/services/socket.io/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/socket.io/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/team/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/team/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/team/src/main.ts", "TypeScript", 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 36
+"/home/david/workspace/GenFlow/services/team/src/team/team.controller.ts", "TypeScript", 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 50
+"/home/david/workspace/GenFlow/services/team/src/team/team.module.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 30
+"/home/david/workspace/GenFlow/services/team/src/team/team.service.ts", "TypeScript", 0, 0, 86, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 106
+"/home/david/workspace/GenFlow/services/team/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/team/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/user/package.json", "JSON", 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 46
+"/home/david/workspace/GenFlow/services/user/project.json", "JSON", 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 11
+"/home/david/workspace/GenFlow/services/user/src/main.ts", "TypeScript", 0, 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 33
+"/home/david/workspace/GenFlow/services/user/src/user/user.controller.ts", "TypeScript", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 39
+"/home/david/workspace/GenFlow/services/user/src/user/user.module.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 30
+"/home/david/workspace/GenFlow/services/user/src/user/user.service.ts", "TypeScript", 0, 0, 105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21, 126
+"/home/david/workspace/GenFlow/services/user/tsconfig.app.json", "JSON", 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 15
+"/home/david/workspace/GenFlow/services/user/tsconfig.json", "JSON with Comments", 0, 33, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 34
+"/home/david/workspace/GenFlow/services/web-ui/index.d.ts", "TypeScript", 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 7
+"/home/david/workspace/GenFlow/services/web-ui/next-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 2, 7
+"/home/david/workspace/GenFlow/services/web-ui/next.config.js", "JavaScript", 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 8, 5, 21
+"/home/david/workspace/GenFlow/services/web-ui/package.json", "JSON", 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"/home/david/workspace/GenFlow/services/web-ui/postcss.config.js", "JavaScript", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/GUI_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_center_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_end_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_start_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/arow_left_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_down_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_right_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_up_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/cross_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/dashboard_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/executive_servers_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 5
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/flow_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/flows_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 5
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/genworkers_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 5
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/info_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/play_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/plugins_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/plus_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_default_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_down_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_left_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_right_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_up_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/profileimage_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 5
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/settings_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/swap_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/icons/template_icon.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 1, 4
+"/home/david/workspace/GenFlow/services/web-ui/public/images/logo_full.svg", "XML", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/forgot-password/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 3, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 5, 16
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/login/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 3, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/register/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 3, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/dashboard/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/executive-servers/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/flow/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/flows/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/genworkers/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 4, 20
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/plugins/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/settings/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/confirm-email/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 3, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 0, 10, 51
+"/home/david/workspace/GenFlow/services/web-ui/src/app/globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 0, 0, 1, 9, 38
+"/home/david/workspace/GenFlow/services/web-ui/src/app/layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 4, 30
+"/home/david/workspace/GenFlow/services/web-ui/src/app/page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Artifacts.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 2, 19
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Aside.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 0, 0, 0, 0, 4, 56
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/EmptyContent.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 1, 9
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Hierarchy.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 8, 50
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Inspector.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 60, 0, 0, 0, 0, 0, 0, 8, 68
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Nodes.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 83, 0, 0, 0, 0, 0, 1, 13, 97
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Button.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 10
+"/home/david/workspace/GenFlow/services/web-ui/src/components/ExternalNodeRenderer.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 0, 0, 3, 7, 50
+"/home/david/workspace/GenFlow/services/web-ui/src/components/FlowWorkspace.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 130, 0, 0, 0, 0, 0, 4, 20, 154
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Header.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 5, 20
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Icon.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 3, 10
+"/home/david/workspace/GenFlow/services/web-ui/src/components/Nav.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 3, 31
+"/home/david/workspace/GenFlow/services/web-ui/src/components/TopBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 4, 28
+"/home/david/workspace/GenFlow/services/web-ui/src/components/inputs/TextInput.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 1, 22
+"/home/david/workspace/GenFlow/services/web-ui/src/components/node/DefaultNode.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 135, 0, 0, 0, 0, 0, 2, 16, 153
+"/home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/LabelWidget.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 1, 15
+"/home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/LineInputWidget.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 1, 24
+"/home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/NumberInputWidget.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 1, 21
+"/home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/SelectWidget.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 1, 28
+"/home/david/workspace/GenFlow/services/web-ui/src/hooks/useAuth.ts", "TypeScript", 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 38
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/auth/ForgotPassword.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/auth/Login.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 9, 51
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/auth/Register.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 46, 0, 0, 0, 0, 0, 0, 7, 53
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/ConfirmEmail.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 42, 0, 0, 0, 0, 0, 0, 6, 48
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Dashboard.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 7, 87
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/ExecutiveServers.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Flow.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 126, 0, 0, 0, 0, 0, 1, 31, 158
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Flows.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Genworkers.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 209, 0, 0, 0, 0, 0, 0, 22, 231
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Plugins.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Settings.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 6, 29
+"/home/david/workspace/GenFlow/services/web-ui/src/pages/unauthorized/Welcome.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 3, 32
+"/home/david/workspace/GenFlow/services/web-ui/src/socket/SocketProvider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/services/web-ui/src/socket/socket.ts", "TypeScript", 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 13
+"/home/david/workspace/GenFlow/services/web-ui/src/store/flow.default.ts", "TypeScript", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7
+"/home/david/workspace/GenFlow/services/web-ui/src/store/flow.type.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 17
+"/home/david/workspace/GenFlow/services/web-ui/src/store/index.ts", "TypeScript", 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 27
+"/home/david/workspace/GenFlow/services/web-ui/src/store/nodes/node.default.ts", "TypeScript", 0, 0, 61, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 61
+"/home/david/workspace/GenFlow/services/web-ui/src/store/nodes/nodesRegistry.ts", "TypeScript", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 22
+"/home/david/workspace/GenFlow/services/web-ui/src/store/nodes/packets/GenFlow/Text/TextInput.json", "JSON", 28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 29
+"/home/david/workspace/GenFlow/services/web-ui/src/store/nodes/packets/GenFlow/config.json", "JSON", 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8
+"/home/david/workspace/GenFlow/services/web-ui/src/store/provider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 1, 7
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/artifactsSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 0, 4, 39
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/authSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 0, 0, 2, 40
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/clientSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 47, 0, 0, 0, 0, 0, 0, 2, 49
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/defaults/defaultNode.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 78, 0, 0, 0, 0, 0, 0, 0, 78
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/flowsSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 0, 0, 0, 1, 6, 69
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/packagesSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 2, 31
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/projectSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0, 0, 0, 0, 6, 60
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/sessionSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 3, 29
+"/home/david/workspace/GenFlow/services/web-ui/src/store/slices/teamSlice.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 41, 0, 0, 0, 0, 0, 0, 3, 44
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/loginThunk.ts", "TypeScript", 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 41
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/logoutThunk.ts", "TypeScript", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 19
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/registerThunk.ts", "TypeScript", 0, 0, 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 40
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/client/fetchClientThunk.ts", "TypeScript", 0, 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 49
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/client/verifyEmailThunk.ts", "TypeScript", 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 22
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/addNodeThunk.ts", "TypeScript", 0, 0, 18, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 19
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/assignGenWorkerToFlowThunk.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/createFlowThunk.ts", "TypeScript", 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 33
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/executeFlowThunk.ts", "TypeScript", 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 29
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/featchNodesThunk.ts", "TypeScript", 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onConnectThunk.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onEdgesChangeThunk.ts", "TypeScript", 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 15
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onNodesChangeThunk.ts", "TypeScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 14
+"/home/david/workspace/GenFlow/services/web-ui/src/store/thunks/nodes/loadNodesThunk.ts", "TypeScript", 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"/home/david/workspace/GenFlow/services/web-ui/src/utils/DnDContext.jsx", "JavaScript JSX", 0, 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 5, 19
+"/home/david/workspace/GenFlow/services/web-ui/src/utils/apollo-client.ts", "TypeScript", 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"/home/david/workspace/GenFlow/services/web-ui/src/utils/config.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/david/workspace/GenFlow/services/web-ui/src/utils/fetchServer.ts", "TypeScript", 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 17
+"/home/david/workspace/GenFlow/services/web-ui/tailwind.config.js", "JavaScript", 0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 1, 3, 36
+"/home/david/workspace/GenFlow/services/web-ui/tsconfig.json", "JSON with Comments", 0, 51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, 1, 60
+"/home/david/workspace/GenFlow/tsconfig.base.json", "JSON", 46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 51
+"/home/david/workspace/GenFlow/tsconfig.json", "JSON with Comments", 0, 41, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 51
+"Total", "-", 28522, 481, 11473, 72, 4, 540, 46, 1967, 14, 466, 28, 98, 478, 113, 2632, 46934

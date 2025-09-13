@@ -5,5 +5,9 @@ export type Team = {
   name: string;
   owner: Types.ObjectId;         
   members: Types.ObjectId[];       
-  projects: Types.ObjectId[];      
+  projects: Types.ObjectId[];     
+
+  master_genworker: Types.ObjectId | null;
+  storage_genworkers: Types.ObjectId[] | null;
+  genworkers: Types.ObjectId[] | null;
 };

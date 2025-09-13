@@ -97,11 +97,24 @@ export interface GenWorkerAssignRequest {
   genworkerId: string;
 }
 
+export interface GenWorkerAssignToTeamRequest {
+  genworkerId: string;
+  teamId: string;
+  role: string;
+}
+
+export interface GenWorkerAssignToProjectRequest {
+  genworkerId: string;
+  projectId: string;
+  role: string;
+}
+
 export interface GenWorkerAssignToFlowRequest {
   genworkerId: string;
   projectId: string;
   flowName: string;
   path: string;
+  role: string;
 }
 
 export interface GetGenWorkersAssignedToFlowRequest {
@@ -136,6 +149,9 @@ export interface GenWorker {
   name: string;
   path: string;
   isActive: boolean;
+  assignedTeams: string[];
+  assignedProjects: string[];
+  assignedFlows: string[];
 }
 
 export interface Task {
@@ -1463,8 +1479,192 @@ export const GenWorkerAssignRequest: MessageFns<GenWorkerAssignRequest> = {
   },
 };
 
+function createBaseGenWorkerAssignToTeamRequest(): GenWorkerAssignToTeamRequest {
+  return { genworkerId: "", teamId: "", role: "" };
+}
+
+export const GenWorkerAssignToTeamRequest: MessageFns<GenWorkerAssignToTeamRequest> = {
+  encode(message: GenWorkerAssignToTeamRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.genworkerId !== "") {
+      writer.uint32(10).string(message.genworkerId);
+    }
+    if (message.teamId !== "") {
+      writer.uint32(18).string(message.teamId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorkerAssignToTeamRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorkerAssignToTeamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorkerAssignToTeamRequest {
+    return {
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+    };
+  },
+
+  toJSON(message: GenWorkerAssignToTeamRequest): unknown {
+    const obj: any = {};
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorkerAssignToTeamRequest>): GenWorkerAssignToTeamRequest {
+    return GenWorkerAssignToTeamRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorkerAssignToTeamRequest>): GenWorkerAssignToTeamRequest {
+    const message = createBaseGenWorkerAssignToTeamRequest();
+    message.genworkerId = object.genworkerId ?? "";
+    message.teamId = object.teamId ?? "";
+    message.role = object.role ?? "";
+    return message;
+  },
+};
+
+function createBaseGenWorkerAssignToProjectRequest(): GenWorkerAssignToProjectRequest {
+  return { genworkerId: "", projectId: "", role: "" };
+}
+
+export const GenWorkerAssignToProjectRequest: MessageFns<GenWorkerAssignToProjectRequest> = {
+  encode(message: GenWorkerAssignToProjectRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.genworkerId !== "") {
+      writer.uint32(10).string(message.genworkerId);
+    }
+    if (message.projectId !== "") {
+      writer.uint32(18).string(message.projectId);
+    }
+    if (message.role !== "") {
+      writer.uint32(26).string(message.role);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorkerAssignToProjectRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorkerAssignToProjectRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.projectId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorkerAssignToProjectRequest {
+    return {
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+      projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
+    };
+  },
+
+  toJSON(message: GenWorkerAssignToProjectRequest): unknown {
+    const obj: any = {};
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    if (message.projectId !== "") {
+      obj.projectId = message.projectId;
+    }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorkerAssignToProjectRequest>): GenWorkerAssignToProjectRequest {
+    return GenWorkerAssignToProjectRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorkerAssignToProjectRequest>): GenWorkerAssignToProjectRequest {
+    const message = createBaseGenWorkerAssignToProjectRequest();
+    message.genworkerId = object.genworkerId ?? "";
+    message.projectId = object.projectId ?? "";
+    message.role = object.role ?? "";
+    return message;
+  },
+};
+
 function createBaseGenWorkerAssignToFlowRequest(): GenWorkerAssignToFlowRequest {
-  return { genworkerId: "", projectId: "", flowName: "", path: "" };
+  return { genworkerId: "", projectId: "", flowName: "", path: "", role: "" };
 }
 
 export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowRequest> = {
@@ -1480,6 +1680,9 @@ export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowReque
     }
     if (message.path !== "") {
       writer.uint32(34).string(message.path);
+    }
+    if (message.role !== "") {
+      writer.uint32(42).string(message.role);
     }
     return writer;
   },
@@ -1523,6 +1726,14 @@ export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowReque
           message.path = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.role = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1538,6 +1749,7 @@ export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowReque
       projectId: isSet(object.projectId) ? globalThis.String(object.projectId) : "",
       flowName: isSet(object.flowName) ? globalThis.String(object.flowName) : "",
       path: isSet(object.path) ? globalThis.String(object.path) : "",
+      role: isSet(object.role) ? globalThis.String(object.role) : "",
     };
   },
 
@@ -1555,6 +1767,9 @@ export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowReque
     if (message.path !== "") {
       obj.path = message.path;
     }
+    if (message.role !== "") {
+      obj.role = message.role;
+    }
     return obj;
   },
 
@@ -1567,6 +1782,7 @@ export const GenWorkerAssignToFlowRequest: MessageFns<GenWorkerAssignToFlowReque
     message.projectId = object.projectId ?? "";
     message.flowName = object.flowName ?? "";
     message.path = object.path ?? "";
+    message.role = object.role ?? "";
     return message;
   },
 };
@@ -1952,7 +2168,16 @@ export const FindTaskResponse: MessageFns<FindTaskResponse> = {
 };
 
 function createBaseGenWorker(): GenWorker {
-  return { id: "", ownerId: "", name: "", path: "", isActive: false };
+  return {
+    id: "",
+    ownerId: "",
+    name: "",
+    path: "",
+    isActive: false,
+    assignedTeams: [],
+    assignedProjects: [],
+    assignedFlows: [],
+  };
 }
 
 export const GenWorker: MessageFns<GenWorker> = {
@@ -1971,6 +2196,15 @@ export const GenWorker: MessageFns<GenWorker> = {
     }
     if (message.isActive !== false) {
       writer.uint32(40).bool(message.isActive);
+    }
+    for (const v of message.assignedTeams) {
+      writer.uint32(50).string(v!);
+    }
+    for (const v of message.assignedProjects) {
+      writer.uint32(58).string(v!);
+    }
+    for (const v of message.assignedFlows) {
+      writer.uint32(66).string(v!);
     }
     return writer;
   },
@@ -2022,6 +2256,30 @@ export const GenWorker: MessageFns<GenWorker> = {
           message.isActive = reader.bool();
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.assignedTeams.push(reader.string());
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.assignedProjects.push(reader.string());
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.assignedFlows.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -2038,6 +2296,15 @@ export const GenWorker: MessageFns<GenWorker> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       path: isSet(object.path) ? globalThis.String(object.path) : "",
       isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+      assignedTeams: globalThis.Array.isArray(object?.assignedTeams)
+        ? object.assignedTeams.map((e: any) => globalThis.String(e))
+        : [],
+      assignedProjects: globalThis.Array.isArray(object?.assignedProjects)
+        ? object.assignedProjects.map((e: any) => globalThis.String(e))
+        : [],
+      assignedFlows: globalThis.Array.isArray(object?.assignedFlows)
+        ? object.assignedFlows.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
@@ -2058,6 +2325,15 @@ export const GenWorker: MessageFns<GenWorker> = {
     if (message.isActive !== false) {
       obj.isActive = message.isActive;
     }
+    if (message.assignedTeams?.length) {
+      obj.assignedTeams = message.assignedTeams;
+    }
+    if (message.assignedProjects?.length) {
+      obj.assignedProjects = message.assignedProjects;
+    }
+    if (message.assignedFlows?.length) {
+      obj.assignedFlows = message.assignedFlows;
+    }
     return obj;
   },
 
@@ -2071,6 +2347,9 @@ export const GenWorker: MessageFns<GenWorker> = {
     message.name = object.name ?? "";
     message.path = object.path ?? "";
     message.isActive = object.isActive ?? false;
+    message.assignedTeams = object.assignedTeams?.map((e) => e) || [];
+    message.assignedProjects = object.assignedProjects?.map((e) => e) || [];
+    message.assignedFlows = object.assignedFlows?.map((e) => e) || [];
     return message;
   },
 };

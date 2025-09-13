@@ -15,7 +15,13 @@ export class GenWorker {
   ownerId!: Types.ObjectId;
 
   @Prop({ required: true })
-  projects!: string[];
+  assignedTeams!: string[];
+
+  @Prop({ required: true })
+  assignedProjects!: string[];
+
+  @Prop({ required: true })
+  assignedFlows!: string[];
 
   @Prop({ required: true, default: false })
   isActive!: boolean;

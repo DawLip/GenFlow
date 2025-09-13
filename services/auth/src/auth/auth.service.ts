@@ -86,7 +86,7 @@ export class AuthService implements OnModuleInit {
       name: `Private`,
       owner: new_user.user?.id || '',
       members: [new_user.user?.id || ''],
-      projects: [createdProject.id || ''],
+      projects: [createdProject.id || '']
     }));
     if (!createdTeam.res?.ok) return this.response.error({res:{msg:"team creation failed"},}, {context:"register", createdTeam});
 

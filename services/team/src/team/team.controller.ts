@@ -8,7 +8,9 @@ import {
   LeaveRequest,
   LeaveResponse,
   FindByUserIdRequest,
-  FindByUserIdResponse
+  FindByUserIdResponse,
+  AssignGenworkerToTeamRequest,
+  DefaultResponse
 } from '@proto/team/team';
 import { TeamService } from '@team/team/team.service';
 
@@ -45,5 +47,10 @@ export class TeamController {
   @GrpcMethod('TeamService', 'Leave')
   async leave(data: LeaveRequest): Promise<LeaveResponse> {
     return await this.teamService.leave(data);
+  }
+
+  @GrpcMethod('TeamService', 'AssignGenworkerToTeam')
+  async assignGenworkerToTeam(data: AssignGenworkerToTeamRequest): Promise<DefaultResponse> {
+    return await this.teamService.assignGenworkerToTeam(data);
   }
 }

@@ -191,9 +191,27 @@ export class TaskQueueService implements OnModuleInit {
     return this.response.success({res:{msg:"genworker assigned"}}, {context})
   }
 
-  async genWorkerAssignToFlow(data) {
-    const context = 'genWorkerAssignToFlow';
-    
+   async genworkerAssignToTeam(data) {
+    const context = 'genWorkerAssignToTeam';
+
+    const genworkerId = await this.getGenworkerId(data.genworkerId)
+    this.genworkerService.assignToTeam({...data, genworkerId})
+
+    return this.response.success({res:{msg:"genworker assigned to team"}}, {context})
+  }
+
+   async genworkerAssignToProject(data) {
+    const context = 'genWorkerAssignToProject';
+
+    const genworkerId = await this.getGenworkerId(data.genworkerId)
+    this.genworkerService.assignToProject({...data, genworkerId})
+
+    return this.response.success({res:{msg:"genworker assigned to project"}}, {context})
+  }
+
+  async genworkerAssignToFlow(data) {
+    const context = 'genworkerAssignToFlow';
+
     const genworkerId = await this.getGenworkerId(data.genworkerId)
     this.genworkerService.assignToFlow({...data, genworkerId})
 

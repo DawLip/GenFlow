@@ -32,6 +32,9 @@ export class ProjectService {
   async create(data:CreateRequest):Promise<CreateResponse> {
     const createdProject:Project|any = await this.projectModel.create({
       flows:[],
+      master_genworker: null,
+      storage_genworker: null,
+      genworkers: [],
       ...data
     });
     return this.response.success({res:{msg:"project created"}, id: createdProject._id.toString(),}, {context:"create"});
@@ -100,7 +103,10 @@ export class ProjectService {
   async createFlow(data:CreateFlowRequest):Promise<CreateFlowResponse> {
     const updatedProject = await this.projectModel.findByIdAndUpdate(
       data.id,
-      { $addToSet: { flows: { ...data.flow } } },
+      { $addToSet: { flows: { 
+        genworkers: [],
+        ...data.flow,
+      }}},
       { new: true },
     );
 
@@ -185,16 +191,29 @@ export class ProjectService {
     }
   }
 
-  async assignGenworker(data){ 
+  async assignGenworkerToFlow(data){ 
     data.path = data.path=="//" ? "/" : data.path;
     const project = await this.projectModel.findById(data.projectId);
+    console.log("assignGenworkerToFlow data:", data, project);
     const flow = project?.flows.find(flow => flow.name === data.flowName && flow.path === data.path);
     
     if (!flow) return this.response.fail({res:{msg:"flow not found"}}, {context:"assignGenworker", data});
     if(!flow?.genworkers) flow.genworkers = [];
+    if(!flow?.genworkers.filter(gw=>gw==data.genworkerId).length) flow.genworkers.push(data.genworkerId);
 
-    flow.genworkers.push(data.genworkerId);
-    await project?.save();  
+    await project?.save();
+
+    return this.response.success({res:{msg:"worker assigned to project"}}, {});
+  }
+
+  async assignGenworkerToProject(data){ 
+    const project = await this.projectModel.findById(data.projectId);
+    if (!project) return this.response.fail({res:{msg:"project not found"}}, {context:"assignGenworker", data});
+    
+    if(!project?.genworkers) project.genworkers = [];
+    if(!project?.genworkers.filter(gw=>gw==data.genworkerId).length) project.genworkers.push(data.genworkerId);
+
+    await project?.save();
 
     return this.response.success({res:{msg:"worker assigned to project"}}, {});
   }

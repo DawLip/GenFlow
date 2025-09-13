@@ -14,6 +14,7 @@ import { ResponseService } from '@libs/shared/src/sharedServices/response.servic
 import { firstValueFrom } from 'rxjs';
 import { ProjectServiceClient } from '@proto/project/project.client';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
+import { TeamServiceClient } from '@proto/team/team.client';
 
 
 @Injectable()
@@ -22,8 +23,13 @@ export class GenWorkerService implements OnModuleInit {
   private projectClient:ClientGrpc;
   private projectService:ProjectServiceClient;
 
+  @Client(gRPC_client('team'))
+  private teamClient:ClientGrpc;
+  private teamService:TeamServiceClient;
+
   onModuleInit() {
     this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
+    this.teamService = this.teamClient.getService<TeamServiceClient>('TeamService');
   }
 
   constructor(
@@ -53,6 +59,38 @@ export class GenWorkerService implements OnModuleInit {
 
     return this.response.success({res:{msg:"GenWorker updated"}}, {context});
   }
+  async assignToTeam(data) {
+    const context = 'assignToFlow';
+
+    const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
+      data.genworkerId,
+      { $addToSet: { assignedTeams: `${data.teamId}` } },
+      { new: true },
+    );
+
+    if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
+
+    await firstValueFrom(this.teamService.assignGenworkerToTeam(data));
+
+    return this.response.success({res:{msg:"GenWorker assigned to team"}}, {context});
+  }
+
+  async assignToProject(data) {
+    const context = 'assignToProject';
+
+    const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
+      data.genworkerId,
+      { $addToSet: { assignedProjects: `${data.projectId}` } },
+      { new: true },
+    );
+
+    if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
+
+    await firstValueFrom(this.projectService.assignGenworkerToProject(data));
+
+    return this.response.success({res:{msg:"GenWorker assigned to project"}}, {context});
+  }
+
   async assignToFlow(data) {
     const context = 'assignToFlow';
 
@@ -60,13 +98,13 @@ export class GenWorkerService implements OnModuleInit {
 
     const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
       data.genworkerId,
-      { $addToSet: { projects: `${data.projectId}:${path}${data.flowName}` } },
+      { $addToSet: { assignedFlows: `${data.projectId}:${path}${data.flowName}` } },
       { new: true },
     );
 
     if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
 
-    await firstValueFrom(this.projectService.assignGenworker(data));
+    await firstValueFrom(this.projectService.assignGenworkerToFlow(data));
 
     return this.response.success({res:{msg:"GenWorker assigned to flow"}}, {context});
   }

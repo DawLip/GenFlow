@@ -13,7 +13,8 @@ service ProjectService {
   rpc FindOneByNameFlow(FindOneByNameFlowRequest) returns (FindFlowResponse);
   rpc FindByTeamId(FindByTeamIdRequest) returns (FindByTeamIdResponse);
 
-  rpc AssignGenworker(AssignGenworkerRequest) returns (DefaultResponse);
+  rpc AssignGenworkerToFlow(AssignGenworkerToFlowRequest) returns (DefaultResponse);
+  rpc AssignGenworkerToProject(AssignGenworkerToProjectRequest) returns (DefaultResponse);
 }
 
 message DefaultResponse {
@@ -100,11 +101,16 @@ message FindByTeamIdResponse {
   repeated Project projects = 2;
 }
 
-message AssignGenworkerRequest {
+message AssignGenworkerToFlowRequest {
   string projectId = 1;
   string flowName = 2;
   string path = 3;
   string genworkerId = 4;
+}
+
+message AssignGenworkerToProjectRequest {
+  string projectId = 1;
+  string genworkerId = 2;
 }
 
 message Project{
@@ -113,6 +119,10 @@ message Project{
   string description = 3;
   string owner = 4;
   repeated Flow flows = 5;
+
+  string master_genworker = 6;
+  string storage_genworker = 7;
+  repeated string genworkers = 8;
 }
 
 message Flow {
@@ -122,7 +132,8 @@ message Flow {
   string type = 4;
   repeated Node nodes = 5;
   repeated Edge edges = 6;
-  repeated string genworkers = 7;
+
+  repeated string genworkers = 9;
 }
 
 message Node {

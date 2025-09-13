@@ -27,6 +27,8 @@ export type Flow = {
   description: string;
   type: string;
   nodes: Node[];
+
+  genworkers: Types.ObjectId[];
 };
 
 export type Project = {
@@ -35,5 +37,8 @@ export type Project = {
   description: string;
   owner: Types.ObjectId; 
   flows: Flow[];
+
+  master_genworker: Types.ObjectId | null;
+  storage_genworker: Types.ObjectId | null;
   genworkers: Types.ObjectId[];
 };

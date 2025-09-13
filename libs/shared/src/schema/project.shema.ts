@@ -68,7 +68,7 @@ export class Flow {
   @Prop({ required: true })
   path!: string;
 
-  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', required: true })
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', default: [] })
   genworkers!: Types.ObjectId[];
 }
 const FlowSchema = SchemaFactory.createForClass(Flow);
@@ -86,5 +86,14 @@ export class Project {
 
   @Prop({ type: [FlowSchema], required: true })
   flows!: Flow[];
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Genworkers', default: null })
+  master_genworker!: Types.ObjectId | null;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Genworkers', default: null })
+  storage_genworker!: Types.ObjectId | null;
+
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', default: [] })
+  genworkers!: Types.ObjectId[];
 }
 export const ProjectSchema = SchemaFactory.createForClass(Project);

@@ -9,12 +9,18 @@ service TeamService {
   rpc FindByUserId(FindByUserIdRequest) returns (FindByUserIdResponse);
   rpc Join(JoinRequest) returns (JoinResponse);
   rpc Leave(LeaveRequest) returns (LeaveResponse);
+
+  rpc AssignGenworkerToTeam(AssignGenworkerToTeamRequest) returns (DefaultResponse);
 }
 
 message BaseResponse {
   string status = 1;
   string msg = 2;
   bool ok = 3;
+}
+
+message DefaultResponse {
+  BaseResponse res = 1;
 }
 
 message CreateRequest {
@@ -68,11 +74,19 @@ message LeaveResponse {
   BaseResponse res = 1;
 }
 
+message AssignGenworkerToTeamRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+
 message Team{
   string id = 1;
   string name = 2;
   string owner = 3;
   repeated string members = 4;
   repeated string projects = 5;
+  optional string master_genworker = 6;
+  repeated string storage_genworkers = 7;
+  repeated string genworkers = 8;
 }
 

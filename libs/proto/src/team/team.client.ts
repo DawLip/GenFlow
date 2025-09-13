@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, JoinRequest, JoinResponse, LeaveResponse, LeaveRequest, FindByUserIdRequest, FindByUserIdResponse } from '@proto/team/team';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, JoinRequest, JoinResponse, LeaveResponse, LeaveRequest, FindByUserIdRequest, FindByUserIdResponse, AssignGenworkerToTeamRequest, DefaultResponse } from '@proto/team/team';
 
 export interface TeamServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;
@@ -8,4 +8,6 @@ export interface TeamServiceClient {
   findByUserId(data: FindByUserIdRequest): Observable<FindByUserIdResponse>;
   join(data: JoinRequest): Observable<JoinResponse>;
   leave(data: LeaveRequest): Observable<LeaveResponse>;
+
+  assignGenworkerToTeam(data: AssignGenworkerToTeamRequest): Observable<DefaultResponse>;
 }

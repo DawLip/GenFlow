@@ -1,7 +1,7 @@
 import { Controller, Post, Body, Req, Get, Param, Query } from '@nestjs/common';
 import { Public } from '@api/guards/auth.public';
 import { ApiGenWorkerService } from './genworker.service';
-import { EnqueueRequest, FinishPartialTaskRequest, GetTaskByIdRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerAssignToFlowRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, GetTaskByIdRequest, FinishTaskRequest, GenWorkerAssignRequest, GenWorkerAssignToFlowRequest, GenWorkerDisconnectRequest, GetGenWorkersAssignedToFlowRequest, RegisterRequest, GenWorkerAssignToTeamRequest, GenWorkerAssignToProjectRequest } from '@proto/genworker/genworker';
 
 @Controller('task-queue')
 export class ApiGenWorkerController {
@@ -36,11 +36,21 @@ export class ApiGenWorkerController {
   async genWorkerAssign(@Body() body: GenWorkerAssignRequest) {
     return this.genWorkerService.genWorkerAssign(body);
   }
+
+  @Post('genworker-assign-to-team')
+  async genWorkerAssignToTeam(@Body() body: GenWorkerAssignToTeamRequest) {
+    return this.genWorkerService.genWorkerAssignToTeam(body);
+  }
+  @Post('genworker-assign-to-project')
+  async genWorkerAssignToProject(@Body() body: GenWorkerAssignToProjectRequest) {
+    return this.genWorkerService.genWorkerAssignToProject(body);
+  }
   @Post('genworker-assign-to-flow')
   async genWorkerAssignToFlow(@Body() body: GenWorkerAssignToFlowRequest) {
     return this.genWorkerService.genWorkerAssignToFlow(body);
   }
-   @Post('get-genworkers-assigned-to-flow')
+
+  @Post('get-genworkers-assigned-to-flow')
   async getGenWorkersAssignedToFlow(@Body() body: GetGenWorkersAssignedToFlowRequest) {
     return this.genWorkerService.getGenWorkersAssignedToFlow(body);
   }

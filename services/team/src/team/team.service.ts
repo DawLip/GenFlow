@@ -40,7 +40,12 @@ export class TeamService {
   }
 
   async create(data:CreateRequest):Promise<CreateResponse> {
-    const createdTeam:Team|any = await this.teamModel.create(data);
+    const createdTeam:Team|any = await this.teamModel.create({
+      master_genworker: null,
+      storage_genworkers: [],
+      genworkers: [],
+      ...data
+    });
     if (!createdTeam) return this.response.error({res:{msg:"team creation failed"}}, {context:"create"});
     return this.response.success({res:{msg:"team created"}, id: createdTeam._id.toString(),}, {context:"create"});
   }
@@ -101,5 +106,16 @@ export class TeamService {
     return this.response.success({ res: { msg: 'user left team' } }, { context: 'leave' });
   }
 
+  async assignGenworkerToTeam(data){ 
+    data.path = data.path=="//" ? "/" : data.path;
+    const team = await this.teamModel.findById(data.teamId);
+    if (!team) return this.response.fail({res:{msg:"team not found"}}, {context:"assignGenworker", data});
+    
+    if(!team?.genworkers) team.genworkers = [];
 
+    team.genworkers.push(data.genworkerId);
+    await team?.save();
+
+    return this.response.success({res:{msg:"worker assigned to team"}}, {});
+  }
 }

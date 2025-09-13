@@ -4,5 +4,7 @@ export type GenWorker = {
   ownerId: string;
   isActive: boolean;
   path: string;
-  projects: [string];
+  assignedFlows: [string];
+  assignedProjects: [string];
+  assignedTeams: [string];
 };

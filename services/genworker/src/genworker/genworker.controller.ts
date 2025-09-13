@@ -6,6 +6,8 @@ import {
   GetTaskByIdRequest,
   FindTaskResponse,
   FindOneByProjectRequest,
+  GenWorkerAssignToTeamRequest,
+  GenWorkerAssignToProjectRequest,
 } from '@proto/genworker/genworker';
 import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 import { TaskQueueService } from './services/task_queue.service';
@@ -65,10 +67,23 @@ export class GenWorkerController {
     return await this.taskQueueService.genWorkerAssign(data);
   }
 
+  
+
+  @GrpcMethod('GenWorkerService', 'GenWorkerAssignToTeam')
+  async getGenWorkerAssignToTeam(data: GenWorkerAssignToTeamRequest): Promise<DefaultResponse> {
+    return await this.taskQueueService.genworkerAssignToTeam(data);
+  }
+
+  @GrpcMethod('GenWorkerService', 'GenWorkerAssignToProject')
+  async getGenWorkersAssignToProject(data: GenWorkerAssignToProjectRequest): Promise<DefaultResponse> {
+    return await this.taskQueueService.genworkerAssignToProject(data);
+  }
+  
   @GrpcMethod('GenWorkerService', 'GenWorkerAssignToFlow')
   async genworkerAssignToFlow(data: GenWorkerAssignToFlowRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.genWorkerAssignToFlow(data);
+    return await this.taskQueueService.genworkerAssignToFlow(data);
   }
+
 
   @GrpcMethod('GenWorkerService', 'GetGenWorkersAssignedToFlow')
   async getGenWorkersAssignedToFlow(data: GenWorkerAssignRequest): Promise<DefaultResponse> {

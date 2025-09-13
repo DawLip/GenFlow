@@ -7,7 +7,7 @@ import { ApiService } from '@api/api/api.service';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GetGenWorkersAssignedToFlowRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GenWorkerAssignToFlowRequest, RegisterRequest, GetTaskByIdRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GetGenWorkersAssignedToFlowRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GenWorkerAssignToFlowRequest, RegisterRequest, GetTaskByIdRequest, GenWorkerAssignToTeamRequest, GenWorkerAssignToProjectRequest } from '@proto/genworker/genworker';
 
 @Injectable()
 export class ApiGenWorkerService implements OnModuleInit {
@@ -77,12 +77,29 @@ export class ApiGenWorkerService implements OnModuleInit {
     return firstValueFrom(this.grpcService.genWorkerAssign(data));
   }
 
+  genWorkerAssignToTeam(data: GenWorkerAssignToTeamRequest) {
+    const context = 'genWorkerAssign';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.teamId) return this.response.validationFail({res:{msg:"field 'teamId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerAssignToTeam(data));
+  }
+  genWorkerAssignToProject(data: GenWorkerAssignToProjectRequest) {
+    const context = 'genWorkerAssign';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.projectId) return this.response.validationFail({res:{msg:"field 'projectId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerAssignToProject(data));
+  }
   genWorkerAssignToFlow(data: GenWorkerAssignToFlowRequest) {
     const context = 'genWorkerAssign';
 
     if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
     if (!data.projectId) return this.response.validationFail({res:{msg:"field 'projectId' is required"}}, {context});
     if (!data.flowName) return this.response.validationFail({res:{msg:"field 'flowName' is required"}}, {context});
+    if (!data.path) return this.response.validationFail({res:{msg:"field 'path' is required"}}, {context});
 
     return firstValueFrom(this.grpcService.genWorkerAssignToFlow(data));
   }

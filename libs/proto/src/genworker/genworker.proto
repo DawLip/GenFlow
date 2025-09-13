@@ -16,7 +16,11 @@ service GenWorkerService {
 
   rpc Register (RegisterRequest) returns (RegisterResponse);
   rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
+
+  rpc GenWorkerAssignToTeam (GenWorkerAssignToTeamRequest) returns (DefaultResponse);
+  rpc GenWorkerAssignToProject (GenWorkerAssignToProjectRequest) returns (DefaultResponse);
   rpc GenWorkerAssignToFlow (GenWorkerAssignToFlowRequest) returns (DefaultResponse);
+
   rpc GetGenWorkersAssignedToFlow (GetGenWorkersAssignedToFlowRequest) returns (GetGenWorkersAssignedToFlowResponse);
   rpc GenWorkerDisconnect (GenWorkerDisconnectRequest) returns (DefaultResponse);
 
@@ -102,11 +106,22 @@ message RegisterResponse {
 message GenWorkerAssignRequest {
   string genworkerId = 1;
 }
+message GenWorkerAssignToTeamRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+  string role = 3;
+}
+message GenWorkerAssignToProjectRequest {
+  string genworkerId = 1;
+  string projectId = 2;
+  string role = 3;
+}
 message GenWorkerAssignToFlowRequest {
   string genworkerId = 1;
   string projectId = 2;
   string flowName = 3;
   string path = 4;
+  string role = 5;
 }
 message GetGenWorkersAssignedToFlowRequest {
   string projectId = 1;
@@ -137,6 +152,10 @@ message GenWorker {
   string name = 3;
   string path = 4;
   bool isActive = 5;
+  
+  repeated string assignedTeams = 6;
+  repeated string assignedProjects = 7;
+  repeated string assignedFlows = 8;
 }
 
 message Task {

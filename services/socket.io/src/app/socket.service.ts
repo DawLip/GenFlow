@@ -60,7 +60,7 @@ export class SocketService implements OnModuleInit {
       client.data.user = payload;
 
       if(client.handshake.auth.isWorker){
-        console.log(`worker roined: ${payload.id}:${client.handshake.auth.workerName}`)
+        console.log(`worker joined: ${payload.id}:${client.handshake.auth.workerName}`)
         client.join(`${payload.id}:${client.handshake.auth.workerName}`);
       } else {
         console.log(`user joined: ${payload.id}`)
@@ -158,4 +158,26 @@ export class SocketService implements OnModuleInit {
     this.io.to(room).emit('new_artifact', { ...data });
   }
 
+  async signal(data: any, client: Socket){
+    if(data.toGenworker) {
+      const genworker = this.genworkerService.findOneById({id: data.toGenworker});
+      if(!genworker) return;
+      data.to = `${(await firstValueFrom(genworker)).genworker?.ownerId}:${(await firstValueFrom(genworker)).genworker?.name}`;
+    }
+    console.log("signal: ", data.from, "->", data.to)
+    this.io.to(data.to).emit('signal', {...data, socketId: client.id });
+  }
+  async getSignal(data: any, client: Socket){
+    console.log("getSignal", data)
+    console.log("clientId:", client.id)
+    let genworkerId:string = data.genworkerId
+
+    if(genworkerId.search(":") == -1) {
+      const genworker = this.genworkerService.findOneById({id: data.genworkerId});
+      if(!genworker) return;
+      genworkerId = `${(await firstValueFrom(genworker)).genworker?.ownerId}:${(await firstValueFrom(genworker)).genworker?.name}`;
+    }
+
+    this.io.to(genworkerId).emit('get_signal', { ...data, from: client.data.user.id, to:genworkerId, socketId: client.id });
+  }
 }

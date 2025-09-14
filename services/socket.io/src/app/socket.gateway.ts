@@ -80,4 +80,14 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleNewArtifact(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
     this.socketService.handleNewArtifact(data, client);
   }
+
+  @SubscribeMessage('signal')
+  signal(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
+    this.socketService.signal(data, client);
+  }
+
+  @SubscribeMessage('get_signal')
+  getSignal(@MessageBody() data: any, @ConnectedSocket() client: Socket): void {
+    this.socketService.getSignal(data, client);
+  }
 }

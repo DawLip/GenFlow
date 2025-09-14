@@ -20,7 +20,7 @@ class Packages:
 
     return nodes_list
 
-  def get_nodes(self, data):
+  async def get_nodes(self, data):
     packages = []
     packages_list = self.domain.file_system.ls("packages")
     
@@ -35,4 +35,4 @@ class Packages:
         package["nodes"].append(json.loads(node_data))
 
       packages.append(package)
-    self.gateway.genworker_get_nodes_answer({"packages": packages, "userId": data["userId"], "workerId": data["workerId"]})
+    await self.gateway.genworker_get_nodes_answer({"packages": packages, "userId": data["userId"], "workerId": data["workerId"]})

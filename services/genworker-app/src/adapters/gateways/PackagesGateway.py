@@ -9,5 +9,5 @@ class PackagesGateway:
     return cls
 
   @classmethod
-  def genworker_get_nodes_answer(cls, data):
-    cls.domain.SIO.sio.emit("genworker_get_nodes_answer", data)
+  async def genworker_get_nodes_answer(cls, data):
+    await cls.domain.SIO.sio.emit("genworker_get_nodes_answer", data)

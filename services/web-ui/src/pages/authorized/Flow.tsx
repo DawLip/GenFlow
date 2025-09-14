@@ -95,7 +95,7 @@ function Page() {
       peer.signal(data.data);
     });
 
-    socket.emit("get_signal", { genworkerId: master_genworker });
+    socket.emit("get_signal", { genworkerId: master_genworker, clientType: "USER" });
     peerRef.current = peer;
 
     return () => {

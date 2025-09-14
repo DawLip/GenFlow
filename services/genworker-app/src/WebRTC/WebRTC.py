@@ -6,7 +6,8 @@ from aiortc import RTCPeerConnection, RTCSessionDescription
 
 class WebRTC:
   peers: dict[str, RTCPeerConnection] = {}
-  peersList: list[dict[str, any]] = []
+  userPeersList = []
+  genworkerPeersList = []
   task_scheduler = None
   file_system = None
   packages = None
@@ -31,6 +32,9 @@ class WebRTC:
   @classmethod
   async def handle_get_signal(cls, data):
     if data["socketId"] not in cls.peers:
+      if data["clientType"]=="USER":      cls.userPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"]}, userId=data["from"])
+      if data["clientType"]=="GENWORKER": cls.genworkerPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"]}, genworkerId=data["from"])
+
       pc = RTCPeerConnection()
       cls.peers[data["socketId"]] = pc
 
@@ -44,14 +48,16 @@ class WebRTC:
 
       @channel.on("message")
       def _on_msg(message):
-        print("[aiortc] recv:", message)
+        print("[WebRTC] recv:", message)
 
       @pc.on("connectionstatechange")
       async def _state():
-        print("[aiortc] state:", cls.peers[data["socketId"]].connectionState)
+        print("[WebRTC] state:", cls.peers[data["socketId"]].connectionState)
         if cls.peers[data["socketId"]].connectionState in ("failed", "closed", "disconnected"):
           await cls.peers[data["socketId"]].close()
           cls.peers[data["socketId"]] = None
+        print("[WebRTC] users: ", [p["socketId"] for p in cls.userPeersList])
+        print("[WebRTC] genworkers: ", [p["socketId"] for p in cls.genworkerPeersList])
 
     pc = cls.peers[data["socketId"]]
 

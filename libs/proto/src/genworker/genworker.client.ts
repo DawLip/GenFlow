@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest,FindOneByProjectRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, FinishTaskRequest, FinishPartialTaskRequest, GetGenWorkersAssignedToFlowRequest, GetGenWorkersAssignedToFlowResponse, GenWorkerAssignToFlowRequest, GetTaskByIdRequest, FindTaskResponse, GenWorkerAssignToProjectRequest, GenWorkerAssignToTeamRequest } from '@proto/genworker/genworker';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest,FindOneByProjectRequest, FindResponse, DefaultResponse, RegisterRequest, EnqueueRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, FinishTaskRequest, FinishPartialTaskRequest, GetGenWorkersAssignedToFlowRequest, GetGenWorkersAssignedToFlowResponse, GenWorkerAssignToFlowRequest, GetTaskByIdRequest, FindTaskResponse, GenWorkerAssignToProjectRequest, GenWorkerAssignToTeamRequest, GenWorkerRemoveFromTeamRequest, GenWorkerTeamSetMasterRequest, GenWorkerTeamAddStorageRequest, GenWorkerTeamRemoveStorageRequest } from '@proto/genworker/genworker';
 
 export interface GenWorkerServiceClient {
   // CRUD
@@ -15,9 +15,16 @@ export interface GenWorkerServiceClient {
 
   register(data: RegisterRequest): Observable<DefaultResponse>;
   genWorkerAssign(data: GenWorkerAssignRequest): Observable<DefaultResponse>;
-  genWorkerAssignToFlow(data: GenWorkerAssignToFlowRequest): Observable<DefaultResponse>;
-  genWorkerAssignToProject(data: GenWorkerAssignToProjectRequest): Observable<DefaultResponse>;
+
   genWorkerAssignToTeam(data: GenWorkerAssignToTeamRequest): Observable<DefaultResponse>;
+  genWorkerRemoveFromTeam(data: GenWorkerRemoveFromTeamRequest): Observable<DefaultResponse>;
+  genWorkerTeamSetMaster(data: GenWorkerTeamSetMasterRequest): Observable<DefaultResponse>;
+  genWorkerTeamAddStorage(data: GenWorkerTeamAddStorageRequest): Observable<DefaultResponse>;
+  genWorkerTeamRemoveStorage(data: GenWorkerTeamRemoveStorageRequest): Observable<DefaultResponse>;
+
+  genWorkerAssignToProject(data: GenWorkerAssignToProjectRequest): Observable<DefaultResponse>;
+  genWorkerAssignToFlow(data: GenWorkerAssignToFlowRequest): Observable<DefaultResponse>;
+
   getGenWorkersAssignedToFlow(data: GetGenWorkersAssignedToFlowRequest): Observable<GetGenWorkersAssignedToFlowResponse>;
   genWorkerDisconnect(data: GenWorkerDisconnectRequest): Observable<DefaultResponse>;
 

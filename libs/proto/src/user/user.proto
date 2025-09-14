@@ -84,6 +84,9 @@ message Team {
   string owner = 3;
   repeated string members = 4;
   repeated string projects = 5;
+  repeated string genworkers = 6;
+  repeated string storageGenworkers = 7;
+  string masterGenworker = 8;
 }
 
 message GenWorker {

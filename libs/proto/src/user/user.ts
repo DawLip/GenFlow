@@ -85,6 +85,9 @@ export interface Team {
   owner: string;
   members: string[];
   projects: string[];
+  genworkers: string[];
+  storageGenworkers: string[];
+  masterGenworker: string;
 }
 
 export interface GenWorker {
@@ -1184,7 +1187,16 @@ export const User: MessageFns<User> = {
 };
 
 function createBaseTeam(): Team {
-  return { id: "", name: "", owner: "", members: [], projects: [] };
+  return {
+    id: "",
+    name: "",
+    owner: "",
+    members: [],
+    projects: [],
+    genworkers: [],
+    storageGenworkers: [],
+    masterGenworker: "",
+  };
 }
 
 export const Team: MessageFns<Team> = {
@@ -1203,6 +1215,15 @@ export const Team: MessageFns<Team> = {
     }
     for (const v of message.projects) {
       writer.uint32(42).string(v!);
+    }
+    for (const v of message.genworkers) {
+      writer.uint32(50).string(v!);
+    }
+    for (const v of message.storageGenworkers) {
+      writer.uint32(58).string(v!);
+    }
+    if (message.masterGenworker !== "") {
+      writer.uint32(66).string(message.masterGenworker);
     }
     return writer;
   },
@@ -1254,6 +1275,30 @@ export const Team: MessageFns<Team> = {
           message.projects.push(reader.string());
           continue;
         }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.genworkers.push(reader.string());
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.storageGenworkers.push(reader.string());
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.masterGenworker = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -1270,6 +1315,13 @@ export const Team: MessageFns<Team> = {
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
       projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
+      genworkers: globalThis.Array.isArray(object?.genworkers)
+        ? object.genworkers.map((e: any) => globalThis.String(e))
+        : [],
+      storageGenworkers: globalThis.Array.isArray(object?.storageGenworkers)
+        ? object.storageGenworkers.map((e: any) => globalThis.String(e))
+        : [],
+      masterGenworker: isSet(object.masterGenworker) ? globalThis.String(object.masterGenworker) : "",
     };
   },
 
@@ -1290,6 +1342,15 @@ export const Team: MessageFns<Team> = {
     if (message.projects?.length) {
       obj.projects = message.projects;
     }
+    if (message.genworkers?.length) {
+      obj.genworkers = message.genworkers;
+    }
+    if (message.storageGenworkers?.length) {
+      obj.storageGenworkers = message.storageGenworkers;
+    }
+    if (message.masterGenworker !== "") {
+      obj.masterGenworker = message.masterGenworker;
+    }
     return obj;
   },
 
@@ -1303,6 +1364,9 @@ export const Team: MessageFns<Team> = {
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
     message.projects = object.projects?.map((e) => e) || [];
+    message.genworkers = object.genworkers?.map((e) => e) || [];
+    message.storageGenworkers = object.storageGenworkers?.map((e) => e) || [];
+    message.masterGenworker = object.masterGenworker ?? "";
     return message;
   },
 };

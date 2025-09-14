@@ -59,6 +59,8 @@ export class GenWorkerService implements OnModuleInit {
 
     return this.response.success({res:{msg:"GenWorker updated"}}, {context});
   }
+
+  // Team
   async assignToTeam(data) {
     const context = 'assignToFlow';
 
@@ -74,7 +76,45 @@ export class GenWorkerService implements OnModuleInit {
 
     return this.response.success({res:{msg:"GenWorker assigned to team"}}, {context});
   }
+  async removeFromTeam(data) {
+    const context = 'removeFromTeam';
 
+    const updatedGenWorker = await this.genworkerModel.findByIdAndUpdate(
+      data.genworkerId,
+      { $pull: { assignedTeams: `${data.teamId}` } },
+      { new: true },
+    );
+
+    if (!updatedGenWorker) return this.response.error({res:{msg:"GenWorker not found"}}, {context});
+
+    await firstValueFrom(this.teamService.removeGenworkerFromTeam(data));
+
+    return this.response.success({res:{msg:"GenWorker removed from team"}}, {context});
+  }
+  async teamSetMaster(data) {
+    const context = 'teamSetMaster';
+
+    await firstValueFrom(this.teamService.setMasterGenworker(data));
+
+    return this.response.success({res:{msg:"GenWorker set as master"}}, {context});
+  }
+
+  async teamAddStorage(data) {
+    const context = 'teamAddStorage';
+
+    await firstValueFrom(this.teamService.addStorageGenworker(data));
+
+    return this.response.success({res:{msg:"GenWorker added as storage"}}, {context});
+  }
+
+  async teamRemoveStorage(data) {
+    const context = 'teamRemoveStorage';
+
+    await firstValueFrom(this.teamService.removeStorageGenworker(data));
+
+    return this.response.success({res:{msg:"GenWorker removed from storage"}}, {context});
+  }
+  // Project
   async assignToProject(data) {
     const context = 'assignToProject';
 

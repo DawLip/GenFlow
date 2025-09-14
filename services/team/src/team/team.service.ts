@@ -74,12 +74,11 @@ export class TeamService {
   async findByUserId(data: FindByUserIdRequest): Promise<FindByUserIdResponse> {
     const teams = await this.teamModel.find({ members: data.userId }).lean();
     if (!teams.length) return this.response.fail({res:{msg:"teams not found"}}, {context:"findByUserId"});
-
+    const teamsToReturn = teams.map(team => ({...team, id: team._id.toString(), storageGenworkers: team.storage_genworkers, masterGenworker: team.master_genworker}));
+    console.log("User's teams:", teamsToReturn);
     return this.response.success({
-        res:{msg:"teams found"},
-        teams: teams.map(team => {
-          return {...team, id: team._id.toString()}
-        }),
+      res:{msg:"teams found"},
+      teams: teamsToReturn
     }, {context:"findByUserId"});
   }
 
@@ -113,9 +112,52 @@ export class TeamService {
     
     if(!team?.genworkers) team.genworkers = [];
 
-    team.genworkers.push(data.genworkerId);
+    if(!team.genworkers.includes(data.genworkerId)) team.genworkers.push(data.genworkerId);
     await team?.save();
 
     return this.response.success({res:{msg:"worker assigned to team"}}, {});
+  }
+  async removeGenworkerFromTeam(data){ 
+    const team = await this.teamModel.findById(data.teamId);
+    if (!team) return this.response.fail({res:{msg:"team not found"}}, {context:"removeGenworkerFromTeam", data});
+    
+    if(!team?.genworkers) team.genworkers = [];
+
+    team.genworkers = team.genworkers.filter(gwId => gwId.toString() !== data.genworkerId);
+    await team?.save();
+
+    return this.response.success({res:{msg:"worker removed from team"}}, {});
+  }
+  async setMasterGenworker(data){ 
+    const team = await this.teamModel.findById(data.teamId);
+    if (!team) return this.response.fail({res:{msg:"team not found"}}, {context:"setMasterGenworker", data});
+    
+    team.master_genworker = data.genworkerId;
+    await team?.save();
+
+    return this.response.success({res:{msg:"master genworker set"}}, {});
+  }
+  async addStorageGenworker(data){ 
+    const team = await this.teamModel.findById(data.teamId);
+    if (!team) return this.response.fail({res:{msg:"team not found"}}, {context:"addStorageGenworker", data});
+    
+    if(!team?.storage_genworkers) team.storage_genworkers = [];
+
+    team.storage_genworkers.push(data.genworkerId);
+    await team?.save();
+
+    return this.response.success({res:{msg:"storage genworker added"}}, {});
+  }
+  async removeStorageGenworker(data){ 
+    console.log("Removing genworker from team storage:", data);
+    const team = await this.teamModel.findById(data.teamId);
+    if (!team) return this.response.fail({res:{msg:"team not found"}}, {context:"removeStorageGenworker", data});
+    
+    if(!team?.storage_genworkers) team.storage_genworkers = [];
+
+    team.storage_genworkers = team.storage_genworkers.filter(gwId => gwId.toString() !== data.genworkerId);
+    await team?.save();
+
+    return this.response.success({res:{msg:"storage genworker removed"}}, {});
   }
 }

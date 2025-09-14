@@ -7,7 +7,7 @@ export type Team = {
   members: Types.ObjectId[];       
   projects: Types.ObjectId[];     
 
-  master_genworker: Types.ObjectId | null;
-  storage_genworkers: Types.ObjectId[] | null;
+  master_genworker: string | null;
+  storage_genworkers: string[] | null;
   genworkers: Types.ObjectId[] | null;
 };

@@ -8,6 +8,10 @@ import {
   FindOneByProjectRequest,
   GenWorkerAssignToTeamRequest,
   GenWorkerAssignToProjectRequest,
+  GenWorkerTeamRemoveStorageRequest,
+  GenWorkerTeamAddStorageRequest,
+  GenWorkerTeamSetMasterRequest,
+  GenWorkerRemoveFromTeamRequest,
 } from '@proto/genworker/genworker';
 import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 import { TaskQueueService } from './services/task_queue.service';
@@ -68,12 +72,28 @@ export class GenWorkerController {
   }
 
   
-
+  // Team
   @GrpcMethod('GenWorkerService', 'GenWorkerAssignToTeam')
   async getGenWorkerAssignToTeam(data: GenWorkerAssignToTeamRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.genworkerAssignToTeam(data);
+    return await this.genWorkerService.assignToTeam(data);
   }
-
+  @GrpcMethod('GenWorkerService', 'GenWorkerRemoveFromTeam')
+  async getGenWorkerRemoveFromTeam(data: GenWorkerRemoveFromTeamRequest): Promise<DefaultResponse> {
+    return await this.genWorkerService.removeFromTeam(data);
+  }
+  @GrpcMethod('GenWorkerService', 'GenWorkerTeamSetMaster')
+  async getGenWorkerTeamSetMaster(data: GenWorkerTeamSetMasterRequest): Promise<DefaultResponse> {
+    return await this.genWorkerService.teamSetMaster(data);
+  }
+  @GrpcMethod('GenWorkerService', 'GenWorkerTeamAddStorage')
+  async getGenWorkerTeamAddStorage(data: GenWorkerTeamAddStorageRequest): Promise<DefaultResponse> {
+    return await this.genWorkerService.teamAddStorage(data);
+  }
+  @GrpcMethod('GenWorkerService', 'GenWorkerTeamRemoveStorage')
+  async getGenWorkerTeamRemoveStorage(data: GenWorkerTeamRemoveStorageRequest): Promise<DefaultResponse> {
+    return await this.genWorkerService.teamRemoveStorage(data);
+  }
+  //Project
   @GrpcMethod('GenWorkerService', 'GenWorkerAssignToProject')
   async getGenWorkersAssignToProject(data: GenWorkerAssignToProjectRequest): Promise<DefaultResponse> {
     return await this.taskQueueService.genworkerAssignToProject(data);

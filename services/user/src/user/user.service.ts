@@ -83,7 +83,7 @@ export class UserService implements OnModuleInit {
         async (genworker) => await firstValueFrom(this.genworkerService.findOneById({ id: genworker.toString() })))
       )
     ).map((genworker)=>genworker.genworker);
-
+    console.log("User's teams:", teams.teams);
     return this.response.success({
         res:{msg:"user found"},
         user: {

@@ -1,6 +1,5 @@
 'use client';
 
-import { ReactNode } from 'react';
 import { Icon } from '@web-ui/components/Icon';
 import { useRouter } from 'next/navigation';
 
@@ -25,7 +24,7 @@ export function Nav({ }: any) {
 const NavItem = ({icon, onClick}: {icon: string, onClick:()=>void}) => {
   return (
     <li className="flex justify-center items-center gap-2.5 w-12 h-12" onClick={onClick}>
-      <Icon name={icon} />
+      <Icon name={icon} size={32} color="#fff8" />
     </li>
   );
 }

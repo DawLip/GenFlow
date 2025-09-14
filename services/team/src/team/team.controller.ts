@@ -10,7 +10,11 @@ import {
   FindByUserIdRequest,
   FindByUserIdResponse,
   AssignGenworkerToTeamRequest,
-  DefaultResponse
+  DefaultResponse,
+  RemoveGenworkerFromTeamRequest,
+  RemoveStorageGenworkerRequest,
+  AddStorageGenworkerRequest,
+  SetMasterGenworkerRequest
 } from '@proto/team/team';
 import { TeamService } from '@team/team/team.service';
 
@@ -52,5 +56,22 @@ export class TeamController {
   @GrpcMethod('TeamService', 'AssignGenworkerToTeam')
   async assignGenworkerToTeam(data: AssignGenworkerToTeamRequest): Promise<DefaultResponse> {
     return await this.teamService.assignGenworkerToTeam(data);
+  }
+
+  @GrpcMethod('TeamService', 'RemoveGenworkerFromTeam')
+  async removeGenworkerFromTeam(data: RemoveGenworkerFromTeamRequest): Promise<DefaultResponse> {
+    return await this.teamService.removeGenworkerFromTeam(data);
+  }
+  @GrpcMethod('TeamService', 'SetMasterGenworker')
+  async setMasterGenworker(data: SetMasterGenworkerRequest): Promise<DefaultResponse> {
+    return await this.teamService.setMasterGenworker(data);
+  }
+  @GrpcMethod('TeamService', 'AddStorageGenworker')
+  async addStorageGenworker(data: AddStorageGenworkerRequest): Promise<DefaultResponse> {
+    return await this.teamService.addStorageGenworker(data);
+  }
+  @GrpcMethod('TeamService', 'RemoveStorageGenworker')
+  async removeStorageGenworker(data: RemoveStorageGenworkerRequest): Promise<DefaultResponse> {
+    return await this.teamService.removeStorageGenworker(data);
   }
 }

@@ -18,6 +18,11 @@ service GenWorkerService {
   rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
 
   rpc GenWorkerAssignToTeam (GenWorkerAssignToTeamRequest) returns (DefaultResponse);
+  rpc GenWorkerRemoveFromTeam (GenWorkerRemoveFromTeamRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamSetMaster (GenWorkerTeamSetMasterRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamAddStorage (GenWorkerTeamAddStorageRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamRemoveStorage (GenWorkerTeamRemoveStorageRequest) returns (DefaultResponse);
+
   rpc GenWorkerAssignToProject (GenWorkerAssignToProjectRequest) returns (DefaultResponse);
   rpc GenWorkerAssignToFlow (GenWorkerAssignToFlowRequest) returns (DefaultResponse);
 
@@ -106,11 +111,31 @@ message RegisterResponse {
 message GenWorkerAssignRequest {
   string genworkerId = 1;
 }
+
+// Team
 message GenWorkerAssignToTeamRequest {
   string genworkerId = 1;
   string teamId = 2;
   string role = 3;
 }
+message GenWorkerRemoveFromTeamRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamSetMasterRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamAddStorageRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamRemoveStorageRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+
+//Project
 message GenWorkerAssignToProjectRequest {
   string genworkerId = 1;
   string projectId = 2;

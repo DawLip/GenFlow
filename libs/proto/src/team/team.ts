@@ -81,6 +81,26 @@ export interface AssignGenworkerToTeamRequest {
   genworkerId: string;
 }
 
+export interface RemoveGenworkerFromTeamRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface SetMasterGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface AddStorageGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface RemoveStorageGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
 export interface Team {
   id: string;
   name: string;
@@ -1166,6 +1186,310 @@ export const AssignGenworkerToTeamRequest: MessageFns<AssignGenworkerToTeamReque
   },
   fromPartial(object: DeepPartial<AssignGenworkerToTeamRequest>): AssignGenworkerToTeamRequest {
     const message = createBaseAssignGenworkerToTeamRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseRemoveGenworkerFromTeamRequest(): RemoveGenworkerFromTeamRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const RemoveGenworkerFromTeamRequest: MessageFns<RemoveGenworkerFromTeamRequest> = {
+  encode(message: RemoveGenworkerFromTeamRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveGenworkerFromTeamRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveGenworkerFromTeamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveGenworkerFromTeamRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: RemoveGenworkerFromTeamRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RemoveGenworkerFromTeamRequest>): RemoveGenworkerFromTeamRequest {
+    return RemoveGenworkerFromTeamRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RemoveGenworkerFromTeamRequest>): RemoveGenworkerFromTeamRequest {
+    const message = createBaseRemoveGenworkerFromTeamRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseSetMasterGenworkerRequest(): SetMasterGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const SetMasterGenworkerRequest: MessageFns<SetMasterGenworkerRequest> = {
+  encode(message: SetMasterGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetMasterGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetMasterGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetMasterGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: SetMasterGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<SetMasterGenworkerRequest>): SetMasterGenworkerRequest {
+    return SetMasterGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SetMasterGenworkerRequest>): SetMasterGenworkerRequest {
+    const message = createBaseSetMasterGenworkerRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseAddStorageGenworkerRequest(): AddStorageGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const AddStorageGenworkerRequest: MessageFns<AddStorageGenworkerRequest> = {
+  encode(message: AddStorageGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddStorageGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddStorageGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddStorageGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: AddStorageGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<AddStorageGenworkerRequest>): AddStorageGenworkerRequest {
+    return AddStorageGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<AddStorageGenworkerRequest>): AddStorageGenworkerRequest {
+    const message = createBaseAddStorageGenworkerRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseRemoveStorageGenworkerRequest(): RemoveStorageGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const RemoveStorageGenworkerRequest: MessageFns<RemoveStorageGenworkerRequest> = {
+  encode(message: RemoveStorageGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveStorageGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveStorageGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveStorageGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: RemoveStorageGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RemoveStorageGenworkerRequest>): RemoveStorageGenworkerRequest {
+    return RemoveStorageGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RemoveStorageGenworkerRequest>): RemoveStorageGenworkerRequest {
+    const message = createBaseRemoveStorageGenworkerRequest();
     message.teamId = object.teamId ?? "";
     message.genworkerId = object.genworkerId ?? "";
     return message;

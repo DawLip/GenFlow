@@ -66,11 +66,9 @@ export default function Page() {
 
   
   return (
-    <div>
-      <div className="">
-        <SettingsMenu settingsPath={path} settingsOptions={settingsOptions} />
-      </div>
-      <div>{pageToRender}</div>
+    <div className="grow self-stretch flex-1">
+      <SettingsMenu settingsPath={path} settingsOptions={settingsOptions} />
+      {pageToRender}
     </div>
   );
 }

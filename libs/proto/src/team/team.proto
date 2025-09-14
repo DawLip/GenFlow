@@ -11,6 +11,10 @@ service TeamService {
   rpc Leave(LeaveRequest) returns (LeaveResponse);
 
   rpc AssignGenworkerToTeam(AssignGenworkerToTeamRequest) returns (DefaultResponse);
+  rpc RemoveGenworkerFromTeam(RemoveGenworkerFromTeamRequest) returns (DefaultResponse);
+  rpc SetMasterGenworker(SetMasterGenworkerRequest) returns (DefaultResponse);
+  rpc AddStorageGenworker(AddStorageGenworkerRequest) returns (DefaultResponse);
+  rpc RemoveStorageGenworker(RemoveStorageGenworkerRequest) returns (DefaultResponse);
 }
 
 message BaseResponse {
@@ -78,6 +82,22 @@ message AssignGenworkerToTeamRequest {
   string teamId = 1;
   string genworkerId = 2;
 }
+message RemoveGenworkerFromTeamRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message SetMasterGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message AddStorageGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message RemoveStorageGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
 
 message Team{
   string id = 1;
@@ -85,8 +105,8 @@ message Team{
   string owner = 3;
   repeated string members = 4;
   repeated string projects = 5;
-  optional string master_genworker = 6;
-  repeated string storage_genworkers = 7;
+  optional string masterGenworker = 6;
+  repeated string storageGenworkers = 7;
   repeated string genworkers = 8;
 }
 

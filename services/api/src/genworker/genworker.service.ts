@@ -7,7 +7,7 @@ import { ApiService } from '@api/api/api.service';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 import { GenWorkerServiceClient } from '@proto/genworker/genworker.client';
-import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GetGenWorkersAssignedToFlowRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GenWorkerAssignToFlowRequest, RegisterRequest, GetTaskByIdRequest, GenWorkerAssignToTeamRequest, GenWorkerAssignToProjectRequest } from '@proto/genworker/genworker';
+import { EnqueueRequest, FinishPartialTaskRequest, FinishTaskRequest, GetGenWorkersAssignedToFlowRequest, GenWorkerAssignRequest, GenWorkerDisconnectRequest, GenWorkerAssignToFlowRequest, RegisterRequest, GetTaskByIdRequest, GenWorkerAssignToTeamRequest, GenWorkerAssignToProjectRequest, GenWorkerTeamSetMasterRequest, GenWorkerRemoveFromTeamRequest, GenWorkerTeamAddStorageRequest, GenWorkerTeamRemoveStorageRequest } from '@proto/genworker/genworker';
 
 @Injectable()
 export class ApiGenWorkerService implements OnModuleInit {
@@ -77,6 +77,15 @@ export class ApiGenWorkerService implements OnModuleInit {
     return firstValueFrom(this.grpcService.genWorkerAssign(data));
   }
 
+  getGenworker(data: { id: string }) {
+    const context = 'getGenworker';
+
+    if (!data.id) return this.response.validationFail({res:{msg:"field 'id' is required"}}, {context});
+    
+    return firstValueFrom(this.grpcService.findOneById(data));
+  }
+
+  // Team
   genWorkerAssignToTeam(data: GenWorkerAssignToTeamRequest) {
     const context = 'genWorkerAssign';
 
@@ -85,6 +94,41 @@ export class ApiGenWorkerService implements OnModuleInit {
 
     return firstValueFrom(this.grpcService.genWorkerAssignToTeam(data));
   }
+  genWorkerRemoveFromTeam(data: GenWorkerRemoveFromTeamRequest) {
+    const context = 'genWorkerRemoveFromTeam';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.teamId) return this.response.validationFail({res:{msg:"field 'teamId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerRemoveFromTeam(data));
+  }
+  genWorkerTeamSetMaster(data: GenWorkerTeamSetMasterRequest) {
+    const context = 'genWorkerTeamSetMaster';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.teamId) return this.response.validationFail({res:{msg:"field 'teamId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerTeamSetMaster(data));
+  }
+
+  genWorkerTeamAddStorage(data: GenWorkerTeamAddStorageRequest) {
+    const context = 'genWorkerTeamAddStorage';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.teamId) return this.response.validationFail({res:{msg:"field 'teamId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerTeamAddStorage(data));
+  }
+
+  genWorkerTeamRemoveStorage(data: GenWorkerTeamRemoveStorageRequest) {
+    const context = 'genWorkerTeamRemoveStorage';
+
+    if (!data.genworkerId) return this.response.validationFail({res:{msg:"field 'genworkerId' is required"}}, {context});
+    if (!data.teamId) return this.response.validationFail({res:{msg:"field 'teamId' is required"}}, {context});
+
+    return firstValueFrom(this.grpcService.genWorkerTeamRemoveStorage(data));
+  }
+  //Project
   genWorkerAssignToProject(data: GenWorkerAssignToProjectRequest) {
     const context = 'genWorkerAssign';
 

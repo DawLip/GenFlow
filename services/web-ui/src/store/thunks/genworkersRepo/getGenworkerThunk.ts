@@ -1,5 +1,5 @@
 import { services_config } from "@libs/shared/src/services_config";
-import { newGenworker } from "@web-ui/store/slices/genworkersRepositorySlice";
+import { newGenworker } from "@web-ui/store/slices/genworkersRepoSlice";
 import axios from "axios";
 
 

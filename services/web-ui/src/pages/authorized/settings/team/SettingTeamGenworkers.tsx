@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
 import { Icon } from '@web-ui/components/Icon';
 import { get } from 'lodash';
-import { getGenworkerThunk } from '@web-ui/store/thunks/genworkersRepositiory/getGenworkerThunk';
+import { getGenworkerThunk } from '@web-ui/store/thunks/genworkersRepo/getGenworkerThunk';
 import { addGenworkerToTeamThunk } from '@web-ui/store/thunks/genworkers/addGenworkerToTeamThunk';
 import { removeGenworkerFromTeamThunk } from '@web-ui/store/thunks/genworkers/removeGenworkerFromTeamThunk';
 import { useEffect, useState } from 'react';

@@ -7,7 +7,8 @@ import projectSlice from './slices/projectSlice';
 import sessionSlice from './slices/sessionSlice';
 import packagesSlice from './slices/packagesSlice';
 import artifactsSlice from './slices/artifactsSlice';
-import genworkersRepositorySlice from './slices/genworkersRepositorySlice';
+import projectRepoSlice from './slices/projectsRepoSlice';
+import genworkersRepoSlice from './slices/genworkersRepoSlice';
 
 const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ const store = configureStore({
     flows: flowsReducer,
     packages: packagesSlice,
     artifacts: artifactsSlice,
-    genworkersRepository: genworkersRepositorySlice
+    projectRepoSlice: projectRepoSlice,
+    genworkersRepo: genworkersRepoSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

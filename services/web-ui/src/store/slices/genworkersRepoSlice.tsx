@@ -12,8 +12,8 @@ const initialState: GenworkersState = {
   error: null,
 };
 
-const genworkersRepositorySlice = createSlice({
-  name: 'genworkersRepository',
+const genworkersRepoSlice = createSlice({
+  name: 'genworkersRepo',
   initialState,
   reducers: {
     newGenworker: (state, action) => {
@@ -35,5 +35,5 @@ const genworkersRepositorySlice = createSlice({
   },
 });
 
-export const { setLoading, setError, genworkersSliceClear, newGenworker } = genworkersRepositorySlice.actions;
-export default genworkersRepositorySlice.reducer;
+export const { setLoading, setError, genworkersSliceClear, newGenworker } = genworkersRepoSlice.actions;
+export default genworkersRepoSlice.reducer;

@@ -3,6 +3,7 @@ import json
 import socketio
 import threading
 from aiortc import RTCPeerConnection, RTCSessionDescription
+from .webrtc_dispatch import webrtc_dispatch
 
 class WebRTC:
   peers: dict[str, RTCPeerConnection] = {}
@@ -11,6 +12,7 @@ class WebRTC:
   task_scheduler = None
   file_system = None
   packages = None
+  channel = None
 
   @classmethod
   def _bind_handlers(cls):
@@ -24,38 +26,47 @@ class WebRTC:
   async def handle_signal(cls, data):
     if cls.peers[data["socketId"]] and "data" in data and data["data"].get("type") == "answer":
       answer = RTCSessionDescription(
-          sdp=data["data"]["sdp"],
-          type="answer"
+        sdp=data["data"]["sdp"],
+        type="answer"
       )
 
       await cls.peers[data["socketId"]].setRemoteDescription(answer)
+      
   @classmethod
   async def handle_get_signal(cls, data):
     if data["socketId"] not in cls.peers:
-      if data["clientType"]=="USER":      cls.userPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"]}, userId=data["from"])
-      if data["clientType"]=="GENWORKER": cls.genworkerPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"]}, genworkerId=data["from"])
+      if data["clientType"]=="USER":      cls.userPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"], "userId": data["from"]})
+      if data["clientType"]=="GENWORKER": cls.genworkerPeersList.append({"socketId": data["socketId"], "clientType": data["clientType"], "genworkerId": data["from"]})
 
       pc = RTCPeerConnection()
       cls.peers[data["socketId"]] = pc
 
-      channel = pc.createDataChannel("server-data")
-      @channel.on("open")
+      cls.channel = pc.createDataChannel("server-data")
+      @cls.channel.on("open")
       def _on_open():
         try:
-          channel.send(json.dumps({"hello": "👋 Hello from master genworker"}))
+          cls.channel.send(json.dumps({"hello": "👋 Hello from master genworker"}))
         except Exception:
           pass
 
-      @channel.on("message")
+      @cls.channel.on("message")
       def _on_msg(message):
         print("[WebRTC] recv:", message)
+        webrtc_dispatch(cls, json.loads(message))
+        
+      @cls.channel.on("hello")
+      def _on_msg(message):
+        print("[WebRTC] recv:", message)
+        webrtc_dispatch(cls, json.loads(message))
 
       @pc.on("connectionstatechange")
       async def _state():
         print("[WebRTC] state:", cls.peers[data["socketId"]].connectionState)
+        
         if cls.peers[data["socketId"]].connectionState in ("failed", "closed", "disconnected"):
           await cls.peers[data["socketId"]].close()
           cls.peers[data["socketId"]] = None
+          
         print("[WebRTC] users: ", [p["socketId"] for p in cls.userPeersList])
         print("[WebRTC] genworkers: ", [p["socketId"] for p in cls.genworkerPeersList])
 

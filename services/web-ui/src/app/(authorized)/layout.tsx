@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import SimplePeer from 'simple-peer';
 
 import { useAuth } from '@web-ui/hooks/useAuth';
 import { socket, SocketContext } from '@web-ui/socket/socket';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
 import { fetchClientThunk } from '@web-ui/store/thunks/client/fetchClientThunk';
+import WebRTCProvider from '@web-ui/webrtc/webrtc.context';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -43,7 +45,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className='flex-col h-screen'>
       <SocketContext.Provider value={socket}>
-        {children}
+        <WebRTCProvider>
+          {children}
+        </WebRTCProvider>
       </SocketContext.Provider>
     </div>
   )

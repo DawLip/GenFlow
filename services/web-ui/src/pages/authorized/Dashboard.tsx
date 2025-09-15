@@ -6,6 +6,7 @@ import { AppDispatch } from "@web-ui/store";
 import { setFlow } from "@web-ui/store/slices/flowsSlice";
 import { selectFlow } from "@web-ui/store/slices/sessionSlice";
 import { createFlowThunk } from "@web-ui/store/thunks/flow/createFlowThunk";
+import { useWebRTC } from "@web-ui/webrtc/webrtc.context";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -15,7 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
   const flows = useSelector((state: any) => state.project.flows);
-
+  // const { mediaStream, setMediaStream } = useWebRTC();
+  // console.log("test>>>>>>>>>>>>>>>>>>>>>>>>>>>: ", mediaStream);
   return (
     <div className="self-stretch flex-1 px-8 pt-8 justify-start items-start gap-16 overflow-hidden">
       <div className="flex-1 flex-col justify-center items-start gap-16">

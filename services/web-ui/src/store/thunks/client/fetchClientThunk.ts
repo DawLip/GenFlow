@@ -34,13 +34,13 @@ export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
     }
     dispatch(setTeam({...team[0], teamId: team[0].id}));
 
-    const project = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${team[0].projects[0]}`);
-    if (!project.data.res.ok) {
-      console.error("Project not found for user:", data.user.id);
-      dispatch(setErrorProject("Project not found"));
-      return;
-    }
-    dispatch(setProject({...project.data.project, projectId: project.data.project.id}));
+    // const project = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${team[0].projects[0]}`);
+    // if (!project.data.res.ok) {
+    //   console.error("Project not found for user:", data.user.id);
+    //   dispatch(setErrorProject("Project not found"));
+    //   return;
+    // }
+    // dispatch(setProject({...project.data.project, projectId: project.data.project.id}));
       
   } catch (err:any) {
     console.error("Error during fetchClient:", err);

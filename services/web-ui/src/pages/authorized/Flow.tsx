@@ -9,7 +9,6 @@ import {
   useStore
 } from '@xyflow/react';
 import { throttle } from 'lodash';
-import SimplePeer from 'simple-peer';
 
 import { AppDispatch } from '@web-ui/store';
 import {
@@ -38,7 +37,7 @@ function Page() {
   const selectedFlowName = flowID && useSelector((state: any) => state.flows[flowID].name);
   const selectedFlowPath = flowID && useSelector((state: any) => state.flows[flowID].path);
 
-  const master_genworker = flowID && useSelector((state: any) => state.flows[flowID].genworkers[0]);
+  const master_genworker = flowID && useSelector((state: any) => state.team.masterGenworker);
 
   const { getViewport } = useReactFlow();
   const [x, y, zoom] = useStore((s) => s.transform);
@@ -51,61 +50,7 @@ function Page() {
   const [remoteCursor, setRemoteCursor] = useState<{ x: number; y: number } | null>(null);
   const [mV, setMv] = useState(true);
   
-  const peerRef = useRef<any>(null);
-  // --------------
-  useEffect(() => {
-    if (!socket) return;
-    if (peerRef.current) return;
-    let peer;
-
-    function initPeer() {
-      if (!socket) return;
-      console.log("Inicjalizacja peer");
-
-      peer = new SimplePeer({
-        initiator: false,
-        trickle: false, 
-        config: {
-          iceServers: [
-            { urls: "stun:stun.l.google.com:19302" },
-            // { urls: "turn:turn.example.com:3478", username: "u", credential: "p" }
-          ],
-        },
-      });
-
-      peer.on("signal", (data) => {
-        socket.emit("signal", { data, toGenworker: master_genworker, from: userId });
-      });
-
-      peer.on("connect", () => {
-        console.log("Połączono przez WebRTC ✅");
-      });
-
-      peer.on("data", (buf) => {
-        console.log("[WEBRTC] Received:", JSON.parse(buf.toString()));
-      });
-
-      peer.on("error", (err) => console.log("[WEBRTC] Error: " + err.message));
-      peer.on("close", () => console.log("[WEBRTC] Connection closed"));
-    }
-
-    socket.once("signal", (data) => {
-      console.log("[WEBRTC] Signal:", data);
-      if (!peerRef.current) initPeer();
-      peer.signal(data.data);
-    });
-
-    socket.emit("get_signal", { genworkerId: master_genworker, clientType: "USER" });
-    peerRef.current = peer;
-
-    return () => {
-      socket.off("signal");
-      if (peer) {
-        peer.destroy();
-        peerRef.current = null;
-      }
-    };
-  }, [])
+  
   
 
   // --------------

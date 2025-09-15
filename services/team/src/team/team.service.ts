@@ -75,7 +75,7 @@ export class TeamService {
     const teams = await this.teamModel.find({ members: data.userId }).lean();
     if (!teams.length) return this.response.fail({res:{msg:"teams not found"}}, {context:"findByUserId"});
     const teamsToReturn = teams.map(team => ({...team, id: team._id.toString(), storageGenworkers: team.storage_genworkers, masterGenworker: team.master_genworker}));
-    console.log("User's teams:", teamsToReturn);
+    
     return this.response.success({
       res:{msg:"teams found"},
       teams: teamsToReturn
@@ -124,6 +124,9 @@ export class TeamService {
     if(!team?.genworkers) team.genworkers = [];
 
     team.genworkers = team.genworkers.filter(gwId => gwId.toString() !== data.genworkerId);
+    if(team.master_genworker === data.genworkerId) team.master_genworker = null;
+    team.storage_genworkers = team.storage_genworkers.filter(gwId => gwId.toString() !== data.genworkerId);
+
     await team?.save();
 
     return this.response.success({res:{msg:"worker removed from team"}}, {});

@@ -1,3 +1,4 @@
+import { newTab } from "@web-ui/store/slices/workspaceSlice";
 
 
 export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: any, getState: any) => {
@@ -9,4 +10,6 @@ export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: an
   console.log('Storage Genworker ID:', storageGenworkerId);
 
   webRTC.send(storageGenworkerId, "GET_FLOW_CONFIG", { projectName, flowName, flowData: true });
+
+  dispatch(newTab({ title: flowName, type: 'flow', data: { projectName, flowName }}));
 };

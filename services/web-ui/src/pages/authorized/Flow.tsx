@@ -51,7 +51,7 @@ function Page() {
   const [mV, setMv] = useState(true);
   
   
-  
+  const tabs = useSelector((state: any) => state.workspace.tabs);
 
   // --------------
 
@@ -138,11 +138,18 @@ function Page() {
   return (
     <>
       <Aside tabs={['Hierarchy', 'Nodes', 'Files']} />
-      <div className="w-full h-full bg-[#0F0B14]">
+      <div className="flex-col w-full h-full bg-[#0F0B14]">
         {mV && remoteCursor && <div className="absolute w-4 h-4 bg-red-500 rounded-full" style={{
           top: remoteCursor.y * zoom + y + 48,
           left: remoteCursor.x * zoom + x + 270,
         }}></div>}
+        <div className='gap-8 cursor-pointer'>
+          {tabs.map((tab) => (
+            <div key={tab.id}>
+              {tab.title}
+            </div>
+          ))}
+        </div>
         {flowID && <FlowWorkspace reactFlowRef={reactFlowRef}/>}
       </div>
       <Aside tabs={['Inspector', 'Runs', 'Artifacts']} />

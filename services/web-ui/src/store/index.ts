@@ -10,6 +10,7 @@ import artifactsSlice from './slices/artifactsSlice';
 import projectRepoSlice from './slices/projectsRepoSlice';
 import genworkersRepoSlice from './slices/genworkersRepoSlice';
 import flowsRepoSlice from './slices/flowsRepoSlice';
+import workspaceSlice from './slices/workspaceSlice';
 
 const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ const store = configureStore({
     artifacts: artifactsSlice,
     projectRepo: projectRepoSlice,
     flowsRepo: flowsRepoSlice,
-    genworkersRepo: genworkersRepoSlice
+    genworkersRepo: genworkersRepoSlice,
+    workspace: workspaceSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
 });

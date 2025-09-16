@@ -1,6 +1,6 @@
 "use client"
 import { AppDispatch } from "@web-ui/store";
-import { selectFlowThunk } from "@web-ui/store/thunks/project/selectFlowThunk";
+import { createFlowThunk } from "@web-ui/store/thunks/project/createFlowThunk";
 import { useWebRTC } from "@web-ui/webrtc/webrtc.context";
 import { useDispatch, useSelector } from "react-redux"
 
@@ -10,7 +10,7 @@ export default function Page() {
   
   const flows = useSelector((state: any) => state.projectRepo.projects.filter(p=>p.name===state.projectRepo.selectedProject)[0]?.flows || [])
 
-  const onFlowClick = (flow: string) => dispatch(selectFlowThunk(webRTC, flow))
+  const onFlowClick = (flow: string) => dispatch(createFlowThunk(webRTC));
 
   return (
   <div className="flex-col">

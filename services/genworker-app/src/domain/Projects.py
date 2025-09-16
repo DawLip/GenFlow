@@ -1,4 +1,6 @@
 import json
+import copy
+
 
 class Projects:
   def __init__(self, domain):
@@ -24,3 +26,22 @@ class Projects:
       flow_config["projectName"] = project_name
 
     return flow_config
+
+  def create_flow(self, flow):
+    flow_data = {
+      "nodes": flow["nodes"],
+      "edges": flow["edges"],
+    }
+    flow_config = copy.copy(flow)
+    del flow_config["nodes"]
+    del flow_config["edges"]
+
+    flow_path = f"projects/{flow['projectName']}/{flow['name']}"
+    self.domain.file_system.save_file(f"{flow_path}/flow.config.json", json.dumps(flow_config, indent=2))
+    self.domain.file_system.save_file(f"{flow_path}/flow.data.json", json.dumps(flow_data, indent=2))
+    
+    project = self.get_project_config(flow["projectName"])
+    project["flows"].append(flow["name"])
+    self.domain.file_system.save_file(f"projects/{flow['projectName']}/project.config.json", json.dumps(project, indent=2))
+
+    return flow

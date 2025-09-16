@@ -9,6 +9,7 @@ interface ProjectRepoState {
 
 interface Project {
   name: string;
+  flows: string[];
   isLoaded: boolean;
 }
 
@@ -38,6 +39,14 @@ const projectRepoSlice = createSlice({
       
       return state;
     },
+    addToFlowList: (state, action) => {
+      const { projectName, flowName } = action.payload;
+      const project = state.projects.find((p) => p.name === projectName);
+      if (project) {
+        if (!project.flows) project.flows = [];
+        project.flows = [...project.flows, flowName];
+      }
+    },
     selectProject: (state, action) => {
       state.selectedProject = action.payload;
     },
@@ -53,5 +62,5 @@ const projectRepoSlice = createSlice({
   },
 });
 
-export const { setProjectsList, setLoading, setError, projectSliceClear, selectProject, setProject } = projectRepoSlice.actions;
+export const { addToFlowList, setProjectsList, setLoading, setError, projectSliceClear, selectProject, setProject } = projectRepoSlice.actions;
 export default projectRepoSlice.reducer;

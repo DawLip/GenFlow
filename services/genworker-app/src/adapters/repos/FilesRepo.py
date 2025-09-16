@@ -4,7 +4,10 @@ class FilesRepo:
   root_dir = "./services/genworker-app/workspace/"
 
   def save(self, full_path: str, content: str):
-    with open(f"{self.root_dir}{full_path}", "w", encoding="utf-8") as f:
+    path = f"{self.root_dir}{full_path}"
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+
+    with open(path, "w", encoding="utf-8") as f:
       f.write(content)
 
   def get(self, full_path: str):

@@ -27,11 +27,25 @@ def get_flow_config(webrtc, channel, payload):
     "projectName": payload["projectName"], 
     "flowName": payload["flowName"]
   }}))
+  
+def create_flow(webrtc, channel, payload):
+  try:
+    print("[WebRTC] CREATE_FLOW", payload)
+    flow = webrtc.domain.projects.create_flow(payload)
+    channel.send(json.dumps({"event": "NEW_FLOW_CREATED", "payload": {
+      "flow": flow, 
+      "projectName": payload["projectName"], 
+      "flowName": payload["name"]
+    }}))
+    
+  except Exception as e:
+    print("[WebRTC] CREATE_FLOW error:", e)
 
 # --------------------------------
 
 dispatch={
   "HELLO": helloHandler,
   "GET_PROJECT_CONFIG": get_project_config,
-  "GET_FLOW_CONFIG": get_flow_config
+  "GET_FLOW_CONFIG": get_flow_config,
+  "CREATE_FLOW": create_flow
 }

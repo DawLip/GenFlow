@@ -165,8 +165,13 @@ export class GenWorkerService implements OnModuleInit {
   }
   async findOneById(data:FindOneByIdRequest):Promise<FindResponse> {
     const context = 'findOneById';
+    let genworker:GenWorker|any;
 
-    const genworker = await this.genworkerModel.findById(data.id).lean();
+    if(data.id.includes(':')){
+      const [ownerId, name] = data.id.split(':');
+      genworker = await this.genworkerModel.findOne({ownerId, name}).lean();
+    } else genworker = await this.genworkerModel.findById(data.id).lean();
+
     if (!genworker) return this.response.fail({res:{msg:"GenWorker not found"}}, {context});
     
     return this.response.success({

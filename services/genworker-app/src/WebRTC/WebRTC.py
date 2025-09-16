@@ -12,7 +12,7 @@ class WebRTC:
   task_scheduler = None
   file_system = None
   packages = None
-  channel = None
+  channels = {}
 
   @classmethod
   def _bind_handlers(cls):
@@ -41,23 +41,24 @@ class WebRTC:
       pc = RTCPeerConnection()
       cls.peers[data["socketId"]] = pc
 
-      cls.channel = pc.createDataChannel("server-data")
-      @cls.channel.on("open")
+      channel = pc.createDataChannel("server-data")
+      cls.channels[data["socketId"]] = channel
+      @channel.on("open")
       def _on_open():
         try:
-          cls.channel.send(json.dumps({"hello": "👋 Hello from master genworker"}))
+          channel.send(json.dumps({"hello": "👋 Hello from master genworker"}))
         except Exception:
           pass
 
-      @cls.channel.on("message")
+      @channel.on("message")
       def _on_msg(message):
         print("[WebRTC] recv:", message)
-        webrtc_dispatch(cls, json.loads(message))
-        
-      @cls.channel.on("hello")
+        webrtc_dispatch(cls, channel, json.loads(message))
+
+      @channel.on("hello")
       def _on_msg(message):
         print("[WebRTC] recv:", message)
-        webrtc_dispatch(cls, json.loads(message))
+        webrtc_dispatch(cls, channel, json.loads(message))
 
       @pc.on("connectionstatechange")
       async def _state():
@@ -89,5 +90,6 @@ class WebRTC:
     cls.file_system = domain.file_system
     cls.packages = domain.packages
     cls.sio = domain.sio
+    cls.domain = domain
     
     return cls

@@ -38,6 +38,8 @@ class Auth:
       cls.domain.SIO = SIO.init(cls.domain, auth_data["token"], auth_data["worker_name"])
       cls.domain.task_scheduler.init(auth_data["user_id"], auth_data["worker_name"])
 
+      cls.authRepo.setConfig(cls.authGateway.get_config(cls.authRepo))
+
   @classmethod
   def login(cls, payload):
     token, userId = cls.authGateway.login(payload["email"], payload["password"])
@@ -52,3 +54,5 @@ class Auth:
       "user_id": userId,
       "worker_name": payload["worker_name"]
     }))
+    
+    cls.authRepo.setConfig(cls.authGateway.get_config(cls.authRepo))

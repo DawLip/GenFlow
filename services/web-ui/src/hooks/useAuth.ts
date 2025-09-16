@@ -15,6 +15,8 @@ export function useAuth(routeAuthed:boolean=false, path:string|null=null) {
   const emailConfirmed = useSelector((state:any) => state.client.emailConfirmed);
   const clientLoading = useSelector((state:any) => state.client.loading);
 
+  const selectedProject = useSelector((state:any) => state.projectRepo.selectedProject);
+
   const cookiesToken = Cookies.get('token');
   const userId = Cookies.get('userId');
 
@@ -28,6 +30,8 @@ export function useAuth(routeAuthed:boolean=false, path:string|null=null) {
     } else {
       if(!token && !routeAuthed) navigate(path || '/');
       else if(token && routeAuthed) navigate(path || '/dashboard');
+
+      if(!selectedProject) navigate('/select-project');
     }
   }, [token])
 

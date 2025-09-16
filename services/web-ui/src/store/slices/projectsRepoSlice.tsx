@@ -2,21 +2,20 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface ProjectRepoState {
   projects: Project[];
+  selectedProject: string | null;
   loading: boolean;
   error: any;
 }
 
 interface Project {
-  projectId: string;
   name: string;
-  owner: string;
-  description: string;
-  flows: any[]; 
+  isLoaded: boolean;
 }
 
 const initialState: ProjectRepoState = {
   projects: [],
-  loading: true,
+  selectedProject: null,
+  loading: false,
   error: null,
 };
 
@@ -24,20 +23,24 @@ const projectRepoSlice = createSlice({
   name: 'projectRepo',
   initialState,
   reducers: {
-    newProject: (state, action) => {
-      state[action.payload.projectId].projectId = action.payload.projectId;
-      state[action.payload.projectId].name = action.payload.name;
-      state[action.payload.projectId].owner = action.payload.owner;
-      state[action.payload.projectId].description = action.payload.description;
-      state[action.payload.projectId].flows = action.payload.flows || [];
+    setProjectsList: (state, action) => {
+      state.projects = [...state.projects, ...action.payload.map((project) => ({
+        ...project,
+        isLoaded: false,
+      }))];
       state.loading = false;
       state.error = null;
     },
-
-    // newFlow: (state, action) => {
-    //   state.flows = [...state.flows, action.payload];
-    // },
-
+    setProject: (state, action) => {
+      const project = state.projects.find((p) => p.name === action.payload.name);
+      if (project) Object.assign(project, {...project, ...action.payload });
+      else state.projects = [...state.projects, action.payload];
+      
+      return state;
+    },
+    selectProject: (state, action) => {
+      state.selectedProject = action.payload;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -50,5 +53,5 @@ const projectRepoSlice = createSlice({
   },
 });
 
-export const { newProject, setLoading, setError, projectSliceClear } = projectRepoSlice.actions;
+export const { setProjectsList, setLoading, setError, projectSliceClear, selectProject, setProject } = projectRepoSlice.actions;
 export default projectRepoSlice.reducer;

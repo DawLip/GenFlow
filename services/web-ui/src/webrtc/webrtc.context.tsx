@@ -1,9 +1,10 @@
 import { createContext, useState, useContext, useEffect, useRef } from "react";
 
 import { useSocket } from '@web-ui/socket/socket';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SimplePeer from 'simple-peer';
 import { initWebRTCEvents } from "./webrtc.events";
+import { webrtc_onConnect } from "./webrtc.onConnect";
 
 export const WebRTCContext = createContext<any | null>(null);
 
@@ -15,18 +16,21 @@ export function useWebRTC(): any {
 }
 
 export default function WebRTCProvider({ children }: { children: React.ReactNode }) {
-  const socket = useSocket()
+  const dispatch = useDispatch();
+  const socket = useSocket();
 
   const peers = useRef<any>({});
 
   const userId = useSelector((state: any) => state.client.userId);
   const master_genworker = useSelector((state: any) => state.team.masterGenworker);
+  const storage_genworkers = useSelector((state: any) => state.team.storageGenworkers);
 
   useEffect(() => {
     console.log("WebRTCProvider useEffect triggered");
       if (!socket) return;
       if (!master_genworker) return;
       console.log("Setting up WebRTC connection with master_genworker:", master_genworker);
+
   
       function initPeer(id) {
         if (!socket) return;
@@ -47,25 +51,29 @@ export default function WebRTCProvider({ children }: { children: React.ReactNode
           socket.emit("signal", { data, toGenworker: master_genworker, from: userId });
         });
 
-        peers.current[id].on("connect", () => {
-          console.log("[WEBRTC] Connection established ✅");
-          peers.current[id].send(JSON.stringify({ event: "TEST", payload: { msg: "Hello from client!" }, sender: userId }));
-        });
+        peers.current[id].on("connect", () => webrtc_onConnect(peers.current[id], id, userId, storage_genworkers));
 
-        initWebRTCEvents(peers.current[id]);
+        initWebRTCEvents(peers.current[id], dispatch);
 
         peers.current[id].on("error", (err) => console.log("[WEBRTC] Error: " + err.message));
         peers.current[id].on("close", () => console.log("[WEBRTC] Connection closed"));
       }
   
-      socket.once("signal", (data) => {
+      socket.on("signal", (data) => {
         console.log("[WEBRTC] Signal:", data);
-        if (!(data["from"] in peers.current)) initPeer(data["from"]);
+        if (data["from"] in peers.current) return;
+        initPeer(data["from"]);
         peers.current[data["from"]].signal(data.data);
+        
+        console.log("new peer created for:", data["from"]);
       });
   
       socket.emit("get_signal", { genworkerId: master_genworker, clientType: "USER" });
-  
+
+      for (const storage_genworker of storage_genworkers) {
+        socket.emit("get_signal", { genworkerId: storage_genworker, clientType: "USER" });
+      }
+
       return () => {
         socket.off("signal");
         if (peers.current) {
@@ -75,7 +83,12 @@ export default function WebRTCProvider({ children }: { children: React.ReactNode
       };
     }, [master_genworker])
 
-  const value = [  ];
+  const value = { 
+    peers, 
+    send: (id, event, payload) => peers.current[id].send(JSON.stringify({ event, payload, sender: userId })),
+    sendToMaster: (event, payload) => peers.current[master_genworker].send(JSON.stringify({ event, payload, sender: userId }))
+
+  };
   return (
     <WebRTCContext.Provider value={value}>
       {children}

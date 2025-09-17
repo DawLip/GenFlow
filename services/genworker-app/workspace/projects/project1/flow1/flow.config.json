@@ -1,5 +1,6 @@
 {
   "name": "flow1",
   "type": "FLOW",
-  "description": "This is a sample flow"
+  "description": "This is a sample flow",
+  "projectName": "project1"
 }

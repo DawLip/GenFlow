@@ -43,7 +43,14 @@ def get_package_nodes(webrtc, channel, payload):
   nodes = webrtc.domain.packages.get_nodes()
   print(f"[WebRTC] PACKAGE_NODES", nodes)
   channel.send(json.dumps({"event": "PACKAGE_NODES", "payload": nodes}))
-
+  
+def flow_update(webrtc, channel, payload):
+  if payload["context"] == "addNode":
+    webrtc.domain.projects.add_node(payload)
+  elif payload["context"] == "onNodesChange":
+    webrtc.domain.projects.on_nodes_change(payload)
+  elif payload["context"] == "onEdgesChange":
+    webrtc.domain.projects.on_edges_change(payload)
 # --------------------------------
 
 dispatch={
@@ -52,4 +59,5 @@ dispatch={
   "GET_FLOW_CONFIG": get_flow_config,
   "CREATE_FLOW": create_flow,
   "GET_PACKAGE_NODES": get_package_nodes,
+  "FLOW_UPDATE": flow_update,
 }

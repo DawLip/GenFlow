@@ -30,9 +30,10 @@ import { onEdgesChangeThunk } from '@web-ui/store/thunks/flow/onEdgesChangeThunk
 import { onConnectThunk } from '@web-ui/store/thunks/flow/onConnectThunk';
 
 import { DefaultNode } from '@web-ui/components/node/DefaultNode';
+import { useWebRTC } from '@web-ui/webrtc/webrtc.context';
 
 export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
-  const socket = useSocket(); 
+  const webRTC = useWebRTC();
   const dispatch = useDispatch<AppDispatch>();
   const [type, setType] = useDnD();
 
@@ -64,10 +65,10 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
     }, [packages]);
     console.log("nodeTypes2:", nodeTypes2)
 
-  // const onNodesChangeW = useMemo(
-  //   () => throttle((changes: any) => {dispatch(onNodesChangeThunk({ flow: openedTab, nodes, changes }, socket));}, 100),
-  //   [dispatch, nodes],
-  // );
+  const onNodesChangeW = useMemo(
+    () => throttle((changes: any) => {dispatch(onNodesChangeThunk({ flow: openedTab, nodes, changes }, flow.name, webRTC));}, 100),
+    [dispatch, nodes],
+  );
 
   // const onEdgesChangeW = useMemo(
   //   () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flow: openedTab, edges, changes }, socket));}, 100),
@@ -116,7 +117,7 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
           id: crypto.randomUUID(),
           position
         }
-      }, socket));
+      }, flow.name, webRTC));
       // @ts-ignore
       setType(null);
     },
@@ -129,11 +130,11 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
       nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
-      // onNodesChange={onNodesChangeW}
+      onNodesChange={onNodesChangeW}
       // onEdgesChange={onEdgesChangeW}
       // onConnect={onConnectW}
       // onSelectionChange={handleSelectionChange}
-      // onDrop={onDrop}
+      onDrop={onDrop}
       onDragOver={onDragOver}
       snapToGrid
       snapGrid={[64, 64]}

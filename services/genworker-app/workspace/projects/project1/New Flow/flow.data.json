@@ -1,4 +1,86 @@
 {
-  "nodes": [],
+  "nodes": [
+    {
+      "id": "7501e4a6-d049-487d-8ae8-77f6515e9753",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Text/Base",
+      "position": {
+        "x": 640,
+        "y": 128
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "TextInput",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "input-1",
+            "label": "text input",
+            "name": "textInput",
+            "dataType": "TEXT",
+            "widget": "LineInput"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "output-1",
+            "label": "text output",
+            "name": "textOutput",
+            "dataType": "TEXT",
+            "widget": "LineOutput"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "c2b98632-04fd-4feb-9a56-01730f2bf787",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Text/Operations",
+      "position": {
+        "x": 128,
+        "y": 128
+      },
+      "style": {
+        "width": 256,
+        "height": 256
+      },
+      "data": {
+        "name": "TextConcat",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "input-1",
+            "label": "text input",
+            "name": "textInput1",
+            "dataType": "TEXT",
+            "widget": "LineInput"
+          },
+          {
+            "id": "input-2",
+            "label": "text input",
+            "name": "textInput2",
+            "dataType": "TEXT",
+            "widget": "LineInput"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "output-1",
+            "label": "text output",
+            "name": "textOutput",
+            "dataType": "TEXT",
+            "widget": "LineOutput"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    }
+  ],
   "edges": []
 }

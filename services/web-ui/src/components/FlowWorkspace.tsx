@@ -38,9 +38,11 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
 
   const [x, y, zoom] = useStore((s) => s.transform);
 
-  const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const nodes = useSelector((state: any) => state.flows[flowID].nodes);
-  const edges = useSelector((state: any) => state.flows[flowID].edges);
+  const openedTab = useSelector((state: any) => state.workspace.tabs[state.workspace.openedTab]);
+  const flow = useSelector((state: any) => state.flowsRepo.flows.find((f: any) => f.name === openedTab.data.flowName && f.ProjectName === openedTab.data.ProjectName));
+  const nodes = flow.data.nodes
+  const edges = flow.data.edges
+
   const packages = useSelector((state: any) => state.packages.packages);
   
   const nodeTypes = {
@@ -62,28 +64,28 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
     }, [packages]);
     console.log("nodeTypes2:", nodeTypes2)
 
-  const onNodesChangeW = useMemo(
-    () => throttle((changes: any) => {dispatch(onNodesChangeThunk({ flowID, nodes, changes }, socket));}, 100),
-    [dispatch, nodes],
-  );
+  // const onNodesChangeW = useMemo(
+  //   () => throttle((changes: any) => {dispatch(onNodesChangeThunk({ flow: openedTab, nodes, changes }, socket));}, 100),
+  //   [dispatch, nodes],
+  // );
 
-  const onEdgesChangeW = useMemo(
-    () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flowID, edges, changes }, socket));}, 100),
-    [dispatch, edges],
-  );
+  // const onEdgesChangeW = useMemo(
+  //   () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flow: openedTab, edges, changes }, socket));}, 100),
+  //   [dispatch, edges],
+  // );
 
-  const onConnectW = useMemo(
-    () =>throttle((params: any) => {dispatch(onConnectThunk({ flowID, edges, params }, socket));}, 100),
-    [dispatch, edges],
-  );
+  // const onConnectW = useMemo(
+  //   () =>throttle((params: any) => {dispatch(onConnectThunk({ flow: openedTab, edges, params }, socket));}, 100),
+  //   [dispatch, edges],
+  // );
 
-  const handleSelectionChange = useCallback(
-    ({ nodes }: OnSelectionChangeParams<Node, Edge>) => {
-      const selectedIds = nodes.map((n) => n.id);
-      dispatch(setSelection({ flowID, selectedNodesIDs: selectedIds }));
-    },
-    [dispatch, flowID],
-  );
+  // const handleSelectionChange = useCallback(
+  //   ({ nodes }: OnSelectionChangeParams<Node, Edge>) => {
+  //     const selectedIds = nodes.map((n) => n.id);
+  //     dispatch(setSelection({ flow: openedTab, selectedNodesIDs: selectedIds }));
+  //   },
+  //   [dispatch, openedTab],
+  // );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
@@ -100,7 +102,7 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
         y: Math.floor((event.clientY - 48 - y)/zoom/64)*64
       };
       dispatch(addNodeThunk({ 
-        flowID, 
+        flow: openedTab,
         node: {
           ...defaultNode,
           // @ts-ignore
@@ -127,11 +129,11 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
       nodeTypes={nodeTypes}
       nodes={nodes}
       edges={edges}
-      onNodesChange={onNodesChangeW}
-      onEdgesChange={onEdgesChangeW}
-      onConnect={onConnectW}
-      onSelectionChange={handleSelectionChange}
-      onDrop={onDrop}
+      // onNodesChange={onNodesChangeW}
+      // onEdgesChange={onEdgesChangeW}
+      // onConnect={onConnectW}
+      // onSelectionChange={handleSelectionChange}
+      // onDrop={onDrop}
       onDragOver={onDragOver}
       snapToGrid
       snapGrid={[64, 64]}

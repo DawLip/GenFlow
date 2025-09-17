@@ -34,6 +34,13 @@ const flowsRepoSlice = createSlice({
 
       return state;
     },
+    addNode: (state, action) => {
+      const flow = state.flows.find((f) => f.name === action.payload.flowName && f.projectName === action.payload.ProjectName);
+      if (flow) flow.data.nodes.push(action.payload.node);
+      
+      return state;
+    },
+
     setLoading: (state, action) => {
       state.loading = action.payload;
     },

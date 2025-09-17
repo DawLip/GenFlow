@@ -1,6 +1,7 @@
 import { setProjectsList, setProject } from '@web-ui/store/slices/projectsRepoSlice';
 import SimplePeer from 'simple-peer';
 import { setFlow } from '@web-ui/store/slices/flowsRepoSlice';
+import { setPackages } from '@web-ui/store/slices/packagesSlice';
 
 const dispatchRTC = {
   "PROJECTS_LIST": (peer, dispatch, payload) => {
@@ -14,6 +15,10 @@ const dispatchRTC = {
   "FLOW_CONFIG": (peer, dispatch, payload) => {
     console.log("[WEBRTC] FLOW_CONFIG", payload);
     dispatch(setFlow(payload["flowConfig"]));
+  },
+  "PACKAGE_NODES": (peer, dispatch, payload) => {
+    console.log("[WEBRTC] PACKAGE_NODES", payload);
+    dispatch(setPackages(payload));
   }
 }
 

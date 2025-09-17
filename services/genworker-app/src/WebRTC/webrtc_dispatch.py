@@ -1,13 +1,16 @@
 import json
 
 def webrtc_dispatch(webrtc, channel, data):
-  dispatch[data["event"]](webrtc, channel, data["payload"])
+  try:
+    print(f"[WebRTC] {data['event'].upper()}", data["payload"])
+    dispatch[data["event"]](webrtc, channel, data["payload"])
+    
+  except Exception as e:
+    print(f"[WebRTC] {data['event'].upper()} error:", e)
 
 # --------------------------------
 
 def helloHandler(webrtc, channel, payload):
-  print("[WebRTC] HELLO", payload)
-  
   if payload["clientType"] == "USER":
     projects_list = webrtc.domain.projects.projects_list()
     channel.send(json.dumps({"event": "PROJECTS_LIST", "payload": {"projects": projects_list, }}))
@@ -20,7 +23,6 @@ def get_project_config(webrtc, channel, payload):
   }}))
 
 def get_flow_config(webrtc, channel, payload):
-  print("[WebRTC] GET_FLOW_CONFIG", payload)
   flow_config = webrtc.domain.projects.get_flow_config(payload["projectName"], payload["flowName"], payload.get("flowData", False))
   channel.send(json.dumps({"event": "FLOW_CONFIG", "payload": {
     "flowConfig": flow_config, 
@@ -29,17 +31,18 @@ def get_flow_config(webrtc, channel, payload):
   }}))
   
 def create_flow(webrtc, channel, payload):
-  try:
-    print("[WebRTC] CREATE_FLOW", payload)
     flow = webrtc.domain.projects.create_flow(payload)
     channel.send(json.dumps({"event": "NEW_FLOW_CREATED", "payload": {
       "flow": flow, 
       "projectName": payload["projectName"], 
       "flowName": payload["name"]
     }}))
+
     
-  except Exception as e:
-    print("[WebRTC] CREATE_FLOW error:", e)
+def get_package_nodes(webrtc, channel, payload):
+  nodes = webrtc.domain.packages.get_nodes()
+  print(f"[WebRTC] PACKAGE_NODES", nodes)
+  channel.send(json.dumps({"event": "PACKAGE_NODES", "payload": nodes}))
 
 # --------------------------------
 
@@ -47,5 +50,6 @@ dispatch={
   "HELLO": helloHandler,
   "GET_PROJECT_CONFIG": get_project_config,
   "GET_FLOW_CONFIG": get_flow_config,
-  "CREATE_FLOW": create_flow
+  "CREATE_FLOW": create_flow,
+  "GET_PACKAGE_NODES": get_package_nodes,
 }

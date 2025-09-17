@@ -27,8 +27,10 @@ import { featchNodesThunk } from '@web-ui/store/thunks/flow/featchNodesThunk';
 import { setPackages } from '@web-ui/store/slices/packagesSlice';
 import { newArtifact } from '@web-ui/store/slices/artifactsSlice';
 import { FlowWorkspace } from '@web-ui/components/FlowWorkspace';
+import { useWebRTC } from '@web-ui/webrtc/webrtc.context';
 
 function Page() {
+  const webrtc = useWebRTC();
   const socket = useSocket();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -56,7 +58,7 @@ function Page() {
   // --------------
 
   useEffect(() => {
-    dispatch(featchNodesThunk(socket))
+    dispatch(featchNodesThunk(webrtc))
   },[])
 
   useEffect(() => {
@@ -144,13 +146,13 @@ function Page() {
           left: remoteCursor.x * zoom + x + 270,
         }}></div>}
         <div className='gap-8 cursor-pointer'>
-          {tabs.map((tab) => (
-            <div key={tab.id}>
+          {tabs.map((tab, index) => (
+            <div key={tab.title + index}>
               {tab.title}
             </div>
           ))}
         </div>
-        {flowID && <FlowWorkspace reactFlowRef={reactFlowRef}/>}
+        {<FlowWorkspace reactFlowRef={reactFlowRef}/>}
       </div>
       <Aside tabs={['Inspector', 'Runs', 'Artifacts']} />
     </>

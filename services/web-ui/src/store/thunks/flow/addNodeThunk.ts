@@ -1,4 +1,4 @@
-import { addNode } from "@web-ui/store/slices/flowsSlice";
+import { addNode } from "@web-ui/store/slices/flowsRepoSlice";
 
 export const addNodeThunk = (data:any, socket: any) => async (dispatch: any, getState: any) => {
   const state = getState();
@@ -9,11 +9,11 @@ export const addNodeThunk = (data:any, socket: any) => async (dispatch: any, get
     input.value = input.default;
   });
   dispatch(addNode(d));
-  socket.emit('flow_update',{
-    context: 'addNode',
-    projectId: state.project.projectId,
-    flowName: state.flows[state.session.selectedFlow].name,
-    path: state.flows[state.session.selectedFlow].path,
-    data: JSON.parse(JSON.stringify(d.node)),
-  })
+  // socket.emit('flow_update',{
+  //   context: 'addNode',
+  //   projectId: state.project.projectId,
+  //   flowName: state.flows[state.session.selectedFlow].name,
+  //   path: state.flows[state.session.selectedFlow].path,
+  //   data: JSON.parse(JSON.stringify(d.node)),
+  // })
 };

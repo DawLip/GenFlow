@@ -14,13 +14,12 @@ class Packages:
     packages_list = self.domain.file_system.ls("packages")
     
     for package_name in packages_list:
-      
       package = json.loads(self.domain.file_system.get_file(f"packages/{package_name}/config.json"))
       nodes_list.extend([f"{package_name}/{node}" for node in package["nodes"]])
 
     return nodes_list
 
-  async def get_nodes(self, data):
+  def get_nodes(self):
     packages = []
     packages_list = self.domain.file_system.ls("packages")
     
@@ -35,4 +34,5 @@ class Packages:
         package["nodes"].append(json.loads(node_data))
 
       packages.append(package)
-    await self.gateway.genworker_get_nodes_answer({"packages": packages, "userId": data["userId"], "workerId": data["workerId"]})
+      
+    return packages

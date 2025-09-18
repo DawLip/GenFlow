@@ -70,15 +70,20 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
     [dispatch, nodes],
   );
 
-  // const onEdgesChangeW = useMemo(
-  //   () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flow: openedTab, edges, changes }, socket));}, 100),
-  //   [dispatch, edges],
-  // );
+  const onEdgesChangeW = useMemo(
+    () => throttle((changes: any) => {dispatch(onEdgesChangeThunk({ flow: openedTab, edges, changes }, flow.name, webRTC));}, 100),
+    [dispatch, edges],
+  );
 
-  // const onConnectW = useMemo(
-  //   () =>throttle((params: any) => {dispatch(onConnectThunk({ flow: openedTab, edges, params }, socket));}, 100),
-  //   [dispatch, edges],
-  // );
+  const onConnectW = useMemo(
+    () =>throttle((params: any) => {dispatch(onConnectThunk({ 
+      flow: openedTab, 
+      edges, 
+      params:{...params, id: `${params.source}.${params.sourceHandle}<->${params.target}.${params.targetHandle}`} }, 
+      flow.name, webRTC));
+    }, 100),
+    [dispatch, edges],
+  );
 
   // const handleSelectionChange = useCallback(
   //   ({ nodes }: OnSelectionChangeParams<Node, Edge>) => {
@@ -131,8 +136,8 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChangeW}
-      // onEdgesChange={onEdgesChangeW}
-      // onConnect={onConnectW}
+      onEdgesChange={onEdgesChangeW}
+      onConnect={onConnectW}
       // onSelectionChange={handleSelectionChange}
       onDrop={onDrop}
       onDragOver={onDragOver}

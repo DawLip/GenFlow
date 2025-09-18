@@ -45,12 +45,22 @@ def get_package_nodes(webrtc, channel, payload):
   channel.send(json.dumps({"event": "PACKAGE_NODES", "payload": nodes}))
   
 def flow_update(webrtc, channel, payload):
-  if payload["context"] == "addNode":
-    webrtc.domain.projects.add_node(payload)
-  elif payload["context"] == "onNodesChange":
-    webrtc.domain.projects.on_nodes_change(payload)
-  elif payload["context"] == "onEdgesChange":
-    webrtc.domain.projects.on_edges_change(payload)
+  print(f">>>>>>>>>>[WebRTC] FLOW_UPDATE", payload)
+  try:
+    if payload["context"] == "addNode":
+      webrtc.domain.projects.add_node(payload)
+    elif payload["context"] == "onNodesChange":
+      print(f"[WebRTC] FLOW_UPDATE onNodesChange")
+      webrtc.domain.projects.on_nodes_change(payload)
+    elif payload["context"] == "onEdgesChange":
+      pass
+      webrtc.domain.projects.on_edges_change(payload)
+    elif payload["context"] == "onConnect":
+      pass
+      webrtc.domain.projects.on_connect(payload)
+  except Exception as e:
+    print(f"[WebRTC] FLOW_UPDATE error:", e)
+
 # --------------------------------
 
 dispatch={

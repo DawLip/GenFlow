@@ -1,15 +1,16 @@
-import { onConnect } from "@web-ui/store/slices/flowsSlice";
+import { onConnect } from "@web-ui/store/slices/flowsRepoSlice";
 
-export const onConnectThunk = (data:any, socket: any) => async (dispatch: any, getState: any) => {
-  console.log('onConnect')
+export const onConnectThunk = (data:any, flowName, webRTC: any) => (dispatch: any, getState: any) => {
   const state = getState();
 
+  const storageGenworkerId = state.projectRepo.projects.filter((p:any)=>p.name===state.projectRepo.selectedProject)[0]?.genworkerStorageId;
+  const projectName = state.projectRepo.selectedProject;
+
   dispatch(onConnect(data));
-  socket.emit('flow_update',{
+  webRTC.send(storageGenworkerId, "FLOW_UPDATE", {
     context: 'onConnect',
-    projectId: state.project.projectId,
-    flowName: state.flows[state.session.selectedFlow].name,
-    path: state.flows[state.session.selectedFlow].path,
-    data, 
+    projectName,
+    flowName,
+    data
   })
 };

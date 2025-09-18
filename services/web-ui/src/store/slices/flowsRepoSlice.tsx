@@ -48,16 +48,17 @@ const flowsRepoSlice = createSlice({
       console.log('flow:', flow);
       if (flow) flow.data.nodes = applyNodeChanges(action.payload.changes, structuredClone(action.payload.nodes));
     },
-    // onEdgesChange: (state, action) => {
-    //   console.log('=== onEdgesChange reducer ===', action.payload);
-    //   const flow = state.flows.find((f) => f.name === action.payload.flowName && f.projectName === action.payload.projectName);
-    //   if (flow) flow.data.edges = applyEdgeChanges(action.payload.changes, structuredClone(flow.data.edges));
-    // },
-    // onConnect: (state, action) => {
-    //   console.log('=== onConnect reducer ===', action.payload);
-    //   const flow = state.flows.find((f) => f.name === action.payload.flowName && f.projectName === action.payload.projectName);
-    //   if (flow) flow.data.edges = addEdge(action.payload.params, structuredClone(flow.data.edges));
-    // },
+    onEdgesChange: (state, action) => {
+      console.log('=== onEdgesChange reducer ===', action.payload);
+      const flow = state.flows.find((f) => f.name === action.payload.flow.data.flowName && f.projectName === action.payload.flow.data.projectName);
+      if (flow) flow.data.edges = applyEdgeChanges(action.payload.changes, structuredClone(action.payload.edges));
+    },
+    onConnect: (state, action) => {
+      console.log('=== onConnect reducer ===', action.payload);
+      const flow = state.flows.find((f) => f.name === action.payload.flow.data.flowName && f.projectName === action.payload.flow.data.projectName);
+      console.log('flow:', flow);
+      if (flow) flow.data.edges = addEdge(action.payload.params, structuredClone(action.payload.edges));
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -70,5 +71,5 @@ const flowsRepoSlice = createSlice({
   },
 });
 
-export const { onNodesChange, setLoading, setError, projectSliceClear, setFlow, addNode } = flowsRepoSlice.actions;
+export const { onConnect,onEdgesChange, onNodesChange, setLoading, setError, projectSliceClear, setFlow, addNode } = flowsRepoSlice.actions;
 export default flowsRepoSlice.reducer;

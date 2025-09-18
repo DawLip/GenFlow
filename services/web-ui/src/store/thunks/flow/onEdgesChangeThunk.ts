@@ -1,14 +1,16 @@
-import { onEdgesChange } from "@web-ui/store/slices/flowsSlice";
+import { onEdgesChange } from "@web-ui/store/slices/flowsRepoSlice";
 
-export const onEdgesChangeThunk = (data:any, webRTC: any) => async (dispatch: any, getState: any) => {
-  console.log('onEdgesChangeThunk')
+export const onEdgesChangeThunk = (data:any, flowName,  webRTC: any) => (dispatch: any, getState: any) => {
   const state = getState();
 
+  const storageGenworkerId = state.projectRepo.projects.filter((p:any)=>p.name===state.projectRepo.selectedProject)[0]?.genworkerStorageId;
+  const projectName = state.projectRepo.selectedProject;
+
   dispatch(onEdgesChange(data));
-  webRTC.send("FLOW_UPDATE", {
+  webRTC.send(storageGenworkerId, "FLOW_UPDATE", {
     context: 'onEdgesChange',
-    projectName: state.project.projectName,
-    flowName: state.flowsRepo.flows[state.session.selectedFlow].name,
+    projectName,
+    flowName,
     data
   })
   // socket.emit('flow_update',{

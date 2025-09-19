@@ -16,14 +16,26 @@ class TaskScheduler:
     
     genworker_id = self.gateway.register(user_id, worker_name)
     self.gateway.assign(genworker_id)
-  
-  def new_task(self, task_id):
-    task = self.gateway.get_task(task_id)
+    
+  def execute_flow(self, projectName, flowName):
+    print(f"Executing flow {flowName} in project {projectName}")
+
+    data = json.loads(self.domain.file_system.get_file(f"/projects/{projectName}/{flowName}/flow.data.json"))
+    print("Flow data:", data)
+    self.new_task(projectName, flowName, data)
+
+  def new_task(self, projectName, flowName, data):
     # print(json.dumps(task, indent=1, ensure_ascii=False))
-    self.taskRepo.new_task(task["task"])
+    print(f"New task for flow {flowName} in project {projectName}")
+    self.taskRepo.new_task({
+      "data": data,
+      "projectName": projectName,
+      "flowName": flowName,
+    })
     self.nodes_scheduler()
     
   def nodes_scheduler(self):
+    print("Starting nodes scheduler...")
     cpu_worker = self.domain.cpu_worker
     
     nodes = self.taskRepo.nodes

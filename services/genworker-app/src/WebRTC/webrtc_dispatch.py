@@ -2,7 +2,7 @@ import json
 
 def webrtc_dispatch(webrtc, channel, data):
   try:
-    print(f"[WebRTC] {data['event'].upper()}", data["payload"])
+    print(f"[WebRTC] {data['event'].upper()}")
     dispatch[data["event"]](webrtc, channel, data["payload"])
     
   except Exception as e:
@@ -45,22 +45,29 @@ def get_package_nodes(webrtc, channel, payload):
   channel.send(json.dumps({"event": "PACKAGE_NODES", "payload": nodes}))
   
 def flow_update(webrtc, channel, payload):
-  print(f">>>>>>>>>>[WebRTC] FLOW_UPDATE", payload)
+  # print(f">>>>>>>>>>[WebRTC] FLOW_UPDATE", payload)
   try:
     if payload["context"] == "addNode":
       webrtc.domain.projects.add_node(payload)
     elif payload["context"] == "onNodesChange":
-      print(f"[WebRTC] FLOW_UPDATE onNodesChange")
       webrtc.domain.projects.on_nodes_change(payload)
     elif payload["context"] == "onEdgesChange":
-      pass
       webrtc.domain.projects.on_edges_change(payload)
     elif payload["context"] == "onConnect":
-      pass
       webrtc.domain.projects.on_connect(payload)
+    elif payload["context"] == "onValueChange":
+      webrtc.domain.projects.on_value_change(payload)
   except Exception as e:
     print(f"[WebRTC] FLOW_UPDATE error:", e)
-
+    
+def execute_flow(webrtc, channel, payload):
+  print(f">>>>>>>>>>[WebRTC] EXECUTE_FLOW", payload)
+  try:
+    print(">>> Executing flow...")
+    print("payload:", payload)
+    webrtc.domain.task_scheduler.execute_flow(payload["projectName"], payload["flowName"])
+  except Exception as e:
+    print(f"[WebRTC] EXECUTE_FLOW error:", e)
 # --------------------------------
 
 dispatch={
@@ -70,4 +77,5 @@ dispatch={
   "CREATE_FLOW": create_flow,
   "GET_PACKAGE_NODES": get_package_nodes,
   "FLOW_UPDATE": flow_update,
+  "EXECUTE_FLOW": execute_flow,
 }

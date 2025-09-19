@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addEdge, applyEdgeChanges, applyNodeChanges } from '@xyflow/react';
 
 interface FlowRepoState {
@@ -67,9 +67,20 @@ const flowsRepoSlice = createSlice({
     },
     projectSliceClear: (state) => {
       state = initialState;
-    }
+    },
+    setInputValue: (state, action) => {
+      const flow = state.flows.find((f) => f.name === action.payload.flowName && f.projectName === action.payload.projectName);
+
+      console.log('=== setInputValue reducer ===', action.payload, flow);
+      if (!flow) return;
+      // @ts-ignore
+      flow.data.nodes
+        .filter((node) => node.id === action.payload.nodeId)[0].data.inputs
+        .filter((input: any) => input.id === action.payload.inputId)[0].value = action.payload.value;
+      return state
+    },
   },
 });
 
-export const { onConnect,onEdgesChange, onNodesChange, setLoading, setError, projectSliceClear, setFlow, addNode } = flowsRepoSlice.actions;
+export const { setInputValue, onConnect,onEdgesChange, onNodesChange, setLoading, setError, projectSliceClear, setFlow, addNode } = flowsRepoSlice.actions;
 export default flowsRepoSlice.reducer;

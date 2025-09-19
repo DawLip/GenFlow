@@ -52,12 +52,10 @@ class WebRTC:
 
       @channel.on("message")
       def _on_msg(message):
-        print("[WebRTC] recv:", message)
         webrtc_dispatch(cls, channel, json.loads(message))
 
       @channel.on("hello")
       def _on_msg(message):
-        print("[WebRTC] recv:", message)
         webrtc_dispatch(cls, channel, json.loads(message))
 
       @pc.on("connectionstatechange")

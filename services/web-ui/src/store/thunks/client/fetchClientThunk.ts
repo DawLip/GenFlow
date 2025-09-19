@@ -5,6 +5,7 @@ import { setClient, setLoading as setLoadingClient, setError as setErrorClient }
 import { setTeam, setLoading as setLoadingTeams, setError as setErrorTeams } from '@web-ui/store/slices/teamSlice';
 import { setProject, setLoading as setLoadingProject, setError as setErrorProject } from '@web-ui/store/slices/projectSlice';
 import { setFlow } from '@web-ui/store/slices/flowsSlice';
+import { newGenworker } from '@web-ui/store/slices/genworkersRepoSlice';
 
 export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
   console.log('=== fetchClient ===')
@@ -33,6 +34,12 @@ export const fetchClientThunk = () => async (dispatch: any, getState: any) => {
       return;
     }
     dispatch(setTeam({...team[0], teamId: team[0].id}));
+
+    for (const genworker of [...new Set([team[0].masterGenworker, ...team[0].storageGenworkers])]) {
+      const {data} = await axios.get(`${services_config.service_url.gateway_web_ui}/api/task-queue/genworker/${genworker}`);
+      console.log("Fetched genworker data:", data);
+      dispatch(newGenworker(data.genworker));
+    }
 
     // const project = await axios.get(`${services_config.service_url.gateway_web_ui}/api/projects/${team[0].projects[0]}`);
     // if (!project.data.res.ok) {

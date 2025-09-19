@@ -6,14 +6,17 @@ import { Icon } from "../Icon";
 import { AppDispatch } from "@web-ui/store";
 import { useDispatch, useSelector } from "react-redux";
 import { executeFlowThunk } from "@web-ui/store/thunks/flow/executeFlowThunk";
-import { setInputValue } from "@web-ui/store/slices/flowsSlice";
+import { setInputValue } from "@web-ui/store/slices/flowsRepoSlice";
+import { useWebRTC } from "@web-ui/webrtc/webrtc.context";
+import { setInputValueThunk } from "@web-ui/store/thunks/flow/setInputValueThunk";
 
 export const DefaultNode = React.memo(function TextUpdaterNode(node: any) {
   const dispatch = useDispatch<AppDispatch>();
+  const webRTC = useWebRTC();
 
   const onExecute = async () => {
-    console.log(`=== Executing node ${node.data.id} ===`)
-    dispatch(executeFlowThunk())
+    console.log(`=== Executing node ${node.id} ===`)
+    dispatch(executeFlowThunk(webRTC, node.id))
   }
   console.log('Rendering DefaultNode', node);
   return (
@@ -57,9 +60,9 @@ const NodeHeader = ({ node, onExecute }: any) => {
 
 function NodeInputs({ node }: any) {
   const dispatch = useDispatch<AppDispatch>();
+  const webRPC = useWebRTC();
   
   const inputs = useMemo(() => node.data.inputs, [node.data.inputs]);
-  const flowId =  useSelector((state: any) => state.session.selectedFlow);
 
   return (
     <div className="flex-col gap-1 w-full py-1">
@@ -68,7 +71,7 @@ function NodeInputs({ node }: any) {
           {<Widget 
             key={'input-' + input.id} 
             data={{...input, value: input.value, setValue: (value: string) => {
-              dispatch(setInputValue({ flowID: flowId, nodeId: node.id, inputId: input.id, value }));
+              dispatch(setInputValueThunk(webRPC, { nodeId: node.id, inputId: input.id, value }));
             }}} 
           />}
           <div>

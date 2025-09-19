@@ -1,0 +1,107 @@
+{
+  "nodes": [
+    {
+      "id": "67cc6141-d37a-44b6-a900-40954ae0edd6",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Text/Base",
+      "position": {
+        "x": 256,
+        "y": 192
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "TextInput",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "input-1",
+            "label": "text input",
+            "name": "textInput",
+            "dataType": "TEXT",
+            "widget": "LineInput",
+            "value": "asd"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "output-1",
+            "label": "text output",
+            "name": "textOutput",
+            "dataType": "TEXT",
+            "widget": "LineOutput"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "6394e565-35e8-4fc1-a99f-b316c7b2789e",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Image/Base",
+      "position": {
+        "x": 576,
+        "y": 256
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "68447366-f956-4010-9f76-b2c9e7c8b348",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "File/Save",
+      "position": {
+        "x": 640,
+        "y": 256
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "TextFileSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "input-1",
+            "label": "text input",
+            "name": "textInput",
+            "dataType": "TEXT",
+            "widget": "LineInput"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    }
+  ],
+  "edges": [
+    {
+      "source": "67cc6141-d37a-44b6-a900-40954ae0edd6",
+      "sourceHandle": "output-1",
+      "target": "68447366-f956-4010-9f76-b2c9e7c8b348",
+      "targetHandle": "input-1",
+      "id": "67cc6141-d37a-44b6-a900-40954ae0edd6.output-1<->68447366-f956-4010-9f76-b2c9e7c8b348.input-1"
+    }
+  ]
+}

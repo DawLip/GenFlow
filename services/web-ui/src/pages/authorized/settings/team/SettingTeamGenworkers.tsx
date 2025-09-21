@@ -20,7 +20,7 @@ export function SettingsTeamGenWorkers() {
   const yourGenworkers = useSelector((state: any) => state.client.genworkers);
   const teamGenworkersIds = useSelector((state: any) => state.team.genworkers);
   const [teamGenworkers, setTeamGenworkers] = useState<any[]>([]);
-  const genworkers = useSelector((state: any) => state.genworkersRepository.genworkers);
+  const genworkers = useSelector((state: any) => state.genworkersRepo.genworkers);
 
   useEffect(() => {
     setTeamGenworkers([]);

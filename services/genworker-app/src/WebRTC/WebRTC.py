@@ -13,6 +13,7 @@ class WebRTC:
   file_system = None
   packages = None
   channels = {}
+  rooms = {}
 
   @classmethod
   def _bind_handlers(cls):

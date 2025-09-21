@@ -1,4 +1,5 @@
 import json
+import asyncio
 
 
 class TaskScheduler:
@@ -86,14 +87,20 @@ class TaskScheduler:
     toPrint = artifact.copy()
     toPrint['content'] = str(toPrint['content'])[:20] + '...' if len(str(toPrint['content'])) > 20 else str(toPrint['content'])
     print("New artifact:", {
-      'projectId': self.taskRepo.projectId,
-      'path': self.taskRepo.path,
+      'projectName': self.taskRepo.projectName,
       'flowName': self.taskRepo.flowName,
       'artifact': toPrint
     })
-    self.domain.SIO.sio.emit('new_artifact', {
-      'projectId': self.taskRepo.projectId,
-      'path': self.taskRepo.path,
-      'flowName': self.taskRepo.flowName,
-      'artifact': artifact
-    })
+    # loop = asyncio.get_event_loop()
+    # loop.create_task(self.domain.SIO.sio.emit('new_artifact', {
+    #   'projectName': self.taskRepo.projectName,
+    #   'flowName': self.taskRepo.flowName,
+    #   'artifact': artifact
+    # }))
+
+    for channel in self.domain.webrtc.rooms[self.taskRepo.flowName]:
+      channel.send(json.dumps({"event": "NEW_ARTIFACT", "payload": {
+        'projectName': self.taskRepo.projectName,
+        'flowName': self.taskRepo.flowName,
+        'artifact': artifact
+      }}))

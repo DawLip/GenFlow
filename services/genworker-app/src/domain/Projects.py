@@ -76,6 +76,9 @@ class Projects:
             node["style"]["width"] = change["dimensions"]["width"]
             node["style"]["height"] = change["dimensions"]["height"]
             break
+      elif change["type"] == "remove":
+        flow_data["nodes"] = [n for n in flow_data["nodes"] if n["id"] != change["id"]]
+        break
     self.domain.file_system.save_file(f"{flow_path}/flow.data.json", json.dumps(flow_data, indent=2))
 
     

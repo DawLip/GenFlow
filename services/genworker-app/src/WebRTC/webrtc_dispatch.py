@@ -30,6 +30,9 @@ def get_flow_config(webrtc, channel, payload):
     "flowName": payload["flowName"]
   }}))
   
+  if payload["flowName"] not in webrtc.rooms: webrtc.rooms[payload["flowName"]] = []
+  webrtc.rooms[payload["flowName"]].append(channel)
+
 def create_flow(webrtc, channel, payload):
     flow = webrtc.domain.projects.create_flow(payload)
     channel.send(json.dumps({"event": "NEW_FLOW_CREATED", "payload": {

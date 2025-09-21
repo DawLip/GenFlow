@@ -17,12 +17,14 @@ class Node:
     
     input_ports = {}
     output_ports = {}
-
+    print("test")
     if 'inputs' in node['data']:
       for input in node['data']['inputs']:
-        if input["value"]: input_ports[input["name"]] = input["value"]
-        else: input_ports[input["name"]] = self.get_data(incoming_ports[(node['id'], input["id"])])
-
+        if "value" in input and input["value"]:
+          input_ports[input["name"]] = input["value"]
+        else:
+          input_ports[input["name"]] = self.get_data(incoming_ports[(node['id'], input["id"])])
+    print("input_ports:", input_ports, incoming_ports)
     node_to_execute.execute(self, node, input_ports, output_ports)
 
     if 'outputs' in node['data']:

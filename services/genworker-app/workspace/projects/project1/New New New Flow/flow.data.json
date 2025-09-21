@@ -1,50 +1,136 @@
 {
   "nodes": [
     {
-      "id": "67cc6141-d37a-44b6-a900-40954ae0edd6",
+      "id": "1a3b473e-6ead-4844-ab7e-e264c7145899",
       "type": "Default",
       "packet": "GenFlow",
-      "path": "Text/Base",
+      "path": "Unified/Base",
       "position": {
-        "x": 256,
+        "x": 384,
         "y": 192
       },
       "style": {
         "width": 256,
-        "height": 128
+        "height": 384
       },
       "data": {
-        "name": "TextInput",
+        "name": "Txt2ImgUnified",
         "description": "This is a new node",
         "inputs": [
           {
-            "id": "input-1",
-            "label": "text input",
-            "name": "textInput",
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "runwayml/stable-diffusion-v1-5",
+            "dataType": "STRING",
+            "widget": "Select",
+            "options": [
+              {
+                "label": "runwayml/stable-diffusion-v1-5",
+                "value": "runwayml/stable-diffusion-v1-5"
+              },
+              {
+                "label": "CompVis/stable-diffusion-v1-4",
+                "value": "CompVis/stable-diffusion-v1-4"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2-base",
+                "value": "stabilityai/stable-diffusion-2-base"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2",
+                "value": "stabilityai/stable-diffusion-2"
+              },
+              {
+                "label": "hakurei/waifu-diffusion-v1-4",
+                "value": "hakurei/waifu-diffusion-v1-4"
+              }
+            ],
+            "value": "runwayml/stable-diffusion-v1-5"
+          },
+          {
+            "id": "positivePrompt",
+            "label": "positive prompt",
+            "name": "positivePrompt",
+            "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
             "dataType": "TEXT",
             "widget": "LineInput",
-            "value": "asd"
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
+          },
+          {
+            "id": "negativePrompt",
+            "label": "negative prompt",
+            "name": "negativePrompt",
+            "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+            "dataType": "TEXT",
+            "widget": "LineInput",
+            "value": "blurry, low quality, distorted, deformed, text, watermark, ugly"
+          },
+          {
+            "id": "seed",
+            "label": "seed",
+            "name": "seed",
+            "default": 12345,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 12345
+          },
+          {
+            "id": "height",
+            "label": "height",
+            "name": "height",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "width",
+            "label": "width",
+            "name": "width",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "guidanceScale",
+            "label": "guidance scale",
+            "name": "guidanceScale",
+            "default": 6,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 6
+          },
+          {
+            "id": "steps",
+            "label": "steps",
+            "name": "steps",
+            "default": 30,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 30
           }
         ],
         "outputs": [
           {
-            "id": "output-1",
-            "label": "text output",
-            "name": "textOutput",
-            "dataType": "TEXT",
-            "widget": "LineOutput"
+            "id": "imageOutput",
+            "label": "image",
+            "name": "imageOutput",
+            "dataType": "IMAGE",
+            "widget": "Label"
           }
         ]
       },
-      "package": "GenFlow"
+      "package": "Diffusers"
     },
     {
-      "id": "6394e565-35e8-4fc1-a99f-b316c7b2789e",
+      "id": "7a0e5682-16e2-4dc5-a2b0-e4802b8f8269",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Image/Base",
       "position": {
-        "x": 576,
+        "x": 704,
         "y": 256
       },
       "style": {
@@ -65,43 +151,15 @@
         ]
       },
       "package": "GenFlow"
-    },
-    {
-      "id": "68447366-f956-4010-9f76-b2c9e7c8b348",
-      "type": "Default",
-      "packet": "GenFlow",
-      "path": "File/Save",
-      "position": {
-        "x": 640,
-        "y": 256
-      },
-      "style": {
-        "width": 256,
-        "height": 128
-      },
-      "data": {
-        "name": "TextFileSave",
-        "description": "This is a new node",
-        "inputs": [
-          {
-            "id": "input-1",
-            "label": "text input",
-            "name": "textInput",
-            "dataType": "TEXT",
-            "widget": "LineInput"
-          }
-        ]
-      },
-      "package": "GenFlow"
     }
   ],
   "edges": [
     {
-      "source": "67cc6141-d37a-44b6-a900-40954ae0edd6",
-      "sourceHandle": "output-1",
-      "target": "68447366-f956-4010-9f76-b2c9e7c8b348",
-      "targetHandle": "input-1",
-      "id": "67cc6141-d37a-44b6-a900-40954ae0edd6.output-1<->68447366-f956-4010-9f76-b2c9e7c8b348.input-1"
+      "source": "1a3b473e-6ead-4844-ab7e-e264c7145899",
+      "sourceHandle": "imageOutput",
+      "target": "7a0e5682-16e2-4dc5-a2b0-e4802b8f8269",
+      "targetHandle": "imageInput",
+      "id": "1a3b473e-6ead-4844-ab7e-e264c7145899.imageOutput<->7a0e5682-16e2-4dc5-a2b0-e4802b8f8269.imageInput"
     }
   ]
 }

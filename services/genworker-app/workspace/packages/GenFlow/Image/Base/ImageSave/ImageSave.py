@@ -20,7 +20,7 @@ class ImageInput:
     Node.domain.task_scheduler.new_artifact({
       'type': 'image',
       'subtype': 'png',
-      'location': f'files/{path}',
+      'location': f'files/',
       'name': f"sd15_{ts}.png",
       'nodeId': node['id'],
       'content':  b64,

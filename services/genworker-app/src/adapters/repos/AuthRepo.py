@@ -1,6 +1,6 @@
 class AuthRepo:
   _token: str|None = None
-  _userId: str|None = None
+  _user_id: str|None = None
   _worker_name: str|None = None
   _config = None
   

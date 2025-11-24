@@ -28,18 +28,22 @@ import { setPackages } from '@web-ui/store/slices/packagesSlice';
 import { newArtifact } from '@web-ui/store/slices/artifactsSlice';
 import { FlowWorkspace } from '@web-ui/components/FlowWorkspace';
 import { useWebRTC } from '@web-ui/webrtc/webrtc.context';
+import { setOpenedTab } from '@web-ui/store/slices/workspaceSlice';
+import { openNewTabThunk } from '@web-ui/store/thunks/workspace/openNewTabThunk';
 
 function Page() {
   const webrtc = useWebRTC();
   const socket = useSocket();
   const dispatch = useDispatch<AppDispatch>();
 
-  const flowID = useSelector((state: any) => state.session.selectedFlow);
-  
-  const selectedFlowName = flowID && useSelector((state: any) => state.flows[flowID].name);
-  const selectedFlowPath = flowID && useSelector((state: any) => state.flows[flowID].path);
+  const openedTab = useSelector((state: any) => state.workspace.tabs[state.workspace.openedTab]);
+  const selectedFlowName = openedTab.data.flowName;
 
-  const master_genworker = flowID && useSelector((state: any) => state.team.masterGenworker);
+  // const flowID = useSelector((state: any) => state.session.selectedFlow);
+  
+  // const selectedFlowPath = flowID && useSelector((state: any) => state.flows[flowID].path);
+
+  // const master_genworker = flowID && useSelector((state: any) => state.team.masterGenworker);
 
   const { getViewport } = useReactFlow();
   const [x, y, zoom] = useStore((s) => s.transform);
@@ -54,6 +58,7 @@ function Page() {
   
   
   const tabs = useSelector((state: any) => state.workspace.tabs);
+  const selectedTab = useSelector((state: any) => state.workspace.openedTab);
 
   // --------------
 
@@ -71,7 +76,7 @@ function Page() {
         userId, 
         projectId, 
         flowName: selectedFlowName,
-        path: selectedFlowPath,
+        path: '',// selectedFlowPath
         x: (e.clientX - rect.left - x)/zoom, 
         y: (e.clientY - rect.top - y)/zoom
       })
@@ -145,10 +150,12 @@ function Page() {
           top: remoteCursor.y * zoom + y + 48,
           left: remoteCursor.x * zoom + x + 270,
         }}></div>}
-        <div className='gap-8 cursor-pointer'>
+        <div className='border-b-2 border-br'>
           {tabs.map((tab, index) => (
-            <div key={tab.title + index}>
-              {tab.title}
+            <div key={tab.title + index} onClick={() => dispatch(openNewTabThunk(index))} className={`h-8 px-4 border-b-2 flex justify-center items-center gap-2 cursor-pointer ${selectedTab === index ? 'border-primary' : 'border-gray-600'} `}>
+              <div className={`justify-start text-xs font-normal font-['Inter'] leading-none ${selectedTab === index ? 'text-on_bg/80' : 'text-on_bg/50'}`}>
+                {tab.title}
+              </div>
             </div>
           ))}
         </div>

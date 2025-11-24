@@ -1,0 +1,129 @@
+{
+  "nodes": [
+    {
+      "id": "07fec918-75f0-4f4d-b1c6-a2de1f316890",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Unified/Base",
+      "position": {
+        "x": 320,
+        "y": 128
+      },
+      "style": {
+        "width": 256,
+        "height": 640
+      },
+      "data": {
+        "name": "Txt2ImgUnified",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "runwayml/stable-diffusion-v1-5",
+            "dataType": "STRING",
+            "widget": "Select",
+            "options": [
+              {
+                "label": "runwayml/stable-diffusion-v1-5",
+                "value": "runwayml/stable-diffusion-v1-5"
+              },
+              {
+                "label": "CompVis/stable-diffusion-v1-4",
+                "value": "CompVis/stable-diffusion-v1-4"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2-base",
+                "value": "stabilityai/stable-diffusion-2-base"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2",
+                "value": "stabilityai/stable-diffusion-2"
+              },
+              {
+                "label": "hakurei/waifu-diffusion-v1-4",
+                "value": "hakurei/waifu-diffusion-v1-4"
+              }
+            ],
+            "value": "runwayml/stable-diffusion-v1-5"
+          },
+          {
+            "id": "positivePrompt",
+            "label": "positive prompt",
+            "name": "positivePrompt",
+            "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
+          },
+          {
+            "id": "negativePrompt",
+            "label": "negative prompt",
+            "name": "negativePrompt",
+            "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "blurry, low quality, distorted, deformed, text, watermark, ugly"
+          },
+          {
+            "id": "seed",
+            "label": "seed",
+            "name": "seed",
+            "default": 12345,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 12345
+          },
+          {
+            "id": "height",
+            "label": "height",
+            "name": "height",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "width",
+            "label": "width",
+            "name": "width",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "guidanceScale",
+            "label": "guidance scale",
+            "name": "guidanceScale",
+            "default": 6,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 6
+          },
+          {
+            "id": "steps",
+            "label": "steps",
+            "name": "steps",
+            "default": 30,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 30
+          }
+        ],
+        "outputs": [
+          {
+            "id": "imageOutput",
+            "label": "image",
+            "name": "imageOutput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    }
+  ],
+  "edges": []
+}

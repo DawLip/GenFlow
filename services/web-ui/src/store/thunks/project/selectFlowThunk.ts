@@ -1,5 +1,6 @@
+import { onNodesChange } from "@web-ui/store/slices/flowsRepoSlice";
 import { selectFlow } from "@web-ui/store/slices/sessionSlice";
-import { newTab } from "@web-ui/store/slices/workspaceSlice";
+import { newTab, setSelection } from "@web-ui/store/slices/workspaceSlice";
 
 
 export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: any, getState: any) => {
@@ -13,6 +14,7 @@ export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: an
 
   webRTC.send(storageGenworkerId, "GET_FLOW_CONFIG", { projectName, flowName, flowData: true });
 
+  dispatch(setSelection({ selectedNodes: [], selectedEdges: [] }));
   dispatch(selectFlow(state.flowsRepo.flows.length));
   dispatch(newTab({ title: flowName, type: 'flow', data: { projectName, flowName }}));
 };

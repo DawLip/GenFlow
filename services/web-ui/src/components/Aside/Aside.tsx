@@ -18,6 +18,7 @@ export function Aside({ tabs=["Hierarchy","Nodes", "Files"]}: any) {
             key={index} 
             label={tab} 
             onClick={()=> setSelectedTab(index)}
+            isSelected={selectedTab===index}
           />
           ))}
       </header>
@@ -47,10 +48,12 @@ const Content = ({ tabName }: { tabName: string }) => {
   }
 }
 
-const Tab = ({ label, onClick }: { label:string, onClick:()=>void }) => {
+const Tab = ({ label, onClick, isSelected }: { label:string, onClick:()=>void, isSelected: boolean }) => {
   return (
-    <div onClick={onClick} className="h-8 px-4 border-b-2 border-Primary flex justify-center items-center gap-2 cursor-pointer">
-      <div className="justify-start text-on_bg/80 text-xs font-normal font-['Inter'] leading-none">{label}</div>
+    <div onClick={onClick} className={`h-8 px-4 border-b-2 flex justify-center items-center gap-2 cursor-pointer ${isSelected ? 'border-primary' : 'border-gray-600'}`}>
+      <div className={`justify-start text-xs font-normal font-['Inter'] leading-none ${isSelected ? 'text-on_bg/80' : 'text-on_bg/50'}`}>
+        {label}
+      </div>
     </div>
   );
 }

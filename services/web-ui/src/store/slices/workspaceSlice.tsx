@@ -29,9 +29,13 @@ const workspaceSlice = createSlice({
   initialState,
   reducers: {
     newTab: (state, action) => {
+      state.openedTab = state.tabs.length;
       state.tabs = [...state.tabs, action.payload];
       state.loading = false;
       state.error = null;
+    },
+    setOpenedTab: (state, action) => {
+      state.openedTab = action.payload;
     },
     setSelection: (state, action) => {
       state.selectedNodes = action.payload.selectedNodes;
@@ -52,5 +56,5 @@ const workspaceSlice = createSlice({
   },
 });
 
-export const { setLoading, setSelection, setError, workspaceSliceClear, newTab } = workspaceSlice.actions;
+export const { setLoading, setSelection, setOpenedTab, setError, workspaceSliceClear, newTab } = workspaceSlice.actions;
 export default workspaceSlice.reducer;

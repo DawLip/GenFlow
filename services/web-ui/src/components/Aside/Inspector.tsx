@@ -31,6 +31,9 @@ export function Inspector({ }: any) {
 }
 
 const InspectorHeader = ({ selectedNode }: any) => {
+  if (selectedNode == null) {
+    return <EmptyContent>No node selected</EmptyContent>;
+  }
   return (
     <div className="self-stretch inline-flex flex-col justify-start items-start gap-1">
       <div className="flex-col self-stretch justify-start items-start gap-1">

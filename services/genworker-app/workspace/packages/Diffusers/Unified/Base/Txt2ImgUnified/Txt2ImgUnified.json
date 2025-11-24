@@ -2,7 +2,7 @@
   "type": "Default",
   "path": "Unified/Base",
   "package": "Diffusers",
-  "style": { "width": 4, "height": 6 },
+  "style": { "width": 4, "height": 10 },
   "data": {
     "name": "Txt2ImgUnified",
     "description": "This is a new node",

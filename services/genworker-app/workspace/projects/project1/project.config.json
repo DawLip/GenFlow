@@ -1,9 +1,6 @@
 {
   "name": "project1",
   "flows": [
-    "flow1",
-    "New Flow",
-    "New New Flow",
-    "New New New Flow"
+    "new flow"
   ]
 }

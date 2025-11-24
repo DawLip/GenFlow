@@ -44,7 +44,6 @@ def create_flow(webrtc, channel, payload):
     
 def get_package_nodes(webrtc, channel, payload):
   nodes = webrtc.domain.packages.get_nodes()
-  print(f"[WebRTC] PACKAGE_NODES", nodes)
   channel.send(json.dumps({"event": "PACKAGE_NODES", "payload": nodes}))
   
 def flow_update(webrtc, channel, payload):
@@ -64,10 +63,8 @@ def flow_update(webrtc, channel, payload):
     print(f"[WebRTC] FLOW_UPDATE error:", e)
     
 def execute_flow(webrtc, channel, payload):
-  print(f">>>>>>>>>>[WebRTC] EXECUTE_FLOW", payload)
+  print(f"[WebRTC] EXECUTE_FLOW", payload)
   try:
-    print(">>> Executing flow...")
-    print("payload:", payload)
     webrtc.domain.task_scheduler.execute_flow(payload["projectName"], payload["flowName"])
   except Exception as e:
     print(f"[WebRTC] EXECUTE_FLOW error:", e)

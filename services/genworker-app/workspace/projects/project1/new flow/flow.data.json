@@ -1,13 +1,13 @@
 {
   "nodes": [
     {
-      "id": "7c28a37a-d965-4627-b4b5-da520c082920",
+      "id": "d2998d89-3322-44a4-a027-4ffe51876a3f",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Image/Base",
       "position": {
-        "x": 832,
-        "y": 192
+        "x": 704,
+        "y": 256
       },
       "style": {
         "width": 256,
@@ -29,20 +29,20 @@
       "package": "GenFlow"
     },
     {
-      "id": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484",
+      "id": "f8e23c5e-5122-47bb-b019-4f7c7330e16b",
       "type": "Default",
       "packet": "GenFlow",
-      "path": "Unified/Base",
+      "path": "Pipe/Base",
       "position": {
-        "x": 512,
-        "y": 192
+        "x": 320,
+        "y": 256
       },
       "style": {
         "width": 256,
-        "height": 640
+        "height": 384
       },
       "data": {
-        "name": "Txt2ImgUnified",
+        "name": "PipeFromPretrained",
         "description": "This is a new node",
         "inputs": [
           {
@@ -83,7 +83,7 @@
             "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
             "dataType": "TEXT",
             "widget": "TextAreaInput",
-            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur"
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
           },
           {
             "id": "negativePrompt",
@@ -155,11 +155,11 @@
   ],
   "edges": [
     {
-      "source": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484",
+      "source": "f8e23c5e-5122-47bb-b019-4f7c7330e16b",
       "sourceHandle": "imageOutput",
-      "target": "7c28a37a-d965-4627-b4b5-da520c082920",
+      "target": "d2998d89-3322-44a4-a027-4ffe51876a3f",
       "targetHandle": "imageInput",
-      "id": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484.imageOutput<->7c28a37a-d965-4627-b4b5-da520c082920.imageInput"
+      "id": "f8e23c5e-5122-47bb-b019-4f7c7330e16b.imageOutput<->d2998d89-3322-44a4-a027-4ffe51876a3f.imageInput"
     }
   ]
 }

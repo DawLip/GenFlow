@@ -7,7 +7,6 @@ class FileSystem:
 
   def save_file(self, full_path, content):
     self.files_repo.save(full_path, content)
-    print(f"[FileSystem] Zapisano plik: {full_path}")
 
   def get_file(self, full_path):
     return self.files_repo.get(full_path)

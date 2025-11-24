@@ -20,10 +20,10 @@ class NodeRepo:
       
     self._nodes[node_path] = m.Node()
 
-    print(f"Node registered: {node_path}")
+    print(f"[NodeRepo] Node registered: {node_path}")
 
   def get_node_path(self, node):
-    print(f"Getting node path for: {node}")
+    # print(f"Getting node path for: {node}")
     return f"{node['package']}/{node['path']}/{node['data']['name']}"
 
     

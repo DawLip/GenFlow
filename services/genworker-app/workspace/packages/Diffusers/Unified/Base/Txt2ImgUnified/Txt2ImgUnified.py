@@ -6,8 +6,7 @@ import base64
 
 class Txt2ImgUnified:
   def execute(self, Node, node, input_ports,  output_ports):
-    print("input_ports:", input_ports)
-    print(f"Txt2ImgUnified executing...")
+    print(f"[Txt2ImgUnified] executing...")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype  = torch.float16 if device == "cuda" else torch.float32

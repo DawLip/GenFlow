@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "nodes": [
     "Unified/Base/Txt2ImgUnified",
-    "Pipe/Base/PipeFromPretreined",
-    "Pipe/Base/ExeDiffPipe"
+    "Pipe/Base/PipeFromPretrained"
   ]
 }

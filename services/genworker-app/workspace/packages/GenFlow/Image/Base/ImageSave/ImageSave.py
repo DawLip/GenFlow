@@ -4,9 +4,9 @@ from PIL import Image
 import os
 
 
-class ImageInput:
+class ImageSave:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"ImageInput executing...")
+    print(f"[ImageSave] executing...")
     
     OUT_DIR  = "./services/genworker-app/workspace/files"
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -26,4 +26,4 @@ class ImageInput:
       'content':  b64,
     })
 
-Node = ImageInput
+Node = ImageSave

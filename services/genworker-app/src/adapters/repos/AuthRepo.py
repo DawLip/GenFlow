@@ -30,7 +30,7 @@ class AuthRepo:
     self._user_id = None
     
   def setConfig(self, config):
-    print("Setting config:", config)
+    # print("Setting config :", config)
     self._config = config
     
   

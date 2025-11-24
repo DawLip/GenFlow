@@ -57,7 +57,7 @@ class Projects:
     print(f"[Projects] Node added to {project_name}/{flow_name}")
 
   def on_nodes_change(self, payload):
-    print(f">>>>>>>>>>[Projects] on_nodes_change")
+    print(f"[Projects] on_nodes_change")
     project_name = payload["projectName"]
     flow_name = payload["flowName"]
     flow_path = f"projects/{project_name}/{flow_name}"
@@ -83,7 +83,7 @@ class Projects:
 
     
   def on_connect(self, payload):
-    print(f"[Projects] on_connect payload:", json.dumps(payload, indent=2))
+    print(f"[Projects] on_connect payload:")
     project_name = payload["projectName"]
     flow_name = payload["flowName"]
     flow_path = f"projects/{project_name}/{flow_name}"
@@ -91,10 +91,10 @@ class Projects:
     flow_data = json.loads(self.domain.file_system.get_file(f"{flow_path}/flow.data.json"))
     flow_data["edges"].append(payload["data"]["params"])
     self.domain.file_system.save_file(f"{flow_path}/flow.data.json", json.dumps(flow_data, indent=2))
-    print(f"[Projects] Edge added to {project_name}/{flow_name}:", payload["data"])
+    print(f"[Projects] Edge added to {project_name}/{flow_name}:")
       
   def on_edges_change(self, payload):
-    print(f">>>>>>>>>>[Projects] on_edges_change")
+    print(f"[Projects] on_edges_change")
     project_name = payload["projectName"]
     flow_name = payload["flowName"]
     flow_path = f"projects/{project_name}/{flow_name}"
@@ -105,30 +105,30 @@ class Projects:
         for edge in flow_data["edges"]:
           if edge["id"] == change["id"]:
             edge.update(change)
-            print(f"[Projects] Edge updated in {project_name}/{flow_name}:")
+            print(f"[Projects] Edge updated in {project_name}/{flow_name}")
             break
       elif change["type"] == "remove":
-        print("remove", json.dumps(change, indent=2), json.dumps(flow_data["edges"], indent=2))
+        print(f"[Projects] Edge removed from {project_name}/{flow_name}")
         flow_data["edges"] = [e for e in flow_data["edges"] if e["id"] != change["id"]]
-        print(f"[Projects] Edge removed from {project_name}/{flow_name}:", change)
+        print(f"[Projects] Edge removed from {project_name}/{flow_name}")
     self.domain.file_system.save_file(f"{flow_path}/flow.data.json", json.dumps(flow_data, indent=2))
 
   def on_value_change(self, payload):
-    print(f">>>>>>>>>>[Projects] on_value_change")
+    print(f"[Projects] on_value_change")
     project_name = payload["projectName"]
     flow_name = payload["flowName"]
     flow_path = f"projects/{project_name}/{flow_name}"
 
     flow_data = json.loads(self.domain.file_system.get_file(f"{flow_path}/flow.data.json"))
-    print("flow_data before:", json.dumps(flow_data, indent=2))
-    print("\n\npayload data:", json.dumps(payload["data"], indent=2))
+    # print("flow_data before:", json.dumps(flow_data, indent=2))
+    # print("\n\npayload data:", json.dumps(payload["data"], indent=2))
     for node in flow_data["nodes"]:
       if node["id"] == payload["data"]["nodeId"]:
-        print(f"[Projects] Node value change in {project_name}/{flow_name} node:", node["id"])
+        # print(f"[Projects] Node value change in {project_name}/{flow_name} node:", node["id"])
         for input in node["data"]["inputs"]:
           if input["id"] == payload["data"]["inputId"]:
             input["value"] = payload["data"]["value"]
             self.domain.file_system.save_file(f"{flow_path}/flow.data.json", json.dumps(flow_data, indent=2))
             break
         break
-    print("successfully updated value")
+    # print("successfully updated value")

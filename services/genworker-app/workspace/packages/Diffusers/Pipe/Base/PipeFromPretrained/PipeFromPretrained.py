@@ -4,10 +4,10 @@ from PIL import Image
 import time, os, random
 import base64
 
-class PipeFromPretreined:
+class PipeFromPretrained:
   def execute(self, Node, node, input_ports,  output_ports):
     print("input_ports:", input_ports)
-    print(f"PipeFromPretreined executing...")
+    print(f"PipeFromPretrained executing...")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype  = torch.float16 if device == "cuda" else torch.float32
@@ -27,8 +27,18 @@ class PipeFromPretreined:
             pipe.enable_xformers_memory_efficient_attention()
         except Exception:
             pass  
+
+    image: Image.Image = pipe(
+        prompt=input_ports['positivePrompt'],
+        negative_prompt=input_ports['negativePrompt'],
+        num_inference_steps=int(input_ports['steps']),  
+        guidance_scale=int(input_ports['guidanceScale']),   
+        height=int(input_ports['height']),
+        width=int(input_ports['width']),
+        generator=torch.Generator(device=device).manual_seed(int(input_ports['seed'])),
+    ).images[0]
     
-    output_ports['pipe'] = pipe
+    output_ports['imageOutput'] = image
     
     
-Node = PipeFromPretreined
+Node = PipeFromPretrained

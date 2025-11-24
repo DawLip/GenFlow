@@ -8,7 +8,7 @@ const LineInputWidget = ({ data:{label, placeholder, value, setValue, password }
   }
 }) => {
   return (
-    <div className="justify-start items-center gap-4 w-full">
+    <div className="justify-start items-center gap-4 w-full" draggable={false}>
       <label className="justify-start text-white text-sm">{label}</label>
       <input
         type={password ? 'password' : 'text'}

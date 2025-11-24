@@ -18,7 +18,7 @@ import { throttle } from 'lodash';
 import { AppDispatch } from '@web-ui/store';
 import {
   setSelection,
-} from '@web-ui/store/slices/flowsSlice';
+} from '@web-ui/store/slices/workspaceSlice';
 
 import '@xyflow/react/dist/style.css';
 import { useSocket } from '@web-ui/socket/socket';
@@ -85,13 +85,14 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
     [dispatch, edges],
   );
 
-  // const handleSelectionChange = useCallback(
-  //   ({ nodes }: OnSelectionChangeParams<Node, Edge>) => {
-  //     const selectedIds = nodes.map((n) => n.id);
-  //     dispatch(setSelection({ flow: openedTab, selectedNodesIDs: selectedIds }));
-  //   },
-  //   [dispatch, openedTab],
-  // );
+  const handleSelectionChange = useCallback(
+    ({ nodes, edges }: OnSelectionChangeParams<Node, Edge>) => {
+      const selectedNodes = nodes.map((n) => n.id);
+      const selectedEdges = edges.map((e) => e.id);
+      dispatch(setSelection({ selectedNodes, selectedEdges }));
+    },
+    [dispatch, openedTab],
+  );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
     event.preventDefault();
@@ -138,7 +139,7 @@ export function FlowWorkspace({ reactFlowRef }: { reactFlowRef: any }) {
       onNodesChange={onNodesChangeW}
       onEdgesChange={onEdgesChangeW}
       onConnect={onConnectW}
-      // onSelectionChange={handleSelectionChange}
+      onSelectionChange={handleSelectionChange}
       onDrop={onDrop}
       onDragOver={onDragOver}
       snapToGrid

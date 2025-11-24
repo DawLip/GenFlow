@@ -79,21 +79,21 @@ const flowsRepoSlice = createSlice({
         .filter((input: any) => input.id === action.payload.inputId)[0].value = action.payload.value;
       return state
     },
-    setSelection: (
-      state,
-      {payload: { flowID, selectedNodesIDs }}:PayloadAction<{ flowID: string; selectedNodesIDs: string[] }>
-    ) => {
-      if (!state.flows[flowID]) return;
+  //   setSelection: (
+  //     state,
+  //     {payload: { flowName, selectedNodes }}:PayloadAction<{ flowName: string; selectedNodes: string[] }>
+  //   ) => {
+  //     const flow = state.flows.find((f) => f.name === flowName);
+  //     console.log('=== setSelection reducer ===', flowName, selectedNodes, flow);
+  //     if (!flow) return;
 
-      state.flows[flowID].nodes = state.flows[flowID].nodes.map((node) => ({
-        ...node,
-        selected: selectedNodesIDs.includes(node.id),
-      }));
-
-      state.flows[flowID].selectedNodes = state.flows[flowID].nodes.filter((node) => selectedNodesIDs.includes(node.id));
-    },
+  //     flow.data.nodes = flow.data.nodes.map((node) => ({
+  //       ...node,
+  //       selected: selectedNodes.includes(node.id),
+  //     }));
+  //   },
   },
 });
 
-export const { setInputValue, onConnect,onEdgesChange, onNodesChange, setLoading, setError, flowsSliceClear, setFlow, addNode, setSelection } = flowsRepoSlice.actions;
+export const { setInputValue, onConnect,onEdgesChange, onNodesChange, setLoading, setError, flowsSliceClear, setFlow, addNode } = flowsRepoSlice.actions;
 export default flowsRepoSlice.reducer;

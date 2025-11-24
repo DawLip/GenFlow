@@ -4,20 +4,26 @@ import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
 import { Node } from '@xyflow/react';
-import { setSelection } from '@web-ui/store/slices/flowsRepoSlice';
+import { setSelection } from '@web-ui/store/slices/workspaceSlice';
+import { onNodesChange } from '@web-ui/store/slices/flowsRepoSlice';
 
 
 export function Hierarchy({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const nodes = flowID && useSelector((state: any) => state.flows[flowID].nodes);
+  const selectedNodesIds = useSelector((state: any) => state.workspace.selectedNodes);
+  const selectedEdgesIds = useSelector((state: any) => state.workspace.selectedEdges);
 
-  const nodesS = flowID && useSelector((state: any) => state.flows[flowID].selectedNodes);
-  const edgesS = flowID && useSelector((state: any) => state.flows[flowID].selectedEdges);
+  const openedTab = useSelector((state: any) => state.workspace.tabs[state.workspace.openedTab]);
+  const flow = useSelector((state: any) => state.flowsRepo.flows.find((f: any) => f.name === openedTab.data.flowName && f.ProjectName === openedTab.data.ProjectName));
+  const nodes = flow.data.nodes;
+
+  // const nodesS = flowID && useSelector((state: any) => state.flows[flowID].selectedNodes);
+  // const edgesS = flowID && useSelector((state: any) => state.flows[flowID].selectedEdges);
 
   const selectNode = (node:any) => {
-    dispatch(setSelection({ flowID, selectedNodesIDs: [node.id] }));
+    dispatch(onNodesChange({flow: openedTab, nodes: flow.data.nodes, changes: [{id: node.id, type: 'select', selected: true}, flow.data.nodes.filter((n:Node)=>n.id!==node.id).map((n:Node)=>({id: n.id, type: 'select', selected: false}))].flat()}));
+    dispatch(setSelection({ flowName: flow.name, selectedNodes: [node.id] }));
   };
 
   return (

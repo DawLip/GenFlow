@@ -9,6 +9,8 @@ interface Tab {
 interface WorkspaceState {
   tabs: Tab[];
   openedTab: number;
+  selectedNodes: any[];
+  selectedEdges: any[];
   loading: boolean;
   error: string | null;
 }
@@ -16,6 +18,8 @@ interface WorkspaceState {
 const initialState: WorkspaceState = {
   tabs: [],
   openedTab: 0,
+  selectedNodes: [],
+  selectedEdges: [],
   loading: true,
   error: null,
 };
@@ -29,6 +33,10 @@ const workspaceSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    setSelection: (state, action) => {
+      state.selectedNodes = action.payload.selectedNodes;
+      state.selectedEdges = action.payload.selectedEdges;
+    },
     setLoading: (state, action) => {
       state.loading = action.payload;
     },
@@ -37,11 +45,12 @@ const workspaceSlice = createSlice({
     },
     workspaceSliceClear: (state) => {
       state.tabs = [];
+      state.openedTab = 0;
       state.loading = true;
       state.error = null;
     }
   },
 });
 
-export const { setLoading, setError, workspaceSliceClear, newTab } = workspaceSlice.actions;
+export const { setLoading, setSelection, setError, workspaceSliceClear, newTab } = workspaceSlice.actions;
 export default workspaceSlice.reducer;

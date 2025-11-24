@@ -8,7 +8,7 @@ const TextAreaInputWidget = ({ data:{label, placeholder, value, setValue, passwo
   }
 }) => {
   return (
-    <div className="flex-col justify-start items-start w-full">
+    <div className="flex-col justify-start items-start w-full" draggable={false}>
       <label className="justify-start text-white text-sm">{label}</label>
       <textarea
         placeholder={placeholder ||". . ."}

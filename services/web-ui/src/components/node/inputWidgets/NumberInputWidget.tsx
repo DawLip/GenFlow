@@ -6,7 +6,7 @@ const NumberInputWidget = ({ data:{label, value, setValue }}: {
   }
 }) => {
   return (
-    <div className="justify-start items-center gap-4 w-full">
+    <div className="justify-start items-center gap-4 w-full" draggable={false}>
       <label className="justify-start text-white text-sm">{label}</label>
       <input
         type={'number'}

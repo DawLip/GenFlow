@@ -6,9 +6,8 @@ const SelectWidget = ({ data:{label, value, setValue, options }}: {
     options: any[]
   }
 }) => {
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>SelectWidget render with value:", options);
   return (
-    <div className="justify-start items-center gap-4 w-full">
+    <div className="justify-start items-center gap-4 w-full" draggable={false}>
       <label className="justify-start text-white text-sm">{label}</label>
       <select
         value={value}

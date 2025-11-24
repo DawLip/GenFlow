@@ -4,7 +4,6 @@ import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
 import { Node } from '@xyflow/react';
-import { setSelection } from '@web-ui/store/slices/flowsSlice';
 import { Icon } from '../Icon';
 import { EmptyContent } from './EmptyContent';
 
@@ -12,11 +11,16 @@ import { EmptyContent } from './EmptyContent';
 export function Inspector({ }: any) {
   const dispatch = useDispatch<AppDispatch>();
 
-  const flowID = useSelector((state: any) => state.session.selectedFlow);
-  const selectedNodes = flowID && useSelector((state: any) => state.flows[flowID].selectedNodes);
-  
-  if (flowID && selectedNodes.length == 0) return <EmptyContent>Select a node</EmptyContent>;
-  if (flowID && selectedNodes.length > 1) return <EmptyContent>Select one node</EmptyContent>;
+  const selectedNodesIds = useSelector((state: any) => state.workspace.selectedNodes);
+  const selectedEdgesIds = useSelector((state: any) => state.workspace.selectedEdges);
+  const openedTab = useSelector((state: any) => state.workspace.tabs[state.workspace.openedTab]);
+  const flow = useSelector((state: any) => state.flowsRepo.flows.find((f: any) => f.name === openedTab.data.flowName && f.ProjectName === openedTab.data.ProjectName));
+
+  const selectedNodes = selectedNodesIds.map((id: string) => (flow.data.nodes.find((n: Node) => n.id === id)));
+
+  console.log(`Inspector render :, selectedNodes:`, selectedNodes, 'state.flowsRepo.flows:', useSelector((state: any) => state.flowsRepo.flows));
+  if (selectedNodes.length == 0) return <EmptyContent>Select a node</EmptyContent>;
+  if (selectedNodes.length > 1) return <EmptyContent>Select one node</EmptyContent>;
 
   return selectedNodes && (<>
     <InspectorHeader selectedNode={selectedNodes[0]} />

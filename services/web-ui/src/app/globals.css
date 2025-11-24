@@ -36,3 +36,27 @@ body {
 .react-flow__node-default {
   background-color: transparent !important;
 }
+
+.scrollbar-styled::-webkit-scrollbar {
+  width: 2px;
+}
+
+.scrollbar-styled::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.scrollbar-styled::-webkit-scrollbar-thumb {
+  background-color: #6D66D2; 
+  border-radius: 1px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.scrollbar-styled::-webkit-scrollbar-thumb:hover {
+  background-color: #5850c8;
+}
+
+.scrollbar-styled {
+  scrollbar-width: thin;
+  scrollbar-color: #6D66D2 transparent;
+}

@@ -43,7 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
 
   return (
-    <div className='flex-col h-screen'>
+    <div className='flex-col max-h-screen h-screen'>
       <SocketContext.Provider value={socket}>
         <WebRTCProvider>
           {children}

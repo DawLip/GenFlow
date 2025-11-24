@@ -143,7 +143,7 @@ function Page() {
   }, [socket]);
 
   return (
-    <>
+    <div className="w-full h-full flex flex-row justify-start items-start">
       <Aside tabs={['Hierarchy', 'Nodes', 'Files']} />
       <div className="flex-col w-full h-full bg-[#0F0B14]">
         {mV && remoteCursor && <div className="absolute w-4 h-4 bg-red-500 rounded-full" style={{
@@ -162,7 +162,7 @@ function Page() {
         {<FlowWorkspace reactFlowRef={reactFlowRef}/>}
       </div>
       <Aside tabs={['Inspector', 'Runs', 'Artifacts']} />
-    </>
+    </div>
   );
 }
 function Providers() {

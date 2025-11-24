@@ -123,7 +123,43 @@
         ]
       },
       "package": "Diffusers"
+    },
+    {
+      "id": "6e835257-b8f5-4e7b-928c-0c401d5fae9d",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Image/Base",
+      "position": {
+        "x": 640,
+        "y": 192
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
     }
   ],
-  "edges": []
+  "edges": [
+    {
+      "source": "07fec918-75f0-4f4d-b1c6-a2de1f316890",
+      "sourceHandle": "imageOutput",
+      "target": "6e835257-b8f5-4e7b-928c-0c401d5fae9d",
+      "targetHandle": "imageInput",
+      "id": "07fec918-75f0-4f4d-b1c6-a2de1f316890.imageOutput<->6e835257-b8f5-4e7b-928c-0c401d5fae9d.imageInput"
+    }
+  ]
 }

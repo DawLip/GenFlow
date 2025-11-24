@@ -9,10 +9,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <TopBar />
-      <div className="grow">
+      <div className="grow ">
         {children}
       </div>
-      <div className="self-stretch h-8 relative bg-black border-t-2 border-br"></div>
+      <div className="self-stretch h-8 relative bg-black border-t-2 border-br max-h-screen"></div>
     </>
   );
 }

@@ -4,16 +4,14 @@ import {
   RegisterGenWorkerRequest,
   RegisterGenWorkerResponse
 } from '@proto/user/user';
-import * as jwt from 'jsonwebtoken';
-import { InjectPinoLogger, PinoLogger } from 'nestjs-pino';
+import { PinoLogger } from 'nestjs-pino';
 
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { User as UserSchema, UserDocument } from '@shared/schema/user.shema';
 import { User } from '@shared/types/User.type'
-import { Client, Transport } from '@nestjs/microservices';
+import { Client } from '@nestjs/microservices';
 import type { ClientGrpc } from '@nestjs/microservices';
-import { services_config } from '@libs/shared/src/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
 import { firstValueFrom } from 'rxjs';
 import { gRPC_client } from '@libs/shared/src/config/gRPC_client.config';

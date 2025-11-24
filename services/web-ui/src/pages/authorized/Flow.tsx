@@ -16,7 +16,7 @@ import {
   onEdgesChange,
   onConnect,
   addNode,
-} from '@web-ui/store/slices/flowsSlice';
+} from '@web-ui/store/slices/flowsRepoSlice';
 
 import '@xyflow/react/dist/style.css';
 import { Aside } from '@web-ui/components/Aside/Aside';
@@ -45,7 +45,7 @@ function Page() {
   const [x, y, zoom] = useStore((s) => s.transform);
   
   const userId = useSelector((state: any) => state.client.userId);
-  const projectId = useSelector((state: any) => state.project.projectId);
+  const projectId = useSelector((state: any) => state.projectRepo.projects.find((p:any) => p.name == state.projectRepo.selectedProject)?.projectId);
   
   const reactFlowRef = useRef<HTMLDivElement>(null);  
   

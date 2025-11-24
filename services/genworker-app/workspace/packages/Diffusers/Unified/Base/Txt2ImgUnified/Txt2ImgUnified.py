@@ -8,14 +8,12 @@ class Txt2ImgUnified:
   def execute(self, Node, node, input_ports,  output_ports):
     print("input_ports:", input_ports)
     print(f"Txt2ImgUnified executing...")
-
-    MODEL_ID = input_ports["model"]
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype  = torch.float16 if device == "cuda" else torch.float32
 
     pipe = StableDiffusionPipeline.from_pretrained(
-        MODEL_ID,
+        input_ports["model"],
         torch_dtype=dtype,
         safety_checker=None,   
     )

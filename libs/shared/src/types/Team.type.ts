@@ -5,6 +5,7 @@ export type Team = {
   name: string;
   owner: Types.ObjectId;         
   members: Types.ObjectId[];       
+  invited: Types.ObjectId[];
   projects: Types.ObjectId[];     
 
   master_genworker: string | null;

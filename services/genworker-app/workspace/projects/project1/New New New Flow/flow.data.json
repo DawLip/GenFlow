@@ -1,17 +1,45 @@
 {
   "nodes": [
     {
-      "id": "1a3b473e-6ead-4844-ab7e-e264c7145899",
+      "id": "7c28a37a-d965-4627-b4b5-da520c082920",
       "type": "Default",
       "packet": "GenFlow",
-      "path": "Unified/Base",
+      "path": "Image/Base",
       "position": {
-        "x": 384,
+        "x": 832,
         "y": 192
       },
       "style": {
         "width": 256,
-        "height": 384
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Unified/Base",
+      "position": {
+        "x": 512,
+        "y": 192
+      },
+      "style": {
+        "width": 256,
+        "height": 640
       },
       "data": {
         "name": "Txt2ImgUnified",
@@ -54,8 +82,8 @@
             "name": "positivePrompt",
             "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
             "dataType": "TEXT",
-            "widget": "LineInput",
-            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
+            "widget": "TextAreaInput",
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur"
           },
           {
             "id": "negativePrompt",
@@ -63,7 +91,7 @@
             "name": "negativePrompt",
             "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
             "dataType": "TEXT",
-            "widget": "LineInput",
+            "widget": "TextAreaInput",
             "value": "blurry, low quality, distorted, deformed, text, watermark, ugly"
           },
           {
@@ -123,43 +151,15 @@
         ]
       },
       "package": "Diffusers"
-    },
-    {
-      "id": "7a0e5682-16e2-4dc5-a2b0-e4802b8f8269",
-      "type": "Default",
-      "packet": "GenFlow",
-      "path": "Image/Base",
-      "position": {
-        "x": 704,
-        "y": 256
-      },
-      "style": {
-        "width": 256,
-        "height": 128
-      },
-      "data": {
-        "name": "ImageSave",
-        "description": "This is a new node",
-        "inputs": [
-          {
-            "id": "imageInput",
-            "label": "image",
-            "name": "imageInput",
-            "dataType": "IMAGE",
-            "widget": "Label"
-          }
-        ]
-      },
-      "package": "GenFlow"
     }
   ],
   "edges": [
     {
-      "source": "1a3b473e-6ead-4844-ab7e-e264c7145899",
+      "source": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484",
       "sourceHandle": "imageOutput",
-      "target": "7a0e5682-16e2-4dc5-a2b0-e4802b8f8269",
+      "target": "7c28a37a-d965-4627-b4b5-da520c082920",
       "targetHandle": "imageInput",
-      "id": "1a3b473e-6ead-4844-ab7e-e264c7145899.imageOutput<->7a0e5682-16e2-4dc5-a2b0-e4802b8f8269.imageInput"
+      "id": "a3aa2e05-4adc-4fa4-a9c0-c4204af8d484.imageOutput<->7c28a37a-d965-4627-b4b5-da520c082920.imageInput"
     }
   ]
 }

@@ -1,0 +1,43 @@
+{
+  "type": "Default",
+  "path": "Unified/Base",
+  "package": "Diffusers",
+  "style": { "width": 4, "height": 6 },
+  "data": {
+    "name": "PipeLora",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "LineInput"
+      },{
+        "id": "positivePrompt",
+        "label": "positive prompt",
+        "name": "positivePrompt",
+        "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      },
+      {
+        "id": "negativePrompt",
+        "label": "negative prompt",
+        "name": "negativePrompt",
+        "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

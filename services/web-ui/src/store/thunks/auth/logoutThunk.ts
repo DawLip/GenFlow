@@ -1,9 +1,9 @@
 import { logout, authSliceClear } from '@web-ui/store/slices/authSlice';
 
 import { clientSliceClear } from '@web-ui/store/slices/clientSlice';
-import { flowsSliceClear } from '@web-ui/store/slices/flowsSlice';
+import { flowsSliceClear } from '@web-ui/store/slices/flowsRepoSlice';
 import { teamSliceClear } from '@web-ui/store/slices/teamSlice';
-import { projectSliceClear } from '@web-ui/store/slices/projectSlice';
+import { projectSliceClear } from '@web-ui/store/slices/projectsRepoSlice';
 
 
 export const logoutThunk = () => async (dispatch:any) => {

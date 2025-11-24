@@ -13,6 +13,7 @@ import { name } from '../../package.json';
 import { service_name } from '@shared/service_name'
 import { pinoConfig } from '@libs/shared/src/config/pino.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
+import { EmailProvider } from './email.provider';
 
 const sName = service_name(name);
 const HealthController = createHealthController(sName);
@@ -24,6 +25,6 @@ const HealthController = createHealthController(sName);
     LoggerModule.forRoot(pinoConfig({ sName })),
   ],
   controllers: [HealthController, TeamController],
-  providers: [TeamService, ResponseService],
+  providers: [TeamService, EmailProvider, ResponseService],
 })
 export class TeamModule {}

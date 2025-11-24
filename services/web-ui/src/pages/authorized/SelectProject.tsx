@@ -7,10 +7,27 @@ import { getProjectConfigThunk } from "@web-ui/store/thunks/project/getProjectCo
 import { useWebRTC } from "@web-ui/webrtc/webrtc.context"
 import { useRouter } from "next/navigation"
 import { useDispatch, useSelector } from "react-redux"
+import { SettingsTeamGenWorkers } from "./settings/team/SettingTeamGenworkers"
 
 export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
   const projects = useSelector((state:any) => state.projectRepo.projects)
+
+  const masterGenworker = useSelector((state:any) => state.team.masterGenworker)
+
+  if (!masterGenworker) return (
+    <div className="flex-col flex-1">
+      <div className="flex-col">
+        <span>You have no Master GenWorker set.</span>
+        <span>Please</span>
+        <ol>
+          <li>download and set up a Master GenWorker</li>
+          <li>Set Master GenWorker below</li>
+        </ol>
+      </div>
+      <SettingsTeamGenWorkers />
+    </div>
+  )
 
   return (
     <div className="self-stretch flex-1 px-8 pt-8 justify-start items-start gap-16 overflow-hidden">

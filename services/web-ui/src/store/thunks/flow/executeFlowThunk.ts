@@ -13,23 +13,4 @@ export const executeFlowThunk = (webRTC, nodeId) => async (dispatch: any, getSta
     flowName: selectedFlow.flowName,
     nodeId
   })
-
-  // const {data} = await axios.post(`${services_config.service_url.gateway_web_ui}/api/task-queue/enqueue-task`, {
-  //   projectId: state.project.projectId,
-  //   flowName: state.flows[state.session.selectedFlow].name,
-  //   path: state.flows[state.session.selectedFlow].path,
-  //   data: {
-  //     nodes: state.flows[state.session.selectedFlow].nodes,
-  //     edges: state.flows[state.session.selectedFlow].edges
-  //   }
-  // });
-  // console.log('executeFlowThunk', data, {
-  //   projectId: state.project.projectId,
-  //   flowName: state.flows[state.session.selectedFlow].name,
-  //   path: state.flows[state.session.selectedFlow].path,
-  //   data: {
-  //     nodes: state.flows[state.session.selectedFlow].nodes,
-  //     edges: state.flows[state.session.selectedFlow].edges
-  //   }
-  // })
 };

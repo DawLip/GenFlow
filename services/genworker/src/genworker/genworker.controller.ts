@@ -15,14 +15,12 @@ import {
 } from '@proto/genworker/genworker';
 import { GenWorkerService } from '@genworker/genworker/services/genworker.service';
 import { TaskQueueService } from './services/task_queue.service';
-import { TaskService } from './services/task.service';
 
 @Controller()
 export class GenWorkerController {
   constructor(
     private readonly genWorkerService: GenWorkerService,
     private readonly taskQueueService:TaskQueueService,
-    private readonly taskService:TaskService
   ) {}
 
   @GrpcMethod('GenWorkerService', 'Create')
@@ -38,27 +36,6 @@ export class GenWorkerController {
   @GrpcMethod('GenWorkerService', 'FindOneById')
   async findOneById(data: FindOneByIdRequest): Promise<FindResponse> {
     return await this.genWorkerService.findOneById(data);
-  }
-
-  @GrpcMethod('GenWorkerService', 'FindOneByProject')
-  async findOneByProject(data: FindOneByProjectRequest): Promise<FindResponse> {
-    return await this.genWorkerService.findOneByProject(data);
-  }
-
-
-  @GrpcMethod('GenWorkerService', 'EnqueueTask')
-  async enqueueTask(data: EnqueueRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.enqueueTask(data);
-  }
-
-  @GrpcMethod('GenWorkerService', 'FinishPartialTask')
-  async finishPartialTask(data: FinishPartialTaskRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.finishPartialTask(data);
-  }
-
-  @GrpcMethod('GenWorkerService', 'FinishTask')
-  async finishTask(data: FinishTaskRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.finishTask(data);
   }
 
   @GrpcMethod('GenWorkerService', 'Register')
@@ -92,31 +69,5 @@ export class GenWorkerController {
   @GrpcMethod('GenWorkerService', 'GenWorkerTeamRemoveStorage')
   async getGenWorkerTeamRemoveStorage(data: GenWorkerTeamRemoveStorageRequest): Promise<DefaultResponse> {
     return await this.genWorkerService.teamRemoveStorage(data);
-  }
-  //Project
-  @GrpcMethod('GenWorkerService', 'GenWorkerAssignToProject')
-  async getGenWorkersAssignToProject(data: GenWorkerAssignToProjectRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.genworkerAssignToProject(data);
-  }
-  
-  @GrpcMethod('GenWorkerService', 'GenWorkerAssignToFlow')
-  async genworkerAssignToFlow(data: GenWorkerAssignToFlowRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.genworkerAssignToFlow(data);
-  }
-
-
-  @GrpcMethod('GenWorkerService', 'GetGenWorkersAssignedToFlow')
-  async getGenWorkersAssignedToFlow(data: GenWorkerAssignRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.getGenWorkersAssignedToFlow(data);
-  }
-
-  @GrpcMethod('GenWorkerService', 'GenWorkerDisconnect')
-  async genworkerDisconnect(data: GenWorkerDisconnectRequest): Promise<DefaultResponse> {
-    return await this.taskQueueService.genWorkerDisconnect(data);
-  }
-
-  @GrpcMethod('GenWorkerService', 'GetTask')
-  async getTask(data: GetTaskByIdRequest): Promise<FindTaskResponse> {
-    return await this.taskService.findOneById(data);
   }
 }

@@ -11,6 +11,7 @@ import { SettingsProjectGenWorkers } from './project/SettingProjectGenworkers';
 import { SettingsTeamGeneral } from './team/SettingTeamGeneral';
 import { SettingsTeamGenWorkers } from './team/SettingTeamGenworkers';
 import { SettingsAccount } from './account/SettingsAccount';
+import { SettingsTeamMembers } from './team/SettingsTeamMembers';
 
 export default function Page() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function Page() {
       team: {
         index: <SettingsTeamGeneral />,
         general: { index: <SettingsTeamGeneral /> },
+        members: { index: <SettingsTeamMembers /> },
         genworkers: { index: <SettingsTeamGenWorkers /> },
       },
       account: {

@@ -16,7 +16,6 @@ import { TaskQueueService } from './services/task_queue.service';
 import { pinoConfig } from '@libs/shared/src/config/pino.config';
 import { ResponseService } from '@libs/shared/src/sharedServices/response.service';
 import Redis from 'ioredis';
-import { TaskService } from './services/task.service';
 
 
 const sName = service_name(name);
@@ -32,7 +31,7 @@ const HealthController = createHealthController(sName);
   ],
   controllers: [HealthController, GenWorkerController],
   providers: [
-    GenWorkerService, TaskQueueService, TaskService, ResponseService,
+    GenWorkerService, TaskQueueService, ResponseService,
     {
       provide: 'REDIS',
       useFactory: () => new Redis(services_config.service_url.redis),

@@ -30,11 +30,7 @@ export class SocketService implements OnModuleInit {
   constructor(private readonly logger: PinoLogger) {}
   @Client(gRPC_client('auth'))
   private authClient:ClientGrpc;
-  private authService:AuthServiceClient;
-
-  @Client(gRPC_client('project'))
-  private projectClient:ClientGrpc;
-  private projectService:ProjectServiceClient;
+  private authService:AuthServiceClient;;
 
   @Client(gRPC_client('genworker'))
   private genworkerClient:ClientGrpc;
@@ -43,7 +39,6 @@ export class SocketService implements OnModuleInit {
 
   onModuleInit():void {
     this.authService = this.authClient.getService<AuthServiceClient>('AuthService');
-    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
     this.genworkerService = this.genworkerClient.getService<GenWorkerServiceClient>('GenWorkerService');
   }
 
@@ -94,30 +89,10 @@ export class SocketService implements OnModuleInit {
     client.to(room).emit('flow_mouse_move', { ...data });
   }
   
-  async flow_update(data: any, client: Socket){
-    const room = `${data.projectId}:${data.path}${data.flowName}`;
-
-    client.to(room).emit('flow_update', { ...data });
-
-    const updateFlowDataReq = (dataParams:any) => ({
-      operation: data.context,
-      id: data.projectId,
-      flowName: data.flowName,
-      path: data.path,
-      data: JSON.stringify(dataParams)
-    })
-
-    return await firstValueFrom(this.projectService.updateFlowData(updateFlowDataReq(data.data)));
-  }
 
   handleDisconnection(client: Socket, logData: any, msg: string, logType:string = "info"){
     this.logger[logType](logData, msg);
     client.disconnect();
-  }
-
-  async genworker_register(data: any, client: Socket){
-    // this.io.to()
-    await firstValueFrom(this.genworkerService.register({...data, ownerId: data.userId}));
   }
 
   async emit(data: EmitRequest): Promise<DefaultResponse> {
@@ -130,32 +105,6 @@ export class SocketService implements OnModuleInit {
     (await this.io.to(data.objectId).fetchSockets())[0].join(data.room);
 
     return {res:{ ok: true, status: "SUCCESS", msg: "join success" }};
-  }
-
-  genworker_assign(data: any, client: Socket){
-    client.join(`${client.data.user.id}:${data.name}`);
-    data.assignTo.forEach((joinRoom:string) => client.join(joinRoom));
-  }
-
-  async genworker_get_nodes(data: any, client: Socket){
-    // const genworker = await firstValueFrom(this.genworkerService.findOneByProject({projectId: data.projectId, flowName: data.flowName, flowPath: data.flowPath}));
-
-    const flow = await firstValueFrom(this.projectService.findOneByNameFlow({id: data.projectId, flowName: data.flowName, path: data.flowPath}));
-    if(!flow.flow) return;
-    const genworker = await firstValueFrom(this.genworkerService.findOneById({id: flow.flow.genworkers?.[0]}));
-
-    client.to(`${genworker.genworker?.ownerId}:${genworker.genworker?.name}`).emit('genworker_get_nodes', {...data, workerId: genworker.genworker?.id});
-  }
-
-  genworker_get_nodes_answer(data: any, client: Socket){
-    client.to(`${data.userId}`).emit('genworker_get_nodes_answer', data);
-  }
-
-  handleNewArtifact(data: any, client: Socket){
-    console.log("handleNewArtifact", data)
-    const room = `${data.projectId}:${data.path}${data.flowName}`;
-    console.log("room:", room)
-    this.io.to(room).emit('new_artifact', { ...data });
   }
 
   async signal(data: any, client: Socket){

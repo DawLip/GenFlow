@@ -58,6 +58,11 @@ export interface FindByUserIdResponse {
   teams: Team[];
 }
 
+export interface InviteRequest {
+  id: string;
+  user: string;
+}
+
 export interface JoinRequest {
   id: string;
   user: string;
@@ -106,6 +111,7 @@ export interface Team {
   name: string;
   owner: string;
   members: string[];
+  invited: string[];
   projects: string[];
   masterGenworker?: string | undefined;
   storageGenworkers: string[];
@@ -848,6 +854,82 @@ export const FindByUserIdResponse: MessageFns<FindByUserIdResponse> = {
   },
 };
 
+function createBaseInviteRequest(): InviteRequest {
+  return { id: "", user: "" };
+}
+
+export const InviteRequest: MessageFns<InviteRequest> = {
+  encode(message: InviteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.user !== "") {
+      writer.uint32(18).string(message.user);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): InviteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseInviteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.user = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InviteRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
+    };
+  },
+
+  toJSON(message: InviteRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.user !== "") {
+      obj.user = message.user;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<InviteRequest>): InviteRequest {
+    return InviteRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<InviteRequest>): InviteRequest {
+    const message = createBaseInviteRequest();
+    message.id = object.id ?? "";
+    message.user = object.user ?? "";
+    return message;
+  },
+};
+
 function createBaseJoinRequest(): JoinRequest {
   return { id: "", user: "" };
 }
@@ -1502,6 +1584,7 @@ function createBaseTeam(): Team {
     name: "",
     owner: "",
     members: [],
+    invited: [],
     projects: [],
     masterGenworker: undefined,
     storageGenworkers: [],
@@ -1522,6 +1605,9 @@ export const Team: MessageFns<Team> = {
     }
     for (const v of message.members) {
       writer.uint32(34).string(v!);
+    }
+    for (const v of message.invited) {
+      writer.uint32(74).string(v!);
     }
     for (const v of message.projects) {
       writer.uint32(42).string(v!);
@@ -1577,6 +1663,14 @@ export const Team: MessageFns<Team> = {
           message.members.push(reader.string());
           continue;
         }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.invited.push(reader.string());
+          continue;
+        }
         case 5: {
           if (tag !== 42) {
             break;
@@ -1624,6 +1718,7 @@ export const Team: MessageFns<Team> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      invited: globalThis.Array.isArray(object?.invited) ? object.invited.map((e: any) => globalThis.String(e)) : [],
       projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
       masterGenworker: isSet(object.masterGenworker) ? globalThis.String(object.masterGenworker) : undefined,
       storageGenworkers: globalThis.Array.isArray(object?.storageGenworkers)
@@ -1649,6 +1744,9 @@ export const Team: MessageFns<Team> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.invited?.length) {
+      obj.invited = message.invited;
+    }
     if (message.projects?.length) {
       obj.projects = message.projects;
     }
@@ -1673,6 +1771,7 @@ export const Team: MessageFns<Team> = {
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.invited = object.invited?.map((e) => e) || [];
     message.projects = object.projects?.map((e) => e) || [];
     message.masterGenworker = object.masterGenworker ?? undefined;
     message.storageGenworkers = object.storageGenworkers?.map((e) => e) || [];

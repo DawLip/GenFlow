@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "nodes": [
     "Text/Base/TextInput",
+    "Text/Base/TextAreaInput",
     "Text/Operations/TextConcat",
     "Number/Base/NumberInput",
     "Image/Base/ImageSave",

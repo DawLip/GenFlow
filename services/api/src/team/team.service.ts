@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { services_config } from '@shared/services_config';
 import { TeamServiceClient } from '@proto/team/team.client';
-import { CreateRequest, UpdateRequest, FindOneByIdRequest, JoinRequest, JoinResponse, LeaveRequest } from '@proto/team/team';
+import { CreateRequest, UpdateRequest, FindOneByIdRequest, JoinRequest, JoinResponse, LeaveRequest, InviteRequest } from '@proto/team/team';
 
 import { AuthenticatedRequest } from '@api/types/authenticated-request';
 import { ApiService } from '@api/api/api.service';
@@ -44,8 +44,15 @@ export class ApiTeamService implements OnModuleInit {
   }
 
 
+  async invite(body: InviteRequest, req: AuthenticatedRequest, params: any) {
+    if(!params.teamId) return this.response.validationFail({res:{msg:"Param 'teamId' is required"}}, {context:"team/invite"});
+    if(!params.userId) return this.response.validationFail({res:{msg:"Param 'userId' is required"}}, {context:"team/invite"});
+
+    return await firstValueFrom(this.grpcService.invite({ ...body, id: params.teamId, user: params.userId}));
+  }
+
   async join(body: JoinRequest, req: AuthenticatedRequest, params: any) {
-    if(!body.id) return this.response.validationFail({res:{msg:"Field 'field' is required"}}, {context:"team/join"});
+    if(!body.id) return this.response.validationFail({res:{msg:"Field 'id' is required"}}, {context:"team/join"});
 
     return await firstValueFrom(this.grpcService.join({ ...body, user: req.user.id, id: params.teamId}));
   }

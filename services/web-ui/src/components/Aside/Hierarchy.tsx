@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@web-ui/store';
 import { Node } from '@xyflow/react';
-import { setSelection } from '@web-ui/store/slices/flowsSlice';
+import { setSelection } from '@web-ui/store/slices/flowsRepoSlice';
 
 
 export function Hierarchy({ }: any) {

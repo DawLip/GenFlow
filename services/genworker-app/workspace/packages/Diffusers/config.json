@@ -3,6 +3,8 @@
   "description": "A packet for Diffusers nodes",
   "version": "1.0.0",
   "nodes": [
-    "Unified/Base/Txt2ImgUnified"
+    "Unified/Base/Txt2ImgUnified",
+    "Pipe/Base/PipeFromPretreined",
+    "Pipe/Base/ExeDiffPipe"
   ]
 }

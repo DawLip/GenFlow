@@ -31,14 +31,9 @@ export class AuthService implements OnModuleInit {
   private teamClient: ClientGrpc;
   private teamService: TeamServiceClient;
 
-  @Client(gRPC_client('project'))
-  private projectClient: ClientGrpc;
-  private projectService: ProjectServiceClient;
-
   onModuleInit(): void {
     this.userService = this.userClient.getService<UserServiceClient>('UserService');
     this.teamService = this.teamClient.getService<TeamServiceClient>('TeamService');
-    this.projectService = this.projectClient.getService<ProjectServiceClient>('ProjectService');
   }
 
   private readonly jwtSecret = 'secret123';
@@ -59,13 +54,6 @@ export class AuthService implements OnModuleInit {
       from: 'noreply@example.com',
     }).subscribe();
 
-     const createdProject = await firstValueFrom(this.projectService.create({
-      name: `My project`,
-      description: `This is my first project`,
-      owner: new_user.user?.id || '',
-    }));
-    if (!createdProject.res?.ok) return this.response.error({res:{msg:"project creation failed"},}, {context:"register", createdProject});
-
     const defaultFlow = {
       name: `My flow`,
       path: '/',
@@ -75,18 +63,12 @@ export class AuthService implements OnModuleInit {
       edges: [],
       genworkers: []
     }
-
-    const createdFlow = await firstValueFrom(this.projectService.createFlow({
-      id: createdProject.id || '',
-      flow: defaultFlow
-    }));
-    if (!createdFlow.res?.ok) return this.response.error({res:{msg:"flow creation failed"},}, {context:"register", createdFlow});
-
+    
     const createdTeam = await firstValueFrom(this.teamService.create({
       name: `Private`,
       owner: new_user.user?.id || '',
       members: [new_user.user?.id || ''],
-      projects: [createdProject.id || '']
+      projects: []
     }));
     if (!createdTeam.res?.ok) return this.response.error({res:{msg:"team creation failed"},}, {context:"register", createdTeam});
 

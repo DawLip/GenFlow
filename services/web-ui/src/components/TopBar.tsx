@@ -15,7 +15,7 @@ export function TopBar({ }: any) {
           <span className="text-primary text-2xl font-bold font-['Inter']">GF</span>
         </div>
         <div className="rounded-lg flex items-center justify-center gap-2.5">
-          <div className="justify-start text-on_bg/80 text-xl font-['Inter']">{teamName} /</div>
+          <Link href='/teams' className="justify-start text-on_bg/80 text-xl font-['Inter']">{teamName} /</Link>
           <Link href="/select-project" className="justify-start text-on_bg/80 text-xl font-['Inter']">{projectName}</Link>
         </div>
       </div>

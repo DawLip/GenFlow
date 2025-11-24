@@ -1,11 +1,12 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, JoinRequest, JoinResponse, LeaveResponse, LeaveRequest, FindByUserIdRequest, FindByUserIdResponse, AssignGenworkerToTeamRequest, DefaultResponse, RemoveGenworkerFromTeamRequest, SetMasterGenworkerRequest, AddStorageGenworkerRequest, RemoveStorageGenworkerRequest } from '@proto/team/team';
+import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, JoinRequest, JoinResponse, LeaveResponse, LeaveRequest, FindByUserIdRequest, FindByUserIdResponse, AssignGenworkerToTeamRequest, DefaultResponse, RemoveGenworkerFromTeamRequest, SetMasterGenworkerRequest, AddStorageGenworkerRequest, RemoveStorageGenworkerRequest, InviteRequest } from '@proto/team/team';
 
 export interface TeamServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;
   update(data: UpdateRequest): Observable<UpdateResponse>;
   findOneById(data: FindOneByIdRequest): Observable<FindResponse>;
   findByUserId(data: FindByUserIdRequest): Observable<FindByUserIdResponse>;
+  invite(data: InviteRequest): Observable<DefaultResponse>;
   join(data: JoinRequest): Observable<JoinResponse>;
   leave(data: LeaveRequest): Observable<LeaveResponse>;
 

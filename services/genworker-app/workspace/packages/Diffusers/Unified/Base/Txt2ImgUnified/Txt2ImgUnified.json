@@ -27,7 +27,7 @@
         "name": "positivePrompt",
         "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
         "dataType": "TEXT",
-        "widget": "LineInput"
+        "widget": "TextAreaInput"
       },
       {
         "id": "negativePrompt",
@@ -35,7 +35,7 @@
         "name": "negativePrompt",
         "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
         "dataType": "TEXT",
-        "widget": "LineInput"
+        "widget": "TextAreaInput"
       },
       {
         "id": "seed",

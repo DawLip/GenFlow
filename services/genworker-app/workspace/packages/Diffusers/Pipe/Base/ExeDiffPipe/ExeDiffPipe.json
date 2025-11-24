@@ -1,0 +1,83 @@
+{
+  "type": "Default",
+  "path": "Unified/Base",
+  "package": "Diffusers",
+  "style": { "width": 4, "height": 6 },
+  "data": {
+    "name": "ExeDiffPipe",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      },{
+        "id": "positivePrompt",
+        "label": "positive prompt",
+        "name": "positivePrompt",
+        "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      },
+      {
+        "id": "negativePrompt",
+        "label": "negative prompt",
+        "name": "negativePrompt",
+        "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      },
+      {
+        "id": "seed",
+        "label": "seed",
+        "name": "seed",
+        "default": 12345,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "height",
+        "label": "height",
+        "name": "height",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "width",
+        "label": "width",
+        "name": "width",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "guidanceScale",
+        "label": "guidance scale",
+        "name": "guidanceScale",
+        "default": 6,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "steps",
+        "label": "steps",
+        "name": "steps",
+        "default": 30,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "imageOutput",
+        "label": "image",
+        "name": "imageOutput",
+        "dataType": "IMAGE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

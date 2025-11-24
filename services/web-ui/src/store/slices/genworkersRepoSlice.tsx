@@ -28,7 +28,7 @@ const genworkersRepoSlice = createSlice({
       state.error = action.payload;
     },
     genworkersSliceClear: (state) => {
-      state.genworkers = {};
+      state.genworkers = [];
       state.loading = true;
       state.error = null;
     }

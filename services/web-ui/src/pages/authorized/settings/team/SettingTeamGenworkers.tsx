@@ -35,7 +35,7 @@ export function SettingsTeamGenWorkers() {
   const storageGenworkersIds: any[] = useSelector((state: any) => state.team.storageGenworkers);
 
 
-  const yourGenWorkersToRender = yourGenworkers.map(gw => ({...gw, moveBechavior: teamGenworkers.map(gw => gw.id).includes(gw.id)?'REMOVE':'ADD'}));
+  const yourGenWorkersToRender = yourGenworkers && yourGenworkers.map(gw => ({...gw, moveBechavior: teamGenworkers.map(gw => gw.id).includes(gw.id)?'REMOVE':'ADD'}));
   const teamGenWorkersToRender = teamGenworkers.map(gw => ({...gw, isMaster: gw.id === masterGenworkerId, isStorage: storageGenworkersIds.includes(gw.id), moveBechavior: "REMOVE"}));
 
   return (
@@ -55,7 +55,7 @@ const GenWorkerList = ({ genworkers, listName, showControls }: { genworkers: any
         {listName}
       </div>
       <div className="self-stretch flex flex-col justify-start items-start">
-        {genworkers.map((genworker) => (
+        {genworkers && genworkers.map((genworker) => (
           <GenWorkerListItem
             key={genworker.id}
             genworker={genworker}

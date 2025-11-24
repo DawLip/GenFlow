@@ -6,8 +6,6 @@ services:
       service: gateway
     depends_on:
       - api
-      - api-test
-      - graphql
       - socketio
     networks:
       monitoring:
@@ -16,20 +14,6 @@ services:
     extends:
       file: compose/api.yml
       service: api
-    networks:
-      monitoring:
-
-  api-test:
-    extends:
-      file: compose/api-test.yml
-      service: api-test
-    networks:
-      monitoring:
-
-  graphql:
-    extends:
-      file: compose/graphql.yml
-      service: graphql
     networks:
       monitoring:
 
@@ -42,7 +26,6 @@ services:
     depends_on:
       - auth
       - user
-      - project
       - team
 # Services
   genworker:
@@ -62,6 +45,7 @@ services:
       - gateway
     networks:
       monitoring:
+        aliases: [web-ui]
 
   auth:
     extends:
@@ -78,15 +62,15 @@ services:
       monitoring: 
     depends_on:
       - mongodb
-  project:
-    extends:
-      file: compose/project.yml
-      service: project
-    networks:
-      monitoring: 
-        aliases: [project]
-    depends_on:
-      - mongodb
+  # project:
+  #   extends:
+  #     file: compose/project.yml
+  #     service: project
+  #   networks:
+  #     monitoring: 
+  #       aliases: [project]
+  #   depends_on:
+  #     - mongodb
   team:
     extends:
       file: compose/team.yml

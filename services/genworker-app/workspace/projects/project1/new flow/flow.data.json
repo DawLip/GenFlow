@@ -7,7 +7,7 @@
       "path": "Image/Base",
       "position": {
         "x": 704,
-        "y": 256
+        "y": 64
       },
       "style": {
         "width": 256,
@@ -38,7 +38,7 @@
         "y": 64
       },
       "style": {
-        "width": 256,
+        "width": 320,
         "height": 640
       },
       "data": {

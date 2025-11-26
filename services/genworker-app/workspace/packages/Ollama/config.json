@@ -1,0 +1,8 @@
+{
+  "name": "Ollama",
+  "description": "A packet for Ollama nodes",
+  "version": "1.0.0",
+  "nodes": [
+    "Prompt/Base/OllamaSimpleRequest"
+  ]
+}

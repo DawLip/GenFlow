@@ -51,14 +51,14 @@ export function Inspector({}: any) {
         <InspectorSection name="Transform">
           <div className='self-stretch flex-1 flex-col'>
             <div className='self-stretch flex-1 justify-between'>
-              <div className='flex-1 text-on_bg'>
+              <div className='flex-1 text-on_bg pr-4'>
                 Position:
               </div>
               <div className='flex-1 '>x: {selectedNodes[0].position.x/64}</div>
               <div className='flex-1 '>y: {selectedNodes[0].position.y/64}</div>
             </div>
             <div className='self-stretch flex-1 justify-between'>
-              <div className='flex-1 text-on_bg'>
+              <div className='flex-1 text-on_bg  pr-4'>
                 Size:
               </div>
               <div className='flex-1 '>w: {selectedNodes[0].measured.width/64}</div>

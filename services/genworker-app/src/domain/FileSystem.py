@@ -13,3 +13,6 @@ class FileSystem:
   
   def ls(self, full_path):
     return self.files_repo.ls(full_path)
+
+  def get_absolute_path(self, full_path):
+    return self.files_repo.get_absolute_path(full_path)

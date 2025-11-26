@@ -1,0 +1,44 @@
+{
+  "type": "Default",
+  "path": "Image/Base",
+  "package": "GenFlow",
+  "style": { "width": 4, "height": 3 },
+  "data": {
+    "name": "ImageLoader",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "path",
+        "label": "path",
+        "name": "path",
+        "dataType": "TEXT",
+        "widget": "LineInput"
+      },
+      {
+        "id": "width",
+        "label": "width",
+        "name": "width",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      },
+      {
+        "id": "height",
+        "label": "height",
+        "name": "height",
+        "default": 512,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "image",
+        "label": "image",
+        "name": "image",
+        "dataType": "IMAGE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

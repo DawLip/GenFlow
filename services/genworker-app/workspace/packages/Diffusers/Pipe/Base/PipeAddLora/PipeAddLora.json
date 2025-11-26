@@ -1,0 +1,43 @@
+{
+  "type": "Default",
+  "path": "Pipe/Base",
+  "package": "Diffusers",
+  "style": { "width": 4, "height": 5 },
+  "data": {
+    "name": "PipeAddLora",
+    "description": "This is a new node",
+     "inputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      },{
+        "id": "loraName",
+        "label": "lora name",
+        "name": "loraName",
+        "default": "my_lora.safetensors",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      },
+      {
+        "id": "weight",
+        "label": "weight",
+        "name": "weight",
+        "default": 1,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

@@ -4,6 +4,13 @@
   "version": "1.0.0",
   "nodes": [
     "Unified/Base/Txt2ImgUnified",
-    "Pipe/Base/PipeFromPretrained"
+
+    "Pipe/Base/Pipe_FromFile_T2T",
+    "Pipe/Base/Pipe_FromFile_I2I",
+    "Pipe/Base/PipeFromPretrainedHF",
+    "Pipe/Base/PipeAddLora",
+    "Pipe/Base/PipeAddLoraHF",
+    "Pipe/Base/PipeGenerateTxt2Img",
+    "Pipe/Base/PipeGenerateImg2Img"
   ]
 }

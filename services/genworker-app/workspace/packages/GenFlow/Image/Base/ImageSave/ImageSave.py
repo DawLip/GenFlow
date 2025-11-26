@@ -8,22 +8,23 @@ class ImageSave:
   def execute(self, Node, node, input_ports,  output_ports):
     print(f"[ImageSave] executing...")
     
-    OUT_DIR  = "./services/genworker-app/workspace/files"
-    os.makedirs(OUT_DIR, exist_ok=True)
+    # os.makedirs(OUT_DIR, exist_ok=True)
     ts = int(time.time())
-    path = os.path.join(OUT_DIR, f"sd15_{ts}.png")
+    path = Node.domain.file_system.get_absolute_path(f"files/sd15_{ts}.png")
     input_ports['imageInput'].save(path)
 
     with open(path, "rb") as f:
       b64 = base64.b64encode(f.read()).decode("ascii")
-    
-    Node.domain.task_scheduler.new_artifact({
-      'type': 'image',
-      'subtype': 'png',
-      'location': f'files/',
-      'name': f"sd15_{ts}.png",
-      'nodeId': node['id'],
-      'content':  b64,
-    })
+    try:
+      Node.domain.task_scheduler.new_artifact({
+        'type': 'image',
+        'subtype': 'png',
+        'location': f'files/',
+        'name': f"sd15_{ts}.png",
+        'nodeId': node['id'],
+        'content':  b64,
+      })
+    except Exception as e:
+      print(f"[ImageSave] Failed to save artifact: {e}")
 
 Node = ImageSave

@@ -1,27 +1,18 @@
 {
   "type": "Default",
-  "path": "Unified/Base",
+  "path": "Pipe/Base",
   "package": "Diffusers",
   "style": { "width": 4, "height": 10 },
   "data": {
-    "name": "Txt2ImgUnified",
+    "name": "PipeGenerateTxt2Img",
     "description": "This is a new node",
-    "inputs": [
+     "inputs": [
       {
-        "id": "model",
-        "label": "model",
-        "name": "model",
-        "default": "stable-diffusion-v1-5",
-        "dataType": "STRING",
-        "widget": "Select",
-        "options": [
-          { "label": "stable-diffusion-v1-5", "value": "runwayml/stable-diffusion-v1-5" },
-          { "label": "stable-diffusion-v1-4", "value": "CompVis/stable-diffusion-v1-4" },
-          { "label": "stable-diffusion-2-base", "value": "stabilityai/stable-diffusion-2-base" },
-          { "label": "stable-diffusion-2", "value": "stabilityai/stable-diffusion-2" },
-          { "label": "waifu-diffusion-v1-4", "value": "hakurei/waifu-diffusion-v1-4" },
-          { "label": "RealVisXL_V4.0", "value": "SG161222/RealVisXL_V4.0" }
-        ]
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
       },{
         "id": "positivePrompt",
         "label": "positive prompt",

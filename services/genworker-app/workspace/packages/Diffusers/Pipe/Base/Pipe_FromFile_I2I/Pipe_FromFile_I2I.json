@@ -1,0 +1,29 @@
+{
+  "type": "Default",
+  "path": "Pipe/Base",
+  "package": "Diffusers",
+  "style": { "width": 4, "height": 2 },
+ "data": {
+    "name": "Pipe_FromFile_I2I",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "model",
+        "label": "model",
+        "name": "model",
+        "default": "cyberrealistic_v90.safetensors",
+        "dataType": "STRING",
+        "widget": "LineInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      }
+    ]
+  }
+}

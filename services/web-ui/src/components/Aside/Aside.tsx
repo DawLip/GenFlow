@@ -11,7 +11,7 @@ import { Artifacts } from './Artifacts';
 export function Aside({ tabs=["Hierarchy","Nodes", "Files"]}: any) { 
   const [ selectedTab , setSelectedTab ] = useState(0);
   return (
-    <aside className="w-64 flex flex-col justify-start items-start  border-r-2 border-br bg-bg h-full" style={{maxHeight: 'calc(100vh - 64px - 16px)'} }>
+    <aside className={`w-64 flex flex-col justify-start items-start  ${tabs[0]=="Hierarchy" ? 'border-r-2' : 'border-l-2'} border-br bg-bg h-full`} style={{maxHeight: 'calc(100vh - 64px - 16px)'} }>
       <header className="justify-start items-end self-stretch gap-1 h-8 border-b-2 border-br">
         {tabs.map((tab: string, index: number) => (
           <Tab 

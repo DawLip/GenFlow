@@ -4,24 +4,26 @@
   "package": "Diffusers",
   "style": { "width": 4, "height": 10 },
   "data": {
-    "name": "PipeFromPretrained",
+    "name": "PipeGenerateImg2Img",
     "description": "This is a new node",
-    "inputs": [
+     "inputs": [
       {
-        "id": "model",
-        "label": "model",
-        "name": "model",
-        "default": "runwayml/stable-diffusion-v1-5",
-        "dataType": "STRING",
-        "widget": "Select",
-        "options": [
-          { "label": "runwayml/stable-diffusion-v1-5", "value": "runwayml/stable-diffusion-v1-5" },
-          { "label": "CompVis/stable-diffusion-v1-4", "value": "CompVis/stable-diffusion-v1-4" },
-          { "label": "stabilityai/stable-diffusion-2-base", "value": "stabilityai/stable-diffusion-2-base" },
-          { "label": "stabilityai/stable-diffusion-2", "value": "stabilityai/stable-diffusion-2" },
-          { "label": "hakurei/waifu-diffusion-v1-4", "value": "hakurei/waifu-diffusion-v1-4" }
-        ]
-      },{
+        "id": "pipe",
+        "label": "pipe",
+        "name": "pipe",
+        "dataType": "PIPE",
+        "widget": "Label"
+      },
+      
+      {
+        "id": "image",
+        "label": "image",
+        "name": "image",
+        "default": null,
+        "dataType": "IMAGE",
+        "widget": "Label"
+      },
+      {
         "id": "positivePrompt",
         "label": "positive prompt",
         "name": "positivePrompt",
@@ -36,6 +38,14 @@
         "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
         "dataType": "TEXT",
         "widget": "TextAreaInput"
+      },
+      {
+        "id": "strength",
+        "label": "strength",
+        "name": "strength",
+        "default": 1,
+        "dataType": "NUMBER",
+        "widget": "NumberInput"
       },
       {
         "id": "seed",

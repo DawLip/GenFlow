@@ -1,6 +1,8 @@
 import importlib
 import json
+import sys
 
+from ui.UI import UI
 
 class NodeRepo:
   workspace_dir = "services/genworker-app/workspace"
@@ -19,11 +21,9 @@ class NodeRepo:
     spec.loader.exec_module(m)
       
     self._nodes[node_path] = m.Node()
-
-    print(f"[NodeRepo] Node registered: {node_path}")
+    UI.console.log("NodeRepo", "Node registered: ", node_path)
 
   def get_node_path(self, node):
-    # print(f"Getting node path for: {node}")
     return f"{node['package']}/{node['path']}/{node['data']['name']}"
 
     

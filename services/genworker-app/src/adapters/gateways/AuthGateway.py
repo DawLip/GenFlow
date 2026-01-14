@@ -15,5 +15,5 @@ class AuthGateway:
     response = requests.get(f"http://localhost:3000/api/task-queue/genworker/{authRepo.user_id}:{authRepo.worker_name}", headers={
       "Authorization": f"Bearer {authRepo.token}"
     }).json()
-    
+        
     return (response["genworker"])

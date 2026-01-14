@@ -1,4 +1,3 @@
-import torch
 from diffusers import StableDiffusionPipeline
 from PIL import Image
 import time, os, random
@@ -6,6 +5,7 @@ import base64
 
 class Pipe_FromFile_I2I:
   def execute(self, Node, node, input_ports,  output_ports):
+    import torch
     print(f"Pipe_FromFile_I2I executing...")
     
     torch.cuda.empty_cache()

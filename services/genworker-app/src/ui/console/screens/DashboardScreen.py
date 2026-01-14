@@ -6,5 +6,6 @@ class DashboardScreen:
     self.consoleUI = consoleUI
     
   def render(self):
-    print("dashboard")
-    cmd = input("cmd: ")
+      pass
+    # print("dashboard")
+    # cmd = input("cmd: ")

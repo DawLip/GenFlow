@@ -1,4 +1,3 @@
-import torch
 from diffusers import StableDiffusionPipeline
 from PIL import Image
 import time, os, random
@@ -6,6 +5,8 @@ import base64
 
 class PipeGenerateTxt2Img:
   def execute(self, Node, node, input_ports,  output_ports):
+    import torch
+
     print(f"PipeGenerate executing...")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"

@@ -1,7 +1,7 @@
 import os
 
 class FilesRepo:
-  root_dir = "/ws/studia/GenFlow/services/genworker-app/workspace/"
+  root_dir = "/ws/Studies/GenFlow/services/genworker-app/workspace/"
 
   def save(self, full_path: str, content: str):
     path = f"{self.root_dir}{full_path}"

@@ -1,7 +1,35 @@
 {
   "nodes": [
     {
-      "id": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "id": "d2998d89-3322-44a4-a027-4ffe51876a3f",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Image/Base",
+      "position": {
+        "x": 704,
+        "y": 64
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "f8e23c5e-5122-47bb-b019-4f7c7330e16b",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Pipe/Base",
@@ -10,19 +38,43 @@
         "y": 64
       },
       "style": {
-        "width": 256,
+        "width": 320,
         "height": 640
       },
       "data": {
-        "name": "PipeGenerateTxt2Img",
+        "name": "PipeFromPretrained",
         "description": "This is a new node",
         "inputs": [
           {
-            "id": "pipe",
-            "label": "pipe",
-            "name": "pipe",
-            "dataType": "PIPE",
-            "widget": "Label"
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "runwayml/stable-diffusion-v1-5",
+            "dataType": "STRING",
+            "widget": "Select",
+            "options": [
+              {
+                "label": "runwayml/stable-diffusion-v1-5",
+                "value": "runwayml/stable-diffusion-v1-5"
+              },
+              {
+                "label": "CompVis/stable-diffusion-v1-4",
+                "value": "CompVis/stable-diffusion-v1-4"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2-base",
+                "value": "stabilityai/stable-diffusion-2-base"
+              },
+              {
+                "label": "stabilityai/stable-diffusion-2",
+                "value": "stabilityai/stable-diffusion-2"
+              },
+              {
+                "label": "hakurei/waifu-diffusion-v1-4",
+                "value": "hakurei/waifu-diffusion-v1-4"
+              }
+            ],
+            "value": "runwayml/stable-diffusion-v1-5"
           },
           {
             "id": "positivePrompt",
@@ -31,7 +83,7 @@
             "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
             "dataType": "TEXT",
             "widget": "TextAreaInput",
-            "value": "test"
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
           },
           {
             "id": "negativePrompt",
@@ -76,7 +128,7 @@
             "default": 6,
             "dataType": "NUMBER",
             "widget": "NumberInput",
-            "value": 6
+            "value": "3"
           },
           {
             "id": "steps",
@@ -85,7 +137,7 @@
             "default": 30,
             "dataType": "NUMBER",
             "widget": "NumberInput",
-            "value": "30"
+            "value": "10"
           }
         ],
         "outputs": [
@@ -99,89 +151,15 @@
         ]
       },
       "package": "Diffusers"
-    },
-    {
-      "id": "a20cbdee-7634-43fb-a712-33174992ca44",
-      "type": "Default",
-      "packet": "GenFlow",
-      "path": "Image/Base",
-      "position": {
-        "x": 640,
-        "y": 64
-      },
-      "style": {
-        "width": 192,
-        "height": 128
-      },
-      "data": {
-        "name": "ImageSave",
-        "description": "This is a new node",
-        "inputs": [
-          {
-            "id": "imageInput",
-            "label": "image",
-            "name": "imageInput",
-            "dataType": "IMAGE",
-            "widget": "Label"
-          }
-        ]
-      },
-      "package": "GenFlow"
-    },
-    {
-      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
-      "type": "Default",
-      "packet": "GenFlow",
-      "path": "Pipe/Base",
-      "position": {
-        "x": 0,
-        "y": 128
-      },
-      "style": {
-        "width": 320,
-        "height": 128
-      },
-      "data": {
-        "name": "Pipe_FromFile_T2T",
-        "description": "This is a new node",
-        "inputs": [
-          {
-            "id": "model",
-            "label": "model",
-            "name": "model",
-            "default": "cyberrealistic_v90.safetensors",
-            "dataType": "STRING",
-            "widget": "LineInput",
-            "value": "cyberrealistic_v90.safetensors"
-          }
-        ],
-        "outputs": [
-          {
-            "id": "pipe",
-            "label": "pipe",
-            "name": "pipe",
-            "dataType": "PIPE",
-            "widget": "Label"
-          }
-        ]
-      },
-      "package": "Diffusers"
     }
   ],
   "edges": [
     {
-      "source": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "source": "f8e23c5e-5122-47bb-b019-4f7c7330e16b",
       "sourceHandle": "imageOutput",
-      "target": "a20cbdee-7634-43fb-a712-33174992ca44",
+      "target": "d2998d89-3322-44a4-a027-4ffe51876a3f",
       "targetHandle": "imageInput",
-      "id": "8b923df8-0485-4a32-a648-e92c486923e3.imageOutput<->a20cbdee-7634-43fb-a712-33174992ca44.imageInput"
-    },
-    {
-      "source": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
-      "sourceHandle": "pipe",
-      "target": "8b923df8-0485-4a32-a648-e92c486923e3",
-      "targetHandle": "pipe",
-      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08.pipe<->8b923df8-0485-4a32-a648-e92c486923e3.pipe"
+      "id": "f8e23c5e-5122-47bb-b019-4f7c7330e16b.imageOutput<->d2998d89-3322-44a4-a027-4ffe51876a3f.imageInput"
     }
   ]
 }

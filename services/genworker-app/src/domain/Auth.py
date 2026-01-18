@@ -36,7 +36,7 @@ class Auth:
 	def try_default_login(cls):
 		if "auth.json" in cls.domain.file_system.ls(""):
 			auth_data = json.loads(cls.domain.file_system.get_file("auth.json"))
-			cls.authRepo.login(auth_data["token"], auth_data["user_id"], auth_data["worker_name"])
+			cls.authRepo.login(auth_data["token"], auth_data["user_id"], auth_data["worker_name"], auth_data["email"])
 
 			cls.uiService.change_screen("dashboard")
 			cls.domain.SIO = SIO.init(cls.domain, auth_data["token"], auth_data["worker_name"])

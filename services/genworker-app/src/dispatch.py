@@ -4,7 +4,7 @@ def handle_login(payload):
   Auth.login(payload)
 
 def try_default_login(payload):
-  Auth.try_default_login(payload)
+  Auth.try_default_login()
 
 def exit(payload):
   pass

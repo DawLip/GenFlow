@@ -1,18 +1,25 @@
 import shutil
 from rich import print
+from rich import print as rprint
+from rich.markup import escape
+
+
 import time
 import sys
-import os
-import threading
-import select, termios, tty
+import termios, tty
 from queue import Queue
-
+from rich.align import Align
+from rich.errors import MarkupError
+import os
 
 class ConsoleManager:
-	def __init__(self, log_parser):  
-		self.messages = Queue()
-		self.input_buffer = ""
-		self.shell_prompt = "cmd: "
+	def __init__(self, app, log_parser):  
+		self.app = app
+		self.messages: Queue = Queue()
+		self.input_buffer: str = ""
+		self.shell_prompt: str = "cmd: "
+		self.previous_ui: [str] = [""]
+		self.previous_message_lines: int = 0
 		self.shell_function = self.default_shell
 		self.render_UI = self.render_UI_default
   
@@ -20,22 +27,24 @@ class ConsoleManager:
 		self.console.print_handler = self.log
 
 		# threading.Thread(target=self.fake_data, daemon=True).start() # fake data for testing
-		threading.Thread(target=self.renderer, daemon=True).start()
-		threading.Thread(target=self.input_listener, daemon=True).start()
-  
+		self.app.threading.create_thread(self.renderer, "Main_Renderer")
+		self.app.threading.create_thread(self.input_listener, "Input_Lisner")
+
+
+		os.system("cls" if os.name == "nt" else "clear")
+
 		self.render("###RERENDER###")
 
-	def input_listener(self):
-		loop = True
-		while loop:
+	def input_listener(self, stop_event):
+		while not stop_event.is_set():
 			cmd_chr = self.get_char()
-			if cmd_chr == 'q':
+			if cmd_chr == '\x1b':
 				self.input_buffer = ""
-				loop = False
 				self.log("###STOP###")
 			elif cmd_chr == '\r':
 				self.shell_function(self.input_buffer)
 				self.input_buffer = ""
+				self.log("###RERENDER###")
 			elif cmd_chr in ("\x7f", "\b"):
 				self.input_buffer = self.input_buffer[:-1]
 				self.log("###RERENDER###")
@@ -52,35 +61,92 @@ class ConsoleManager:
 	def log(self, msg):
 		self.messages.put(msg)
        
-	def renderer(self):
-		rerender_loop = True
-		while rerender_loop:
+	def renderer(self, stop_event):
+		while not stop_event.is_set():
 			msg = self.messages.get()
    
 			if msg == "###RERENDER###":
 				self.render("###RERENDER###")
+			if msg == "###SOFT_RERENDER###":
+				self.render("###SOFT_RERENDER###")
 			elif msg == "###STOP###":
-				rerender_loop = False
-				print("\nExiting console...")
+				sys.stdout.write("\r\x1b[2K")
+				self.render("###EXIT###")
+				self.app.exit()
 			else:
 				self.render(msg)
     
+	def normalize_ui(self, ui):
+		out = []
+		for item in ui:
+			if isinstance(item, str):
+				out.append(item)
+			elif isinstance(item, Align):
+				out.append((
+					"ALIGN",
+					item.renderable,
+					item.width,
+					item.align,
+				))
+			else:
+				out.append(repr(item))
+		return out
+
 	def render(self, msg):
+		if msg == "###EXIT###": 
+			self.shell_prompt = ""
+			self.input_buffer = ""
+			self.render_UI = self.render_UI_exit
+
 		UI = self.render_UI()
-		self.remove_last_lines(len(UI) + 1)
+
+		if self.normalize_ui(UI) == self.normalize_ui(self.previous_ui) and msg == "###SOFT_RERENDER###": return
+
+		self.remove_last_lines(len(self.previous_ui)+1)
   
-		if msg != "###RERENDER###":
-			print(msg)
+		if msg not in ("###RERENDER###", "###SOFT_RERENDER###", "###EXIT###"):
+			for part in str(msg).splitlines() or [""]:
+				sys.stdout.write("\r\x1b[2K")
+				try:
+					rprint(part, flush=False)
+				except MarkupError:
+					rprint(escape(part), flush=False)
 
 		for line in UI:
 			sys.stdout.write("\r\x1b[2K")
-			print(line)
+			try:
+				rprint(line, flush=False)
+			except MarkupError:
+				rprint(escape(line), flush=False)
+
   
 		sys.stdout.write("\r\x1b[2K")
-		print(f"{self.shell_prompt}{self.input_buffer}", end='', flush=True)
+		try:
+			rprint(f"{self.shell_prompt}[white]{self.input_buffer}[/white]", end='', flush=True)
+		except MarkupError:
+			rprint(escape(f"{self.shell_prompt}{self.input_buffer}"), end='', flush=True)
+
+		self.previous_ui = UI
   
 	def render_UI_default(self):
-		return ["="*self.cols()]
+		cols = self.cols()
+		rows = self.rows()
+
+		return [
+			"="*cols,
+		]
+	def render_UI_exit(self):
+		cols = self.cols()
+
+		return [
+			"="*cols,
+			"",
+			Align.center("[bold purple]GenWorker[/bold purple]", width=cols),
+			"",
+			Align.center("service stopped", width=cols),
+			"",
+			"="*cols,
+		]
   
 	def remove_last_lines(self, n: int=1):
 		sys.stdout.write('\r')
@@ -91,7 +157,7 @@ class ConsoleManager:
 				sys.stdout.write('\r')
 				sys.stdout.write('\x1b[2K')
 		sys.stdout.flush()
-  
+	
 	def default_shell(self, cmd):
 		self.log(f"[bold blue]Command entered:[/bold blue] {cmd}")
   

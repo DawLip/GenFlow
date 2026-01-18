@@ -5,3 +5,6 @@ rich
 diffusers
 torch
 watchfiles
+aiohttp
+transformers
+accelerate

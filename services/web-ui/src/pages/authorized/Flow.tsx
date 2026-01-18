@@ -28,7 +28,6 @@ import { setPackages } from '@web-ui/store/slices/packagesSlice';
 import { newArtifact } from '@web-ui/store/slices/artifactsSlice';
 import { FlowWorkspace } from '@web-ui/components/FlowWorkspace';
 import { useWebRTC } from '@web-ui/webrtc/webrtc.context';
-import { setOpenedTab } from '@web-ui/store/slices/workspaceSlice';
 import { openNewTabThunk } from '@web-ui/store/thunks/workspace/openNewTabThunk';
 
 function Page() {
@@ -37,7 +36,7 @@ function Page() {
   const dispatch = useDispatch<AppDispatch>();
 
   const openedTab = useSelector((state: any) => state.workspace.tabs[state.workspace.openedTab]);
-  const selectedFlowName = openedTab.data.flowName;
+  const selectedFlowName = openedTab?.data?.flowName;
 
   // const flowID = useSelector((state: any) => state.session.selectedFlow);
   
@@ -67,6 +66,8 @@ function Page() {
   },[])
 
   useEffect(() => {
+    if (!selectedFlowName) return;
+    
     const handleMouseMove = throttle((e: MouseEvent) => {
       const { x, y, zoom } = getViewport();
       const rect = reactFlowRef.current?.getBoundingClientRect();
@@ -115,7 +116,7 @@ function Page() {
       socket?.off('flow_mouse_move');
       socket?.off('flow_update');
     };
-  }, []);
+  }, [selectedFlowName, socket, userId, projectId, getViewport]);
 
   useEffect(() => {
     if (!socket) return;

@@ -17,25 +17,45 @@ from domain.CpuWorker import CpuWorker
 from domain.Node import Node
 from adapters.repos.NodeRepo import NodeRepo
 
-from ui.UI import UI
-
 from domain.Projects import Projects
 
 
 class Domain:
-  task_scheduler = None
-  @classmethod
-  def init(cls):
-    cls.task_repo = TaskRepo()
-    cls.node_repo = NodeRepo(cls)
-    cls.file_repo = FilesRepo()
-    cls.authRepo = AuthRepo()
-    
-    cls.Node = Node(cls)
+  app = None
 
-    cls.file_system = FileSystem(cls, cls.file_repo)
-    cls.task_scheduler = TaskScheduler(cls, TaskSchedulerGateway(Auth.token), cls.task_repo)
-    cls.packages = Packages(cls, PackagesGateway.init(cls))
-    cls.auth = Auth.init(cls, cls.authRepo, AuthGateway(), UI.ui)
-    cls.cpu_worker = CpuWorker(cls)
-    cls.projects = Projects(cls)
+  task_scheduler = None
+  task_repo = None
+  node_repo = None
+  file_repo = None
+  authRepo = None
+
+  Node = None
+
+  file_system = None
+  packages = None
+  auth = None
+  cpu_worker = None
+  projects = None
+
+  sio = None
+  webrtc = None
+  def __init__(self, app) -> None:
+    self.app = app
+
+  def init(self):
+    self.ui = self.app.ui
+    self.console = self.ui.console
+
+    self.task_repo = TaskRepo()
+    self.node_repo = NodeRepo(self.app)
+    self.file_repo = FilesRepo()
+    self.authRepo = AuthRepo()
+    
+    self.Node = Node(self)
+
+    self.file_system = FileSystem(self, self.file_repo)
+    self.task_scheduler = TaskScheduler(self, TaskSchedulerGateway(Auth.token), self.task_repo)
+    self.packages = Packages(self, PackagesGateway.init(self))
+    self.auth = Auth.init(self, self.authRepo, AuthGateway(), self.ui.ui)
+    self.cpu_worker = CpuWorker(self)
+    self.projects = Projects(self)

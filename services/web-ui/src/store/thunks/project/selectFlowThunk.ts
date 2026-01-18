@@ -4,7 +4,10 @@ import { newTab, setSelection } from "@web-ui/store/slices/workspaceSlice";
 
 
 export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: any, getState: any) => {
-  const state = getState()
+  const state = getState();
+  const master_genworkerId = state.team.masterGenworker;
+  const master_genworker = state.genworkersRepo.genworkers[master_genworkerId];
+
   const storageGenworkerId = state.projectRepo.projects.filter((p:any)=>p.name===state.projectRepo.selectedProject)[0]?.genworkerStorageId;
   const projectName = state.projectRepo.selectedProject;
 
@@ -12,7 +15,8 @@ export const selectFlowThunk = (webRTC, flowName: string) => async (dispatch: an
   console.log('Project Name:', projectName);
   console.log('Storage Genworker ID:', storageGenworkerId);
 
-  webRTC.send(storageGenworkerId, "GET_FLOW_CONFIG", { projectName, flowName, flowData: true });
+  const genworkerId = master_genworker ? `${master_genworker.ownerId}:${master_genworker.name}` : storageGenworkerId;
+  webRTC.send(genworkerId, "GET_FLOW_CONFIG", { projectName, flowName, flowData: true });
 
   dispatch(setSelection({ selectedNodes: [], selectedEdges: [] }));
   dispatch(selectFlow(state.flowsRepo.flows.length));

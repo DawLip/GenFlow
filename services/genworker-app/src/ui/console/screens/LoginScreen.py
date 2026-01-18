@@ -1,12 +1,17 @@
 import time
 import getpass
-from event_queue import q
+from event_queue import domain_queue
 from domain.Auth import Auth
+from ..ConsoleManager import ConsoleManager
+from rich.align import Align
+
 
 class LoginScreen:
+	error_message = None
+
 	def __init__(self, ConsoleUI):
 		self.ConsoleUI = ConsoleUI
-		self.UIM = ConsoleUI.UIM
+		self.UIM: ConsoleManager = ConsoleUI.UIM
 		self.console = self.UIM.console
 		self.email = ""
 		self.password = ""
@@ -15,18 +20,46 @@ class LoginScreen:
 	def init(self):
 		self.UIM.shell_prompt = "[bold blue]email: [/bold blue]"
 		self.UIM.shell_function = self.set_login
+		self.UIM.render_UI = self.render_UI
+		self.UIM.app.ui.ui.set_dispatch_event_handler(self.dispatch_event_func)
 
-		# q.put(('TRY_DEFAULT_LOGIN', {}))
-
+		# domain_queue.put(('TRY_DEFAULT_LOGIN', {}))
 		
 	def render(self):
-		# self.UIM.shell_prompt = "[bold blue]Login Screen: [/bold blue]"
-		pass
+		self.console.soft_rerender()
+
+	def render_UI(self):
+		cols = self.UIM.cols()
+		ui = [
+			"="*cols,
+			"",
+			Align.center("Login to your [purple bold]GenFlow[/purple bold] account", width=cols),
+			"",
+			"="*cols,
+		]
+
+		if self.error_message:
+			ui.insert(3, "")
+			ui.insert(4, Align.center(f"[red]{self.error_message}[/red]", width=cols))
+
+		return ui
+
+	def dispatch_event_func(self, event):
+		event_name, payload = event
+
+		if event_name == "LOGIN_ERROR": 
+			self.UIM.shell_prompt = "[bold blue]email: [/bold blue]"
+			self.UIM.shell_function = self.set_login
+			self.error_message = "wrong email or password"
+
+		self.console.rerender()
+
 	
 	def set_login(self, cmd):
 		self.email = cmd
 		self.UIM.shell_prompt = "[bold blue]password: [/bold blue]"
 		self.UIM.shell_function = self.set_password
+		self.error_message = None
 
 	def set_password(self, cmd):
 		self.password = cmd
@@ -35,18 +68,10 @@ class LoginScreen:
 
 	def set_genworker_name(self, cmd):
 		self.genworker_name = cmd
-		self.console.log("LoginScreen", "Login attempt:", f"{self.email}, {self.password}, {self.genworker_name}")
-		q.put(('LOGIN', {"email": self.email, "password": self.password, "worker_name": self.genworker_name}))
-		
+		self.console.log("LoginScreen", "Login attempt...", "")
 
-		# while True:
-		# 	pass
-		# email = input("Email: ")
-		# password = getpass.getpass("Password: ")
-		# worker_name = input("Worker name: ")
+		domain_queue.put(('LOGIN', {"email": self.email, "password": self.password, "worker_name": self.genworker_name}))
+
+		self.UIM.shell_function = self.set_login
+		self.UIM.shell_prompt = "[bold blue]password: [/bold blue]"
 		
-		# q.put(('LOGIN', {"email": email, "password": password, "worker_name": worker_name}))
-		
-		# while not Auth.is_logined():
-		#   time.sleep(0.1)
-    

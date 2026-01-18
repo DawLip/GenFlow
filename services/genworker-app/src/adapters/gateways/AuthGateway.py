@@ -8,7 +8,9 @@ class AuthGateway:
       "password": password
     }).json()
     
-    return (response["accessToken"], response["userId"])
+    if response["res"]["ok"]:
+      return (response["accessToken"], response["userId"])
+    return (False, False)
   
   @classmethod
   def get_config(cls, authRepo):

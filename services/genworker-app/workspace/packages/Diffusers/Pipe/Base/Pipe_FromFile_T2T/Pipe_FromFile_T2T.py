@@ -2,10 +2,17 @@ from diffusers import StableDiffusionPipeline
 from PIL import Image
 import time, os, random
 import base64
+import torch
+
+from transformers import logging as tlog
+tlog.set_verbosity_error()  
+
+from diffusers.utils import logging as dlog
+dlog.set_verbosity_error()   
+dlog.disable_progress_bar()
 
 class Pipe_FromFile_I2I:
   def execute(self, Node, node, input_ports,  output_ports):
-    import torch
     print(f"Pipe_FromFile_I2I executing...")
     
     torch.cuda.empty_cache()
@@ -19,10 +26,9 @@ class Pipe_FromFile_I2I:
         torch_dtype=dtype,
         safety_checker=None,   
     )
-    # pipe = pipe.to(device)
 
     pipe.enable_attention_slicing()    
-    pipe.enable_vae_slicing()
+    pipe.vae.enable_slicing()
     pipe.enable_vae_tiling()
     pipe.enable_sequential_cpu_offload()
     if device == "cuda":
@@ -30,6 +36,8 @@ class Pipe_FromFile_I2I:
             pipe.enable_xformers_memory_efficient_attention()
         except Exception:
             pass  
+    
+    pipe.set_progress_bar_config(disable=True)
 
     output_ports['pipe'] = pipe
     

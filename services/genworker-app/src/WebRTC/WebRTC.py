@@ -20,7 +20,7 @@ class WebRTC:
     pass
 
   @classmethod
-  def worker(cls, token, worker_name):
+  def worker(cls, stop_event, token, worker_name):
     cls._bind_handlers()
     
   @classmethod
@@ -61,14 +61,14 @@ class WebRTC:
 
       @pc.on("connectionstatechange")
       async def _state():
-        print("[WebRTC] state:", cls.peers[data["socketId"]].connectionState)
+        cls.console.debug("WebRTC", "Connection state changed:", cls.peers[data["socketId"]].connectionState)
         
         if cls.peers[data["socketId"]].connectionState in ("failed", "closed", "disconnected"):
           await cls.peers[data["socketId"]].close()
           cls.peers[data["socketId"]] = None
           
-        print("[WebRTC] users: ", [p["socketId"] for p in cls.userPeersList])
-        print("[WebRTC] genworkers: ", [p["socketId"] for p in cls.genworkerPeersList])
+        # print("[WebRTC] users: ", [p["socketId"] for p in cls.userPeersList])
+        # print("[WebRTC] genworkers: ", [p["socketId"] for p in cls.genworkerPeersList])
 
     pc = cls.peers[data["socketId"]]
 
@@ -84,11 +84,13 @@ class WebRTC:
     
   @classmethod
   def init(cls, domain, token, worker_name):
-    threading.Thread(target=cls.worker, args=(token, worker_name), daemon=True).start()
+    domain.app.threading.create_thread(cls.worker, "Main_Renderer", args=(token, worker_name))
+
     cls.task_scheduler = domain.task_scheduler
     cls.file_system = domain.file_system
     cls.packages = domain.packages
     cls.sio = domain.sio
     cls.domain = domain
+    cls.console = domain.console
     
     return cls

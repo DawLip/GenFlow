@@ -1,5 +1,7 @@
 import json
+
 from sio.SIO import SIO
+from event_queue import ui_queue
 
 class Auth:
 	authRepo = None
@@ -45,16 +47,23 @@ class Auth:
 	@classmethod
 	def login(cls, payload):
 		token, userId = cls.authGateway.login(payload["email"], payload["password"])
-		cls.authRepo.login(token, userId, payload["worker_name"])
+		if not (token and userId): 
+			ui_queue.put(("LOGIN_ERROR", {}))
+			return
+
+		cls.authRepo.login(token, userId, payload["worker_name"], payload["email"])
 		
 		cls.uiService.change_screen("dashboard")
+		cls.uiService.console.log("Auth", "Login success")
+		
 		cls.domain.SIO = SIO.init(cls.domain, token, payload["worker_name"])
 		cls.domain.task_scheduler.init(userId, payload["worker_name"])
 
 		cls.domain.file_system.save_file("auth.json", json.dumps({
-		"token": token,
-		"user_id": userId,
-		"worker_name": payload["worker_name"]
+			"token": token,
+			"user_id": userId,
+			"worker_name": payload["worker_name"],
+			"email": payload["email"]
 		}))
 		
 		cls.authRepo.setConfig(cls.authGateway.get_config(cls.authRepo))

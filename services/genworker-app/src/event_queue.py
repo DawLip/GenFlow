@@ -1,3 +1,4 @@
 from queue import Queue
 
-q = Queue()
+domain_queue = Queue()
+ui_queue = Queue()

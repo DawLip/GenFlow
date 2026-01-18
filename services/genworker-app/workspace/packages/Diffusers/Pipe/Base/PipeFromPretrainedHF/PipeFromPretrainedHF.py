@@ -2,10 +2,10 @@ from diffusers import StableDiffusionPipeline
 from PIL import Image
 import time, os, random
 import base64
+import torch
 
 class PipeFromPretrainedHF:
   def execute(self, Node, node, input_ports,  output_ports):
-    import torch
     print(f"PipeFromPretrainedHF executing...")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -20,7 +20,7 @@ class PipeFromPretrainedHF:
     pipe = pipe.to(device)
 
     pipe.enable_attention_slicing()    
-    pipe.enable_vae_slicing()
+    pipe.vae.enable_slicing()
     pipe.enable_vae_tiling()
     if device == "cuda":
         try:

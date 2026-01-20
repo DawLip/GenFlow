@@ -1,6 +1,6 @@
 import sys
 
-from App import App
+from App import AppBuilder
 
 sys.dont_write_bytecode = True
 
@@ -16,5 +16,10 @@ dlog.disable_progress_bar()
 # faulthandler.enable()
 # faulthandler.dump_traceback_later(30, repeat=True)
 
-app = App()
-app.start()
+# app = App()
+# app.build()
+# app.start()
+if __name__ == "__main__":
+    app_builder = AppBuilder()
+    app_builder.init()
+    app_builder.build()

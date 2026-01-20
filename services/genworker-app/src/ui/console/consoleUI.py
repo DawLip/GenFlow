@@ -3,13 +3,10 @@ from queue import Empty
 
 
 from .ConsoleManager import ConsoleManager
-from event_queue import ui_queue
 
 from .screens.LoginScreen import LoginScreen
 from .screens.DashboardScreen import DashboardScreen
 from .LogParser import LogParser
-
-
 
 
 class consoleUI:
@@ -35,14 +32,14 @@ class consoleUI:
 		} 
 
 		self.change_screen("login")	
-		self.app.threading.create_thread(self.worker, "Screen_Refresher")
+		self.app.process.threading.create_thread(self.worker, "Screen_Refresher")
 		
 		return self
 
 	def worker(self, stop_event):
 		while not stop_event.is_set():
 			event = None
-			try: event = ui_queue.get_nowait()
+			try: event = self.app.ui_queue.get_nowait()
 			except Empty: event = None
 
 			if event: self.dispatch_event(event)

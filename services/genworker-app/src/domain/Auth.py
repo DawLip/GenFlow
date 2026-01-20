@@ -1,7 +1,6 @@
 import json
 
 from sio.SIO import SIO
-from event_queue import ui_queue
 
 class Auth:
 	authRepo = None
@@ -48,7 +47,7 @@ class Auth:
 	def login(cls, payload):
 		token, userId = cls.authGateway.login(payload["email"], payload["password"])
 		if not (token and userId): 
-			ui_queue.put(("LOGIN_ERROR", {}))
+			cls.domain.app.ui_queue.put(("LOGIN_ERROR", {}))
 			return
 
 		cls.authRepo.login(token, userId, payload["worker_name"], payload["email"])

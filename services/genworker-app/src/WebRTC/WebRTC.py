@@ -84,7 +84,7 @@ class WebRTC:
     
   @classmethod
   def init(cls, domain, token, worker_name):
-    domain.app.threading.create_thread(cls.worker, "Main_Renderer", args=(token, worker_name))
+    domain.app.process.threading.create_thread(cls.worker, "Main_Renderer", args=(token, worker_name))
 
     cls.task_scheduler = domain.task_scheduler
     cls.file_system = domain.file_system

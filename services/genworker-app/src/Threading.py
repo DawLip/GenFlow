@@ -1,10 +1,19 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 import threading
 
-class Thread:
-    app = None
 
-    def __init__(self, app, worker, name, id, args=()):
-        self.app = app
+if TYPE_CHECKING:
+    from Processes import ProcessesProtocol
+
+class Thread:
+    processes: processes
+    
+    def __init__(self, processes: ProcessesProtocol):
+        self.processes = processes
+
+    def init(self, worker, name, id, args=()):
         self.id = id
         self.name = name
         self.stop_event = threading.Event()
@@ -21,22 +30,23 @@ class Thread:
         try:
             self.worker(*args)
         except Exception as exp:
-            self.app.print_fatal_error(exp)
+            self.processes.print_fatal_error(exp)
 
     def stop(self):
         self.stop_event.set()
 
 class Threading:
-    app = None
+    processes: ProcessesProtocol
     threads = []
     next_id = 0
-    def __init__(self, app) -> None:
-        self.app = app
+    def __init__(self, processes: ProcessesProtocol):
+        self.processes = processes
 
     def create_thread(self, worker, name = None, args = ()):
         if not name: name = len(self.threads) + 1
 
-        new_thread = Thread(self.app, worker, name, self.next_id, args = args)
+        new_thread = Thread(self.processes)
+        new_thread.init(worker, name, self.next_id, args = args)
         self.threads.append(new_thread)
         self.next_id += 1
 
@@ -45,6 +55,6 @@ class Threading:
             t.stop()
     
     def show_raport(self):
-        for t in self.threads:
-            if t.thread.is_alive(): self.app.console.log("Threading", f"Thread {t.id} status - {t.name}:", "[green]OK[/green]" )
-            else: self.app.console.error("Threading", f"Thread {t.id} status - {t.name}:", "[red]DEAD[/red]")
+        pass        # for t in self.threads:
+        #     if t.thread.is_alive(): self.app.console.log("Threading", f"Thread {t.id} status - {t.name}:", "[green]OK[/green]" )
+        #     else: self.app.console.error("Threading", f"Thread {t.id} status - {t.name}:", "[red]DEAD[/red]")

@@ -89,6 +89,6 @@ class SIO:
     domain.webrtc = WebRTC.init(domain, token, worker_name)
     cls.webrtc = domain.webrtc
 
-    cls.domain.app.threading.create_thread(cls.worker, "SIO", args=(token, worker_name))
+    cls.domain.app.process.threading.create_thread(cls.worker, "SIO", args=(token, worker_name))
     
     return cls

@@ -1,6 +1,5 @@
-import getpass
-from event_queue import domain_queue
 from rich.align import Align
+
 from domain import Domain
 
 class DashboardScreen:
@@ -19,8 +18,6 @@ class DashboardScreen:
 
   def render_UI(self):
     cols = self.UIM.cols()
-    rows = self.UIM.rows()
-
     domain = self.ConsoleUI.domain
 
     users_connected = len(domain.webrtc.userPeersList) if domain.webrtc else 0

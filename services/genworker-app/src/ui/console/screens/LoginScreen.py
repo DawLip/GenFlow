@@ -1,9 +1,7 @@
-import time
-import getpass
-from event_queue import domain_queue
 from domain.Auth import Auth
-from ..ConsoleManager import ConsoleManager
 from rich.align import Align
+
+from ..ConsoleManager import ConsoleManager
 
 
 class LoginScreen:
@@ -23,7 +21,7 @@ class LoginScreen:
 		self.UIM.render_UI = self.render_UI
 		self.UIM.app.ui.ui.set_dispatch_event_handler(self.dispatch_event_func)
 
-		domain_queue.put(('TRY_DEFAULT_LOGIN', {}))
+		self.UIM.app.domain_queue.put(('TRY_DEFAULT_LOGIN', {}))
 		
 	def render(self):
 		self.console.soft_rerender()

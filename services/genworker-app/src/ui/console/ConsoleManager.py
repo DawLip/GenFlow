@@ -1,8 +1,10 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 import shutil
 from rich import print
 from rich import print as rprint
 from rich.markup import escape
-
 
 import time
 import sys
@@ -12,14 +14,27 @@ from rich.align import Align
 from rich.errors import MarkupError
 import os
 
-class ConsoleManager:
-	def __init__(self, app, log_parser):  
+if TYPE_CHECKING:
+    from App import AppProtocol
+
+class ConsoleManagerProtocol:
+	app: AppProtocol
+	messages: Queue
+	input_buffer: str 
+	shell_prompt: str 
+	previous_ui: [str] 
+	previous_message_lines: int 
+	shell_function: any
+	render_UI: any
+
+class ConsoleManager(ConsoleManagerProtocol):
+	def __init__(self, app: AppProtocol, log_parser):  
 		self.app = app
-		self.messages: Queue = Queue()
-		self.input_buffer: str = ""
-		self.shell_prompt: str = "cmd: "
-		self.previous_ui: [str] = [""]
-		self.previous_message_lines: int = 0
+		self.messages = Queue()
+		self.input_buffer = ""
+		self.shell_prompt = "cmd: "
+		self.previous_ui = [""]
+		self.previous_message_lines = 0
 		self.shell_function = self.default_shell
 		self.render_UI = self.render_UI_default
   
@@ -27,8 +42,8 @@ class ConsoleManager:
 		self.console.print_handler = self.log
 
 		# threading.Thread(target=self.fake_data, daemon=True).start() # fake data for testing
-		self.app.threading.create_thread(self.renderer, "Main_Renderer")
-		self.app.threading.create_thread(self.input_listener, "Input_Lisner")
+		self.app.process.threading.create_thread(self.renderer, "Main_Renderer")
+		self.app.process.threading.create_thread(self.input_listener, "Input_Lisner") 
 
 
 		os.system("cls" if os.name == "nt" else "clear")

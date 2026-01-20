@@ -1,9 +1,27 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Protocol, Any
+if TYPE_CHECKING:
+	from domain.Domain import DomainProtocol
+
 import asyncio
 import json
-import socketio
-import threading
 from aiortc import RTCPeerConnection, RTCSessionDescription
 from .webrtc_dispatch import webrtc_dispatch
+
+class WebRTC(Protocol): 
+  domain: DomainProtocol
+  peers: dict[str, RTCPeerConnection]
+  userPeersList:[]
+  genworkerPeersList:[]
+  task_scheduler = None
+  file_system = None
+  packages = None
+  channels = {}
+  rooms = {}
+
+  def init(cls, domain, token, worker_name): ...
+  async def handle_signal(cls, data): ...
+  async def handle_get_signal(cls, data): ...
 
 class WebRTC:
   peers: dict[str, RTCPeerConnection] = {}
@@ -18,10 +36,6 @@ class WebRTC:
   @classmethod
   def _bind_handlers(cls):
     pass
-
-  @classmethod
-  def worker(cls, stop_event, token, worker_name):
-    cls._bind_handlers()
     
   @classmethod
   async def handle_signal(cls, data):
@@ -47,7 +61,7 @@ class WebRTC:
       @channel.on("open")
       def _on_open():
         try:
-          channel.send(json.dumps({"hello": "👋 Hello from master genworker"}))
+          channel.send(json.dumps({"hello": "Hello from master genworker"}))
         except Exception:
           pass
 
@@ -65,10 +79,7 @@ class WebRTC:
         
         if cls.peers[data["socketId"]].connectionState in ("failed", "closed", "disconnected"):
           await cls.peers[data["socketId"]].close()
-          cls.peers[data["socketId"]] = None
-          
-        # print("[WebRTC] users: ", [p["socketId"] for p in cls.userPeersList])
-        # print("[WebRTC] genworkers: ", [p["socketId"] for p in cls.genworkerPeersList])
+          del cls.peers[data["socketId"]]
 
     pc = cls.peers[data["socketId"]]
 
@@ -83,9 +94,7 @@ class WebRTC:
       
     
   @classmethod
-  def init(cls, domain, token, worker_name):
-    domain.app.process.threading.create_thread(cls.worker, "Main_Renderer", args=(token, worker_name))
-
+  def init(cls, domain: DomainProtocol, token, worker_name):
     cls.task_scheduler = domain.task_scheduler
     cls.file_system = domain.file_system
     cls.packages = domain.packages

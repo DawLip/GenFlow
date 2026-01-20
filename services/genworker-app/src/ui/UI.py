@@ -1,10 +1,22 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Protocol, Any
+if TYPE_CHECKING:
+    from App import AppProtocol
+
 from ui.console.consoleUI import consoleUI
 
-class UI:
-  ui: consoleUI = None
-  console = None
 
-  def __init__(self, app):
+class UIProtocol(Protocol):
+  app: AppProtocol
+
+  ui: consoleUI
+  domain: Any
+  console: Any
+
+  def init(self): ...
+
+class UI:
+  def __init__(self, app: AppProtocol):
     self.app = app
   
   def init(self, ui_mode):

@@ -10,6 +10,11 @@ import shutil
 from multiprocessing import Process
 from Threading import Threading
 
+class ManagedProcessWorkerProtocol:
+    def init(self):...
+    def build(self):...
+    def start(self):...
+
 class ManagedProcessProtocol(Protocol):
     processes: Processes
     name: str
@@ -17,16 +22,14 @@ class ManagedProcessProtocol(Protocol):
     threading: Threading
     is_main_process: bool
 
-    def init(self):...
-    def build(self):...
-    def start(self):...
+    def worker_wrapper(self): ...
 
-class ManagedProcess(ManagedProcessProtocol):
+class ManagedProcess:
     def __init__(self, processes: Processes, is_main_process=False):
         self.processes = processes
         self.is_main_process = is_main_process
 
-    def init(self, name, worker, *args):
+    def init(self, name, worker: ManagedProcessWorkerProtocol, *args):
         self.name = name
         self.threading = Threading(self.processes) 
 
@@ -37,7 +40,7 @@ class ManagedProcess(ManagedProcessProtocol):
             self.process = Process(target=self.worker_wrapper, args=(worker, *args))
             self.process.start()
     
-    def worker_wrapper(self, worker: ManagedProcessProtocol,  *args):
+    def worker_wrapper(self, worker: ManagedProcessWorkerProtocol,  *args):
         try:
             self.class_process = worker(self.processes, self)
             self.class_process.init()
@@ -45,6 +48,7 @@ class ManagedProcess(ManagedProcessProtocol):
             self.class_process.start()
         except Exception as exc:
             self.processes.print_fatal_error(exc)
+
 
 class ProcessesProtocol(Protocol):
     def init(self): ...

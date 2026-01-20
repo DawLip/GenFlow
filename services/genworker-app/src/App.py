@@ -27,7 +27,7 @@ class AppBuilder:
 
     def build(self):
         self.processes.init()
-
+        
         self.processes.create("App", App, is_main_process=True)
         # self.processes.create("App", Worker)
 
@@ -43,7 +43,12 @@ class AppProtocol(Protocol):
     is_running = boolean
     log_level = boolean
 
-class App(AppProtocol):  
+    def init(self): ...
+    def build(self): ...
+    def start(self): ...
+    def exit(self): ...
+
+class App:  
     def __init__(self, processes: ProcessesProtocol, process: ManagedProcessProtocol):
         self.processes = processes
         self.process = process
@@ -71,6 +76,6 @@ class App(AppProtocol):
             else: print("Unknown event:", event)
 
     def exit(self):
-        self.is_running = False
         self.process.threading.stop_all_threads()
-        self.domain_queue.put(('###EXIT###', {}))
+        self.domain_queue.put(('EXIT', {}))
+        self.is_running = False

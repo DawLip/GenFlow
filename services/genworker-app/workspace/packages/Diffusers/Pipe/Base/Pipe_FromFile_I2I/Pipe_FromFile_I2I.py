@@ -13,8 +13,9 @@ dlog.disable_progress_bar()
 
 class Pipe_FromFile_I2I:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"Pipe_FromFile_I2I executing...")
+    Node.domain.app.console.log("Pipe_FromFile_I2I", f"Executing...")
     
+    disable_progress_bars()
     torch.cuda.empty_cache()
     
     device = "cuda" if torch.cuda.is_available() else "cpu"

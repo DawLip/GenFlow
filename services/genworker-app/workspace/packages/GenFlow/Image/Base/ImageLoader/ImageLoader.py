@@ -6,7 +6,7 @@ import os
 
 class ImageLoader:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"[ImageSave] executing...")
+    Node.domain.app.console.log("ImageSave", f"Executing...")
     
     image = Image.open(Node.domain.file_system.get_absolute_path(input_ports["path"])).convert("RGB")
     image = image.resize((int(input_ports["width"]), int(input_ports["height"])))

@@ -1,3 +1,8 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Protocol, Any
+if TYPE_CHECKING:
+	from App import AppProtocol
+
 from domain.Auth import Auth
 from adapters.repos.AuthRepo import AuthRepo
 from adapters.gateways.AuthGateway import AuthGateway
@@ -19,9 +24,8 @@ from adapters.repos.NodeRepo import NodeRepo
 
 from domain.Projects import Projects
 
-
-class Domain:
-  app = None
+class DomainProtocol(Protocol):
+  app: AppProtocol
 
   task_scheduler = None
   task_repo = None
@@ -39,6 +43,8 @@ class Domain:
 
   sio = None
   webrtc = None
+
+class Domain:
   def __init__(self, app) -> None:
     self.app = app
 

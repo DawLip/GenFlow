@@ -6,7 +6,7 @@ import torch
 
 class PipeFromPretrainedHF:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"PipeFromPretrainedHF executing...")
+    Node.domain.app.console.log("PipeFromPretrainedHF", f"Executing...")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype  = torch.float16 

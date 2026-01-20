@@ -6,7 +6,7 @@ import torch
 
 class PipeAddLoraHF:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"PipeAddLoraHF executing...")
+    Node.domain.app.console.log("PipeAddLoraHF", f"Executing...")
 
     pipe = input_ports['pipe']
     

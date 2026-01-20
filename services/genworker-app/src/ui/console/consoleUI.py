@@ -1,13 +1,33 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Protocol, Any
+if TYPE_CHECKING:
+	from App import AppProtocol
+	from ..UI import UIProtocol
+
 import time
 from queue import Empty
 
-
-from .ConsoleManager import ConsoleManager
+from .ConsoleManager import ConsoleManager, ConsoleManagerProtocol
+from .LogParser import LogParser
 
 from .screens.LoginScreen import LoginScreen
 from .screens.DashboardScreen import DashboardScreen
-from .LogParser import LogParser
 
+class ScreenProtocol(Protocol):
+	UIM: ConsoleManagerProtocol
+
+	def init(self): ...
+	def render(self): ...
+
+class XUIProtocol(Protocol):
+	_screens: dict
+	current_screen:str
+	frame_rate: int
+	console: Any
+	dispatch_event_func: function
+
+	app: AppProtocol
+	ui: UIProtocol
 
 class consoleUI:
 	_screens={}
@@ -17,7 +37,7 @@ class consoleUI:
 	dispatch_event_func = None
 	
 
-	def __init__(self, app):
+	def __init__(self, app: AppProtocol):
 		self.app = app
 		self.UI = app.ui
 		self.domain = app.domain

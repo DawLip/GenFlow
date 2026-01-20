@@ -11,6 +11,8 @@ from diffusers.utils import logging as dlog
 dlog.set_verbosity_error()   
 dlog.disable_progress_bar()
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 # import faulthandler
 # faulthandler.enable()

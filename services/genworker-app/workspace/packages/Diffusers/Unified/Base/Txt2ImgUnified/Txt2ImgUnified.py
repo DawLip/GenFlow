@@ -13,7 +13,7 @@ dlog.disable_progress_bar()
 
 class Txt2ImgUnified:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"[Txt2ImgUnified] executing...")
+    Node.domain.app.console.log("Txt2ImgUnified", f"Executing...")
     
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype  = torch.float16 if device == "cuda" else torch.float32

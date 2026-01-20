@@ -6,10 +6,9 @@ import base64
 
 class PipeGenerateImg2Img:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"PipeGenerate executing...")
+    Node.domain.app.console.log("PipeGenerate", f"Executing...")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(input_ports['image'])
 
     image: Image.Image = input_ports['pipe'](
       prompt=input_ports['positivePrompt'],

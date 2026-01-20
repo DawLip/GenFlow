@@ -6,7 +6,7 @@ import os
 
 class ImageSave:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"[ImageSave] executing...")
+    Node.domain.app.console.log("ImageSave", f"Executing...")
     
     # os.makedirs(OUT_DIR, exist_ok=True)
     ts = int(time.time())
@@ -15,16 +15,13 @@ class ImageSave:
 
     with open(path, "rb") as f:
       b64 = base64.b64encode(f.read()).decode("ascii")
-    try:
-      Node.domain.task_scheduler.new_artifact({
-        'type': 'image',
-        'subtype': 'png',
-        'location': f'files/',
-        'name': f"sd15_{ts}.png",
-        'nodeId': node['id'],
-        'content':  b64,
-      })
-    except Exception as e:
-      print(f"[ImageSave] Failed to save artifact: {e}")
+    Node.domain.task_scheduler.new_artifact({
+      'type': 'image',
+      'subtype': 'png',
+      'location': f'files/',
+      'name': f"sd15_{ts}.png",
+      'nodeId': node['id'],
+      'content':  b64,
+    })
 
 Node = ImageSave

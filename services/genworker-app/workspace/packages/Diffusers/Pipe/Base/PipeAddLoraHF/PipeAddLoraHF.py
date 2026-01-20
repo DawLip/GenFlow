@@ -6,10 +6,9 @@ import torch
 
 class PipeAddLoraHF:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"PipeAddLoraHF executing...")
+    Node.domain.app.console.log("PipeAddLoraHF", f"Executing...")
 
     pipe = input_ports['pipe']
-    print(node)
     pipe.load_lora_weights(input_ports['loraName'], adapter_name="lora-" + node["id"])
     pipe.set_adapters("lora-" + node["id"], weight=float(input_ports['weight']))
 

@@ -3,7 +3,7 @@ import requests
 
 class OllamaSimpleRequest:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"OllamaSimpleRequest executing...")
+    Node.domain.app.console.log("OllamaSimpleRequest", f"Executing...")
 
     
     url = "http://localhost:11434/api/chat"

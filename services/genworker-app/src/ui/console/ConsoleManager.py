@@ -1,8 +1,10 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Protocol, Any
+if TYPE_CHECKING:
+	from LogParser import LogParserProtocol
+	from App import AppProtocol
 
 import shutil
-from rich import print
 from rich import print as rprint
 from rich.markup import escape
 
@@ -13,9 +15,7 @@ from queue import Queue
 from rich.align import Align
 from rich.errors import MarkupError
 import os
-
-if TYPE_CHECKING:
-    from App import AppProtocol
+    
 
 class ConsoleManagerProtocol:
 	app: AppProtocol
@@ -24,11 +24,12 @@ class ConsoleManagerProtocol:
 	shell_prompt: str 
 	previous_ui: [str] 
 	previous_message_lines: int 
-	shell_function: any
-	render_UI: any
+	shell_function: Any
+	render_UI: Any
+	console: LogParserProtocol
 
 class ConsoleManager(ConsoleManagerProtocol):
-	def __init__(self, app: AppProtocol, log_parser):  
+	def __init__(self, app: AppProtocol, log_parser: LogParserProtocol):  
 		self.app = app
 		self.messages = Queue()
 		self.input_buffer = ""
@@ -107,7 +108,7 @@ class ConsoleManager(ConsoleManagerProtocol):
 				out.append(repr(item))
 		return out
 
-	def render(self, msg):
+	def render(self, msg: str):
 		if msg == "###EXIT###": 
 			self.shell_prompt = ""
 			self.input_buffer = ""

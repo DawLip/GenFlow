@@ -1,7 +1,5 @@
 from diffusers import StableDiffusionPipeline
-from PIL import Image
-import time, os, random
-import base64
+from huggingface_hub.utils import disable_progress_bars
 import torch
 
 from transformers import logging as tlog
@@ -13,8 +11,9 @@ dlog.disable_progress_bar()
 
 class Pipe_FromFile_I2I:
   def execute(self, Node, node, input_ports,  output_ports):
-    print(f"Pipe_FromFile_I2I executing...")
-    
+    Node.domain.app.console.log("Pipe_FromFile_T2I", f"Executing...")
+
+    disable_progress_bars()
     torch.cuda.empty_cache()
     
     device = "cuda" if torch.cuda.is_available() else "cpu"

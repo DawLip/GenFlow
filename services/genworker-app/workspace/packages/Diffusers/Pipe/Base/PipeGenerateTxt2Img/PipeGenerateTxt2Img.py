@@ -6,8 +6,7 @@ import torch
 
 class PipeGenerateTxt2Img:
   def execute(self, Node, node, input_ports,  output_ports):
-
-    print(f"PipeGenerate executing...")
+    Node.domain.app.console.log("PipeGenerateTxt2Img", f"Executing...")
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 

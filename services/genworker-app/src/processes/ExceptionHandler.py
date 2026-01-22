@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from typing import Protocol
 import sys
@@ -7,66 +7,10 @@ import traceback
 import linecache
 import shutil
 
-from multiprocessing import Process
-from Threading import Threading
-
-class ManagedProcessWorkerProtocol:
-    def init(self):...
-    def build(self):...
-    def start(self):...
-
-class ManagedProcessProtocol(Protocol):
-    processes: Processes
-    name: str
-    process: Process
-    threading: Threading
-    is_main_process: bool
-
-    def worker_wrapper(self): ...
-
-class ManagedProcess:
-    def __init__(self, processes: Processes, is_main_process=False):
-        self.processes = processes
-        self.is_main_process = is_main_process
-
-    def init(self, name, worker: ManagedProcessWorkerProtocol, *args):
-        self.name = name
-        self.threading = Threading(self.processes) 
-
-        if self.is_main_process: 
-            self.process = None
-            self.worker_wrapper(worker, *args)
-        else:
-            self.process = Process(target=self.worker_wrapper, args=(worker, *args))
-            self.process.start()
-    
-    def worker_wrapper(self, worker: ManagedProcessWorkerProtocol,  *args):
-        try:
-            self.class_process = worker(self.processes, self)
-            self.class_process.init()
-            self.class_process.build()
-            self.class_process.start()
-        except Exception as exc:
-            self.processes.print_fatal_error(exc)
-
-
-class ProcessesProtocol(Protocol):
-    def init(self): ...
-    def create(self): ...
-    def print_fatal_error(self, exc): ...
-    
-class Processes:
-    processes: [ManagedProcess] = []
+class ExceptionHandler:
     def __init__(self):
         pass
 
-    def init(self):
-        pass
-    
-    def create(self, name:str, worker: function, *args, is_main_process: bool = False):
-        self.processes.append(ManagedProcess(self, is_main_process))
-        self.processes[-1].init(name, worker, *args)
-    
     def print_fatal_error(self, exc):
         cols, rows = shutil.get_terminal_size()
         err_msg = ""

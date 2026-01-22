@@ -46,8 +46,8 @@ class ConsoleManager(ConsoleManagerProtocol):
 		self.app.process.threading.create_thread(self.renderer, "Main_Renderer")
 		self.app.process.threading.create_thread(self.input_listener, "Input_Lisner") 
 
-
-		os.system("cls" if os.name == "nt" else "clear")
+		print("\n"*5)
+		# os.system("cls" if os.name == "nt" else "clear")
 
 		self.render("###RERENDER###")
 
@@ -79,7 +79,10 @@ class ConsoleManager(ConsoleManagerProtocol):
        
 	def renderer(self, stop_event):
 		while not stop_event.is_set():
-			msg = self.messages.get()
+			try:
+				msg = self.messages.get(timeout=0.1)
+			except:
+				continue
    
 			if msg == "###RERENDER###":
 				self.render("###RERENDER###")

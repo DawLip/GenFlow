@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Protocol
+import multiprocessing as mp
 
+import time
 from queue import Queue
 
-from torch.distributions.constraints import boolean
 from transformers.trainer_utils import is_main_process
 
 from domain.Domain import Domain
@@ -13,25 +14,6 @@ from dispatch import dispatch
 from ui.UI import UI
 from ui.LogLevel import LogLevel
 
-
-from Processes import Processes, ProcessesProtocol, ManagedProcessProtocol
-
-class AppBuilder:
-    processes: ProcessesProtocol
-
-    def __init__(self):
-        pass
-
-    def init(self):
-        self.processes = Processes()
-
-    def build(self):
-        self.processes.init()
-        
-        self.processes.create("App", App, is_main_process=True)
-        # self.processes.create("App", Worker)
-
-
 class AppProtocol(Protocol):
     processes: ProcessesProtocol
     process: ManagedProcessProtocol
@@ -40,8 +22,8 @@ class AppProtocol(Protocol):
     ui = None
     console = None
 
-    is_running = boolean
-    log_level = boolean
+    is_running = bool
+    log_level = bool
 
     def init(self): ...
     def build(self): ...
@@ -49,7 +31,8 @@ class AppProtocol(Protocol):
     def exit(self): ...
 
 class App:  
-    def __init__(self, processes: ProcessesProtocol, process: ManagedProcessProtocol):
+    def __init__(self, queues, processes: ProcessesProtocol, process: ManagedProcessProtocol):
+        self.queues: dict[str, mp.Queue] = queues
         self.processes = processes
         self.process = process
 
@@ -69,13 +52,40 @@ class App:
         self.domain.init()
         
         while self.is_running:
-            event, payload = self.domain_queue.get()
-            
-            handler = dispatch.get(event)
-            if handler: handler(payload)
-            else: print("Unknown event:", event)
+            try:
+                event, payload = self.domain_queue.get(timeout=0.1)
+                
+                handler = dispatch.get(event)
+                if handler: handler(payload)
+                else: print("Unknown event:", event)
+                
+                if event == 'EXIT':
+                    break
+            except:
+                continue
 
     def exit(self):
-        self.process.threading.stop_all_threads()
-        self.domain_queue.put(('EXIT', {}))
         self.is_running = False
+
+        self.process.threading.stop_all_threads()
+
+        self.domain_queue.put(('EXIT', {}))
+        self.queues["Worker"].put(('STOP', {}))
+         
+        for mpp in self.processes.processes:
+            if mpp.process and mpp.process.is_alive():
+                mpp.process.join(timeout=2)
+                if mpp.process.is_alive():
+                    mpp.process.terminate()
+                    mpp.process.join(timeout=1)
+                if mpp.process.is_alive():
+                    mpp.process.kill()
+                    mpp.process.join(timeout=0.5)
+        
+
+        for q in self.processes.queues.values():
+            try:
+                q.close()
+                q.cancel_join_thread()
+            except Exception:
+                pass

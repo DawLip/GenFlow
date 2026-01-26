@@ -5,7 +5,12 @@ import copy
 class Projects:
   def __init__(self, domain):
     self.domain = domain
-    self.genworkerId = f"{domain.authRepo.user_id}:{domain.authRepo.worker_name}"
+  
+  def build(self):
+    pass
+
+  def init_module(self):
+    self.genworkerId = f"{self.domain.auth_repo.user_id}:{self.domain.auth_repo.worker_name}"
 
   def projects_list(self):
     projects = self.domain.file_system.ls("/projects")

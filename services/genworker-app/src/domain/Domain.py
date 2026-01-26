@@ -1,28 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol, Any
 if TYPE_CHECKING:
-	from App import AppProtocol
-
-from domain.Auth import Auth
-from adapters.repos.AuthRepo import AuthRepo
-from adapters.gateways.AuthGateway import AuthGateway
-
-from domain.TaskScheduler import TaskScheduler
-from adapters.gateways.TaskSchedulerGateway import TaskSchedulerGateway
-from adapters.repos.TaskRepo import TaskRepo
-
-from domain.FileSystem import FileSystem
-from adapters.repos.FilesRepo import FilesRepo
-
-from domain.Packages import Packages
-from adapters.gateways.PackagesGateway import PackagesGateway
-
-from domain.CpuWorker import CpuWorker
-
-from domain.Node import Node
-from adapters.repos.NodeRepo import NodeRepo
-
-from domain.Projects import Projects
+	from app.App import AppProtocol
 
 class DomainProtocol(Protocol):
   app: AppProtocol
@@ -44,24 +23,29 @@ class DomainProtocol(Protocol):
   sio = None
   webrtc = None
 
+class ModuleProtocol(Protocol):
+  def init(domain): ...
+  def build(): ...
+
 class Domain:
   def __init__(self, app) -> None:
     self.app = app
+    self.modules_list: [str] = []
+    self.modules: dict[str, ModuleProtocol] = {}
 
-  def init(self):
-    self.ui = self.app.ui
-    self.console = self.ui.console
+  def init(self, modules={}):
+    for module_name, module_cls in modules.items():
+      self.modules_list.append(module_name)
+      self.modules[module_name] = module_cls
+      
+      setattr(self, module_name, self.modules[module_name])
 
-    self.task_repo = TaskRepo()
-    self.node_repo = NodeRepo(self.app)
-    self.file_repo = FilesRepo()
-    self.authRepo = AuthRepo()
-    
-    self.Node = Node(self)
 
-    self.file_system = FileSystem(self, self.file_repo)
-    self.task_scheduler = TaskScheduler(self, TaskSchedulerGateway(Auth.token), self.task_repo)
-    self.packages = Packages(self, PackagesGateway.init(self))
-    self.auth = Auth.init(self, self.authRepo, AuthGateway(), self.ui.ui)
-    self.cpu_worker = CpuWorker(self)
-    self.projects = Projects(self)
+  def build(self):
+    for module in self.modules.values():
+      module.build()
+
+  def init_modules(self):
+    for module in self.modules.values():
+      if hasattr(module, "init_module"):
+        module.init_module()

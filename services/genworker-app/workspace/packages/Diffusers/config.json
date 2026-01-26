@@ -3,14 +3,14 @@
   "description": "A packet for Diffusers nodes",
   "version": "1.0.0",
   "nodes": [
-    "Unified/Base/Txt2ImgUnified",
+    "Unified/Txt2ImgUnified",
 
-    "Pipe/Base/Pipe_FromFile_T2T",
-    "Pipe/Base/Pipe_FromFile_I2I",
-    "Pipe/Base/PipeFromPretrainedHF",
-    "Pipe/Base/PipeAddLora",
-    "Pipe/Base/PipeAddLoraHF",
-    "Pipe/Base/PipeGenerateTxt2Img",
-    "Pipe/Base/PipeGenerateImg2Img"
+    "Pipe/Pipe_FromFile_T2I",
+    "Pipe/Pipe_FromFile_I2I",
+    "Pipe/PipeFromPretrainedHF",
+    "Pipe/PipeAddLora",
+    "Pipe/PipeAddLoraHF",
+    "Pipe/PipeGenerateTxt2Img",
+    "Pipe/PipeGenerateImg2Img"
   ]
 }

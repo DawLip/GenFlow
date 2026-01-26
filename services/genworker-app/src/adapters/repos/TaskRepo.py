@@ -2,13 +2,18 @@ import json
 import uuid
 
 class TaskRepo:
-  def new_task(self, task):
-    self.taskId = uuid.uuid4()
-    self.projectName = task["projectName"]
-    self.flowName = task["flowName"]
+  def __init__(self, domain):
+    self.domain = domain
+  
+  def build(self):
+    self.worker_queue = self.domain.app.queues["Worker"]
     
-    self.nodes = task["data"]["nodes"]
-    self.edges = task["data"]["edges"]
+  def new_task(self, task):
+    self.domain.console.trace("TaskRepo", "Create event")
 
+    self.worker_queue.put(("EXECUTE_FLOW", {
+      "task_id": uuid.uuid4(),
+      **task
+    }))
     
   

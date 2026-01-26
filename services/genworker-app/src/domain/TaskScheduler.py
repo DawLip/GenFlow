@@ -4,42 +4,43 @@ import json
 class TaskScheduler:
   gateway = None
   domain = None
-  taskRepo = None
+  task_repo = None
   
-  def __init__(self, domain, gateway, taskRepo):
-    self.gateway = gateway
+  def __init__(self, domain, ):
     self.domain = domain
-    self.taskRepo = taskRepo
+    
+  def build(self):
+    # self.gateway = self.domain.task_sheduler_gateway
+    self.task_repo = self.domain.task_repo
   
-  def init(self, user_id, worker_name):
-    flows = [{"projectId": "1", "flowName":"1"}]
+  def init(self, user_id, worker_name):    
+    pass
     
-    genworker_id = self.gateway.register(user_id, worker_name)
-    self.gateway.assign(genworker_id)
-    
-  def execute_flow(self, projectName, flowName):
-    self.domain.console.trace("TaskScheduler", f"Executing flow:", f"'{flowName}' in project '{projectName}'")
+  def execute_flow(self, payload):
+    self.project_name = payload["project_name"]
+    self.flow_name = payload["flow_name"]
+    self.selected_node_id = payload["node_id"]
+    # self.domain.console.trace("TaskScheduler", f"Executing flow:", f"'{flowName}' in project '{projectName}'")
 
-    data = json.loads(self.domain.file_system.get_file(f"/projects/{projectName}/{flowName}/flow.data.json"))
+    flow_data = json.loads(self.domain.file_system.get_file(f"/projects/{self.project_name}/{self.flow_name}/flow.data.json"))
+    self.nodes_scheduler(flow_data["nodes"], flow_data["edges"])
     # print("[TASK_SCHEDULER] Flow data:", data)
-    self.new_task(projectName, flowName, data)
+    # self.new_task(projectName, flowName, data)
 
   def new_task(self, projectName, flowName, data):
     # print(json.dumps(task, indent=1, ensure_ascii=False))
-    self.domain.console.trace("TaskScheduler", "New task for flow:", f"'{flowName}' in project '{projectName}'")
-    self.taskRepo.new_task({
-      "data": data,
-      "projectName": projectName,
-      "flowName": flowName,
-    })
-    self.nodes_scheduler()
+    # self.domain.console.trace("TaskScheduler", "New task for flow:", f"'{flowName}' in project '{projectName}'")
+    # self.task_repo.new_task({
+    #   "data": data,
+    #   "projectName": projectName,
+    #   "flowName": flowName,
+    # })
+    # self.nodes_scheduler()
+    pass
     
-  def nodes_scheduler(self):
+  def nodes_scheduler(self, nodes, edges):
     self.domain.console.log("TaskScheduler", "Starting nodes scheduler...")
-    cpu_worker = self.domain.cpu_worker
-    
-    nodes = self.taskRepo.nodes
-    edges = self.taskRepo.edges
+
     
     indegree, adjacency_list, available_nodes, outcoming_ports, incoming_ports = self.compute_indegree_and_adjacency(edges, nodes)
     
@@ -56,7 +57,7 @@ class TaskScheduler:
         if indegree[adjacent] == 0: available_nodes.add(adjacent)
 
       self.domain.console.trace("TaskScheduler", f"Executing node:", node_id)
-      cpu_worker.execute_node(node, outcoming_ports, incoming_ports)
+      self.domain.cpu_worker.execute_node(node, outcoming_ports, incoming_ports)
     
     self.domain.console.log("TaskScheduler", "All nodes have been executed.")
 
@@ -87,14 +88,25 @@ class TaskScheduler:
     # toPrint = artifact.copy()
     # toPrint['content'] = str(toPrint['content'])[:20] + '...' if len(str(toPrint['content'])) > 20 else str(toPrint['content'])
     self.domain.console.trace("TaskScheduler", "New artifact:", {
-      'projectName': self.taskRepo.projectName,
-      'flowName': self.taskRepo.flowName,
+      'projectName': self.project_name,
+      'flowName': self.flow_name,
       # 'artifact': toPrint
     }, json=True)
 
-    for channel in self.domain.webrtc.rooms[self.taskRepo.flowName]:
-      channel.send(json.dumps({"event": "NEW_ARTIFACT", "payload": {
-        'projectName': self.taskRepo.projectName,
-        'flowName': self.taskRepo.flowName,
-        'artifact': artifact
-      }}))
+    self.domain.app.queues["App"].put(
+      ("WEBRTC", {
+        "rooms": f"{self.project_name}/{self.flow_name}",
+        "payload":json.dumps({"event": "NEW_ARTIFACT", "payload": {
+          'projectName': self.project_name,
+          'flowName': self.flow_name,
+          'artifact': artifact
+        }})
+      })
+    )
+
+    # for channel in self.domain.webrtc.rooms[self.task_repo.flowName]:
+    #   channel.send(json.dumps({"event": "NEW_ARTIFACT", "payload": {
+    #     'projectName': self.project_name,
+    #     'flowName': self.flow_name,
+    #     'artifact': artifact
+    #   }}))

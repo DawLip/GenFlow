@@ -1,6 +1,6 @@
 import sys
 
-from AppBuilder import AppBuilder
+from ProgramBuilder import ProgramBuilder
 
 sys.dont_write_bytecode = True
 
@@ -18,8 +18,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 # faulthandler.enable()
 # faulthandler.dump_traceback_later(30, repeat=True)
 
-
 if __name__ == "__main__":
-    app_builder = AppBuilder()
+    app_builder = ProgramBuilder()
     app_builder.init()
     app_builder.build()

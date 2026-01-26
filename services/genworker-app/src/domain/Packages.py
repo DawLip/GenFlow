@@ -5,9 +5,11 @@ class Packages:
   domain = None
   gateway = None
 
-  def __init__(self, domain, gateway):
+  def __init__(self, domain):
     self.domain = domain
-    self.gateway = gateway
+  
+  def build(self):
+    self.gateway = self.domain.packages_gateway
     
   def get_nodes_list(self):
     nodes_list = []

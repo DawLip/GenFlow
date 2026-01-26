@@ -3,12 +3,12 @@
   "description": "A packet for GenFlow nodes",
   "version": "1.0.0",
   "nodes": [
-    "Text/Base/TextInput",
-    "Text/Base/TextAreaInput",
-    "Text/Operations/TextConcat",
-    "Number/Base/NumberInput",
-    "Image/Base/ImageSave",
-    "Image/Base/ImageLoader",
-    "File/Save/TextFileSave"
+    "Text/TextInput",
+    "Text/TextAreaInput",
+    "Text/TextConcat",
+    "Number/NumberInput",
+    "Image/ImageSave",
+    "Image/ImageLoader",
+    "File/TextFileSave"
   ]
 }

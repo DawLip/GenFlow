@@ -71,4 +71,4 @@ class Processes:
             process.start()
     
     def print_fatal_error(self, exc):
-        self.exception_handler(exc)
+        self.exception_handler.print_fatal_error(exc)

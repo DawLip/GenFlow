@@ -1,13 +1,11 @@
 import requests
 
 class PackagesGateway:
-  domain = None
+  def __init__(self, domain):
+    self.domain = domain
   
-  @classmethod
-  def init(cls, domain):
-    cls.domain = domain
-    return cls
+  def build(self):
+    pass
 
-  @classmethod
-  async def genworker_get_nodes_answer(cls, data):
-    await cls.domain.SIO.sio.emit("genworker_get_nodes_answer", data)
+  async def genworker_get_nodes_answer(self, data):
+    await self.SIO.sio.emit("genworker_get_nodes_answer", data)

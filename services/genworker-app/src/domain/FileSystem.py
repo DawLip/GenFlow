@@ -1,9 +1,12 @@
 import json
 
 class FileSystem:
-  def __init__(self, domain, files_repo):
+  def __init__(self, domain):
     self.domain = domain
-    self.files_repo = files_repo
+    self.files_repo = None
+
+  def build(self):
+    self.files_repo = self.domain.files_repo
 
   def save_file(self, full_path, content):
     self.files_repo.save(full_path, content)

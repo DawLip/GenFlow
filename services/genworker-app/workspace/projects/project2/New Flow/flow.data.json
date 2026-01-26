@@ -1,12 +1,51 @@
 {
   "nodes": [
     {
-      "id": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "id": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea",
       "type": "Default",
       "packet": "GenFlow",
-      "path": "Pipe/Base",
+      "path": "Pipe",
       "position": {
-        "x": 384,
+        "x": 256,
+        "y": 64
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "Pipe_FromFile_T2I",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "cyberrealistic_v90.safetensors",
+            "dataType": "STRING",
+            "widget": "LineInput",
+            "value": "cyberrealistic_v90.safetensors"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "pipe",
+            "label": "pipe",
+            "name": "pipe",
+            "dataType": "PIPE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    },
+    {
+      "id": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Pipe",
+      "position": {
+        "x": 576,
         "y": 64
       },
       "style": {
@@ -31,7 +70,7 @@
             "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
             "dataType": "TEXT",
             "widget": "TextAreaInput",
-            "value": "test"
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
           },
           {
             "id": "negativePrompt",
@@ -85,7 +124,7 @@
             "default": 30,
             "dataType": "NUMBER",
             "widget": "NumberInput",
-            "value": "30"
+            "value": 30
           }
         ],
         "outputs": [
@@ -101,12 +140,12 @@
       "package": "Diffusers"
     },
     {
-      "id": "a20cbdee-7634-43fb-a712-33174992ca44",
+      "id": "985c79b3-1d0b-488f-aba7-00ed2104ad25",
       "type": "Default",
       "packet": "GenFlow",
-      "path": "Image/Base",
+      "path": "Image",
       "position": {
-        "x": 640,
+        "x": 896,
         "y": 64
       },
       "style": {
@@ -127,61 +166,22 @@
         ]
       },
       "package": "GenFlow"
-    },
-    {
-      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
-      "type": "Default",
-      "packet": "GenFlow",
-      "path": "Pipe/Base",
-      "position": {
-        "x": 0,
-        "y": 128
-      },
-      "style": {
-        "width": 320,
-        "height": 128
-      },
-      "data": {
-        "name": "Pipe_FromFile_T2T",
-        "description": "This is a new node",
-        "inputs": [
-          {
-            "id": "model",
-            "label": "model",
-            "name": "model",
-            "default": "cyberrealistic_v90.safetensors",
-            "dataType": "STRING",
-            "widget": "LineInput",
-            "value": "cyberrealistic_v90.safetensors"
-          }
-        ],
-        "outputs": [
-          {
-            "id": "pipe",
-            "label": "pipe",
-            "name": "pipe",
-            "dataType": "PIPE",
-            "widget": "Label"
-          }
-        ]
-      },
-      "package": "Diffusers"
     }
   ],
   "edges": [
     {
-      "source": "8b923df8-0485-4a32-a648-e92c486923e3",
-      "sourceHandle": "imageOutput",
-      "target": "a20cbdee-7634-43fb-a712-33174992ca44",
-      "targetHandle": "imageInput",
-      "id": "8b923df8-0485-4a32-a648-e92c486923e3.imageOutput<->a20cbdee-7634-43fb-a712-33174992ca44.imageInput"
+      "source": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea",
+      "sourceHandle": "pipe",
+      "target": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "targetHandle": "pipe",
+      "id": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea.pipe<->d82ab3db-6009-4741-9394-14428d5b4dca.pipe"
     },
     {
-      "source": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
-      "sourceHandle": "pipe",
-      "target": "8b923df8-0485-4a32-a648-e92c486923e3",
-      "targetHandle": "pipe",
-      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08.pipe<->8b923df8-0485-4a32-a648-e92c486923e3.pipe"
+      "source": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "sourceHandle": "imageOutput",
+      "target": "985c79b3-1d0b-488f-aba7-00ed2104ad25",
+      "targetHandle": "imageInput",
+      "id": "d82ab3db-6009-4741-9394-14428d5b4dca.imageOutput<->985c79b3-1d0b-488f-aba7-00ed2104ad25.imageInput"
     }
   ]
 }

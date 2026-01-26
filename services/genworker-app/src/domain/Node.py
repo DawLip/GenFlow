@@ -2,7 +2,10 @@ class Node:
   def __init__(self, domain):
     self.domain = domain
     self.outputs = {}
-    self.node_repo = domain.node_repo
+    
+  
+  def build(self):
+    self.node_repo = self.domain.node_repo
 
   def return_data(self, target, data):
     self.outputs[target] = data
@@ -15,7 +18,7 @@ class Node:
     try:
       node_to_execute = self.node_repo.get(self.node_repo.get_node_path(node))
     except Exception as e:
-      self.domain.console.error("Node", f"Error: Node {node['data']['name']} not found in repository.")
+      self.domain.console.error("Node", f"Error: Node {node['data']['path']}/{node['data']['name']} not found in repository.")
       raise e
     input_ports = {}
     output_ports = {}

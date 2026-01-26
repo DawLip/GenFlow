@@ -4,7 +4,7 @@ import { setSelection } from "@web-ui/store/slices/workspaceSlice";
 export const onNodesChangeThunk = (data:any, flowName:string, webRTC: any) => async (dispatch: any, getState: any) => {
   const state = getState();
 
-  const storageGenworkerId = state.projectRepo.projects.filter((p:any)=>p.name===state.projectRepo.selectedProject)[0]?.genworkerStorageId;
+  // const storageGenworkerId = state.projectRepo.projects.filter((p:any)=>p.name===state.projectRepo.selectedProject)[0]?.genworkerStorageId;
   const projectName = state.projectRepo.selectedProject;
 
   if (data.changes.map((c:any)=>c.type).includes('remove')) {
@@ -12,7 +12,7 @@ export const onNodesChangeThunk = (data:any, flowName:string, webRTC: any) => as
   }
 
   dispatch(onNodesChange(data));
-  webRTC.send(storageGenworkerId, "FLOW_UPDATE", {
+  webRTC.sendToMaster("FLOW_UPDATE", {
     context: 'onNodesChange',
     projectName,
     flowName,

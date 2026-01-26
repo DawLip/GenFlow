@@ -3,15 +3,23 @@ import json
 import sys
 
 class NodeRepo:
-  workspace_dir = "services/genworker-app/workspace"
-  _nodes = {}
 
-  def __init__(self, app):
-    self.app = app
-    self.domain = app.domain
+  def __init__(self, domain):
+    self.workspace_dir = "services/genworker-app/workspace"
+    self._nodes = {}
+    
+    self.app = domain.app
+    self.domain = domain
+  
+  def build(self):
+    pass
   
   def get(self, node_path):
-    return self._nodes[node_path]
+    if node_path in self._nodes:
+      return self._nodes[node_path]
+    else:
+      self.domain.console.error("NodeRepo", f"Node '{node_path}' does not exist")
+      return None
   
   def register(self, node_path):
     path = f"{self.workspace_dir}/packages/{node_path}/{node_path.split('/')[-1]}.py"

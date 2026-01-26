@@ -1,7 +1,14 @@
 import os
 
 class FilesRepo:
-  root_dir = "/ws/Studies/GenFlow/services/genworker-app/workspace/"
+
+  def __init__(self, domain):
+    self.root_dir = "/ws/Studies/GenFlow/services/genworker-app/workspace/"
+    
+    self.domain = domain
+  
+  def build(self):
+    pass
 
   def save(self, full_path: str, content: str):
     path = f"{self.root_dir}{full_path}"

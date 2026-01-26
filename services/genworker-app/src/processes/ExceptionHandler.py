@@ -26,13 +26,13 @@ class ExceptionHandler:
 
         err_msg += RED + "=" * cols + f"{R}\n\n\r\x1b[2K"
         err_msg += " "*(cols//2-4)+ f"{PURPLE}{BOLD}GenWorker{R}" + " "*(cols//2-4) + "\n\r\x1b[2K"
-        err_msg += " "*(cols//2-5)+ f"{RED}{BOLD}FATAL ERROR{R}" + " "*(cols//2-5) + "\n\r\x1b[2K"
+        err_msg += " "*(cols//2-5)+ f"{RED}{BOLD}FATAL ERROR{R}" + " "*(cols//2-5) + "\n\n\r\x1b[2K"
         err_msg += RED + "=" * cols + f"{R}\n\n\r\x1b[2K"
 
         tb = exc.__traceback__
         frames = traceback.extract_tb(tb) if tb else []
 
-        out.write("Traceback (most recent call last):\n\n\r\x1b[2K")
+        err_msg += "Traceback (most recent call last):\n\n\r\x1b[2K"
         for fr_index, fr in enumerate(frames):
             path = fr.filename.split("/src", 1)[-1]
             prev_lines = 6 if fr_index+1 == len(frames) else 2

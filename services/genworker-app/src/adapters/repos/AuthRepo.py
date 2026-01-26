@@ -1,9 +1,15 @@
 class AuthRepo:
-  _token: str|None = None
-  _user_id: str|None = None
-  _worker_name: str|None = None
-  _email: str|None = None
-  _config = None
+  def __init__(self, domain):
+    self._token: str|None = None
+    self._user_id: str|None = None
+    self._worker_name: str|None = None
+    self._email: str|None = None
+    self._config = None
+
+    self.domain = domain
+  
+  def build(self):
+    pass
   
   @property
   def token(self):
@@ -38,7 +44,6 @@ class AuthRepo:
     self.worker_name = None
     
   def setConfig(self, config):
-    # print("Setting config :", config)
     self._config = config
     
   

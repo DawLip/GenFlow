@@ -30,8 +30,10 @@ export function useAuth(routeAuthed: boolean = false) {
         else if (emailConfirmed && pathname === '/confirm-email') router.push('/select-project');
         else if (!token && cookiesToken) dispatch(login({ token: cookiesToken, userId }))
         else if (!token && !routeAuthed) router.push('/');
-        else if (token && emailConfirmed && !selectedProject) router.push('/select-project');
-        else if (token && emailConfirmed && routeAuthed) router.push('/dashboard');
+        else if (token && emailConfirmed && !selectedProject) {
+            // TODO 
+            router.push('/select-project')
+        } else if (token && emailConfirmed && routeAuthed) router.push('/dashboard');
 
     }, [token, emailConfirmed])
 }

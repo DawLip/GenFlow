@@ -1,12 +1,12 @@
 {
   "nodes": [
     {
-      "id": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea",
+      "id": "011173b6-06d6-4c7b-b606-229249f64bdf",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Pipe",
       "position": {
-        "x": 256,
+        "x": 64,
         "y": 64
       },
       "style": {
@@ -40,12 +40,12 @@
       "package": "Diffusers"
     },
     {
-      "id": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "id": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Pipe",
       "position": {
-        "x": 576,
+        "x": 320,
         "y": 64
       },
       "style": {
@@ -140,12 +140,12 @@
       "package": "Diffusers"
     },
     {
-      "id": "985c79b3-1d0b-488f-aba7-00ed2104ad25",
+      "id": "c594aa68-6831-4ec7-82be-cd7950b4ffed",
       "type": "Default",
       "packet": "GenFlow",
       "path": "Image",
       "position": {
-        "x": 896,
+        "x": 576,
         "y": 64
       },
       "style": {
@@ -170,18 +170,18 @@
   ],
   "edges": [
     {
-      "source": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea",
+      "source": "011173b6-06d6-4c7b-b606-229249f64bdf",
       "sourceHandle": "pipe",
-      "target": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "target": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
       "targetHandle": "pipe",
-      "id": "c176c8fa-39f6-43eb-a63c-2c94ce3117ea.pipe<->d82ab3db-6009-4741-9394-14428d5b4dca.pipe"
+      "id": "011173b6-06d6-4c7b-b606-229249f64bdf.pipe<->16a39b23-0154-4739-b571-82c9e4f9e9c6.pipe"
     },
     {
-      "source": "d82ab3db-6009-4741-9394-14428d5b4dca",
+      "source": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
       "sourceHandle": "imageOutput",
-      "target": "985c79b3-1d0b-488f-aba7-00ed2104ad25",
+      "target": "c594aa68-6831-4ec7-82be-cd7950b4ffed",
       "targetHandle": "imageInput",
-      "id": "d82ab3db-6009-4741-9394-14428d5b4dca.imageOutput<->985c79b3-1d0b-488f-aba7-00ed2104ad25.imageInput"
+      "id": "16a39b23-0154-4739-b571-82c9e4f9e9c6.imageOutput<->c594aa68-6831-4ec7-82be-cd7950b4ffed.imageInput"
     }
   ]
 }

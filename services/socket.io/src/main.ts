@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from '@socket.io/app/app.module';
-import * as express from 'express';
 import { Logger } from 'nestjs-pino';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 
@@ -10,12 +9,21 @@ import { GrpcExceptionFilter } from '@libs/shared/src/grpc-exception.filter';
 import { DefaultExceptionFilter } from '@libs/shared/src/default-exception.filter';
 import { services_config } from '@shared/services_config';
 
+import { RedisIoAdapter } from '@socket.io/app/redis-io.adapter'; 
+
 const s_name = service_name(name);
 
 async function bootstrap() {
   const port = process.env.PORT || 3000;
 
   const app = await NestFactory.create(AppModule);
+
+  const redisUrl = 
+    services_config?.service_url?.redis ;
+
+  const redisIoAdapter = new RedisIoAdapter(app, redisUrl);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
@@ -29,7 +37,7 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.GRPC,
     options: {
-      url: services_config.service_url.socketio_rpc, 
+      url: services_config.service_url.socketio_rpc,
       package: ['socketio'],
       protoPath: [require.resolve(`@proto/socketio/socketio.proto`)],
       loader: {
@@ -57,4 +65,5 @@ async function bootstrap() {
 
   console.log(`${s_name} service running on http://localhost:${port}`);
 }
+
 bootstrap();

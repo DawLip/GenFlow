@@ -25,6 +25,7 @@
     "baseUrl": ".",
     "paths": {
       "@gateway/*": ["services/gateway/src/*"],
+      "@api-test/*": ["services/api-test/src/*"],
       "@api/*": ["services/api/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
@@ -35,6 +36,10 @@
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
+      "@email/*": ["services/email/src/*"],
+      "@genworker/*": ["services/genworker/src/*"],
+
+      "@genworker-app/*": ["services/genworker-app/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

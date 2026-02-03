@@ -2,7 +2,7 @@ services:
   web-ui:
     build:
       context: .
-      dockerfile: ../services/web-ui/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "8080:3000"
     volumes:

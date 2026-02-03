@@ -7,6 +7,14 @@ service UserService {
   rpc Update (UpdateRequest) returns (UpdateResponse);
   rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
   rpc FindOneByEmail (FindOneByEmailRequest) returns (FindResponse);
+
+  rpc RegisterGenWorker (RegisterGenWorkerRequest) returns (RegisterGenWorkerResponse);
+}
+
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
 }
 
 message CreateRequest {
@@ -14,42 +22,77 @@ message CreateRequest {
   string username = 2;
   string password = 3;
 }
-
 message CreateResponse {
-  string id = 1;
-  string status = 2;
-  string msg = 3;
+  BaseResponse res = 1;
+  User user = 2;
 }
 
 message UpdateRequest {
   string id = 1;
-  string field = 2;
-  string value = 3;
+  UserOptional user = 2;
 }
-
 message UpdateResponse {
-  string status = 1;
-  string msg = 2;
+  BaseResponse res = 1;
 }
 
 message FindOneByIdRequest {
   string id = 1;
+  optional bool populateTeams = 2;
 }
-
 message FindOneByEmailRequest {
   string email = 1;
+  optional bool populateTeams = 2;
 }
 
 message FindResponse {
-  string status = 1;
-  string msg = 2;
-  optional UserResponse user = 3;
+  BaseResponse res = 1;
+  optional User user = 2;
 }
 
-message UserResponse{
+message RegisterGenWorkerRequest {
+  string userId = 1;
+  string genWorkerId = 2;
+}
+
+message RegisterGenWorkerResponse {
+  BaseResponse res = 1;
+}
+
+message UserOptional{
+  optional string id = 1;
+  optional string email = 2;
+  optional string username = 3;
+  optional string password = 4;
+  optional bool emailConfirmed = 5;
+  optional string confirmCode = 6;
+}
+
+message User{
   string id = 1;
   string email = 2;
   string username = 3;
   string password = 4;
+  bool emailConfirmed = 5;
+  string confirmCode = 6;
+  repeated Team teams = 7;
+  repeated GenWorker genWorkers = 8;
 }
 
+message Team {
+  string id = 1;
+  string name = 2;
+  string owner = 3;
+  repeated string members = 4;
+  repeated string projects = 5;
+  repeated string genworkers = 6;
+  repeated string storageGenworkers = 7;
+  string masterGenworker = 8;
+}
+
+message GenWorker {
+  string id = 1;
+  string ownerId = 2;
+  string name = 3;
+  bool isActive = 4;
+  string path = 5;
+}

@@ -5,12 +5,20 @@
   "references": [
     {"path": "./libs/shared"},
 
-    {"path": "./services/api"},
     {"path": "./services/gateway"},
+    {"path": "./services/api"},
+    {"path": "./services/api-test"},
+    {"path": "./services/socket.io"},
+
+    {"path": "./services/auth"},
     
     {"path": "./services/user"},
     {"path": "./services/project"},
     {"path": "./services/team"},
+    {"path": "./services/email"},
+    {"path": "./services/genworker"},
+
+    {"path": "./services/genworker-app"},
 
     {"path": "./services/web-ui"}
   ],
@@ -18,6 +26,7 @@
     "paths": {
       "@gateway/*": ["services/gateway/src/*"],
       "@api/*": ["services/api/src/*"],
+      "@api-test/*": ["services/api-test/src/*"],
       "@graphql/*": ["services/graphql/src/*"],
       "@socket.io/*": ["services/socket.io/src/*"],
       
@@ -27,6 +36,10 @@
       "@user/*": ["services/user/src/*"],
       "@project/*": ["services/project/src/*"],
       "@team/*": ["services/team/src/*"],
+      "@email/*": ["services/email/src/*"],
+      "@genworker/*": ["services/genworker/src/*"],
+
+      "@genworker-app/*": ["services/genworker-app/src/*"],
 
       "@proto/*": ["libs/proto/src/*"],
       "@libs/*": ["libs/*"],

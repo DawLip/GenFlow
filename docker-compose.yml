@@ -6,8 +6,7 @@ services:
       service: gateway
     depends_on:
       - api
-      - graphql
-      - socket.io
+      - socketio
     networks:
       monitoring:
 
@@ -18,20 +17,26 @@ services:
     networks:
       monitoring:
 
-  graphql:
+  socketio:
     extends:
-      file: compose/graphql.yml
-      service: graphql
+      file: compose/socketio.yml
+      service: socketio
     networks:
       monitoring:
-
-  socket.io:
-    extends:
-      file: compose/socket.io.yml
-      service: socket.io
-    networks:
-      monitoring:
+    depends_on:
+      - auth
+      - user
+      - team
 # Services
+  genworker:
+    extends:
+      file: compose/genworker.yml
+      service: genworker
+    networks:
+      monitoring: 
+        aliases: [genworker]
+    depends_on:
+      - mongodb
   web-ui:
     extends:
       file: compose/web-ui.yml
@@ -40,6 +45,7 @@ services:
       - gateway
     networks:
       monitoring:
+        aliases: [web-ui]
 
   auth:
     extends:
@@ -56,15 +62,15 @@ services:
       monitoring: 
     depends_on:
       - mongodb
-  project:
-    extends:
-      file: compose/project.yml
-      service: project
-    networks:
-      monitoring: 
-        aliases: [project]
-    depends_on:
-      - mongodb
+  # project:
+  #   extends:
+  #     file: compose/project.yml
+  #     service: project
+  #   networks:
+  #     monitoring: 
+  #       aliases: [project]
+  #   depends_on:
+  #     - mongodb
   team:
     extends:
       file: compose/team.yml
@@ -74,6 +80,15 @@ services:
         aliases: [team]
     depends_on:
       - mongodb
+  email:
+    extends:
+      file: compose/email.yml
+      service: email
+    networks:
+      monitoring: 
+        aliases: [email]
+    depends_on:
+      - rabbitmq
 # Infra
   rabbitmq:
     extends:
@@ -88,6 +103,21 @@ services:
       service: mongodb
     networks:
       monitoring:
+
+  redis:
+    extends:
+      file: compose/infra/redis.yml
+      service: redis
+    networks:
+      monitoring:
+
+  redis-commander:
+    extends:
+      file: compose/infra/redis-commander.yml
+      service: redis-commander
+    networks:
+      monitoring:
+
 # Logs
   grafana:
     extends:
@@ -118,6 +148,7 @@ volumes:
   rabbitmq-data:
   mongodb-data:
   grafana-storage: {}
+  redis-data:
 
 networks:
   monitoring:  

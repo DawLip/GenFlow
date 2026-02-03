@@ -1,27 +1,54 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema, Types } from 'mongoose';
 
 export type ProjectDocument = Project & Document;
 
-@Schema()
-export class Project {
+@Schema({ _id: false })
+export class Edge {
   @Prop({ required: true })
-  name!: string;
+  id!: string;
 
   @Prop({ required: true })
-  description!: string;
+  source!: string;
 
   @Prop({ required: true })
-  owner!: string;
+  sourceHandle!: string;
 
   @Prop({ required: true })
-  team!: string;
+  target!: string;
 
   @Prop({ required: true })
-  flows!: [Flow];
+  targetHandle!: string;
 }
+const EdgeSchema = SchemaFactory.createForClass(Edge);
 
-@Schema()
+@Schema({ _id: false })
+export class Node {
+  @Prop({ required: true })
+  id!: string;
+
+  @Prop({ required: true })
+  type!: string;
+
+  @Prop({ required: true })
+  package!: string;
+
+  @Prop({ required: true })
+  path!: string;
+
+  @Prop({ type: Object, required: true })
+  position!: string;
+
+  @Prop({ type: Object, required: true })
+  style: string;
+
+  @Prop({ type: Object, required: true })
+  data: string;
+
+}
+const NodeSchema = SchemaFactory.createForClass(Node);
+
+@Schema({ timestamps: true })
 export class Flow {
   @Prop({ required: true })
   name!: string;
@@ -30,10 +57,43 @@ export class Flow {
   description!: string;
 
   @Prop({ required: true })
-  flowData!: string;
+  type!: string;
+
+  @Prop({ type: [NodeSchema], required: true })
+  nodes!: Node[];
+
+  @Prop({ type: [EdgeSchema], required: true })
+  edges!: Edge[];
 
   @Prop({ required: true })
-  type!: string;
-}
+  path!: string;
 
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', default: [] })
+  genworkers!: Types.ObjectId[];
+}
+const FlowSchema = SchemaFactory.createForClass(Flow);
+
+@Schema({ timestamps: true })
+export class Project {
+  @Prop({ required: true })
+  name!: string;
+
+  @Prop({ required: true })
+  description!: string;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
+  owner!: Types.ObjectId;
+
+  @Prop({ type: [FlowSchema], required: true })
+  flows!: Flow[];
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Genworkers', default: null })
+  master_genworker!: Types.ObjectId | null;
+
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Genworkers', default: null })
+  storage_genworker!: Types.ObjectId | null;
+
+  @Prop({ type: [MongooseSchema.Types.ObjectId], ref: 'Genworkers', default: [] })
+  genworkers!: Types.ObjectId[];
+}
 export const ProjectSchema = SchemaFactory.createForClass(Project);

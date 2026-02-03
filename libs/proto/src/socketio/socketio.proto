@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package socketio;
+
+service SocketioService {
+  rpc Emit (EmitRequest) returns (DefaultResponse);
+  rpc Join (JoinRequest) returns (DefaultResponse);
+}
+
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
+message DefaultResponse {
+  BaseResponse res = 1;
+}
+
+message EmitRequest {
+  string room = 1; 
+  string event = 2;
+  string data = 3;
+}
+message JoinRequest {
+  string objectId = 1;
+  string room = 2; 
+}

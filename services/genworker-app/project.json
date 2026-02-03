@@ -1,0 +1,19 @@
+{
+  "name": "genworker-app",
+  "projectType": "application",
+  "sourceRoot": "services/genworker-app",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "watchmedo auto-restart --directory=./ --pattern=\"*.py\" --recursive -- python services/genworker-app/src/main.py"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pytest"
+      }
+    }
+  }
+}

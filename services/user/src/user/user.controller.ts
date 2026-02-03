@@ -1,7 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import {
-  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse
+  CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByEmailRequest, FindOneByIdRequest, FindResponse,
+  RegisterGenWorkerRequest,
+  RegisterGenWorkerResponse
 } from '@proto/user/user';
 import { UserService } from '@user/user/user.service';
 
@@ -27,5 +29,10 @@ export class UserController {
   @GrpcMethod('UserService', 'FindOneByEmail')
   async findOneByEmail(data: FindOneByEmailRequest) : Promise<FindResponse> {
     return await this.userService.findOneByEmail(data);
+  }
+
+  @GrpcMethod('UserService', 'RegisterGenWorker')
+  async registerGenWorker(data: RegisterGenWorkerRequest) : Promise<RegisterGenWorkerResponse> {
+    return await this.userService.registerGenWorker(data);
   }
 }

@@ -1,7 +1,14 @@
+import { Types } from 'mongoose';
+
 export type Team = {
-  _id: string;
+  _id: Types.ObjectId;
   name: string;
-  owner: string;
-  members: [string];
-  team: string;
+  owner: Types.ObjectId;         
+  members: Types.ObjectId[];       
+  invited: Types.ObjectId[];
+  projects: Types.ObjectId[];     
+
+  master_genworker: string | null;
+  storage_genworkers: string[] | null;
+  genworkers: Types.ObjectId[] | null;
 };

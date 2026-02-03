@@ -12,7 +12,21 @@ export class ProxyModule implements NestModule {
           next(); 
         },
         createProxyMiddleware({
-          target: services_config.service_url.rest,
+          target: services_config.service_url.api_test,
+          changeOrigin: true,
+          pathRewrite: { '^/api-test': '' },
+          selfHandleResponse: false,
+        }),
+      )
+      .forRoutes('/api-test');
+
+    consumer
+      .apply(
+        (req: Request, res: Response, next: NextFunction) => {
+          next(); 
+        },
+        createProxyMiddleware({
+          target: services_config.service_url.api,
           changeOrigin: true,
           pathRewrite: { '^/api': '' },
           selfHandleResponse: false,
@@ -32,15 +46,5 @@ export class ProxyModule implements NestModule {
         }),
       )
       .forRoutes('/graphql');
-
-    consumer
-      .apply(
-        createProxyMiddleware({
-          target: services_config.service_url.socketio,
-          ws: true,
-          changeOrigin: true,
-        }),
-      )
-      .forRoutes('/socket.io');
   }
 }

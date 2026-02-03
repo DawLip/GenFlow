@@ -1,0 +1,187 @@
+{
+  "nodes": [
+    {
+      "id": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Pipe/Base",
+      "position": {
+        "x": 384,
+        "y": 64
+      },
+      "style": {
+        "width": 256,
+        "height": 640
+      },
+      "data": {
+        "name": "PipeGenerateTxt2Img",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "pipe",
+            "label": "pipe",
+            "name": "pipe",
+            "dataType": "PIPE",
+            "widget": "Label"
+          },
+          {
+            "id": "positivePrompt",
+            "label": "positive prompt",
+            "name": "positivePrompt",
+            "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "test"
+          },
+          {
+            "id": "negativePrompt",
+            "label": "negative prompt",
+            "name": "negativePrompt",
+            "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "blurry, low quality, distorted, deformed, text, watermark, ugly"
+          },
+          {
+            "id": "seed",
+            "label": "seed",
+            "name": "seed",
+            "default": 12345,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 12345
+          },
+          {
+            "id": "height",
+            "label": "height",
+            "name": "height",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "width",
+            "label": "width",
+            "name": "width",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "guidanceScale",
+            "label": "guidance scale",
+            "name": "guidanceScale",
+            "default": 6,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 6
+          },
+          {
+            "id": "steps",
+            "label": "steps",
+            "name": "steps",
+            "default": 30,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": "30"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "imageOutput",
+            "label": "image",
+            "name": "imageOutput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    },
+    {
+      "id": "a20cbdee-7634-43fb-a712-33174992ca44",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Image/Base",
+      "position": {
+        "x": 640,
+        "y": 64
+      },
+      "style": {
+        "width": 192,
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    },
+    {
+      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Pipe/Base",
+      "position": {
+        "x": 0,
+        "y": 128
+      },
+      "style": {
+        "width": 320,
+        "height": 128
+      },
+      "data": {
+        "name": "Pipe_FromFile_T2T",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "cyberrealistic_v90.safetensors",
+            "dataType": "STRING",
+            "widget": "LineInput",
+            "value": "cyberrealistic_v90.safetensors"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "pipe",
+            "label": "pipe",
+            "name": "pipe",
+            "dataType": "PIPE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    }
+  ],
+  "edges": [
+    {
+      "source": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "sourceHandle": "imageOutput",
+      "target": "a20cbdee-7634-43fb-a712-33174992ca44",
+      "targetHandle": "imageInput",
+      "id": "8b923df8-0485-4a32-a648-e92c486923e3.imageOutput<->a20cbdee-7634-43fb-a712-33174992ca44.imageInput"
+    },
+    {
+      "source": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08",
+      "sourceHandle": "pipe",
+      "target": "8b923df8-0485-4a32-a648-e92c486923e3",
+      "targetHandle": "pipe",
+      "id": "b6668410-0f0e-4a3c-98b1-92a1e98a0f08.pipe<->8b923df8-0485-4a32-a648-e92c486923e3.pipe"
+    }
+  ]
+}

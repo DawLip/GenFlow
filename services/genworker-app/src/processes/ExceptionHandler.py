@@ -1,0 +1,60 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Callable
+
+from typing import Protocol
+import sys
+import traceback
+import linecache
+import shutil
+
+class ExceptionHandler:
+    def __init__(self):
+        pass
+
+    def print_fatal_error(self, exc):
+        cols, rows = shutil.get_terminal_size()
+        err_msg = ""
+
+        R = "\033[0m"
+        BOLD = "\033[1m"
+        RED     = "\033[31m"
+        YELLOW  = "\033[33m"
+        BLUE    = "\033[34m"
+        PURPLE = "\033[38;2;180;0;255m"
+
+        out = sys.stderr
+
+        err_msg += RED + "=" * cols + f"{R}\n\n\r\x1b[2K"
+        err_msg += " "*(cols//2-4)+ f"{PURPLE}{BOLD}GenWorker{R}" + " "*(cols//2-4) + "\n\r\x1b[2K"
+        err_msg += " "*(cols//2-5)+ f"{RED}{BOLD}FATAL ERROR{R}" + " "*(cols//2-5) + "\n\n\r\x1b[2K"
+        err_msg += RED + "=" * cols + f"{R}\n\n\r\x1b[2K"
+
+        tb = exc.__traceback__
+        frames = traceback.extract_tb(tb) if tb else []
+
+        err_msg += "Traceback (most recent call last):\n\n\r\x1b[2K"
+        for fr_index, fr in enumerate(frames):
+            path = fr.filename.split("/src", 1)[-1]
+            prev_lines = 6 if fr_index+1 == len(frames) else 2
+            past_lines = 3 if fr_index+1 == len(frames) else 1
+
+            code = []
+            for i in range(fr.lineno-prev_lines, fr.lineno+past_lines):
+                marker = ">>> " if i == fr.lineno else "    "
+                color = RED if i == fr.lineno else YELLOW
+                code_line = linecache.getline(fr.filename, i).rstrip("\n").strip()
+                full_line = f"{marker}{i}: {color}{code_line}{R}"
+                code.append(full_line + "\n\r\x1b[2K")
+
+            err_msg += f'F: "{BOLD}{path}{R}"\n\r\x1b[2KLine {RED}{BOLD}{fr.lineno}{R}, in "{BLUE}{BOLD}{fr.name}{R}":\n\r\x1b[2K'
+            for line in code:
+                err_msg += line
+
+            err_msg += f"\n\r\x1b[2K"
+
+        exc_type = type(exc).__name__
+        err_msg += f"{BOLD}{RED}{exc_type}: {exc}{R}\n\n\r\x1b[2K"
+
+        err_msg += RED + "=" * cols + f"{R}\n" + "\n"*10 + "\r\x1b[2K"
+        out.write("\n\r\x1b[2K\n" + err_msg)
+        out.flush()

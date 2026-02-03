@@ -28,15 +28,15 @@
           "build"
         ],
         "options": {
-          "buildTarget": "@gen-flow/gateway:build",
+          "buildTarget": "@gen-flow/api:build",
           "runBuildTargetDependencies": false
         },
         "configurations": {
           "development": {
-            "buildTarget": "@gen-flow/gateway:build:development"
+            "buildTarget": "@gen-flow/api:build:development"
           },
           "production": {
-            "buildTarget": "@gen-flow/gateway:build:production"
+            "buildTarget": "@gen-flow/api:build:production"
           }
         }
       }

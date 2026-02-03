@@ -6,6 +6,10 @@ import {
   ValidateRequest,
   AuthResponse,
   UserPayload,
+  VerifyEmailRequest,
+  VerifyEmailResponse,
+  SendVerificationEmailRequest,
+  SendVerificationEmailResponse,
 } from '@proto/auth/auth';
 import { AuthService } from '@auth/auth/auth.service';
 
@@ -26,5 +30,15 @@ export class AuthController {
   @GrpcMethod('AuthService', 'Validate')
   async validate(data: ValidateRequest): Promise<UserPayload> {
     return await this.authService.validate(data);
+  }
+
+  @GrpcMethod('AuthService', 'VerifyEmail')
+  async verifyEmail(data: VerifyEmailRequest): Promise<VerifyEmailResponse> {
+    return await this.authService.verifyEmail(data);
+  }
+
+  @GrpcMethod('AuthService', 'SendVerificationEmail')
+  async sendVerificationEmail(data: SendVerificationEmailRequest): Promise<SendVerificationEmailResponse> {
+    return await this.authService.sendVerificationEmail(data);
   }
 }

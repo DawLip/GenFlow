@@ -1,0 +1,10 @@
+python-socketio[client]
+python-socketio
+aiortc
+rich
+diffusers
+torch
+watchfiles
+aiohttp
+transformers
+accelerate

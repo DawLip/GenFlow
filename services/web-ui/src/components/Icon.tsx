@@ -1,9 +1,18 @@
-'use client';
-
-import { CSSProperties } from "react";
-
-export function Icon({ name, extension, style, className }: { name: string, extension?: string, style?:CSSProperties, className?:string }) {
+export function Icon({ name, color = '#fff', size = 16, className="", style= {}, onClick= () => {} }) {
+  const url = `/images/icons/${name}_icon.svg`;
   return (
-    <img src={`/images/icons/${name}${extension||'_icon.svg'}`} alt={name} style={style} className={className} />
+    <span
+      className={className}
+      onClick={onClick}
+      style={{
+        display: 'inline-block',
+        width: size,
+        height: size,
+        backgroundColor: color,
+        WebkitMask: `url(${url}) center / contain no-repeat`,
+        mask: `url(${url}) center / contain no-repeat`,
+        ...style,
+      }}
+    />
   );
 }

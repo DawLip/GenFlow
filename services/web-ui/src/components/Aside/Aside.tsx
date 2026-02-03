@@ -5,21 +5,24 @@ import { Icon } from '../Icon';
 import { Hierarchy } from './Hierarchy';
 import { Inspector } from './Inspector';
 import { EmptyContent } from './EmptyContent';
+import { Nodes } from './Nodes';
+import { Artifacts } from './Artifacts';
 
 export function Aside({ tabs=["Hierarchy","Nodes", "Files"]}: any) { 
   const [ selectedTab , setSelectedTab ] = useState(0);
   return (
-    <aside className="w-64 flex flex-col justify-start items-start  border-r-2 border-br bg-bg">
+    <aside className={`w-64 flex flex-col justify-start items-start  ${tabs[0]=="Hierarchy" ? 'border-r-2' : 'border-l-2'} border-br bg-bg h-full`} style={{maxHeight: 'calc(100vh - 64px - 16px)'} }>
       <header className="justify-start items-end self-stretch gap-1 h-8 border-b-2 border-br">
         {tabs.map((tab: string, index: number) => (
           <Tab 
             key={index} 
             label={tab} 
             onClick={()=> setSelectedTab(index)}
+            isSelected={selectedTab===index}
           />
           ))}
       </header>
-      <div className="flex-col justify-start items-start gap-4 self-stretch flex-1 p-4">
+      <div className="flex-col justify-start items-start gap-4 self-stretch flex-1 p-4 overflow-y-auto aside-scrollbar scrollbar-styled">
         <Content tabName={tabs[selectedTab]} />
       </div>
     </aside>
@@ -31,24 +34,26 @@ const Content = ({ tabName }: { tabName: string }) => {
     case 'Hierarchy':
       return <Hierarchy />;
     case 'Nodes':
-      return <EmptyContent>Nodes</EmptyContent>;
+      return <Nodes />;
     case 'Files':
       return <EmptyContent>Files</EmptyContent>;
     case 'Inspector':
       return <Inspector />;
     case 'Runs':
-      return <EmptyContent>Nodes</EmptyContent>;
-    case 'Viewer':
-      return <EmptyContent>Files</EmptyContent>;
+      return <EmptyContent>Runs</EmptyContent>;
+    case 'Artifacts':
+      return <Artifacts />;
     default:
       return null;
   }
 }
 
-const Tab = ({ label, onClick }: { label:string, onClick:()=>void }) => {
+const Tab = ({ label, onClick, isSelected }: { label:string, onClick:()=>void, isSelected: boolean }) => {
   return (
-    <div onClick={onClick} className="h-8 px-4 border-b-2 border-Primary flex justify-center items-center gap-2 cursor-pointer">
-      <div className="justify-start text-on_bg/80 text-xs font-normal font-['Inter'] leading-none">{label}</div>
+    <div onClick={onClick} className={`h-8 px-4 border-b-2 flex justify-center items-center gap-2 cursor-pointer ${isSelected ? 'border-primary' : 'border-gray-600'}`}>
+      <div className={`justify-start text-xs font-normal font-['Inter'] leading-none ${isSelected ? 'text-on_bg/80' : 'text-on_bg/50'}`}>
+        {label}
+      </div>
     </div>
   );
 }

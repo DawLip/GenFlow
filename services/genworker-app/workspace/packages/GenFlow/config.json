@@ -1,0 +1,14 @@
+{
+  "name": "GenFlow",
+  "description": "A packet for GenFlow nodes",
+  "version": "1.0.0",
+  "nodes": [
+    "Text/TextInput",
+    "Text/TextAreaInput",
+    "Text/TextConcat",
+    "Number/NumberInput",
+    "Image/ImageSave",
+    "Image/ImageLoader",
+    "File/TextFileSave"
+  ]
+}

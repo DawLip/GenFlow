@@ -6,8 +6,16 @@ service TeamService {
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc FindOneById(FindOneByIdRequest) returns (FindResponse);
+  rpc FindByUserId(FindByUserIdRequest) returns (FindByUserIdResponse);
+  rpc Invite(InviteRequest) returns (DefaultResponse);
   rpc Join(JoinRequest) returns (JoinResponse);
   rpc Leave(LeaveRequest) returns (LeaveResponse);
+
+  rpc AssignGenworkerToTeam(AssignGenworkerToTeamRequest) returns (DefaultResponse);
+  rpc RemoveGenworkerFromTeam(RemoveGenworkerFromTeamRequest) returns (DefaultResponse);
+  rpc SetMasterGenworker(SetMasterGenworkerRequest) returns (DefaultResponse);
+  rpc AddStorageGenworker(AddStorageGenworkerRequest) returns (DefaultResponse);
+  rpc RemoveStorageGenworker(RemoveStorageGenworkerRequest) returns (DefaultResponse);
 }
 
 message BaseResponse {
@@ -16,10 +24,15 @@ message BaseResponse {
   bool ok = 3;
 }
 
+message DefaultResponse {
+  BaseResponse res = 1;
+}
+
 message CreateRequest {
   string name = 1;
   string owner = 2;
   repeated string members = 3;
+  repeated string projects = 4;
 }
 message CreateResponse {
   BaseResponse res = 1;
@@ -28,8 +41,7 @@ message CreateResponse {
 
 message UpdateRequest {
   string id = 1;
-  string field = 2;
-  string value = 3;
+  Team team = 2;
 }
 message UpdateResponse {
   BaseResponse res = 1;
@@ -40,7 +52,20 @@ message FindOneByIdRequest {
 }
 message FindResponse {
   BaseResponse res = 1;
-  optional TeamResponse team = 3;
+  optional Team team = 3;
+}
+
+message FindByUserIdRequest {
+  string userId = 1;
+}
+message FindByUserIdResponse {
+  BaseResponse res = 1;
+  repeated Team teams = 2;
+}
+
+message InviteRequest {
+  string id = 1;
+  string user = 2;
 }
 
 message JoinRequest {
@@ -59,10 +84,36 @@ message LeaveResponse {
   BaseResponse res = 1;
 }
 
-message TeamResponse{
+message AssignGenworkerToTeamRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message RemoveGenworkerFromTeamRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message SetMasterGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message AddStorageGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+message RemoveStorageGenworkerRequest {
+  string teamId = 1;
+  string genworkerId = 2;
+}
+
+message Team{
   string id = 1;
   string name = 2;
   string owner = 3;
   repeated string members = 4;
+  repeated string invited = 9;
+  repeated string projects = 5;
+  optional string masterGenworker = 6;
+  repeated string storageGenworkers = 7;
+  repeated string genworkers = 8;
 }
 

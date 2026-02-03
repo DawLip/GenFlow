@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package genworker;
+
+service GenWorkerService {
+  // CRUD
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Update (UpdateRequest) returns (UpdateResponse);
+  rpc FindOneById (FindOneByIdRequest) returns (FindResponse);
+  rpc FindOneByProject (FindOneByProjectRequest) returns (FindResponse);
+
+  // Special
+  rpc EnqueueTask (EnqueueRequest) returns (DefaultResponse);
+  rpc FinishPartialTask (FinishPartialTaskRequest) returns (DefaultResponse);
+  rpc FinishTask (FinishTaskRequest) returns (DefaultResponse);
+
+  rpc Register (RegisterRequest) returns (RegisterResponse);
+  rpc GenWorkerAssign (GenWorkerAssignRequest) returns (DefaultResponse);
+
+  rpc GenWorkerAssignToTeam (GenWorkerAssignToTeamRequest) returns (DefaultResponse);
+  rpc GenWorkerRemoveFromTeam (GenWorkerRemoveFromTeamRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamSetMaster (GenWorkerTeamSetMasterRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamAddStorage (GenWorkerTeamAddStorageRequest) returns (DefaultResponse);
+  rpc GenWorkerTeamRemoveStorage (GenWorkerTeamRemoveStorageRequest) returns (DefaultResponse);
+
+  rpc GenWorkerAssignToProject (GenWorkerAssignToProjectRequest) returns (DefaultResponse);
+  rpc GenWorkerAssignToFlow (GenWorkerAssignToFlowRequest) returns (DefaultResponse);
+
+  rpc GetGenWorkersAssignedToFlow (GetGenWorkersAssignedToFlowRequest) returns (GetGenWorkersAssignedToFlowResponse);
+  rpc GenWorkerDisconnect (GenWorkerDisconnectRequest) returns (DefaultResponse);
+
+  //Task
+  rpc GetTask(GetTaskByIdRequest) returns (FindTaskResponse);
+}
+
+message BaseResponse {
+  string status = 1;
+  string msg = 2;
+  bool ok = 3;
+}
+
+message DefaultResponse {
+  BaseResponse res = 1;
+}
+
+// CRUD
+message CreateRequest {
+  string name = 1;
+  string ownerId = 2;
+  string path = 3;
+}
+message CreateResponse {
+  BaseResponse res = 1;
+  GenWorker genworker = 2;
+}
+
+message UpdateRequest {
+  string id = 1;
+  GenWorker genworker = 2;
+}
+message UpdateResponse {
+  BaseResponse res = 1;
+}
+
+message FindOneByIdRequest {
+  string id = 1;
+  optional bool populateTeams = 2;
+}
+message FindOneByProjectRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string flowPath = 3;
+}
+message FindResponse {
+  BaseResponse res = 1;
+  optional GenWorker genworker = 2;
+}
+
+// Special
+message EnqueueRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string data = 3;
+  string path = 4;
+}
+message FinishPartialTaskRequest {
+  string taskId = 1;
+  string workerId = 2;
+  string projectId = 3;
+  string flowName = 4;
+  string path = 5;
+  string status = 6;
+}
+message FinishTaskRequest {
+  string taskId = 1;
+  string workerId = 2;
+  string projectId = 3;
+  string flowName = 4;
+  string path = 5;
+  string status = 6;
+}
+message RegisterRequest {
+  string ownerId = 1;
+  string name = 2;
+  string path = 3;
+}
+message RegisterResponse {
+  BaseResponse res = 1;
+  string genworkerId = 2;
+}
+message GenWorkerAssignRequest {
+  string genworkerId = 1;
+}
+
+// Team
+message GenWorkerAssignToTeamRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+  string role = 3;
+}
+message GenWorkerRemoveFromTeamRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamSetMasterRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamAddStorageRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+message GenWorkerTeamRemoveStorageRequest {
+  string genworkerId = 1;
+  string teamId = 2;
+}
+
+//Project
+message GenWorkerAssignToProjectRequest {
+  string genworkerId = 1;
+  string projectId = 2;
+  string role = 3;
+}
+message GenWorkerAssignToFlowRequest {
+  string genworkerId = 1;
+  string projectId = 2;
+  string flowName = 3;
+  string path = 4;
+  string role = 5;
+}
+message GetGenWorkersAssignedToFlowRequest {
+  string projectId = 1;
+  string flowName = 2;
+  string path = 3;
+}
+message GetGenWorkersAssignedToFlowResponse {
+  BaseResponse res = 1;
+  repeated GenWorker genworkers = 2;
+}
+message GenWorkerDisconnectRequest {
+  string genworkerId = 1;
+}
+
+message GetTaskByIdRequest {
+  string id = 1;
+  bool genworker = 2;
+}
+message FindTaskResponse {
+  BaseResponse res = 1;
+  Task  task = 2;
+}
+
+// Objects
+message GenWorker {
+  string id = 1;
+  string ownerId = 2;
+  string name = 3;
+  string path = 4;
+  bool isActive = 5;
+  
+  repeated string assignedTeams = 6;
+  repeated string assignedProjects = 7;
+  repeated string assignedFlows = 8;
+}
+
+message Task {
+  string id = 1;
+  string projectId = 2;
+  string flowName = 3;
+  string path = 4;
+  string data = 5;
+  optional string isProcessingBy = 6;
+}

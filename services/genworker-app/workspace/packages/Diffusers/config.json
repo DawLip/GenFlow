@@ -1,0 +1,16 @@
+{
+  "name": "Diffusers",
+  "description": "A packet for Diffusers nodes",
+  "version": "1.0.0",
+  "nodes": [
+    "Unified/Txt2ImgUnified",
+
+    "Pipe/Pipe_FromFile_T2I",
+    "Pipe/Pipe_FromFile_I2I",
+    "Pipe/PipeFromPretrainedHF",
+    "Pipe/PipeAddLora",
+    "Pipe/PipeAddLoraHF",
+    "Pipe/PipeGenerateTxt2Img",
+    "Pipe/PipeGenerateImg2Img"
+  ]
+}

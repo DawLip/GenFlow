@@ -9,6 +9,12 @@ import { BinaryReader, BinaryWriter } from "@bufbuild/protobuf/wire";
 
 export const protobufPackage = "user";
 
+export interface BaseResponse {
+  status: string;
+  msg: string;
+  ok: boolean;
+}
+
 export interface CreateRequest {
   email: string;
   username: string;
@@ -16,42 +22,173 @@ export interface CreateRequest {
 }
 
 export interface CreateResponse {
-  id: string;
-  status: string;
-  msg: string;
+  res: BaseResponse | undefined;
+  user: User | undefined;
 }
 
 export interface UpdateRequest {
   id: string;
-  field: string;
-  value: string;
+  user: UserOptional | undefined;
 }
 
 export interface UpdateResponse {
-  status: string;
-  msg: string;
+  res: BaseResponse | undefined;
 }
 
 export interface FindOneByIdRequest {
   id: string;
+  populateTeams?: boolean | undefined;
 }
 
 export interface FindOneByEmailRequest {
   email: string;
+  populateTeams?: boolean | undefined;
 }
 
 export interface FindResponse {
-  status: string;
-  msg: string;
-  user?: UserResponse | undefined;
+  res: BaseResponse | undefined;
+  user?: User | undefined;
 }
 
-export interface UserResponse {
+export interface RegisterGenWorkerRequest {
+  userId: string;
+  genWorkerId: string;
+}
+
+export interface RegisterGenWorkerResponse {
+  res: BaseResponse | undefined;
+}
+
+export interface UserOptional {
+  id?: string | undefined;
+  email?: string | undefined;
+  username?: string | undefined;
+  password?: string | undefined;
+  emailConfirmed?: boolean | undefined;
+  confirmCode?: string | undefined;
+}
+
+export interface User {
   id: string;
   email: string;
   username: string;
   password: string;
+  emailConfirmed: boolean;
+  confirmCode: string;
+  teams: Team[];
+  genWorkers: GenWorker[];
 }
+
+export interface Team {
+  id: string;
+  name: string;
+  owner: string;
+  members: string[];
+  projects: string[];
+  genworkers: string[];
+  storageGenworkers: string[];
+  masterGenworker: string;
+}
+
+export interface GenWorker {
+  id: string;
+  ownerId: string;
+  name: string;
+  isActive: boolean;
+  path: string;
+}
+
+function createBaseBaseResponse(): BaseResponse {
+  return { status: "", msg: "", ok: false };
+}
+
+export const BaseResponse: MessageFns<BaseResponse> = {
+  encode(message: BaseResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.status !== "") {
+      writer.uint32(10).string(message.status);
+    }
+    if (message.msg !== "") {
+      writer.uint32(18).string(message.msg);
+    }
+    if (message.ok !== false) {
+      writer.uint32(24).bool(message.ok);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): BaseResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBaseResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.status = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.msg = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 24) {
+            break;
+          }
+
+          message.ok = reader.bool();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): BaseResponse {
+    return {
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      ok: isSet(object.ok) ? globalThis.Boolean(object.ok) : false,
+    };
+  },
+
+  toJSON(message: BaseResponse): unknown {
+    const obj: any = {};
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    if (message.msg !== "") {
+      obj.msg = message.msg;
+    }
+    if (message.ok !== false) {
+      obj.ok = message.ok;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<BaseResponse>): BaseResponse {
+    return BaseResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<BaseResponse>): BaseResponse {
+    const message = createBaseBaseResponse();
+    message.status = object.status ?? "";
+    message.msg = object.msg ?? "";
+    message.ok = object.ok ?? false;
+    return message;
+  },
+};
 
 function createBaseCreateRequest(): CreateRequest {
   return { email: "", username: "", password: "" };
@@ -146,19 +283,16 @@ export const CreateRequest: MessageFns<CreateRequest> = {
 };
 
 function createBaseCreateResponse(): CreateResponse {
-  return { id: "", status: "", msg: "" };
+  return { res: undefined, user: undefined };
 }
 
 export const CreateResponse: MessageFns<CreateResponse> = {
   encode(message: CreateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
-    if (message.status !== "") {
-      writer.uint32(18).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(26).string(message.msg);
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -175,7 +309,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
             break;
           }
 
-          message.id = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
@@ -183,15 +317,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
             break;
           }
 
-          message.status = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.msg = reader.string();
+          message.user = User.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -205,22 +331,18 @@ export const CreateResponse: MessageFns<CreateResponse> = {
 
   fromJSON(object: any): CreateResponse {
     return {
-      id: isSet(object.id) ? globalThis.String(object.id) : "",
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
     };
   },
 
   toJSON(message: CreateResponse): unknown {
     const obj: any = {};
-    if (message.id !== "") {
-      obj.id = message.id;
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
     }
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
+    if (message.user !== undefined) {
+      obj.user = User.toJSON(message.user);
     }
     return obj;
   },
@@ -230,15 +352,14 @@ export const CreateResponse: MessageFns<CreateResponse> = {
   },
   fromPartial(object: DeepPartial<CreateResponse>): CreateResponse {
     const message = createBaseCreateResponse();
-    message.id = object.id ?? "";
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
 };
 
 function createBaseUpdateRequest(): UpdateRequest {
-  return { id: "", field: "", value: "" };
+  return { id: "", user: undefined };
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
@@ -246,11 +367,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.field !== "") {
-      writer.uint32(18).string(message.field);
-    }
-    if (message.value !== "") {
-      writer.uint32(26).string(message.value);
+    if (message.user !== undefined) {
+      UserOptional.encode(message.user, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -275,15 +393,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.field = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.value = reader.string();
+          message.user = UserOptional.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -298,8 +408,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      field: isSet(object.field) ? globalThis.String(object.field) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      user: isSet(object.user) ? UserOptional.fromJSON(object.user) : undefined,
     };
   },
 
@@ -308,11 +417,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.field !== "") {
-      obj.field = message.field;
-    }
-    if (message.value !== "") {
-      obj.value = message.value;
+    if (message.user !== undefined) {
+      obj.user = UserOptional.toJSON(message.user);
     }
     return obj;
   },
@@ -323,23 +429,21 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromPartial(object: DeepPartial<UpdateRequest>): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? "";
-    message.field = object.field ?? "";
-    message.value = object.value ?? "";
+    message.user = (object.user !== undefined && object.user !== null)
+      ? UserOptional.fromPartial(object.user)
+      : undefined;
     return message;
   },
 };
 
 function createBaseUpdateResponse(): UpdateResponse {
-  return { status: "", msg: "" };
+  return { res: undefined };
 }
 
 export const UpdateResponse: MessageFns<UpdateResponse> = {
   encode(message: UpdateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== "") {
-      writer.uint32(10).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(18).string(message.msg);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     return writer;
   },
@@ -356,15 +460,7 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
             break;
           }
 
-          message.status = reader.string();
-          continue;
-        }
-        case 2: {
-          if (tag !== 18) {
-            break;
-          }
-
-          message.msg = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -377,19 +473,13 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
 
   fromJSON(object: any): UpdateResponse {
-    return {
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
-    };
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
   },
 
   toJSON(message: UpdateResponse): unknown {
     const obj: any = {};
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
     }
     return obj;
   },
@@ -399,20 +489,22 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
   fromPartial(object: DeepPartial<UpdateResponse>): UpdateResponse {
     const message = createBaseUpdateResponse();
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
     return message;
   },
 };
 
 function createBaseFindOneByIdRequest(): FindOneByIdRequest {
-  return { id: "" };
+  return { id: "", populateTeams: undefined };
 }
 
 export const FindOneByIdRequest: MessageFns<FindOneByIdRequest> = {
   encode(message: FindOneByIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
+    }
+    if (message.populateTeams !== undefined) {
+      writer.uint32(16).bool(message.populateTeams);
     }
     return writer;
   },
@@ -432,6 +524,14 @@ export const FindOneByIdRequest: MessageFns<FindOneByIdRequest> = {
           message.id = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.populateTeams = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -442,13 +542,19 @@ export const FindOneByIdRequest: MessageFns<FindOneByIdRequest> = {
   },
 
   fromJSON(object: any): FindOneByIdRequest {
-    return { id: isSet(object.id) ? globalThis.String(object.id) : "" };
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      populateTeams: isSet(object.populateTeams) ? globalThis.Boolean(object.populateTeams) : undefined,
+    };
   },
 
   toJSON(message: FindOneByIdRequest): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
+    }
+    if (message.populateTeams !== undefined) {
+      obj.populateTeams = message.populateTeams;
     }
     return obj;
   },
@@ -459,18 +565,22 @@ export const FindOneByIdRequest: MessageFns<FindOneByIdRequest> = {
   fromPartial(object: DeepPartial<FindOneByIdRequest>): FindOneByIdRequest {
     const message = createBaseFindOneByIdRequest();
     message.id = object.id ?? "";
+    message.populateTeams = object.populateTeams ?? undefined;
     return message;
   },
 };
 
 function createBaseFindOneByEmailRequest(): FindOneByEmailRequest {
-  return { email: "" };
+  return { email: "", populateTeams: undefined };
 }
 
 export const FindOneByEmailRequest: MessageFns<FindOneByEmailRequest> = {
   encode(message: FindOneByEmailRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.email !== "") {
       writer.uint32(10).string(message.email);
+    }
+    if (message.populateTeams !== undefined) {
+      writer.uint32(16).bool(message.populateTeams);
     }
     return writer;
   },
@@ -490,6 +600,14 @@ export const FindOneByEmailRequest: MessageFns<FindOneByEmailRequest> = {
           message.email = reader.string();
           continue;
         }
+        case 2: {
+          if (tag !== 16) {
+            break;
+          }
+
+          message.populateTeams = reader.bool();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -500,13 +618,19 @@ export const FindOneByEmailRequest: MessageFns<FindOneByEmailRequest> = {
   },
 
   fromJSON(object: any): FindOneByEmailRequest {
-    return { email: isSet(object.email) ? globalThis.String(object.email) : "" };
+    return {
+      email: isSet(object.email) ? globalThis.String(object.email) : "",
+      populateTeams: isSet(object.populateTeams) ? globalThis.Boolean(object.populateTeams) : undefined,
+    };
   },
 
   toJSON(message: FindOneByEmailRequest): unknown {
     const obj: any = {};
     if (message.email !== "") {
       obj.email = message.email;
+    }
+    if (message.populateTeams !== undefined) {
+      obj.populateTeams = message.populateTeams;
     }
     return obj;
   },
@@ -517,24 +641,22 @@ export const FindOneByEmailRequest: MessageFns<FindOneByEmailRequest> = {
   fromPartial(object: DeepPartial<FindOneByEmailRequest>): FindOneByEmailRequest {
     const message = createBaseFindOneByEmailRequest();
     message.email = object.email ?? "";
+    message.populateTeams = object.populateTeams ?? undefined;
     return message;
   },
 };
 
 function createBaseFindResponse(): FindResponse {
-  return { status: "", msg: "", user: undefined };
+  return { res: undefined, user: undefined };
 }
 
 export const FindResponse: MessageFns<FindResponse> = {
   encode(message: FindResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.status !== "") {
-      writer.uint32(10).string(message.status);
-    }
-    if (message.msg !== "") {
-      writer.uint32(18).string(message.msg);
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.user !== undefined) {
-      UserResponse.encode(message.user, writer.uint32(26).fork()).join();
+      User.encode(message.user, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -551,7 +673,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.status = reader.string();
+          message.res = BaseResponse.decode(reader, reader.uint32());
           continue;
         }
         case 2: {
@@ -559,15 +681,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.msg = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.user = UserResponse.decode(reader, reader.uint32());
+          message.user = User.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -581,22 +695,18 @@ export const FindResponse: MessageFns<FindResponse> = {
 
   fromJSON(object: any): FindResponse {
     return {
-      status: isSet(object.status) ? globalThis.String(object.status) : "",
-      msg: isSet(object.msg) ? globalThis.String(object.msg) : "",
-      user: isSet(object.user) ? UserResponse.fromJSON(object.user) : undefined,
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
     };
   },
 
   toJSON(message: FindResponse): unknown {
     const obj: any = {};
-    if (message.status !== "") {
-      obj.status = message.status;
-    }
-    if (message.msg !== "") {
-      obj.msg = message.msg;
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
     }
     if (message.user !== undefined) {
-      obj.user = UserResponse.toJSON(message.user);
+      obj.user = User.toJSON(message.user);
     }
     return obj;
   },
@@ -606,40 +716,184 @@ export const FindResponse: MessageFns<FindResponse> = {
   },
   fromPartial(object: DeepPartial<FindResponse>): FindResponse {
     const message = createBaseFindResponse();
-    message.status = object.status ?? "";
-    message.msg = object.msg ?? "";
-    message.user = (object.user !== undefined && object.user !== null)
-      ? UserResponse.fromPartial(object.user)
-      : undefined;
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
 };
 
-function createBaseUserResponse(): UserResponse {
-  return { id: "", email: "", username: "", password: "" };
+function createBaseRegisterGenWorkerRequest(): RegisterGenWorkerRequest {
+  return { userId: "", genWorkerId: "" };
 }
 
-export const UserResponse: MessageFns<UserResponse> = {
-  encode(message: UserResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+export const RegisterGenWorkerRequest: MessageFns<RegisterGenWorkerRequest> = {
+  encode(message: RegisterGenWorkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
-    if (message.email !== "") {
-      writer.uint32(18).string(message.email);
-    }
-    if (message.username !== "") {
-      writer.uint32(26).string(message.username);
-    }
-    if (message.password !== "") {
-      writer.uint32(34).string(message.password);
+    if (message.genWorkerId !== "") {
+      writer.uint32(18).string(message.genWorkerId);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): UserResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): RegisterGenWorkerRequest {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseUserResponse();
+    const message = createBaseRegisterGenWorkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genWorkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RegisterGenWorkerRequest {
+    return {
+      userId: isSet(object.userId) ? globalThis.String(object.userId) : "",
+      genWorkerId: isSet(object.genWorkerId) ? globalThis.String(object.genWorkerId) : "",
+    };
+  },
+
+  toJSON(message: RegisterGenWorkerRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    if (message.genWorkerId !== "") {
+      obj.genWorkerId = message.genWorkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RegisterGenWorkerRequest>): RegisterGenWorkerRequest {
+    return RegisterGenWorkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RegisterGenWorkerRequest>): RegisterGenWorkerRequest {
+    const message = createBaseRegisterGenWorkerRequest();
+    message.userId = object.userId ?? "";
+    message.genWorkerId = object.genWorkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseRegisterGenWorkerResponse(): RegisterGenWorkerResponse {
+  return { res: undefined };
+}
+
+export const RegisterGenWorkerResponse: MessageFns<RegisterGenWorkerResponse> = {
+  encode(message: RegisterGenWorkerResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RegisterGenWorkerResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRegisterGenWorkerResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RegisterGenWorkerResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: RegisterGenWorkerResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RegisterGenWorkerResponse>): RegisterGenWorkerResponse {
+    return RegisterGenWorkerResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RegisterGenWorkerResponse>): RegisterGenWorkerResponse {
+    const message = createBaseRegisterGenWorkerResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    return message;
+  },
+};
+
+function createBaseUserOptional(): UserOptional {
+  return {
+    id: undefined,
+    email: undefined,
+    username: undefined,
+    password: undefined,
+    emailConfirmed: undefined,
+    confirmCode: undefined,
+  };
+}
+
+export const UserOptional: MessageFns<UserOptional> = {
+  encode(message: UserOptional, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== undefined) {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.email !== undefined) {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.username !== undefined) {
+      writer.uint32(26).string(message.username);
+    }
+    if (message.password !== undefined) {
+      writer.uint32(34).string(message.password);
+    }
+    if (message.emailConfirmed !== undefined) {
+      writer.uint32(40).bool(message.emailConfirmed);
+    }
+    if (message.confirmCode !== undefined) {
+      writer.uint32(50).string(message.confirmCode);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): UserOptional {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUserOptional();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -675,6 +929,22 @@ export const UserResponse: MessageFns<UserResponse> = {
           message.password = reader.string();
           continue;
         }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.emailConfirmed = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.confirmCode = reader.string();
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -684,16 +954,193 @@ export const UserResponse: MessageFns<UserResponse> = {
     return message;
   },
 
-  fromJSON(object: any): UserResponse {
+  fromJSON(object: any): UserOptional {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : undefined,
+      email: isSet(object.email) ? globalThis.String(object.email) : undefined,
+      username: isSet(object.username) ? globalThis.String(object.username) : undefined,
+      password: isSet(object.password) ? globalThis.String(object.password) : undefined,
+      emailConfirmed: isSet(object.emailConfirmed) ? globalThis.Boolean(object.emailConfirmed) : undefined,
+      confirmCode: isSet(object.confirmCode) ? globalThis.String(object.confirmCode) : undefined,
+    };
+  },
+
+  toJSON(message: UserOptional): unknown {
+    const obj: any = {};
+    if (message.id !== undefined) {
+      obj.id = message.id;
+    }
+    if (message.email !== undefined) {
+      obj.email = message.email;
+    }
+    if (message.username !== undefined) {
+      obj.username = message.username;
+    }
+    if (message.password !== undefined) {
+      obj.password = message.password;
+    }
+    if (message.emailConfirmed !== undefined) {
+      obj.emailConfirmed = message.emailConfirmed;
+    }
+    if (message.confirmCode !== undefined) {
+      obj.confirmCode = message.confirmCode;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<UserOptional>): UserOptional {
+    return UserOptional.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<UserOptional>): UserOptional {
+    const message = createBaseUserOptional();
+    message.id = object.id ?? undefined;
+    message.email = object.email ?? undefined;
+    message.username = object.username ?? undefined;
+    message.password = object.password ?? undefined;
+    message.emailConfirmed = object.emailConfirmed ?? undefined;
+    message.confirmCode = object.confirmCode ?? undefined;
+    return message;
+  },
+};
+
+function createBaseUser(): User {
+  return {
+    id: "",
+    email: "",
+    username: "",
+    password: "",
+    emailConfirmed: false,
+    confirmCode: "",
+    teams: [],
+    genWorkers: [],
+  };
+}
+
+export const User: MessageFns<User> = {
+  encode(message: User, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.email !== "") {
+      writer.uint32(18).string(message.email);
+    }
+    if (message.username !== "") {
+      writer.uint32(26).string(message.username);
+    }
+    if (message.password !== "") {
+      writer.uint32(34).string(message.password);
+    }
+    if (message.emailConfirmed !== false) {
+      writer.uint32(40).bool(message.emailConfirmed);
+    }
+    if (message.confirmCode !== "") {
+      writer.uint32(50).string(message.confirmCode);
+    }
+    for (const v of message.teams) {
+      Team.encode(v!, writer.uint32(58).fork()).join();
+    }
+    for (const v of message.genWorkers) {
+      GenWorker.encode(v!, writer.uint32(66).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): User {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.email = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.username = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.password = reader.string();
+          continue;
+        }
+        case 5: {
+          if (tag !== 40) {
+            break;
+          }
+
+          message.emailConfirmed = reader.bool();
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.confirmCode = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.teams.push(Team.decode(reader, reader.uint32()));
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.genWorkers.push(GenWorker.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): User {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       email: isSet(object.email) ? globalThis.String(object.email) : "",
       username: isSet(object.username) ? globalThis.String(object.username) : "",
       password: isSet(object.password) ? globalThis.String(object.password) : "",
+      emailConfirmed: isSet(object.emailConfirmed) ? globalThis.Boolean(object.emailConfirmed) : false,
+      confirmCode: isSet(object.confirmCode) ? globalThis.String(object.confirmCode) : "",
+      teams: globalThis.Array.isArray(object?.teams) ? object.teams.map((e: any) => Team.fromJSON(e)) : [],
+      genWorkers: globalThis.Array.isArray(object?.genWorkers)
+        ? object.genWorkers.map((e: any) => GenWorker.fromJSON(e))
+        : [],
     };
   },
 
-  toJSON(message: UserResponse): unknown {
+  toJSON(message: User): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -707,18 +1154,343 @@ export const UserResponse: MessageFns<UserResponse> = {
     if (message.password !== "") {
       obj.password = message.password;
     }
+    if (message.emailConfirmed !== false) {
+      obj.emailConfirmed = message.emailConfirmed;
+    }
+    if (message.confirmCode !== "") {
+      obj.confirmCode = message.confirmCode;
+    }
+    if (message.teams?.length) {
+      obj.teams = message.teams.map((e) => Team.toJSON(e));
+    }
+    if (message.genWorkers?.length) {
+      obj.genWorkers = message.genWorkers.map((e) => GenWorker.toJSON(e));
+    }
     return obj;
   },
 
-  create(base?: DeepPartial<UserResponse>): UserResponse {
-    return UserResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<User>): User {
+    return User.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<UserResponse>): UserResponse {
-    const message = createBaseUserResponse();
+  fromPartial(object: DeepPartial<User>): User {
+    const message = createBaseUser();
     message.id = object.id ?? "";
     message.email = object.email ?? "";
     message.username = object.username ?? "";
     message.password = object.password ?? "";
+    message.emailConfirmed = object.emailConfirmed ?? false;
+    message.confirmCode = object.confirmCode ?? "";
+    message.teams = object.teams?.map((e) => Team.fromPartial(e)) || [];
+    message.genWorkers = object.genWorkers?.map((e) => GenWorker.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseTeam(): Team {
+  return {
+    id: "",
+    name: "",
+    owner: "",
+    members: [],
+    projects: [],
+    genworkers: [],
+    storageGenworkers: [],
+    masterGenworker: "",
+  };
+}
+
+export const Team: MessageFns<Team> = {
+  encode(message: Team, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.owner !== "") {
+      writer.uint32(26).string(message.owner);
+    }
+    for (const v of message.members) {
+      writer.uint32(34).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(42).string(v!);
+    }
+    for (const v of message.genworkers) {
+      writer.uint32(50).string(v!);
+    }
+    for (const v of message.storageGenworkers) {
+      writer.uint32(58).string(v!);
+    }
+    if (message.masterGenworker !== "") {
+      writer.uint32(66).string(message.masterGenworker);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): Team {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTeam();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.owner = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.members.push(reader.string());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.genworkers.push(reader.string());
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.storageGenworkers.push(reader.string());
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.masterGenworker = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Team {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
+      members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
+      genworkers: globalThis.Array.isArray(object?.genworkers)
+        ? object.genworkers.map((e: any) => globalThis.String(e))
+        : [],
+      storageGenworkers: globalThis.Array.isArray(object?.storageGenworkers)
+        ? object.storageGenworkers.map((e: any) => globalThis.String(e))
+        : [],
+      masterGenworker: isSet(object.masterGenworker) ? globalThis.String(object.masterGenworker) : "",
+    };
+  },
+
+  toJSON(message: Team): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.owner !== "") {
+      obj.owner = message.owner;
+    }
+    if (message.members?.length) {
+      obj.members = message.members;
+    }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
+    if (message.genworkers?.length) {
+      obj.genworkers = message.genworkers;
+    }
+    if (message.storageGenworkers?.length) {
+      obj.storageGenworkers = message.storageGenworkers;
+    }
+    if (message.masterGenworker !== "") {
+      obj.masterGenworker = message.masterGenworker;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<Team>): Team {
+    return Team.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<Team>): Team {
+    const message = createBaseTeam();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.owner = object.owner ?? "";
+    message.members = object.members?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
+    message.genworkers = object.genworkers?.map((e) => e) || [];
+    message.storageGenworkers = object.storageGenworkers?.map((e) => e) || [];
+    message.masterGenworker = object.masterGenworker ?? "";
+    return message;
+  },
+};
+
+function createBaseGenWorker(): GenWorker {
+  return { id: "", ownerId: "", name: "", isActive: false, path: "" };
+}
+
+export const GenWorker: MessageFns<GenWorker> = {
+  encode(message: GenWorker, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.ownerId !== "") {
+      writer.uint32(18).string(message.ownerId);
+    }
+    if (message.name !== "") {
+      writer.uint32(26).string(message.name);
+    }
+    if (message.isActive !== false) {
+      writer.uint32(32).bool(message.isActive);
+    }
+    if (message.path !== "") {
+      writer.uint32(42).string(message.path);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): GenWorker {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGenWorker();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.ownerId = reader.string();
+          continue;
+        }
+        case 3: {
+          if (tag !== 26) {
+            break;
+          }
+
+          message.name = reader.string();
+          continue;
+        }
+        case 4: {
+          if (tag !== 32) {
+            break;
+          }
+
+          message.isActive = reader.bool();
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.path = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GenWorker {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      ownerId: isSet(object.ownerId) ? globalThis.String(object.ownerId) : "",
+      name: isSet(object.name) ? globalThis.String(object.name) : "",
+      isActive: isSet(object.isActive) ? globalThis.Boolean(object.isActive) : false,
+      path: isSet(object.path) ? globalThis.String(object.path) : "",
+    };
+  },
+
+  toJSON(message: GenWorker): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.ownerId !== "") {
+      obj.ownerId = message.ownerId;
+    }
+    if (message.name !== "") {
+      obj.name = message.name;
+    }
+    if (message.isActive !== false) {
+      obj.isActive = message.isActive;
+    }
+    if (message.path !== "") {
+      obj.path = message.path;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<GenWorker>): GenWorker {
+    return GenWorker.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<GenWorker>): GenWorker {
+    const message = createBaseGenWorker();
+    message.id = object.id ?? "";
+    message.ownerId = object.ownerId ?? "";
+    message.name = object.name ?? "";
+    message.isActive = object.isActive ?? false;
+    message.path = object.path ?? "";
     return message;
   },
 };

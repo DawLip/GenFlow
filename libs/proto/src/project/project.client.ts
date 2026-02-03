@@ -1,5 +1,17 @@
 import { Observable } from 'rxjs';
-import { CreateRequest, CreateResponse, UpdateRequest, UpdateResponse, FindOneByIdRequest, FindResponse, CreateFlowRequest, CreateFlowResponse, UpdateFlowRequest, UpdateFlowResponse } from '@proto/project/project';
+import { 
+  CreateRequest, CreateResponse, 
+  UpdateRequest, UpdateResponse, 
+  FindOneByIdRequest, FindResponse, 
+  CreateFlowRequest, CreateFlowResponse, 
+  UpdateFlowRequest, UpdateFlowResponse,
+  FindOneByNameFlowRequest, FindFlowResponse,
+  FindByTeamIdResponse, FindByTeamIdRequest,
+  UpdateFlowDataResponse, UpdateFlowDataRequest,
+  AssignGenworkerToFlowRequest,
+  AssignGenworkerToProjectRequest,
+ } from '@proto/project/project';
+import { DefaultResponse } from '@proto/socketio/socketio';
 
 export interface ProjectServiceClient {
   create(data: CreateRequest): Observable<CreateResponse>;
@@ -8,4 +20,10 @@ export interface ProjectServiceClient {
 
   createFlow(data: CreateFlowRequest): Observable<CreateFlowResponse>;
   updateFlow(data: UpdateFlowRequest): Observable<UpdateFlowResponse>;
+  updateFlowData(data: UpdateFlowDataRequest): Observable<UpdateFlowDataResponse>;
+  findOneByNameFlow(data: FindOneByNameFlowRequest): Observable<FindFlowResponse>;
+  findByTeamId(data: FindByTeamIdRequest): Observable<FindByTeamIdResponse>;
+
+  assignGenworkerToFlow(data: AssignGenworkerToFlowRequest): Observable<DefaultResponse>;
+  assignGenworkerToProject(data: AssignGenworkerToProjectRequest): Observable<DefaultResponse>;
 }

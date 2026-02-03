@@ -15,10 +15,15 @@ export interface BaseResponse {
   ok: boolean;
 }
 
+export interface DefaultResponse {
+  res: BaseResponse | undefined;
+}
+
 export interface CreateRequest {
   name: string;
   owner: string;
   members: string[];
+  projects: string[];
 }
 
 export interface CreateResponse {
@@ -28,8 +33,7 @@ export interface CreateResponse {
 
 export interface UpdateRequest {
   id: string;
-  field: string;
-  value: string;
+  team: Team | undefined;
 }
 
 export interface UpdateResponse {
@@ -42,7 +46,21 @@ export interface FindOneByIdRequest {
 
 export interface FindResponse {
   res: BaseResponse | undefined;
-  team?: TeamResponse | undefined;
+  team?: Team | undefined;
+}
+
+export interface FindByUserIdRequest {
+  userId: string;
+}
+
+export interface FindByUserIdResponse {
+  res: BaseResponse | undefined;
+  teams: Team[];
+}
+
+export interface InviteRequest {
+  id: string;
+  user: string;
 }
 
 export interface JoinRequest {
@@ -63,11 +81,41 @@ export interface LeaveResponse {
   res: BaseResponse | undefined;
 }
 
-export interface TeamResponse {
+export interface AssignGenworkerToTeamRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface RemoveGenworkerFromTeamRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface SetMasterGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface AddStorageGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface RemoveStorageGenworkerRequest {
+  teamId: string;
+  genworkerId: string;
+}
+
+export interface Team {
   id: string;
   name: string;
   owner: string;
   members: string[];
+  invited: string[];
+  projects: string[];
+  masterGenworker?: string | undefined;
+  storageGenworkers: string[];
+  genworkers: string[];
 }
 
 function createBaseBaseResponse(): BaseResponse {
@@ -162,8 +210,66 @@ export const BaseResponse: MessageFns<BaseResponse> = {
   },
 };
 
+function createBaseDefaultResponse(): DefaultResponse {
+  return { res: undefined };
+}
+
+export const DefaultResponse: MessageFns<DefaultResponse> = {
+  encode(message: DefaultResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): DefaultResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDefaultResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DefaultResponse {
+    return { res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined };
+  },
+
+  toJSON(message: DefaultResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<DefaultResponse>): DefaultResponse {
+    return DefaultResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<DefaultResponse>): DefaultResponse {
+    const message = createBaseDefaultResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    return message;
+  },
+};
+
 function createBaseCreateRequest(): CreateRequest {
-  return { name: "", owner: "", members: [] };
+  return { name: "", owner: "", members: [], projects: [] };
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
@@ -176,6 +282,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     }
     for (const v of message.members) {
       writer.uint32(26).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(34).string(v!);
     }
     return writer;
   },
@@ -211,6 +320,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
           message.members.push(reader.string());
           continue;
         }
+        case 4: {
+          if (tag !== 34) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -225,6 +342,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
     };
   },
 
@@ -239,6 +357,9 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
     return obj;
   },
 
@@ -250,6 +371,7 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
     return message;
   },
 };
@@ -331,7 +453,7 @@ export const CreateResponse: MessageFns<CreateResponse> = {
 };
 
 function createBaseUpdateRequest(): UpdateRequest {
-  return { id: "", field: "", value: "" };
+  return { id: "", team: undefined };
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
@@ -339,11 +461,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.field !== "") {
-      writer.uint32(18).string(message.field);
-    }
-    if (message.value !== "") {
-      writer.uint32(26).string(message.value);
+    if (message.team !== undefined) {
+      Team.encode(message.team, writer.uint32(18).fork()).join();
     }
     return writer;
   },
@@ -368,15 +487,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
             break;
           }
 
-          message.field = reader.string();
-          continue;
-        }
-        case 3: {
-          if (tag !== 26) {
-            break;
-          }
-
-          message.value = reader.string();
+          message.team = Team.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -391,8 +502,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromJSON(object: any): UpdateRequest {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
-      field: isSet(object.field) ? globalThis.String(object.field) : "",
-      value: isSet(object.value) ? globalThis.String(object.value) : "",
+      team: isSet(object.team) ? Team.fromJSON(object.team) : undefined,
     };
   },
 
@@ -401,11 +511,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     if (message.id !== "") {
       obj.id = message.id;
     }
-    if (message.field !== "") {
-      obj.field = message.field;
-    }
-    if (message.value !== "") {
-      obj.value = message.value;
+    if (message.team !== undefined) {
+      obj.team = Team.toJSON(message.team);
     }
     return obj;
   },
@@ -416,8 +523,7 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   fromPartial(object: DeepPartial<UpdateRequest>): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? "";
-    message.field = object.field ?? "";
-    message.value = object.value ?? "";
+    message.team = (object.team !== undefined && object.team !== null) ? Team.fromPartial(object.team) : undefined;
     return message;
   },
 };
@@ -548,7 +654,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
     }
     if (message.team !== undefined) {
-      TeamResponse.encode(message.team, writer.uint32(26).fork()).join();
+      Team.encode(message.team, writer.uint32(26).fork()).join();
     }
     return writer;
   },
@@ -573,7 +679,7 @@ export const FindResponse: MessageFns<FindResponse> = {
             break;
           }
 
-          message.team = TeamResponse.decode(reader, reader.uint32());
+          message.team = Team.decode(reader, reader.uint32());
           continue;
         }
       }
@@ -588,7 +694,7 @@ export const FindResponse: MessageFns<FindResponse> = {
   fromJSON(object: any): FindResponse {
     return {
       res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
-      team: isSet(object.team) ? TeamResponse.fromJSON(object.team) : undefined,
+      team: isSet(object.team) ? Team.fromJSON(object.team) : undefined,
     };
   },
 
@@ -598,7 +704,7 @@ export const FindResponse: MessageFns<FindResponse> = {
       obj.res = BaseResponse.toJSON(message.res);
     }
     if (message.team !== undefined) {
-      obj.team = TeamResponse.toJSON(message.team);
+      obj.team = Team.toJSON(message.team);
     }
     return obj;
   },
@@ -609,9 +715,217 @@ export const FindResponse: MessageFns<FindResponse> = {
   fromPartial(object: DeepPartial<FindResponse>): FindResponse {
     const message = createBaseFindResponse();
     message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
-    message.team = (object.team !== undefined && object.team !== null)
-      ? TeamResponse.fromPartial(object.team)
-      : undefined;
+    message.team = (object.team !== undefined && object.team !== null) ? Team.fromPartial(object.team) : undefined;
+    return message;
+  },
+};
+
+function createBaseFindByUserIdRequest(): FindByUserIdRequest {
+  return { userId: "" };
+}
+
+export const FindByUserIdRequest: MessageFns<FindByUserIdRequest> = {
+  encode(message: FindByUserIdRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByUserIdRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByUserIdRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.userId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByUserIdRequest {
+    return { userId: isSet(object.userId) ? globalThis.String(object.userId) : "" };
+  },
+
+  toJSON(message: FindByUserIdRequest): unknown {
+    const obj: any = {};
+    if (message.userId !== "") {
+      obj.userId = message.userId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<FindByUserIdRequest>): FindByUserIdRequest {
+    return FindByUserIdRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<FindByUserIdRequest>): FindByUserIdRequest {
+    const message = createBaseFindByUserIdRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseFindByUserIdResponse(): FindByUserIdResponse {
+  return { res: undefined, teams: [] };
+}
+
+export const FindByUserIdResponse: MessageFns<FindByUserIdResponse> = {
+  encode(message: FindByUserIdResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.res !== undefined) {
+      BaseResponse.encode(message.res, writer.uint32(10).fork()).join();
+    }
+    for (const v of message.teams) {
+      Team.encode(v!, writer.uint32(18).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByUserIdResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByUserIdResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.res = BaseResponse.decode(reader, reader.uint32());
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.teams.push(Team.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByUserIdResponse {
+    return {
+      res: isSet(object.res) ? BaseResponse.fromJSON(object.res) : undefined,
+      teams: globalThis.Array.isArray(object?.teams) ? object.teams.map((e: any) => Team.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: FindByUserIdResponse): unknown {
+    const obj: any = {};
+    if (message.res !== undefined) {
+      obj.res = BaseResponse.toJSON(message.res);
+    }
+    if (message.teams?.length) {
+      obj.teams = message.teams.map((e) => Team.toJSON(e));
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<FindByUserIdResponse>): FindByUserIdResponse {
+    return FindByUserIdResponse.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<FindByUserIdResponse>): FindByUserIdResponse {
+    const message = createBaseFindByUserIdResponse();
+    message.res = (object.res !== undefined && object.res !== null) ? BaseResponse.fromPartial(object.res) : undefined;
+    message.teams = object.teams?.map((e) => Team.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseInviteRequest(): InviteRequest {
+  return { id: "", user: "" };
+}
+
+export const InviteRequest: MessageFns<InviteRequest> = {
+  encode(message: InviteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
+    }
+    if (message.user !== "") {
+      writer.uint32(18).string(message.user);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): InviteRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseInviteRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.id = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.user = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): InviteRequest {
+    return {
+      id: isSet(object.id) ? globalThis.String(object.id) : "",
+      user: isSet(object.user) ? globalThis.String(object.user) : "",
+    };
+  },
+
+  toJSON(message: InviteRequest): unknown {
+    const obj: any = {};
+    if (message.id !== "") {
+      obj.id = message.id;
+    }
+    if (message.user !== "") {
+      obj.user = message.user;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<InviteRequest>): InviteRequest {
+    return InviteRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<InviteRequest>): InviteRequest {
+    const message = createBaseInviteRequest();
+    message.id = object.id ?? "";
+    message.user = object.user ?? "";
     return message;
   },
 };
@@ -884,12 +1198,402 @@ export const LeaveResponse: MessageFns<LeaveResponse> = {
   },
 };
 
-function createBaseTeamResponse(): TeamResponse {
-  return { id: "", name: "", owner: "", members: [] };
+function createBaseAssignGenworkerToTeamRequest(): AssignGenworkerToTeamRequest {
+  return { teamId: "", genworkerId: "" };
 }
 
-export const TeamResponse: MessageFns<TeamResponse> = {
-  encode(message: TeamResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+export const AssignGenworkerToTeamRequest: MessageFns<AssignGenworkerToTeamRequest> = {
+  encode(message: AssignGenworkerToTeamRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AssignGenworkerToTeamRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAssignGenworkerToTeamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AssignGenworkerToTeamRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: AssignGenworkerToTeamRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<AssignGenworkerToTeamRequest>): AssignGenworkerToTeamRequest {
+    return AssignGenworkerToTeamRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<AssignGenworkerToTeamRequest>): AssignGenworkerToTeamRequest {
+    const message = createBaseAssignGenworkerToTeamRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseRemoveGenworkerFromTeamRequest(): RemoveGenworkerFromTeamRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const RemoveGenworkerFromTeamRequest: MessageFns<RemoveGenworkerFromTeamRequest> = {
+  encode(message: RemoveGenworkerFromTeamRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveGenworkerFromTeamRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveGenworkerFromTeamRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveGenworkerFromTeamRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: RemoveGenworkerFromTeamRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RemoveGenworkerFromTeamRequest>): RemoveGenworkerFromTeamRequest {
+    return RemoveGenworkerFromTeamRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RemoveGenworkerFromTeamRequest>): RemoveGenworkerFromTeamRequest {
+    const message = createBaseRemoveGenworkerFromTeamRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseSetMasterGenworkerRequest(): SetMasterGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const SetMasterGenworkerRequest: MessageFns<SetMasterGenworkerRequest> = {
+  encode(message: SetMasterGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): SetMasterGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSetMasterGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SetMasterGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: SetMasterGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<SetMasterGenworkerRequest>): SetMasterGenworkerRequest {
+    return SetMasterGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<SetMasterGenworkerRequest>): SetMasterGenworkerRequest {
+    const message = createBaseSetMasterGenworkerRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseAddStorageGenworkerRequest(): AddStorageGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const AddStorageGenworkerRequest: MessageFns<AddStorageGenworkerRequest> = {
+  encode(message: AddStorageGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): AddStorageGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAddStorageGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AddStorageGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: AddStorageGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<AddStorageGenworkerRequest>): AddStorageGenworkerRequest {
+    return AddStorageGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<AddStorageGenworkerRequest>): AddStorageGenworkerRequest {
+    const message = createBaseAddStorageGenworkerRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseRemoveStorageGenworkerRequest(): RemoveStorageGenworkerRequest {
+  return { teamId: "", genworkerId: "" };
+}
+
+export const RemoveStorageGenworkerRequest: MessageFns<RemoveStorageGenworkerRequest> = {
+  encode(message: RemoveStorageGenworkerRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.teamId !== "") {
+      writer.uint32(10).string(message.teamId);
+    }
+    if (message.genworkerId !== "") {
+      writer.uint32(18).string(message.genworkerId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): RemoveStorageGenworkerRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRemoveStorageGenworkerRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.teamId = reader.string();
+          continue;
+        }
+        case 2: {
+          if (tag !== 18) {
+            break;
+          }
+
+          message.genworkerId = reader.string();
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RemoveStorageGenworkerRequest {
+    return {
+      teamId: isSet(object.teamId) ? globalThis.String(object.teamId) : "",
+      genworkerId: isSet(object.genworkerId) ? globalThis.String(object.genworkerId) : "",
+    };
+  },
+
+  toJSON(message: RemoveStorageGenworkerRequest): unknown {
+    const obj: any = {};
+    if (message.teamId !== "") {
+      obj.teamId = message.teamId;
+    }
+    if (message.genworkerId !== "") {
+      obj.genworkerId = message.genworkerId;
+    }
+    return obj;
+  },
+
+  create(base?: DeepPartial<RemoveStorageGenworkerRequest>): RemoveStorageGenworkerRequest {
+    return RemoveStorageGenworkerRequest.fromPartial(base ?? {});
+  },
+  fromPartial(object: DeepPartial<RemoveStorageGenworkerRequest>): RemoveStorageGenworkerRequest {
+    const message = createBaseRemoveStorageGenworkerRequest();
+    message.teamId = object.teamId ?? "";
+    message.genworkerId = object.genworkerId ?? "";
+    return message;
+  },
+};
+
+function createBaseTeam(): Team {
+  return {
+    id: "",
+    name: "",
+    owner: "",
+    members: [],
+    invited: [],
+    projects: [],
+    masterGenworker: undefined,
+    storageGenworkers: [],
+    genworkers: [],
+  };
+}
+
+export const Team: MessageFns<Team> = {
+  encode(message: Team, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
@@ -902,13 +1606,28 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     for (const v of message.members) {
       writer.uint32(34).string(v!);
     }
+    for (const v of message.invited) {
+      writer.uint32(74).string(v!);
+    }
+    for (const v of message.projects) {
+      writer.uint32(42).string(v!);
+    }
+    if (message.masterGenworker !== undefined) {
+      writer.uint32(50).string(message.masterGenworker);
+    }
+    for (const v of message.storageGenworkers) {
+      writer.uint32(58).string(v!);
+    }
+    for (const v of message.genworkers) {
+      writer.uint32(66).string(v!);
+    }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): TeamResponse {
+  decode(input: BinaryReader | Uint8Array, length?: number): Team {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
     const end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTeamResponse();
+    const message = createBaseTeam();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -944,6 +1663,46 @@ export const TeamResponse: MessageFns<TeamResponse> = {
           message.members.push(reader.string());
           continue;
         }
+        case 9: {
+          if (tag !== 74) {
+            break;
+          }
+
+          message.invited.push(reader.string());
+          continue;
+        }
+        case 5: {
+          if (tag !== 42) {
+            break;
+          }
+
+          message.projects.push(reader.string());
+          continue;
+        }
+        case 6: {
+          if (tag !== 50) {
+            break;
+          }
+
+          message.masterGenworker = reader.string();
+          continue;
+        }
+        case 7: {
+          if (tag !== 58) {
+            break;
+          }
+
+          message.storageGenworkers.push(reader.string());
+          continue;
+        }
+        case 8: {
+          if (tag !== 66) {
+            break;
+          }
+
+          message.genworkers.push(reader.string());
+          continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -953,16 +1712,25 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     return message;
   },
 
-  fromJSON(object: any): TeamResponse {
+  fromJSON(object: any): Team {
     return {
       id: isSet(object.id) ? globalThis.String(object.id) : "",
       name: isSet(object.name) ? globalThis.String(object.name) : "",
       owner: isSet(object.owner) ? globalThis.String(object.owner) : "",
       members: globalThis.Array.isArray(object?.members) ? object.members.map((e: any) => globalThis.String(e)) : [],
+      invited: globalThis.Array.isArray(object?.invited) ? object.invited.map((e: any) => globalThis.String(e)) : [],
+      projects: globalThis.Array.isArray(object?.projects) ? object.projects.map((e: any) => globalThis.String(e)) : [],
+      masterGenworker: isSet(object.masterGenworker) ? globalThis.String(object.masterGenworker) : undefined,
+      storageGenworkers: globalThis.Array.isArray(object?.storageGenworkers)
+        ? object.storageGenworkers.map((e: any) => globalThis.String(e))
+        : [],
+      genworkers: globalThis.Array.isArray(object?.genworkers)
+        ? object.genworkers.map((e: any) => globalThis.String(e))
+        : [],
     };
   },
 
-  toJSON(message: TeamResponse): unknown {
+  toJSON(message: Team): unknown {
     const obj: any = {};
     if (message.id !== "") {
       obj.id = message.id;
@@ -976,18 +1744,38 @@ export const TeamResponse: MessageFns<TeamResponse> = {
     if (message.members?.length) {
       obj.members = message.members;
     }
+    if (message.invited?.length) {
+      obj.invited = message.invited;
+    }
+    if (message.projects?.length) {
+      obj.projects = message.projects;
+    }
+    if (message.masterGenworker !== undefined) {
+      obj.masterGenworker = message.masterGenworker;
+    }
+    if (message.storageGenworkers?.length) {
+      obj.storageGenworkers = message.storageGenworkers;
+    }
+    if (message.genworkers?.length) {
+      obj.genworkers = message.genworkers;
+    }
     return obj;
   },
 
-  create(base?: DeepPartial<TeamResponse>): TeamResponse {
-    return TeamResponse.fromPartial(base ?? {});
+  create(base?: DeepPartial<Team>): Team {
+    return Team.fromPartial(base ?? {});
   },
-  fromPartial(object: DeepPartial<TeamResponse>): TeamResponse {
-    const message = createBaseTeamResponse();
+  fromPartial(object: DeepPartial<Team>): Team {
+    const message = createBaseTeam();
     message.id = object.id ?? "";
     message.name = object.name ?? "";
     message.owner = object.owner ?? "";
     message.members = object.members?.map((e) => e) || [];
+    message.invited = object.invited?.map((e) => e) || [];
+    message.projects = object.projects?.map((e) => e) || [];
+    message.masterGenworker = object.masterGenworker ?? undefined;
+    message.storageGenworkers = object.storageGenworkers?.map((e) => e) || [];
+    message.genworkers = object.genworkers?.map((e) => e) || [];
     return message;
   },
 };

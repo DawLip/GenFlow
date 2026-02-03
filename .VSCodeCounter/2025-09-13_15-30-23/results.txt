@@ -1,0 +1,603 @@
+Date : 2025-09-13 15:30:23
+Directory : /home/david/workspace/GenFlow
+Total : 374 files,  44189 codes, 113 comments, 2632 blanks, all 46934 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| JSON               |         55 |     28,522 |         11 |         56 |     28,589 |
+| TypeScript         |        151 |     11,473 |         65 |      1,894 |     13,432 |
+| TypeScript JSX     |         59 |      1,967 |         12 |        278 |      2,257 |
+| Python             |         28 |        540 |          2 |        179 |        721 |
+| JSON with Comments |         15 |        481 |          8 |         24 |        513 |
+| Protocol Buffers   |          6 |        478 |          0 |         75 |        553 |
+| YAML               |         23 |        466 |          4 |         29 |        499 |
+| XML                |         28 |         98 |          0 |         28 |        126 |
+| Markdown           |          3 |         72 |          0 |         46 |        118 |
+| JavaScript         |          3 |         46 |          9 |          9 |         64 |
+| PostCSS            |          1 |         28 |          1 |          9 |         38 |
+| JavaScript JSX     |          1 |         14 |          0 |          5 |         19 |
+| Ignore             |          1 |          4 |          1 |          0 |          5 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                              | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                 |        374 |     44,189 |        113 |      2,632 |     46,934 |
+| . (Files)                                                                                                                         |          9 |     27,698 |          5 |         73 |     27,776 |
+| compose                                                                                                                           |         22 |        309 |          0 |         17 |        326 |
+| compose (Files)                                                                                                                   |         12 |        158 |          0 |          0 |        158 |
+| compose/infra                                                                                                                     |          4 |         47 |          0 |          1 |         48 |
+| compose/logs                                                                                                                      |          6 |        104 |          0 |         16 |        120 |
+| compose/logs (Files)                                                                                                              |          5 |         96 |          0 |         13 |        109 |
+| compose/logs/datasources                                                                                                          |          1 |          8 |          0 |          3 |         11 |
+| libs                                                                                                                              |         45 |      8,360 |         42 |      1,097 |      9,499 |
+| libs/proto                                                                                                                        |         22 |      7,920 |         41 |        984 |      8,945 |
+| libs/proto (Files)                                                                                                                |          4 |         33 |          0 |          5 |         38 |
+| libs/proto/src                                                                                                                    |         18 |      7,887 |         41 |        979 |      8,907 |
+| libs/proto/src/auth                                                                                                               |          3 |        753 |          6 |        107 |        866 |
+| libs/proto/src/genworker                                                                                                          |          3 |      2,147 |         11 |        253 |      2,411 |
+| libs/proto/src/project                                                                                                            |          3 |      2,138 |          6 |        256 |      2,400 |
+| libs/proto/src/socketio                                                                                                           |          3 |        350 |          6 |         51 |        407 |
+| libs/proto/src/team                                                                                                               |          3 |      1,110 |          6 |        147 |      1,263 |
+| libs/proto/src/user                                                                                                               |          3 |      1,389 |          6 |        165 |      1,560 |
+| libs/shared                                                                                                                       |         23 |        440 |          1 |        113 |        554 |
+| libs/shared (Files)                                                                                                               |          4 |         35 |          0 |          5 |         40 |
+| libs/shared/src                                                                                                                   |         19 |        405 |          1 |        108 |        514 |
+| libs/shared/src (Files)                                                                                                           |          5 |        115 |          1 |         24 |        140 |
+| libs/shared/src/config                                                                                                            |          2 |         35 |          0 |          4 |         39 |
+| libs/shared/src/schema                                                                                                            |          5 |        133 |          0 |         57 |        190 |
+| libs/shared/src/sharedServices                                                                                                    |          2 |         52 |          0 |         11 |         63 |
+| libs/shared/src/types                                                                                                             |          5 |         70 |          0 |         12 |         82 |
+| services                                                                                                                          |        298 |      7,822 |         66 |      1,445 |      9,333 |
+| services/api                                                                                                                      |         33 |        842 |          2 |        196 |      1,040 |
+| services/api (Files)                                                                                                              |          4 |        102 |          1 |          4 |        107 |
+| services/api-test                                                                                                                 |         31 |        702 |          6 |        150 |        858 |
+| services/api-test (Files)                                                                                                         |          4 |        102 |          1 |          4 |        107 |
+| services/api-test/src                                                                                                             |         27 |        600 |          5 |        146 |        751 |
+| services/api-test/src (Files)                                                                                                     |          1 |         19 |          0 |         10 |         29 |
+| services/api-test/src/api                                                                                                         |          3 |        106 |          5 |         19 |        130 |
+| services/api-test/src/auth                                                                                                        |          3 |         66 |          0 |         14 |         80 |
+| services/api-test/src/email                                                                                                       |          4 |         58 |          0 |         11 |         69 |
+| services/api-test/src/guards                                                                                                      |          2 |         49 |          0 |          9 |         58 |
+| services/api-test/src/project                                                                                                     |          3 |         92 |          0 |         26 |        118 |
+| services/api-test/src/socketio                                                                                                    |          4 |         57 |          0 |         11 |         68 |
+| services/api-test/src/team                                                                                                        |          3 |         83 |          0 |         24 |        107 |
+| services/api-test/src/types                                                                                                       |          1 |          4 |          0 |          2 |          6 |
+| services/api-test/src/user                                                                                                        |          3 |         66 |          0 |         20 |         86 |
+| services/api/src                                                                                                                  |         29 |        740 |          1 |        192 |        933 |
+| services/api/src (Files)                                                                                                          |          1 |         19 |          0 |         10 |         29 |
+| services/api/src/api                                                                                                              |          2 |         79 |          0 |         13 |         92 |
+| services/api/src/auth                                                                                                             |          3 |         82 |          0 |         19 |        101 |
+| services/api/src/email                                                                                                            |          4 |         61 |          0 |         11 |         72 |
+| services/api/src/genworker                                                                                                        |          3 |        135 |          0 |         41 |        176 |
+| services/api/src/guards                                                                                                           |          2 |         49 |          0 |          9 |         58 |
+| services/api/src/project                                                                                                          |          3 |        104 |          1 |         33 |        138 |
+| services/api/src/socketio                                                                                                         |          4 |         60 |          0 |         11 |         71 |
+| services/api/src/team                                                                                                             |          3 |         82 |          0 |         25 |        107 |
+| services/api/src/types                                                                                                            |          1 |          4 |          0 |          2 |          6 |
+| services/api/src/user                                                                                                             |          3 |         65 |          0 |         18 |         83 |
+| services/auth                                                                                                                     |          9 |        323 |          1 |         56 |        380 |
+| services/auth (Files)                                                                                                             |          4 |        101 |          1 |          4 |        106 |
+| services/auth/src                                                                                                                 |          5 |        222 |          0 |         52 |        274 |
+| services/auth/src (Files)                                                                                                         |          1 |         27 |          0 |          8 |         35 |
+| services/auth/src/auth                                                                                                            |          4 |        195 |          0 |         44 |        239 |
+| services/email                                                                                                                    |          9 |        186 |          1 |         27 |        214 |
+| services/email (Files)                                                                                                            |          4 |        101 |          1 |          4 |        106 |
+| services/email/src                                                                                                                |          5 |         85 |          0 |         23 |        108 |
+| services/email/src (Files)                                                                                                        |          1 |         27 |          0 |          6 |         33 |
+| services/email/src/email                                                                                                          |          4 |         58 |          0 |         17 |         75 |
+| services/gateway                                                                                                                  |          7 |        189 |          1 |         23 |        213 |
+| services/gateway (Files)                                                                                                          |          4 |        101 |          1 |          4 |        106 |
+| services/gateway/src                                                                                                              |          3 |         88 |          0 |         19 |        107 |
+| services/gateway/src (Files)                                                                                                      |          1 |         23 |          0 |         10 |         33 |
+| services/gateway/src/app                                                                                                          |          1 |         18 |          0 |          5 |         23 |
+| services/gateway/src/proxy                                                                                                        |          1 |         47 |          0 |          4 |         51 |
+| services/genworker                                                                                                                |         10 |        573 |          8 |        132 |        713 |
+| services/genworker (Files)                                                                                                        |          4 |        104 |          1 |          4 |        109 |
+| services/genworker-app                                                                                                            |         38 |        800 |          2 |        186 |        988 |
+| services/genworker-app (Files)                                                                                                    |          1 |         19 |          0 |          1 |         20 |
+| services/genworker-app/src                                                                                                        |         22 |        447 |          2 |        161 |        610 |
+| services/genworker-app/src (Files)                                                                                                |          3 |         22 |          0 |         12 |         34 |
+| services/genworker-app/src/adapters                                                                                               |          7 |        108 |          0 |         45 |        153 |
+| services/genworker-app/src/adapters/gateways                                                                                      |          3 |         48 |          0 |         13 |         61 |
+| services/genworker-app/src/adapters/repos                                                                                         |          4 |         60 |          0 |         32 |         92 |
+| services/genworker-app/src/domain                                                                                                 |          7 |        213 |          2 |         77 |        292 |
+| services/genworker-app/src/sio                                                                                                    |          1 |         52 |          0 |         12 |         64 |
+| services/genworker-app/src/ui                                                                                                     |          4 |         52 |          0 |         15 |         67 |
+| services/genworker-app/src/ui (Files)                                                                                             |          1 |          9 |          0 |          1 |         10 |
+| services/genworker-app/src/ui/console                                                                                             |          3 |         43 |          0 |         14 |         57 |
+| services/genworker-app/workspace                                                                                                  |         15 |        334 |          0 |         24 |        358 |
+| services/genworker-app/workspace (Files)                                                                                          |          1 |          1 |          0 |          0 |          1 |
+| services/genworker-app/workspace/packages                                                                                         |         14 |        333 |          0 |         24 |        357 |
+| services/genworker-app/workspace/packages/Diffusers                                                                               |          3 |        136 |          0 |         10 |        146 |
+| services/genworker-app/workspace/packages/Diffusers (Files)                                                                       |          1 |          8 |          0 |          0 |          8 |
+| services/genworker-app/workspace/packages/Diffusers/Unified                                                                       |          2 |        128 |          0 |         10 |        138 |
+| services/genworker-app/workspace/packages/Diffusers/Unified/Base                                                                  |          2 |        128 |          0 |         10 |        138 |
+| services/genworker-app/workspace/packages/Diffusers/Unified/Base/Txt2ImgUnified                                                   |          2 |        128 |          0 |         10 |        138 |
+| services/genworker-app/workspace/packages/GenFlow                                                                                 |         11 |        197 |          0 |         14 |        211 |
+| services/genworker-app/workspace/packages/GenFlow (Files)                                                                         |          1 |         12 |          0 |          0 |         12 |
+| services/genworker-app/workspace/packages/GenFlow/File                                                                            |          2 |         34 |          0 |          3 |         37 |
+| services/genworker-app/workspace/packages/GenFlow/File/Save                                                                       |          2 |         34 |          0 |          3 |         37 |
+| services/genworker-app/workspace/packages/GenFlow/File/Save/TextFileSave                                                          |          2 |         34 |          0 |          3 |         37 |
+| services/genworker-app/workspace/packages/GenFlow/Image                                                                           |          2 |         42 |          0 |          7 |         49 |
+| services/genworker-app/workspace/packages/GenFlow/Image/Base                                                                      |          2 |         42 |          0 |          7 |         49 |
+| services/genworker-app/workspace/packages/GenFlow/Image/Base/ImageSave                                                            |          2 |         42 |          0 |          7 |         49 |
+| services/genworker-app/workspace/packages/GenFlow/Number                                                                          |          2 |         34 |          0 |          1 |         35 |
+| services/genworker-app/workspace/packages/GenFlow/Number/Base                                                                     |          2 |         34 |          0 |          1 |         35 |
+| services/genworker-app/workspace/packages/GenFlow/Number/Base/NumberInput                                                         |          2 |         34 |          0 |          1 |         35 |
+| services/genworker-app/workspace/packages/GenFlow/Text                                                                            |          4 |         75 |          0 |          3 |         78 |
+| services/genworker-app/workspace/packages/GenFlow/Text/Base                                                                       |          2 |         34 |          0 |          1 |         35 |
+| services/genworker-app/workspace/packages/GenFlow/Text/Base/TextInput                                                             |          2 |         34 |          0 |          1 |         35 |
+| services/genworker-app/workspace/packages/GenFlow/Text/Operations                                                                 |          2 |         41 |          0 |          2 |         43 |
+| services/genworker-app/workspace/packages/GenFlow/Text/Operations/TextConcat                                                      |          2 |         41 |          0 |          2 |         43 |
+| services/genworker/src                                                                                                            |          6 |        469 |          7 |        128 |        604 |
+| services/genworker/src (Files)                                                                                                    |          1 |         28 |          0 |          5 |         33 |
+| services/genworker/src/genworker                                                                                                  |          5 |        441 |          7 |        123 |        571 |
+| services/genworker/src/genworker (Files)                                                                                          |          2 |        107 |          0 |         24 |        131 |
+| services/genworker/src/genworker/services                                                                                         |          3 |        334 |          7 |         99 |        440 |
+| services/graphql                                                                                                                  |          6 |        132 |          1 |         15 |        148 |
+| services/graphql (Files)                                                                                                          |          4 |        101 |          1 |          4 |        106 |
+| services/graphql/src                                                                                                              |          2 |         31 |          0 |         11 |         42 |
+| services/graphql/src (Files)                                                                                                      |          1 |         15 |          0 |          7 |         22 |
+| services/graphql/src/app                                                                                                          |          1 |         16 |          0 |          4 |         20 |
+| services/project                                                                                                                  |          8 |        377 |          1 |         72 |        450 |
+| services/project (Files)                                                                                                          |          4 |        101 |          1 |          4 |        106 |
+| services/project/src                                                                                                              |          4 |        276 |          0 |         68 |        344 |
+| services/project/src (Files)                                                                                                      |          1 |         37 |          0 |          8 |         45 |
+| services/project/src/project                                                                                                      |          3 |        239 |          0 |         60 |        299 |
+| services/socket.io                                                                                                                |         10 |        403 |          3 |         79 |        485 |
+| services/socket.io (Files)                                                                                                        |          4 |        101 |          1 |          4 |        106 |
+| services/socket.io/src                                                                                                            |          6 |        302 |          2 |         75 |        379 |
+| services/socket.io/src (Files)                                                                                                    |          1 |         50 |          0 |         11 |         61 |
+| services/socket.io/src/app                                                                                                        |          5 |        252 |          2 |         64 |        318 |
+| services/team                                                                                                                     |          8 |        281 |          1 |         46 |        328 |
+| services/team (Files)                                                                                                             |          4 |        101 |          1 |          4 |        106 |
+| services/team/src                                                                                                                 |          4 |        180 |          0 |         42 |        222 |
+| services/team/src (Files)                                                                                                         |          1 |         29 |          0 |          7 |         36 |
+| services/team/src/team                                                                                                            |          3 |        151 |          0 |         35 |        186 |
+| services/user                                                                                                                     |          8 |        290 |          1 |         43 |        334 |
+| services/user (Files)                                                                                                             |          4 |        101 |          1 |          4 |        106 |
+| services/user/src                                                                                                                 |          4 |        189 |          0 |         39 |        228 |
+| services/user/src (Files)                                                                                                         |          1 |         28 |          0 |          5 |         33 |
+| services/user/src/user                                                                                                            |          3 |        161 |          0 |         34 |        195 |
+| services/web-ui                                                                                                                   |        121 |      2,724 |         38 |        420 |      3,182 |
+| services/web-ui (Files)                                                                                                           |          7 |        109 |         23 |         15 |        147 |
+| services/web-ui/public                                                                                                            |         28 |         98 |          0 |         28 |        126 |
+| services/web-ui/public/images                                                                                                     |         28 |         98 |          0 |         28 |        126 |
+| services/web-ui/public/images (Files)                                                                                             |          1 |          9 |          0 |          1 |         10 |
+| services/web-ui/public/images/icons                                                                                               |         27 |         89 |          0 |         27 |        116 |
+| services/web-ui/src                                                                                                               |         86 |      2,517 |         15 |        377 |      2,909 |
+| services/web-ui/src/app                                                                                                           |         17 |        174 |          1 |         60 |        235 |
+| services/web-ui/src/app (Files)                                                                                                   |          3 |         58 |          1 |         15 |         74 |
+| services/web-ui/src/app/(auth)                                                                                                    |          4 |         26 |          0 |         14 |         40 |
+| services/web-ui/src/app/(auth) (Files)                                                                                            |          1 |         11 |          0 |          5 |         16 |
+| services/web-ui/src/app/(auth)/forgot-password                                                                                    |          1 |          5 |          0 |          3 |          8 |
+| services/web-ui/src/app/(auth)/login                                                                                              |          1 |          5 |          0 |          3 |          8 |
+| services/web-ui/src/app/(auth)/register                                                                                           |          1 |          5 |          0 |          3 |          8 |
+| services/web-ui/src/app/(authorized)                                                                                              |         10 |         90 |          0 |         31 |        121 |
+| services/web-ui/src/app/(authorized) (Files)                                                                                      |          1 |         41 |          0 |         10 |         51 |
+| services/web-ui/src/app/(authorized)/(with_menu)                                                                                  |          8 |         44 |          0 |         18 |         62 |
+| services/web-ui/src/app/(authorized)/(with_menu) (Files)                                                                          |          1 |         16 |          0 |          4 |         20 |
+| services/web-ui/src/app/(authorized)/(with_menu)/dashboard                                                                        |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/executive-servers                                                                |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/flow                                                                             |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/flows                                                                            |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/genworkers                                                                       |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/plugins                                                                          |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/(with_menu)/settings                                                                         |          1 |          4 |          0 |          2 |          6 |
+| services/web-ui/src/app/(authorized)/confirm-email                                                                                |          1 |          5 |          0 |          3 |          8 |
+| services/web-ui/src/components                                                                                                    |         19 |        756 |         10 |         99 |        865 |
+| services/web-ui/src/components (Files)                                                                                            |          7 |        254 |          7 |         42 |        303 |
+| services/web-ui/src/components/Aside                                                                                              |          6 |        262 |          1 |         36 |        299 |
+| services/web-ui/src/components/inputs                                                                                             |          1 |         21 |          0 |          1 |         22 |
+| services/web-ui/src/components/node                                                                                               |          5 |        219 |          2 |         20 |        241 |
+| services/web-ui/src/components/node (Files)                                                                                       |          1 |        135 |          2 |         16 |        153 |
+| services/web-ui/src/components/node/inputWidgets                                                                                  |          4 |         84 |          0 |          4 |         88 |
+| services/web-ui/src/hooks                                                                                                         |          1 |         30 |          0 |          8 |         38 |
+| services/web-ui/src/pages                                                                                                         |         12 |        625 |          1 |         95 |        721 |
+| services/web-ui/src/pages/auth                                                                                                    |          3 |         95 |          0 |         17 |        112 |
+| services/web-ui/src/pages/authorized                                                                                              |          8 |        501 |          1 |         75 |        577 |
+| services/web-ui/src/pages/unauthorized                                                                                            |          1 |         29 |          0 |          3 |         32 |
+| services/web-ui/src/socket                                                                                                        |          2 |         19 |          0 |          4 |         23 |
+| services/web-ui/src/store                                                                                                         |         31 |        863 |          3 |         98 |        964 |
+| services/web-ui/src/store (Files)                                                                                                 |          4 |         50 |          0 |          8 |         58 |
+| services/web-ui/src/store/nodes                                                                                                   |          4 |        111 |          2 |          7 |        120 |
+| services/web-ui/src/store/nodes (Files)                                                                                           |          2 |         75 |          2 |          6 |         83 |
+| services/web-ui/src/store/nodes/packets                                                                                           |          2 |         36 |          0 |          1 |         37 |
+| services/web-ui/src/store/nodes/packets/GenFlow                                                                                   |          2 |         36 |          0 |          1 |         37 |
+| services/web-ui/src/store/nodes/packets/GenFlow (Files)                                                                           |          1 |          8 |          0 |          0 |          8 |
+| services/web-ui/src/store/nodes/packets/GenFlow/Text                                                                              |          1 |         28 |          0 |          1 |         29 |
+| services/web-ui/src/store/slices                                                                                                  |          9 |        410 |          1 |         28 |        439 |
+| services/web-ui/src/store/slices (Files)                                                                                          |          8 |        332 |          1 |         28 |        361 |
+| services/web-ui/src/store/slices/defaults                                                                                         |          1 |         78 |          0 |          0 |         78 |
+| services/web-ui/src/store/thunks                                                                                                  |         14 |        292 |          0 |         55 |        347 |
+| services/web-ui/src/store/thunks/auth                                                                                             |          3 |         81 |          0 |         19 |        100 |
+| services/web-ui/src/store/thunks/client                                                                                           |          2 |         58 |          0 |         13 |         71 |
+| services/web-ui/src/store/thunks/flow                                                                                             |          8 |        132 |          0 |         18 |        150 |
+| services/web-ui/src/store/thunks/nodes                                                                                            |          1 |         21 |          0 |          5 |         26 |
+| services/web-ui/src/utils                                                                                                         |          4 |         50 |          0 |         13 |         63 |
++-----------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                                          | language           | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/david/workspace/GenFlow/.prettierignore                                                                                     | Ignore             |          4 |          1 |          0 |          5 |
+| /home/david/workspace/GenFlow/.prettierrc                                                                                         | JSON               |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/README.md                                                                                           | Markdown           |         68 |          0 |         42 |        110 |
+| /home/david/workspace/GenFlow/compose/api-test.yml                                                                                | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/api.yml                                                                                     | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/auth.yml                                                                                    | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/email.yml                                                                                   | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/gateway.yml                                                                                 | YAML               |         15 |          0 |          0 |         15 |
+| /home/david/workspace/GenFlow/compose/genworker.yml                                                                               | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/graphql.yml                                                                                 | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/infra/mongodb.yml                                                                           | YAML               |          9 |          0 |          0 |          9 |
+| /home/david/workspace/GenFlow/compose/infra/rabbitmq.yml                                                                          | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/infra/redis-commander.yml                                                                   | YAML               |         12 |          0 |          0 |         12 |
+| /home/david/workspace/GenFlow/compose/infra/redis.yml                                                                             | YAML               |         13 |          0 |          1 |         14 |
+| /home/david/workspace/GenFlow/compose/logs/datasources/loki.yml                                                                   | YAML               |          8 |          0 |          3 |         11 |
+| /home/david/workspace/GenFlow/compose/logs/grafana.yml                                                                            | YAML               |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/compose/logs/loki-config.yaml                                                                       | YAML               |         34 |          0 |          7 |         41 |
+| /home/david/workspace/GenFlow/compose/logs/loki.yml                                                                               | YAML               |         12 |          0 |          0 |         12 |
+| /home/david/workspace/GenFlow/compose/logs/promtail-config.yaml                                                                   | YAML               |         29 |          0 |          5 |         34 |
+| /home/david/workspace/GenFlow/compose/logs/promtail.yml                                                                           | YAML               |         10 |          0 |          0 |         10 |
+| /home/david/workspace/GenFlow/compose/project.yml                                                                                 | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/socketio.yml                                                                                | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/team.yml                                                                                    | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/user.yml                                                                                    | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/compose/web-ui.yml                                                                                  | YAML               |         13 |          0 |          0 |         13 |
+| /home/david/workspace/GenFlow/docker-compose.yml                                                                                  | YAML               |        157 |          4 |         12 |        173 |
+| /home/david/workspace/GenFlow/libs/proto/README.md                                                                                | Markdown           |          2 |          0 |          2 |          4 |
+| /home/david/workspace/GenFlow/libs/proto/project.json                                                                             | JSON               |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/libs/proto/src/auth/auth.client.ts                                                                  | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/david/workspace/GenFlow/libs/proto/src/auth/auth.proto                                                                      | Protocol Buffers   |         47 |          0 |         10 |         57 |
+| /home/david/workspace/GenFlow/libs/proto/src/auth/auth.ts                                                                         | TypeScript         |        697 |          6 |         95 |        798 |
+| /home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.client.ts                                                        | TypeScript         |         17 |          2 |          5 |         24 |
+| /home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.proto                                                            | Protocol Buffers   |        135 |          0 |         14 |        149 |
+| /home/david/workspace/GenFlow/libs/proto/src/genworker/genworker.ts                                                               | TypeScript         |      1,995 |          9 |        234 |      2,238 |
+| /home/david/workspace/GenFlow/libs/proto/src/project/project.client.ts                                                            | TypeScript         |         24 |          0 |          3 |         27 |
+| /home/david/workspace/GenFlow/libs/proto/src/project/project.proto                                                                | Protocol Buffers   |        125 |          0 |         19 |        144 |
+| /home/david/workspace/GenFlow/libs/proto/src/project/project.ts                                                                   | TypeScript         |      1,989 |          6 |        234 |      2,229 |
+| /home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.client.ts                                                          | TypeScript         |          6 |          0 |          1 |          7 |
+| /home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.proto                                                              | Protocol Buffers   |         23 |          0 |          6 |         29 |
+| /home/david/workspace/GenFlow/libs/proto/src/socketio/socketio.ts                                                                 | TypeScript         |        321 |          6 |         44 |        371 |
+| /home/david/workspace/GenFlow/libs/proto/src/team/team.client.ts                                                                  | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/libs/proto/src/team/team.proto                                                                      | Protocol Buffers   |         67 |          0 |         12 |         79 |
+| /home/david/workspace/GenFlow/libs/proto/src/team/team.ts                                                                         | TypeScript         |      1,033 |          6 |        134 |      1,173 |
+| /home/david/workspace/GenFlow/libs/proto/src/user/user.client.ts                                                                  | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/david/workspace/GenFlow/libs/proto/src/user/user.proto                                                                      | Protocol Buffers   |         81 |          0 |         14 |         95 |
+| /home/david/workspace/GenFlow/libs/proto/src/user/user.ts                                                                         | TypeScript         |      1,299 |          6 |        149 |      1,454 |
+| /home/david/workspace/GenFlow/libs/proto/tsconfig.json                                                                            | JSON with Comments |         13 |          0 |          1 |         14 |
+| /home/david/workspace/GenFlow/libs/proto/tsconfig.lib.json                                                                        | JSON               |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/libs/shared/README.md                                                                               | Markdown           |          2 |          0 |          2 |          4 |
+| /home/david/workspace/GenFlow/libs/shared/project.json                                                                            | JSON               |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/libs/shared/src/config/gRPC_client.config.ts                                                        | TypeScript         |         15 |          0 |          3 |         18 |
+| /home/david/workspace/GenFlow/libs/shared/src/config/pino.config.ts                                                               | TypeScript         |         20 |          0 |          1 |         21 |
+| /home/david/workspace/GenFlow/libs/shared/src/default-exception.filter.ts                                                         | TypeScript         |         68 |          1 |         10 |         79 |
+| /home/david/workspace/GenFlow/libs/shared/src/grpc-exception.filter.ts                                                            | TypeScript         |         18 |          0 |          3 |         21 |
+| /home/david/workspace/GenFlow/libs/shared/src/index.ts                                                                            | TypeScript         |          1 |          0 |          1 |          2 |
+| /home/david/workspace/GenFlow/libs/shared/src/schema/genworker.schema.ts                                                          | TypeScript         |         17 |          0 |          8 |         25 |
+| /home/david/workspace/GenFlow/libs/shared/src/schema/project.shema.ts                                                             | TypeScript         |         65 |          0 |         26 |         91 |
+| /home/david/workspace/GenFlow/libs/shared/src/schema/task.shema.ts                                                                | TypeScript         |         17 |          0 |          8 |         25 |
+| /home/david/workspace/GenFlow/libs/shared/src/schema/team.shema.ts                                                                | TypeScript         |         15 |          0 |          7 |         22 |
+| /home/david/workspace/GenFlow/libs/shared/src/schema/user.shema.ts                                                                | TypeScript         |         19 |          0 |          8 |         27 |
+| /home/david/workspace/GenFlow/libs/shared/src/service_name.ts                                                                     | TypeScript         |          3 |          0 |          0 |          3 |
+| /home/david/workspace/GenFlow/libs/shared/src/services_config.ts                                                                  | TypeScript         |         25 |          0 |         10 |         35 |
+| /home/david/workspace/GenFlow/libs/shared/src/sharedServices/health.controller.ts                                                 | TypeScript         |         16 |          0 |          4 |         20 |
+| /home/david/workspace/GenFlow/libs/shared/src/sharedServices/response.service.ts                                                  | TypeScript         |         36 |          0 |          7 |         43 |
+| /home/david/workspace/GenFlow/libs/shared/src/types/GenWorker.type.ts                                                             | TypeScript         |          8 |          0 |          1 |          9 |
+| /home/david/workspace/GenFlow/libs/shared/src/types/Project.type.ts                                                               | TypeScript         |         35 |          0 |          5 |         40 |
+| /home/david/workspace/GenFlow/libs/shared/src/types/Task.type.ts                                                                  | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/david/workspace/GenFlow/libs/shared/src/types/Team.type.ts                                                                  | TypeScript         |          8 |          0 |          2 |         10 |
+| /home/david/workspace/GenFlow/libs/shared/src/types/User.type.ts                                                                  | TypeScript         |         10 |          0 |          2 |         12 |
+| /home/david/workspace/GenFlow/libs/shared/tsconfig.json                                                                           | JSON with Comments |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/libs/shared/tsconfig.lib.json                                                                       | JSON               |         14 |          0 |          1 |         15 |
+| /home/david/workspace/GenFlow/nx.json                                                                                             | JSON               |         62 |          0 |          1 |         63 |
+| /home/david/workspace/GenFlow/package-lock.json                                                                                   | JSON               |     27,197 |          0 |          1 |     27,198 |
+| /home/david/workspace/GenFlow/package.json                                                                                        | JSON               |        120 |          0 |          1 |        121 |
+| /home/david/workspace/GenFlow/services/api-test/package.json                                                                      | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/api-test/project.json                                                                      | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api-test/src/api/api.module.ts                                                             | TypeScript         |         44 |          5 |          7 |         56 |
+| /home/david/workspace/GenFlow/services/api-test/src/api/api.service.ts                                                            | TypeScript         |         47 |          0 |          8 |         55 |
+| /home/david/workspace/GenFlow/services/api-test/src/api/health.controller.ts                                                      | TypeScript         |         15 |          0 |          4 |         19 |
+| /home/david/workspace/GenFlow/services/api-test/src/auth/auth.controller.ts                                                       | TypeScript         |         18 |          0 |          3 |         21 |
+| /home/david/workspace/GenFlow/services/api-test/src/auth/auth.module.ts                                                           | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api-test/src/auth/auth.service.ts                                                          | TypeScript         |         38 |          0 |         10 |         48 |
+| /home/david/workspace/GenFlow/services/api-test/src/email/email.controller.ts                                                     | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/david/workspace/GenFlow/services/api-test/src/email/email.module.ts                                                         | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api-test/src/email/email.provider.ts                                                       | TypeScript         |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/api-test/src/email/email.service.ts                                                        | TypeScript         |         20 |          0 |          5 |         25 |
+| /home/david/workspace/GenFlow/services/api-test/src/guards/auth.guard.ts                                                          | TypeScript         |         46 |          0 |          8 |         54 |
+| /home/david/workspace/GenFlow/services/api-test/src/guards/auth.public.ts                                                         | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/api-test/src/main.ts                                                                       | TypeScript         |         19 |          0 |         10 |         29 |
+| /home/david/workspace/GenFlow/services/api-test/src/project/project.controller.ts                                                 | TypeScript         |         28 |          0 |          7 |         35 |
+| /home/david/workspace/GenFlow/services/api-test/src/project/project.module.ts                                                     | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api-test/src/project/project.service.ts                                                    | TypeScript         |         54 |          0 |         18 |         72 |
+| /home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.controller.ts                                               | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.module.ts                                                   | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.provider.ts                                                 | TypeScript         |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/api-test/src/socketio/socketio.service.ts                                                  | TypeScript         |         19 |          0 |          5 |         24 |
+| /home/david/workspace/GenFlow/services/api-test/src/team/team.controller.ts                                                       | TypeScript         |         28 |          0 |          7 |         35 |
+| /home/david/workspace/GenFlow/services/api-test/src/team/team.module.ts                                                           | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api-test/src/team/team.service.ts                                                          | TypeScript         |         45 |          0 |         16 |         61 |
+| /home/david/workspace/GenFlow/services/api-test/src/types/authenticated-request.ts                                                | TypeScript         |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/api-test/src/user/user.controller.ts                                                       | TypeScript         |         16 |          0 |          5 |         21 |
+| /home/david/workspace/GenFlow/services/api-test/src/user/user.module.ts                                                           | TypeScript         |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api-test/src/user/user.service.ts                                                          | TypeScript         |         40 |          0 |         14 |         54 |
+| /home/david/workspace/GenFlow/services/api-test/tsconfig.app.json                                                                 | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/api-test/tsconfig.json                                                                     | JSON with Comments |         34 |          0 |          1 |         35 |
+| /home/david/workspace/GenFlow/services/api/package.json                                                                           | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/api/project.json                                                                           | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/api/src/api/api.module.ts                                                                  | TypeScript         |         42 |          0 |          7 |         49 |
+| /home/david/workspace/GenFlow/services/api/src/api/api.service.ts                                                                 | TypeScript         |         37 |          0 |          6 |         43 |
+| /home/david/workspace/GenFlow/services/api/src/auth/auth.controller.ts                                                            | TypeScript         |         27 |          0 |          5 |         32 |
+| /home/david/workspace/GenFlow/services/api/src/auth/auth.module.ts                                                                | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api/src/auth/auth.service.ts                                                               | TypeScript         |         44 |          0 |         13 |         57 |
+| /home/david/workspace/GenFlow/services/api/src/email/email.controller.ts                                                          | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/david/workspace/GenFlow/services/api/src/email/email.module.ts                                                              | TypeScript         |         12 |          0 |          1 |         13 |
+| /home/david/workspace/GenFlow/services/api/src/email/email.provider.ts                                                            | TypeScript         |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/api/src/email/email.service.ts                                                             | TypeScript         |         22 |          0 |          5 |         27 |
+| /home/david/workspace/GenFlow/services/api/src/genworker/genworker.controller.ts                                                  | TypeScript         |         44 |          0 |          9 |         53 |
+| /home/david/workspace/GenFlow/services/api/src/genworker/genworker.module.ts                                                      | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api/src/genworker/genworker.service.ts                                                     | TypeScript         |         80 |          0 |         31 |        111 |
+| /home/david/workspace/GenFlow/services/api/src/guards/auth.guard.ts                                                               | TypeScript         |         46 |          0 |          8 |         54 |
+| /home/david/workspace/GenFlow/services/api/src/guards/auth.public.ts                                                              | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/api/src/main.ts                                                                            | TypeScript         |         19 |          0 |         10 |         29 |
+| /home/david/workspace/GenFlow/services/api/src/project/project.controller.ts                                                      | TypeScript         |         42 |          1 |         11 |         54 |
+| /home/david/workspace/GenFlow/services/api/src/project/project.module.ts                                                          | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api/src/project/project.service.ts                                                         | TypeScript         |         51 |          0 |         21 |         72 |
+| /home/david/workspace/GenFlow/services/api/src/socketio/socketio.controller.ts                                                    | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/david/workspace/GenFlow/services/api/src/socketio/socketio.module.ts                                                        | TypeScript         |         12 |          0 |          1 |         13 |
+| /home/david/workspace/GenFlow/services/api/src/socketio/socketio.provider.ts                                                      | TypeScript         |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/api/src/socketio/socketio.service.ts                                                       | TypeScript         |         21 |          0 |          5 |         26 |
+| /home/david/workspace/GenFlow/services/api/src/team/team.controller.ts                                                            | TypeScript         |         28 |          0 |          8 |         36 |
+| /home/david/workspace/GenFlow/services/api/src/team/team.module.ts                                                                | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api/src/team/team.service.ts                                                               | TypeScript         |         43 |          0 |         16 |         59 |
+| /home/david/workspace/GenFlow/services/api/src/types/authenticated-request.ts                                                     | TypeScript         |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/api/src/user/user.controller.ts                                                            | TypeScript         |         16 |          0 |          5 |         21 |
+| /home/david/workspace/GenFlow/services/api/src/user/user.module.ts                                                                | TypeScript         |         11 |          0 |          1 |         12 |
+| /home/david/workspace/GenFlow/services/api/src/user/user.service.ts                                                               | TypeScript         |         38 |          0 |         12 |         50 |
+| /home/david/workspace/GenFlow/services/api/tsconfig.app.json                                                                      | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/api/tsconfig.json                                                                          | JSON with Comments |         34 |          0 |          1 |         35 |
+| /home/david/workspace/GenFlow/services/auth/package.json                                                                          | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/auth/project.json                                                                          | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/auth/src/auth/auth.controller.ts                                                           | TypeScript         |         38 |          0 |          7 |         45 |
+| /home/david/workspace/GenFlow/services/auth/src/auth/auth.module.ts                                                               | TypeScript         |         21 |          0 |          5 |         26 |
+| /home/david/workspace/GenFlow/services/auth/src/auth/auth.service.ts                                                              | TypeScript         |        121 |          0 |         30 |        151 |
+| /home/david/workspace/GenFlow/services/auth/src/auth/email.provider.ts                                                            | TypeScript         |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/auth/src/main.ts                                                                           | TypeScript         |         27 |          0 |          8 |         35 |
+| /home/david/workspace/GenFlow/services/auth/tsconfig.app.json                                                                     | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/auth/tsconfig.json                                                                         | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/email/package.json                                                                         | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/email/project.json                                                                         | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/email/src/email/custom.provider.ts                                                         | TypeScript         |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/email/src/email/email.consumer.ts                                                          | TypeScript         |         18 |          0 |          4 |         22 |
+| /home/david/workspace/GenFlow/services/email/src/email/email.module.ts                                                            | TypeScript         |         19 |          0 |          5 |         24 |
+| /home/david/workspace/GenFlow/services/email/src/email/email.service.ts                                                           | TypeScript         |         14 |          0 |          7 |         21 |
+| /home/david/workspace/GenFlow/services/email/src/main.ts                                                                          | TypeScript         |         27 |          0 |          6 |         33 |
+| /home/david/workspace/GenFlow/services/email/tsconfig.app.json                                                                    | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/email/tsconfig.json                                                                        | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/gateway/package.json                                                                       | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/gateway/project.json                                                                       | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/gateway/src/app/app.module.ts                                                              | TypeScript         |         18 |          0 |          5 |         23 |
+| /home/david/workspace/GenFlow/services/gateway/src/main.ts                                                                        | TypeScript         |         23 |          0 |         10 |         33 |
+| /home/david/workspace/GenFlow/services/gateway/src/proxy/proxy.module.ts                                                          | TypeScript         |         47 |          0 |          4 |         51 |
+| /home/david/workspace/GenFlow/services/gateway/tsconfig.app.json                                                                  | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/gateway/tsconfig.json                                                                      | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/genworker-app/project.json                                                                 | JSON               |         19 |          0 |          1 |         20 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/AuthGateway.py                                         | Python             |          9 |          0 |          2 |         11 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/PackagesGateway.py                                     | Python             |         10 |          0 |          4 |         14 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/gateways/TaskSchedulerGateway.py                                | Python             |         29 |          0 |          7 |         36 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/AuthRepo.py                                               | Python             |         20 |          0 |          8 |         28 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/FilesRepo.py                                              | Python             |         11 |          0 |          5 |         16 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/NodeRepo.py                                               | Python             |         19 |          0 |         12 |         31 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/adapters/repos/TaskRepo.py                                               | Python             |         10 |          0 |          7 |         17 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/dispatch.py                                                              | Python             |          6 |          0 |          2 |          8 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/Auth.py                                                           | Python             |         43 |          0 |         12 |         55 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/CpuWorker.py                                                      | Python             |         17 |          1 |          8 |         26 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/Domain.py                                                         | Python             |         27 |          0 |         10 |         37 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/FileSystem.py                                                     | Python             |         12 |          0 |          5 |         17 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/Node.py                                                           | Python             |         22 |          0 |         10 |         32 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/Packages.py                                                       | Python             |         26 |          0 |         12 |         38 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/domain/TaskScheduler.py                                                  | Python             |         66 |          1 |         20 |         87 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/event_queue.py                                                           | Python             |          2 |          0 |          2 |          4 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/main.py                                                                  | Python             |         14 |          0 |          8 |         22 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/sio/SIO.py                                                               | Python             |         52 |          0 |         12 |         64 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/ui/UI.py                                                                 | Python             |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/ui/console/DashboardScreen.py                                            | Python             |          8 |          0 |          2 |         10 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/ui/console/LoginScreen.py                                                | Python             |         14 |          0 |          5 |         19 |
+| /home/david/workspace/GenFlow/services/genworker-app/src/ui/console/consoleUI.py                                                  | Python             |         21 |          0 |          7 |         28 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/auth.json                                                          | JSON               |          1 |          0 |          0 |          1 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/Unified/Base/Txt2ImgUnified/Txt2ImgUnified.json | JSON               |         91 |          0 |          1 |         92 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/Unified/Base/Txt2ImgUnified/Txt2ImgUnified.py   | Python             |         37 |          0 |          9 |         46 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/Diffusers/config.json                                     | JSON               |          8 |          0 |          0 |          8 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/File/Save/TextFileSave/TextFileSave.json          | JSON               |         19 |          0 |          1 |         20 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/File/Save/TextFileSave/TextFileSave.py            | Python             |         15 |          0 |          2 |         17 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Image/Base/ImageSave/ImageSave.json               | JSON               |         19 |          0 |          1 |         20 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Image/Base/ImageSave/ImageSave.py                 | Python             |         23 |          0 |          6 |         29 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Number/Base/NumberInput/NumberInput.json          | JSON               |         28 |          0 |          1 |         29 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Number/Base/NumberInput/NumberInput.py            | Python             |          6 |          0 |          0 |          6 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Base/TextInput/TextInput.json                | JSON               |         28 |          0 |          1 |         29 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Base/TextInput/TextInput.py                  | Python             |          6 |          0 |          0 |          6 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Operations/TextConcat/TextConcat.json        | JSON               |         35 |          0 |          1 |         36 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/Text/Operations/TextConcat/TextConcat.py          | Python             |          6 |          0 |          1 |          7 |
+| /home/david/workspace/GenFlow/services/genworker-app/workspace/packages/GenFlow/config.json                                       | JSON               |         12 |          0 |          0 |         12 |
+| /home/david/workspace/GenFlow/services/genworker/package.json                                                                     | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/genworker/project.json                                                                     | JSON               |         12 |          0 |          1 |         13 |
+| /home/david/workspace/GenFlow/services/genworker/src/genworker/genworker.controller.ts                                            | TypeScript         |         72 |          0 |         16 |         88 |
+| /home/david/workspace/GenFlow/services/genworker/src/genworker/genworker.module.ts                                                | TypeScript         |         35 |          0 |          8 |         43 |
+| /home/david/workspace/GenFlow/services/genworker/src/genworker/services/genworker.service.ts                                      | TypeScript         |        103 |          0 |         27 |        130 |
+| /home/david/workspace/GenFlow/services/genworker/src/genworker/services/task.service.ts                                           | TypeScript         |         74 |          0 |         12 |         86 |
+| /home/david/workspace/GenFlow/services/genworker/src/genworker/services/task_queue.service.ts                                     | TypeScript         |        157 |          7 |         60 |        224 |
+| /home/david/workspace/GenFlow/services/genworker/src/main.ts                                                                      | TypeScript         |         28 |          0 |          5 |         33 |
+| /home/david/workspace/GenFlow/services/genworker/tsconfig.app.json                                                                | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/genworker/tsconfig.json                                                                    | JSON with Comments |         34 |          0 |          1 |         35 |
+| /home/david/workspace/GenFlow/services/graphql/package.json                                                                       | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/graphql/project.json                                                                       | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/graphql/src/app/app.module.ts                                                              | TypeScript         |         16 |          0 |          4 |         20 |
+| /home/david/workspace/GenFlow/services/graphql/src/main.ts                                                                        | TypeScript         |         15 |          0 |          7 |         22 |
+| /home/david/workspace/GenFlow/services/graphql/tsconfig.app.json                                                                  | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/graphql/tsconfig.json                                                                      | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/project/package.json                                                                       | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/project/project.json                                                                       | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/project/src/main.ts                                                                        | TypeScript         |         37 |          0 |          8 |         45 |
+| /home/david/workspace/GenFlow/services/project/src/project/project.controller.ts                                                  | TypeScript         |         56 |          0 |         11 |         67 |
+| /home/david/workspace/GenFlow/services/project/src/project/project.module.ts                                                      | TypeScript         |         24 |          0 |          6 |         30 |
+| /home/david/workspace/GenFlow/services/project/src/project/project.service.ts                                                     | TypeScript         |        159 |          0 |         43 |        202 |
+| /home/david/workspace/GenFlow/services/project/tsconfig.app.json                                                                  | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/project/tsconfig.json                                                                      | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/socket.io/package.json                                                                     | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/socket.io/project.json                                                                     | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/socket.io/src/app/app.module.ts                                                            | TypeScript         |         21 |          0 |          4 |         25 |
+| /home/david/workspace/GenFlow/services/socket.io/src/app/notifications.gateway.ts                                                 | TypeScript         |         12 |          0 |          4 |         16 |
+| /home/david/workspace/GenFlow/services/socket.io/src/app/socket.controller.ts                                                     | TypeScript         |         27 |          0 |          4 |         31 |
+| /home/david/workspace/GenFlow/services/socket.io/src/app/socket.gateway.ts                                                        | TypeScript         |         69 |          0 |         15 |         84 |
+| /home/david/workspace/GenFlow/services/socket.io/src/app/socket.service.ts                                                        | TypeScript         |        123 |          2 |         37 |        162 |
+| /home/david/workspace/GenFlow/services/socket.io/src/main.ts                                                                      | TypeScript         |         50 |          0 |         11 |         61 |
+| /home/david/workspace/GenFlow/services/socket.io/tsconfig.app.json                                                                | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/socket.io/tsconfig.json                                                                    | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/team/package.json                                                                          | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/team/project.json                                                                          | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/team/src/main.ts                                                                           | TypeScript         |         29 |          0 |          7 |         36 |
+| /home/david/workspace/GenFlow/services/team/src/team/team.controller.ts                                                           | TypeScript         |         41 |          0 |          9 |         50 |
+| /home/david/workspace/GenFlow/services/team/src/team/team.module.ts                                                               | TypeScript         |         24 |          0 |          6 |         30 |
+| /home/david/workspace/GenFlow/services/team/src/team/team.service.ts                                                              | TypeScript         |         86 |          0 |         20 |        106 |
+| /home/david/workspace/GenFlow/services/team/tsconfig.app.json                                                                     | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/team/tsconfig.json                                                                         | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/user/package.json                                                                          | JSON               |         45 |          0 |          1 |         46 |
+| /home/david/workspace/GenFlow/services/user/project.json                                                                          | JSON               |         10 |          0 |          1 |         11 |
+| /home/david/workspace/GenFlow/services/user/src/main.ts                                                                           | TypeScript         |         28 |          0 |          5 |         33 |
+| /home/david/workspace/GenFlow/services/user/src/user/user.controller.ts                                                           | TypeScript         |         32 |          0 |          7 |         39 |
+| /home/david/workspace/GenFlow/services/user/src/user/user.module.ts                                                               | TypeScript         |         24 |          0 |          6 |         30 |
+| /home/david/workspace/GenFlow/services/user/src/user/user.service.ts                                                              | TypeScript         |        105 |          0 |         21 |        126 |
+| /home/david/workspace/GenFlow/services/user/tsconfig.app.json                                                                     | JSON               |         13 |          1 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/user/tsconfig.json                                                                         | JSON with Comments |         33 |          0 |          1 |         34 |
+| /home/david/workspace/GenFlow/services/web-ui/index.d.ts                                                                          | TypeScript         |          5 |          1 |          1 |          7 |
+| /home/david/workspace/GenFlow/services/web-ui/next-env.d.ts                                                                       | TypeScript         |          0 |          5 |          2 |          7 |
+| /home/david/workspace/GenFlow/services/web-ui/next.config.js                                                                      | JavaScript         |          8 |          8 |          5 |         21 |
+| /home/david/workspace/GenFlow/services/web-ui/package.json                                                                        | JSON               |          7 |          0 |          2 |          9 |
+| /home/david/workspace/GenFlow/services/web-ui/postcss.config.js                                                                   | JavaScript         |          6 |          0 |          1 |          7 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/GUI_icon.svg                                                    | XML                |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_center_icon.svg                                           | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_end_icon.svg                                              | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/align_start_icon.svg                                            | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/arow_left_icon.svg                                              | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_down_icon.svg                                             | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_right_icon.svg                                            | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/arrow_up_icon.svg                                               | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/cross_icon.svg                                                  | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/dashboard_icon.svg                                              | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/executive_servers_icon.svg                                      | XML                |          4 |          0 |          1 |          5 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/flow_icon.svg                                                   | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/flows_icon.svg                                                  | XML                |          4 |          0 |          1 |          5 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/genworkers_icon.svg                                             | XML                |          4 |          0 |          1 |          5 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/info_icon.svg                                                   | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/play_icon.svg                                                   | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/plugins_icon.svg                                                | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/plus_icon.svg                                                   | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_default_icon.svg                                       | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_down_icon.svg                                          | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_left_icon.svg                                          | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_right_icon.svg                                         | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/position_up_icon.svg                                            | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/profileimage_icon.svg                                           | XML                |          4 |          0 |          1 |          5 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/settings_icon.svg                                               | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/swap_icon.svg                                                   | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/icons/template_icon.svg                                               | XML                |          3 |          0 |          1 |          4 |
+| /home/david/workspace/GenFlow/services/web-ui/public/images/logo_full.svg                                                         | XML                |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/forgot-password/page.tsx                                             | TypeScript JSX     |          5 |          0 |          3 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/layout.tsx                                                           | TypeScript JSX     |         11 |          0 |          5 |         16 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/login/page.tsx                                                       | TypeScript JSX     |          5 |          0 |          3 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(auth)/register/page.tsx                                                    | TypeScript JSX     |          5 |          0 |          3 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/dashboard/page.tsx                                 | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/executive-servers/page.tsx                         | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/flow/page.tsx                                      | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/flows/page.tsx                                     | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/genworkers/page.tsx                                | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/layout.tsx                                         | TypeScript JSX     |         16 |          0 |          4 |         20 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/plugins/page.tsx                                   | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/(with_menu)/settings/page.tsx                                  | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/confirm-email/page.tsx                                         | TypeScript JSX     |          5 |          0 |          3 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/(authorized)/layout.tsx                                                     | TypeScript JSX     |         41 |          0 |         10 |         51 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/globals.css                                                                 | PostCSS            |         28 |          1 |          9 |         38 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/layout.tsx                                                                  | TypeScript JSX     |         26 |          0 |          4 |         30 |
+| /home/david/workspace/GenFlow/services/web-ui/src/app/page.tsx                                                                    | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Artifacts.tsx                                                  | TypeScript JSX     |         17 |          0 |          2 |         19 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Aside.tsx                                                      | TypeScript JSX     |         52 |          0 |          4 |         56 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/EmptyContent.tsx                                               | TypeScript JSX     |          8 |          0 |          1 |          9 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Hierarchy.tsx                                                  | TypeScript JSX     |         42 |          0 |          8 |         50 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Inspector.tsx                                                  | TypeScript JSX     |         60 |          0 |          8 |         68 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Aside/Nodes.tsx                                                      | TypeScript JSX     |         83 |          1 |         13 |         97 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Button.tsx                                                           | TypeScript JSX     |         10 |          0 |          0 |         10 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/ExternalNodeRenderer.tsx                                             | TypeScript JSX     |         40 |          3 |          7 |         50 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/FlowWorkspace.tsx                                                    | TypeScript JSX     |        130 |          4 |         20 |        154 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Header.tsx                                                           | TypeScript JSX     |         15 |          0 |          5 |         20 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Icon.tsx                                                             | TypeScript JSX     |          7 |          0 |          3 |         10 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/Nav.tsx                                                              | TypeScript JSX     |         28 |          0 |          3 |         31 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/TopBar.tsx                                                           | TypeScript JSX     |         24 |          0 |          4 |         28 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/inputs/TextInput.tsx                                                 | TypeScript JSX     |         21 |          0 |          1 |         22 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/node/DefaultNode.tsx                                                 | TypeScript JSX     |        135 |          2 |         16 |        153 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/LabelWidget.tsx                                    | TypeScript JSX     |         14 |          0 |          1 |         15 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/LineInputWidget.tsx                                | TypeScript JSX     |         23 |          0 |          1 |         24 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/NumberInputWidget.tsx                              | TypeScript JSX     |         20 |          0 |          1 |         21 |
+| /home/david/workspace/GenFlow/services/web-ui/src/components/node/inputWidgets/SelectWidget.tsx                                   | TypeScript JSX     |         27 |          0 |          1 |         28 |
+| /home/david/workspace/GenFlow/services/web-ui/src/hooks/useAuth.ts                                                                | TypeScript         |         30 |          0 |          8 |         38 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/auth/ForgotPassword.tsx                                                   | TypeScript JSX     |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/auth/Login.tsx                                                            | TypeScript JSX     |         42 |          0 |          9 |         51 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/auth/Register.tsx                                                         | TypeScript JSX     |         46 |          0 |          7 |         53 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/ConfirmEmail.tsx                                               | TypeScript JSX     |         42 |          0 |          6 |         48 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Dashboard.tsx                                                  | TypeScript JSX     |         80 |          0 |          7 |         87 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/ExecutiveServers.tsx                                           | TypeScript JSX     |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Flow.tsx                                                       | TypeScript JSX     |        126 |          1 |         31 |        158 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Flows.tsx                                                      | TypeScript JSX     |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Genworkers.tsx                                                 | TypeScript JSX     |        209 |          0 |         22 |        231 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Plugins.tsx                                                    | TypeScript JSX     |          7 |          0 |          1 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/authorized/Settings.tsx                                                   | TypeScript JSX     |         23 |          0 |          6 |         29 |
+| /home/david/workspace/GenFlow/services/web-ui/src/pages/unauthorized/Welcome.tsx                                                  | TypeScript JSX     |         29 |          0 |          3 |         32 |
+| /home/david/workspace/GenFlow/services/web-ui/src/socket/SocketProvider.tsx                                                       | TypeScript JSX     |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/services/web-ui/src/socket/socket.ts                                                                | TypeScript         |         10 |          0 |          3 |         13 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/flow.default.ts                                                           | TypeScript         |          7 |          0 |          0 |          7 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/flow.type.ts                                                              | TypeScript         |         13 |          0 |          4 |         17 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/index.ts                                                                  | TypeScript         |         24 |          0 |          3 |         27 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/nodes/node.default.ts                                                     | TypeScript         |         61 |          0 |          0 |         61 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/nodes/nodesRegistry.ts                                                    | TypeScript         |         14 |          2 |          6 |         22 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/nodes/packets/GenFlow/Text/TextInput.json                                 | JSON               |         28 |          0 |          1 |         29 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/nodes/packets/GenFlow/config.json                                         | JSON               |          8 |          0 |          0 |          8 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/provider.tsx                                                              | TypeScript JSX     |          6 |          0 |          1 |          7 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/artifactsSlice.tsx                                                 | TypeScript JSX     |         35 |          0 |          4 |         39 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/authSlice.tsx                                                      | TypeScript JSX     |         38 |          0 |          2 |         40 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/clientSlice.tsx                                                    | TypeScript JSX     |         47 |          0 |          2 |         49 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/defaults/defaultNode.tsx                                           | TypeScript JSX     |         78 |          0 |          0 |         78 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/flowsSlice.tsx                                                     | TypeScript JSX     |         62 |          1 |          6 |         69 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/packagesSlice.tsx                                                  | TypeScript JSX     |         29 |          0 |          2 |         31 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/projectSlice.tsx                                                   | TypeScript JSX     |         54 |          0 |          6 |         60 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/sessionSlice.tsx                                                   | TypeScript JSX     |         26 |          0 |          3 |         29 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/slices/teamSlice.tsx                                                      | TypeScript JSX     |         41 |          0 |          3 |         44 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/loginThunk.ts                                                 | TypeScript         |         32 |          0 |          9 |         41 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/logoutThunk.ts                                                | TypeScript         |         14 |          0 |          5 |         19 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/auth/registerThunk.ts                                              | TypeScript         |         35 |          0 |          5 |         40 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/client/fetchClientThunk.ts                                         | TypeScript         |         41 |          0 |          8 |         49 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/client/verifyEmailThunk.ts                                         | TypeScript         |         17 |          0 |          5 |         22 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/addNodeThunk.ts                                               | TypeScript         |         18 |          0 |          1 |         19 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/assignGenWorkerToFlowThunk.ts                                 | TypeScript         |         13 |          0 |          2 |         15 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/createFlowThunk.ts                                            | TypeScript         |         29 |          0 |          4 |         33 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/executeFlowThunk.ts                                           | TypeScript         |         25 |          0 |          4 |         29 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/featchNodesThunk.ts                                           | TypeScript         |          9 |          0 |          1 |         10 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onConnectThunk.ts                                             | TypeScript         |         13 |          0 |          2 |         15 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onEdgesChangeThunk.ts                                         | TypeScript         |         13 |          0 |          2 |         15 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/flow/onNodesChangeThunk.ts                                         | TypeScript         |         12 |          0 |          2 |         14 |
+| /home/david/workspace/GenFlow/services/web-ui/src/store/thunks/nodes/loadNodesThunk.ts                                            | TypeScript         |         21 |          0 |          5 |         26 |
+| /home/david/workspace/GenFlow/services/web-ui/src/utils/DnDContext.jsx                                                            | JavaScript JSX     |         14 |          0 |          5 |         19 |
+| /home/david/workspace/GenFlow/services/web-ui/src/utils/apollo-client.ts                                                          | TypeScript         |          7 |          0 |          2 |          9 |
+| /home/david/workspace/GenFlow/services/web-ui/src/utils/config.tsx                                                                | TypeScript JSX     |         15 |          0 |          3 |         18 |
+| /home/david/workspace/GenFlow/services/web-ui/src/utils/fetchServer.ts                                                            | TypeScript         |         14 |          0 |          3 |         17 |
+| /home/david/workspace/GenFlow/services/web-ui/tailwind.config.js                                                                  | JavaScript         |         32 |          1 |          3 |         36 |
+| /home/david/workspace/GenFlow/services/web-ui/tsconfig.json                                                                       | JSON with Comments |         51 |          8 |          1 |         60 |
+| /home/david/workspace/GenFlow/tsconfig.base.json                                                                                  | JSON               |         46 |          0 |          5 |         51 |
+| /home/david/workspace/GenFlow/tsconfig.json                                                                                       | JSON with Comments |         41 |          0 |         10 |         51 |
+| Total                                                                                                                             |                    |     44,189 |        113 |      2,632 |     46,934 |
++-----------------------------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

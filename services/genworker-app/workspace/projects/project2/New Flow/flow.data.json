@@ -1,0 +1,187 @@
+{
+  "nodes": [
+    {
+      "id": "011173b6-06d6-4c7b-b606-229249f64bdf",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Pipe",
+      "position": {
+        "x": 64,
+        "y": 64
+      },
+      "style": {
+        "width": 256,
+        "height": 128
+      },
+      "data": {
+        "name": "Pipe_FromFile_T2I",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "model",
+            "label": "model",
+            "name": "model",
+            "default": "cyberrealistic_v90.safetensors",
+            "dataType": "STRING",
+            "widget": "LineInput",
+            "value": "cyberrealistic_v90.safetensors"
+          }
+        ],
+        "outputs": [
+          {
+            "id": "pipe",
+            "label": "pipe",
+            "name": "pipe",
+            "dataType": "PIPE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    },
+    {
+      "id": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Pipe",
+      "position": {
+        "x": 320,
+        "y": 64
+      },
+      "style": {
+        "width": 256,
+        "height": 640
+      },
+      "data": {
+        "name": "PipeGenerateTxt2Img",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "pipe",
+            "label": "pipe",
+            "name": "pipe",
+            "dataType": "PIPE",
+            "widget": "Label"
+          },
+          {
+            "id": "positivePrompt",
+            "label": "positive prompt",
+            "name": "positivePrompt",
+            "default": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "A cute fluffy kitten sitting in the grass, sunlight, realistic photography, highly detailed, soft fur, bokeh background"
+          },
+          {
+            "id": "negativePrompt",
+            "label": "negative prompt",
+            "name": "negativePrompt",
+            "default": "blurry, low quality, distorted, deformed, text, watermark, ugly",
+            "dataType": "TEXT",
+            "widget": "TextAreaInput",
+            "value": "blurry, low quality, distorted, deformed, text, watermark, ugly"
+          },
+          {
+            "id": "seed",
+            "label": "seed",
+            "name": "seed",
+            "default": 12345,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 12345
+          },
+          {
+            "id": "height",
+            "label": "height",
+            "name": "height",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "width",
+            "label": "width",
+            "name": "width",
+            "default": 512,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 512
+          },
+          {
+            "id": "guidanceScale",
+            "label": "guidance scale",
+            "name": "guidanceScale",
+            "default": 6,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 6
+          },
+          {
+            "id": "steps",
+            "label": "steps",
+            "name": "steps",
+            "default": 30,
+            "dataType": "NUMBER",
+            "widget": "NumberInput",
+            "value": 30
+          }
+        ],
+        "outputs": [
+          {
+            "id": "imageOutput",
+            "label": "image",
+            "name": "imageOutput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "Diffusers"
+    },
+    {
+      "id": "c594aa68-6831-4ec7-82be-cd7950b4ffed",
+      "type": "Default",
+      "packet": "GenFlow",
+      "path": "Image",
+      "position": {
+        "x": 576,
+        "y": 64
+      },
+      "style": {
+        "width": 192,
+        "height": 128
+      },
+      "data": {
+        "name": "ImageSave",
+        "description": "This is a new node",
+        "inputs": [
+          {
+            "id": "imageInput",
+            "label": "image",
+            "name": "imageInput",
+            "dataType": "IMAGE",
+            "widget": "Label"
+          }
+        ]
+      },
+      "package": "GenFlow"
+    }
+  ],
+  "edges": [
+    {
+      "source": "011173b6-06d6-4c7b-b606-229249f64bdf",
+      "sourceHandle": "pipe",
+      "target": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
+      "targetHandle": "pipe",
+      "id": "011173b6-06d6-4c7b-b606-229249f64bdf.pipe<->16a39b23-0154-4739-b571-82c9e4f9e9c6.pipe"
+    },
+    {
+      "source": "16a39b23-0154-4739-b571-82c9e4f9e9c6",
+      "sourceHandle": "imageOutput",
+      "target": "c594aa68-6831-4ec7-82be-cd7950b4ffed",
+      "targetHandle": "imageInput",
+      "id": "16a39b23-0154-4739-b571-82c9e4f9e9c6.imageOutput<->c594aa68-6831-4ec7-82be-cd7950b4ffed.imageInput"
+    }
+  ]
+}

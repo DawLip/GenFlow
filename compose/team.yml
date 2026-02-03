@@ -2,7 +2,7 @@ services:
   team:
     build:
       context: .
-      dockerfile: ../services/team/Dockerfile.dev
+      dockerfile: ../libs/shared/Dockerfile.default.dev
     ports:
       - "3008:3000"
     volumes:

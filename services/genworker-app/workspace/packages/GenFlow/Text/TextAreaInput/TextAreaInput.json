@@ -1,0 +1,28 @@
+{
+  "type": "Default",
+  "path": "Text",
+  "package": "GenFlow",
+  "style": { "width": 4, "height": 4 },
+  "data": {
+    "name": "TextAreaInput",
+    "description": "This is a new node",
+    "inputs": [
+      {
+        "id": "input-1",
+        "label": "text input",
+        "name": "textInput",
+        "dataType": "TEXT",
+        "widget": "TextAreaInput"
+      }
+    ],
+    "outputs": [
+      {
+        "id": "output-1",
+        "label": "text output",
+        "name": "textOutput",
+        "dataType": "TEXT",
+        "widget": "LineOutput"
+      }
+    ]
+  }
+}

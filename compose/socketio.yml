@@ -1,0 +1,13 @@
+services:
+  socketio:
+    build:
+      context: .
+      dockerfile: ../libs/shared/Dockerfile.default.dev
+    ports:
+      - "3003:3000"
+    volumes:
+      - ../:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=development
+    command: npx nx serve socket.io
